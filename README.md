@@ -2,6 +2,8 @@
 
 A free, self-contained soroban (Japanese abacus) course for children, run by a parent at home. Ten stages take a child from reading beads to competition-style mental arithmetic. No build step, no accounts, no server: open `index.html` through any static web server and progress is saved in the browser.
 
+**Live site:** https://hunterappleton369-debug.github.io/bead-brain/
+
 ## Run it
 
 ```bash
@@ -9,6 +11,16 @@ node serve.mjs
 ```
 
 Then open http://localhost:8787. Any static host works too (GitHub Pages, Netlify, an S3 bucket): upload the folder as is.
+
+## Deploy
+
+The site is hosted on GitHub Pages from the `main` branch of [hunterappleton369-debug/bead-brain](https://github.com/hunterappleton369-debug/bead-brain), served from the repo root. There is no build step, so redeploying is just a push:
+
+```bash
+git add -A && git commit -m "Describe the change" && git push
+```
+
+GitHub rebuilds the site within a minute or two of the push. Check progress at https://github.com/hunterappleton369-debug/bead-brain/actions or with `gh api repos/hunterappleton369-debug/bead-brain/pages/builds/latest --jq .status`.
 
 ## What is in the box
 
