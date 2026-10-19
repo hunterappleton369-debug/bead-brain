@@ -85,7 +85,7 @@ export function runLadder(container, ladder, opts = {}) {
     container.innerHTML = '';
     if (rung > ladder.rungs.length) return finish();
     const r = ladder.rungs[rung - 1];
-    const card = h(`<div class="card alt"><div class="sticker">Rung ${r.n}</div><h3>${r.label}</h3><p class="muted">${r.means}</p><p class="small muted">4 problems · ${r.drill.timeLimit}s total · need 3 of 4 · no abacus, no paper</p><div class="btn-row"><button class="btn primary">Go</button></div></div>`);
+    const card = h(`<div class="card ink-edge"><span class="sticker">Rung ${r.n}</span><span class="eyebrow">Rung ${r.n} of ${ladder.rungs.length}</span><h3>${r.label}</h3><p class="muted">${r.means}</p><p class="small faint">4 problems · ${r.drill.timeLimit}s total · need 3 of 4 · no abacus, no paper</p><div class="btn-row"><button class="btn blue">Go</button></div></div>`);
     container.appendChild(card);
     card.querySelector('button').onclick = () => {
       container.innerHTML = '';
@@ -96,9 +96,9 @@ export function runLadder(container, ladder, opts = {}) {
         if (res.passed) {
           highest = r.n; speed = res.avg;
           rung++;
-          const b = h('<button class="btn primary">Climb to the next rung →</button>'); b.onclick = next; row.appendChild(b);
+          const b = h('<button class="btn blue">Climb to the next rung →</button>'); b.onclick = next; row.appendChild(b);
         } else {
-          const b = h('<button class="btn orange">See my Bead Score</button>'); b.onclick = finish; row.appendChild(b);
+          const b = h('<button class="btn yellow">See my Bead Score</button>'); b.onclick = finish; row.appendChild(b);
         }
       } });
     };
@@ -133,17 +133,17 @@ export function renderChart(tests, age, ladderKey = 'main') {
   let dots = '';
   if (mine.length) {
     const pts = mine.map(t => `${x(t.age || age).toFixed(1)},${y(t.rung).toFixed(1)}`).join(' ');
-    dots += `<polyline points="${pts}" fill="none" stroke="#2f3440" stroke-width="2" opacity="0.5"/>`;
-    mine.forEach((t, i) => { const last = i === mine.length - 1; dots += `<circle cx="${x(t.age || age)}" cy="${y(t.rung)}" r="${last ? 8 : 5}" fill="${last ? '#e4572e' : '#f3a712'}" stroke="#2f3440" stroke-width="2"/>`; if (last) dots += `<text x="${x(t.age || age) + 12}" y="${y(t.rung) - 10}" class="hand" fill="#e4572e">you: rung ${t.rung}</text>`; });
+    dots += `<polyline points="${pts}" fill="none" stroke="#121826" stroke-width="2" opacity="0.5"/>`;
+    mine.forEach((t, i) => { const last = i === mine.length - 1; dots += `<circle cx="${x(t.age || age)}" cy="${y(t.rung)}" r="${last ? 8 : 5}" fill="${last ? '#f03e3e' : '#ffd23f'}" stroke="#121826" stroke-width="2"/>`; if (last) dots += `<text x="${x(t.age || age) + 12}" y="${y(t.rung) - 10}" class="hand" fill="#f03e3e">you: rung ${t.rung}</text>`; });
   }
   return `<svg class="rank-chart" viewBox="0 0 ${W + 60} ${H}" xmlns="http://www.w3.org/2000/svg">
     ${grid}
     <text x="${L - 40}" y="${T - 8}" class="hand">rung</text>
     <text x="${(L + W - R) / 2}" y="${H - 6}" text-anchor="middle" class="hand">age</text>
-    ${band(50, '#9aa0ab', 'typical (50th)')}
-    ${band(75, '#29a19c', 'top 25%')}
-    ${band(90, '#4f86c6', 'top 10%')}
-    ${band(99, '#8e5ea2', 'top 1%')}
+    ${band(50, '#aab2c2', 'typical')}
+    ${band(75, '#22c55e', 'top 25%')}
+    ${band(90, '#2457f5', 'top 10%')}
+    ${band(99, '#7c5cff', 'top 1%')}
     ${dots}
   </svg>`;
 }

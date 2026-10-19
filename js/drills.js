@@ -52,7 +52,7 @@ export function runDrill(container, drill, opts = {}) {
     <div class="prompt muted"></div>
     <div class="problem"></div>
     <div class="screen-abacus"></div>
-    <div class="answer-row"><input type="number" inputmode="numeric" placeholder="?" autocomplete="off"><button class="btn primary check">Check</button></div>
+    <div class="answer-row"><input type="number" inputmode="numeric" placeholder="?" autocomplete="off"><button class="btn blue check">Check</button></div>
     <div class="feedback"></div>
     <div class="btn-row center" style="justify-content:center"><button class="btn sm ghost hint" style="display:none">Hint</button><button class="btn sm ghost showme" style="display:none">Show me</button><button class="btn sm ghost toggle-ab" style="display:none">Use screen abacus</button></div>
   </div>`);
@@ -104,7 +104,7 @@ export function runDrill(container, drill, opts = {}) {
         } else {
           problemEl.classList.add('stack');
           problemEl.innerHTML = cur.terms.map((t, k) => `<div>${k === 0 ? '' : (t < 0 ? '−' : '+')} ${fmt(Math.abs(t))}</div>`).join('') + '<div>&nbsp;</div>';
-          if (mode === 'mental') promptEl.innerHTML = '<span class="chip">Mental only — picture the beads</span>';
+          if (mode === 'mental') promptEl.innerHTML = '<span class="chip ink">Mental only. Picture the beads.</span>';
         }
         break;
       case 'flash': {
@@ -190,16 +190,16 @@ export function runDrill(container, drill, opts = {}) {
     const result = { kind: drill.kind, count, correct, acc, sec, passed, xp, timeUp, wrongs, avg: times.length ? times.reduce((a, b) => a + b, 0) / times.length : 0, score: Math.round(acc * 100) };
     if (opts.silent !== true) store.addXP(xp, opts.xpKey || drill.kind);
     root.innerHTML = '';
-    const summary = h(`<div class="card ${passed ? 'tint-green' : 'tint-orange'} center">
-      <h2>${timeUp ? 'Time!' : passed ? pick(['Great work!', 'Level up feeling!', 'That was strong!']) : 'Good try'}</h2>
+    const summary = h(`<div class="result ${passed ? 'good' : 'meh'} center">
+      <h2>${timeUp ? 'Time!' : passed ? pick(['Great work!', 'Phenom move!', 'That was strong!']) : 'Good try'}</h2>
       <div class="stat-row">
         <div class="stat"><b>${correct}/${count}</b><span>correct</span></div>
         <div class="stat"><b>${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}</b><span>time</span></div>
         <div class="stat"><b>${result.avg.toFixed(1)}s</b><span>per problem</span></div>
         ${opts.silent ? '' : `<div class="stat"><b>+${xp}</b><span>XP</span></div>`}
       </div>
-      <p class="muted">${passed ? 'Target reached.' : `Target: ${Math.round((target.acc ?? 0.8) * 100)}% correct${target.maxSec ? ` in under ${Math.round(target.maxSec / 60)} min` : ''}. Try again — repetition is the whole trick.`}</p>
-      <div class="btn-row" style="justify-content:center"><button class="btn again">Again</button></div>
+      <p class="muted">${passed ? 'Target reached.' : `Target: ${Math.round((target.acc ?? 0.8) * 100)}% correct${target.maxSec ? ` in under ${Math.round(target.maxSec / 60)} min` : ''}. Try again. Repetition is the whole trick.`}</p>
+      <div class="btn-row" style="justify-content:center"><button class="btn secondary again">Again</button></div>
     </div>`);
     root.appendChild(summary);
     summary.querySelector('.again').onclick = () => runDrill(container, drill, opts);
@@ -236,7 +236,7 @@ export function runSequence(container, parts, opts = {}) {
     if (k >= parts.length) { opts.onFinish && opts.onFinish(results); return; }
     const part = parts[k++];
     container.innerHTML = '';
-    const head = h(`<div class="card alt"><h3>${part.title || `Part ${k}`}</h3><p class="muted">${part.desc || ''}</p><div class="btn-row"><button class="btn primary">Start</button></div></div>`);
+    const head = h(`<div class="card ink-edge"><span class="eyebrow">Part ${k} of ${parts.length}</span><h3>${part.title || `Part ${k}`}</h3><p class="muted">${part.desc || ''}</p><div class="btn-row"><button class="btn blue">Start</button></div></div>`);
     container.appendChild(head);
     head.querySelector('button').onclick = () => {
       container.innerHTML = '';
@@ -244,7 +244,7 @@ export function runSequence(container, parts, opts = {}) {
       runDrill(holder, part, { silent: true, allowScreenAbacus: part.allowScreenAbacus, onFinish: (r, summary) => {
         results.push({ ...r, title: part.title, passed: r.passed });
         const row = summary.querySelector('.btn-row'); row.innerHTML = '';
-        const b = h(`<button class="btn primary">${k >= parts.length ? 'See results' : 'Next part'}</button>`);
+        const b = h(`<button class="btn blue">${k >= parts.length ? 'See results' : 'Next part'}</button>`);
         b.onclick = next; row.appendChild(b);
       } });
     };
@@ -256,7 +256,7 @@ export function confetti(ms = 1800) {
   const c = document.createElement('canvas'); c.className = 'confetti'; document.body.appendChild(c);
   c.width = innerWidth; c.height = innerHeight;
   const ctx = c.getContext('2d');
-  const colors = ['#e4572e', '#f3a712', '#f7d154', '#6fb351', '#29a19c', '#4f86c6', '#8e5ea2', '#e86f9e'];
+  const colors = ['#f03e3e', '#ff8a1f', '#ffd23f', '#22c55e', '#0fb5c9', '#2457f5', '#7c5cff', '#ff4fa3'];
   const parts = Array.from({ length: 140 }, () => ({ x: Math.random() * c.width, y: -20 - Math.random() * 200, vx: (Math.random() - 0.5) * 3, vy: 2 + Math.random() * 4, r: 4 + Math.random() * 6, c: colors[Math.floor(Math.random() * colors.length)], a: Math.random() * Math.PI }));
   const t0 = Date.now();
   (function frame() {

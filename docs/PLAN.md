@@ -1,4 +1,4 @@
-# Bead Brain — the full plan
+# Child Phenoms — the full plan (reference)
 
 Ten stages, 76 lessons. Times assume 15–20 minutes a day, six days a week, age seven or older.
 

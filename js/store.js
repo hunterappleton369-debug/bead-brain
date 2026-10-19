@@ -1,4 +1,5 @@
 // store.js — progress saved in the browser (localStorage). One file per family, many kids.
+// Key kept as beadbrain.v1 so progress from the Bead Brain name carries over.
 const KEY = 'beadbrain.v1';
 
 function load() {
@@ -17,9 +18,9 @@ export const store = {
     return db.profiles[db.current];
   },
   profiles() { return Object.values(this.db.profiles); },
-  addProfile(name, age) {
+  addProfile(name, age, extra = {}) {
     const id = 'p' + Date.now().toString(36);
-    this.db.profiles[id] = { id, name, age: Number(age) || 7, created: today(), xp: 0, streak: 0, lastDay: null, lessons: {}, bosses: {}, tests: [], bests: {}, log: [] };
+    this.db.profiles[id] = { id, name, age: Number(age) || 7, created: today(), parentEmail: extra.parentEmail || '', xp: 0, streak: 0, lastDay: null, lessons: {}, bosses: {}, tests: [], bests: {}, log: [], firstSteps: {} };
     this.db.current = id; save(this.db); return this.db.profiles[id];
   },
   select(id) { this.db.current = id; save(this.db); },

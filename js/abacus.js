@@ -9,7 +9,7 @@ const el = (tag, attrs = {}, parent) => {
   return n;
 };
 
-const BEAD_COLORS = ['#e4572e', '#f3a712', '#29a19c', '#4f86c6', '#8e5ea2', '#e4572e', '#f3a712', '#29a19c', '#4f86c6', '#8e5ea2', '#e4572e', '#f3a712', '#29a19c'];
+const BEAD_COLORS = ['#f03e3e', '#ffd23f', '#22c55e', '#2457f5', '#7c5cff', '#f03e3e', '#ffd23f', '#22c55e', '#2457f5', '#7c5cff', '#f03e3e', '#ffd23f', '#22c55e'];
 
 export class AbacusView {
   constructor(container, opts = {}) {
@@ -39,22 +39,22 @@ export class AbacusView {
     el('feDisplacementMap', { in: 'SourceGraphic', in2: 'noise', scale: '1.6', xChannelSelector: 'R', yChannelSelector: 'G' }, f);
     const hatch = el('pattern', { id: 'hatch', width: '6', height: '6', patternUnits: 'userSpaceOnUse', patternTransform: 'rotate(35)' }, defs);
     el('rect', { width: '6', height: '6', fill: 'transparent' }, hatch);
-    el('line', { x1: 0, y1: 0, x2: 0, y2: 6, stroke: 'rgba(255,255,255,0.35)', 'stroke-width': '2' }, hatch);
+    el('line', { x1: 0, y1: 0, x2: 0, y2: 6, stroke: 'rgba(255,255,255,0.4)', 'stroke-width': '2' }, hatch);
 
     // frame
     const g = el('g', { filter: 'url(#pencil-wobble)' }, svg);
     const frameH = this.height - 12 - (this.showPlaceLabels ? 16 : 0);
-    el('rect', { x: 6, y: 6, width: this.width - 12, height: frameH, rx: 14, fill: '#f7e7c8', stroke: '#8b5e34', 'stroke-width': 4 }, g);
-    el('rect', { x: 6, y: 6, width: this.width - 12, height: frameH, rx: 14, fill: 'url(#hatch)', opacity: 0.5 }, g);
+    el('rect', { x: 6, y: 6, width: this.width - 12, height: frameH, rx: 14, fill: '#ffffff', stroke: '#121826', 'stroke-width': 3 }, g);
+    el('rect', { x: 6, y: 6, width: this.width - 12, height: frameH, rx: 14, fill: 'url(#hatch)', opacity: 0.25 }, g);
     // beam
-    el('rect', { x: 10, y: this.beamY, width: this.width - 20, height: 10, fill: '#8b5e34', stroke: '#5c3a1a', 'stroke-width': 2 }, g);
+    el('rect', { x: 10, y: this.beamY, width: this.width - 20, height: 10, fill: '#121826', stroke: '#121826', 'stroke-width': 2 }, g);
     this.rodsG = el('g', {}, svg);
     this.beadsG = el('g', {}, svg);
     this.hlG = el('g', {}, svg);
     this.beads = [];
     for (let c = 0; c < this.rods; c++) {
       const x = this.colX(c);
-      el('line', { x1: x, y1: 16, x2: x, y2: this.height - 16 - (this.showPlaceLabels ? 16 : 0), stroke: '#5c3a1a', 'stroke-width': 3, 'stroke-linecap': 'round' }, this.rodsG);
+      el('line', { x1: x, y1: 16, x2: x, y2: this.height - 16 - (this.showPlaceLabels ? 16 : 0), stroke: '#aab2c2', 'stroke-width': 3, 'stroke-linecap': 'round' }, this.rodsG);
       // unit dot every 3rd column (ones, thousands, ...) like a real soroban
       const colIndex = this.rods - 1 - c;
       if (colIndex % 3 === 0) el('circle', { cx: x, cy: this.beamY + 5, r: 3, fill: '#fff' }, this.rodsG);
@@ -87,8 +87,8 @@ export class AbacusView {
     // bead shape: rounded diamond (like a real soroban bead) drawn with a pencil edge
     const w = this.beadW / 2, h = this.beadH / 2 - 1;
     const path = `M ${-w} 0 Q ${-w * 0.6} ${-h} 0 ${-h} Q ${w * 0.6} ${-h} ${w} 0 Q ${w * 0.6} ${h} 0 ${h} Q ${-w * 0.6} ${h} ${-w} 0 Z`;
-    el('path', { d: path, fill: color, stroke: '#3b2a1a', 'stroke-width': 2, 'stroke-linejoin': 'round' }, g);
-    el('path', { d: path, fill: 'url(#hatch)', opacity: 0.6 }, g);
+    el('path', { d: path, fill: color, stroke: '#121826', 'stroke-width': 2, 'stroke-linejoin': 'round' }, g);
+    el('path', { d: path, fill: 'url(#hatch)', opacity: 0.45 }, g);
     el('ellipse', { cx: -w * 0.35, cy: -h * 0.35, rx: w * 0.22, ry: h * 0.28, fill: 'rgba(255,255,255,0.45)' }, g);
     g.style.transition = 'transform 160ms ease-out';
     g.style.cursor = this.interactive ? 'pointer' : 'default';
