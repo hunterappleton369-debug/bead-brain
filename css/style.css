@@ -401,3 +401,11 @@ label { font-size: 14px; font-weight: 600; color: var(--ink-2); display: inline-
 .result .stat { border-right: 0; flex: 0 1 150px; }
 
 @media print { .topbar, .btn-row, .footer, .crumbs { display: none !important; } body { background: #fff; } .wrap { padding: 0; } .card { break-inside: avoid; } .print-only { display: block; } }
+
+/* ───────── accounts ───────── */
+.sync-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: var(--green); border: 1.5px solid var(--ink); vertical-align: middle; margin: -2px 7px 0 0; flex: none; }
+.sync-dot.off { background: var(--yellow); }
+.inline-form { display: flex; gap: 10px; flex-wrap: wrap; align-items: stretch; }
+.inline-form input { flex: 1 1 220px; min-width: 0; }
+.try-box .tip { margin-bottom: 4px; }
+.try-box h2, .try-box h3 { margin-top: 0; }

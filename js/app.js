@@ -7,6 +7,7 @@ import { runDrill, runSequence, confetti, toast, makeProblem } from './drills.js
 import { MAIN_LADDER, TIMES_LADDER, runLadder, renderChart, percentile } from './ladder.js';
 import { GUIDE_HTML, PLAN_INTRO, HOW_IT_MOVES, TRICKS, FORMULAS_HTML } from './guide.js';
 import { STAGE_PLAIN, PARENT_LINE, FIRST_STEPS, needs, coachTip, stuckHelp } from './coach.js';
+import { auth, isAuthHash } from './auth.js';
 
 injectDefs();
 document.getElementById('logo').innerHTML = logo();
@@ -92,9 +93,18 @@ function setNav(path) {
   const first = path.split('/')[0];
   document.querySelectorAll('#nav a').forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#/' + first));
   const p = store.profile;
+  const u = auth.user;
+  const dot = u ? `<span class="sync-dot ${auth.lastError ? 'off' : ''}" aria-hidden="true"></span>` : '';
   document.getElementById('topcta').innerHTML = p
-    ? `<a class="btn sm secondary" href="#/family" title="Family">${esc(p.name)} · Lv ${levelFromXP(p.xp).level}</a>`
+    ? `<a class="btn sm secondary" href="#/family" title="${u ? `Signed in as ${esc(u.email)}` : 'Family'}">${dot}${esc(p.name)} · Lv ${levelFromXP(p.xp).level}</a>`
+    : u ? `<a class="btn sm secondary" href="#/family" title="Signed in as ${esc(u.email)}">${dot}Family</a>`
     : `<a class="btn sm" href="#/start">Start free</a>`;
+}
+function syncStatusText() {
+  if (auth.syncing) return 'Saving…';
+  if (auth.lastError) return 'Could not reach the server. Progress is safe on this device.';
+  if (auth.lastSync) { const m = Math.round((Date.now() - auth.lastSync) / 60000); return m < 1 ? 'Saved just now' : `Saved ${m} min ago`; }
+  return 'Signed in';
 }
 const crumbs = (...items) => `<div class="crumbs">${items.map((it, i) => i ? `<span>${it}</span>` : it).join('')}</div>`;
 const stageColor = s => ({ sprout: 'green', explorer: 'orange', apprentice: 'blue', adept: 'purple', ace: 'yellow', wizard: 'purple', champion: 'red', prodigy: 'pink', grandmaster: 'teal', legend: 'blue' }[s.key] || 'blue');
@@ -256,41 +266,112 @@ function quest(stageN, idx) {
 }
 
 // ───────────── sign-up / onboarding ─────────────
-function start() {
+// The "check your email" state after a magic link goes out. Replaces the sign-up form in place.
+function checkEmailHTML(email, name) {
+  return `<div class="try-box" style="padding:28px">
+    <span class="eyebrow blue">One tap to sign in</span>
+    <h2 style="margin:0 0 10px">Check your email.</h2>
+    <p style="margin:0 0 6px">We sent a link to <b>${esc(email)}</b>. Tap it on any device and ${name ? `${esc(name)}'s` : 'the'} progress is there too.</p>
+    ${tip('Nothing after a minute? Look in spam, or <a href="#" id="resend">send it again</a>.', 'parent', 'Parent note')}
+    ${name ? '<div class="btn-row" style="margin-bottom:0"><a class="btn big blue" href="#/">Start the first lesson →</a></div>' : ''}
+  </div>`;
+}
+function linkFailedHTML(msg, name) {
+  return `<div class="try-box" style="padding:28px">
+    <span class="eyebrow red">The email did not go out</span>
+    <h2 style="margin:0 0 10px">${name ? `${esc(name)} is set up on this device.` : 'No link this time.'}</h2>
+    <p style="margin:0 0 6px">${esc(msg)}</p>
+    ${tip(name ? 'You can add the email later from the Family page.' : 'Try again in a minute, or create a profile now and add the email later.', 'parent', 'Parent note')}
+    <div class="btn-row" style="margin-bottom:0"><a class="btn big blue" href="${name ? '#/' : '#/start'}">${name ? 'Start the first lesson →' : 'Create a profile instead'}</a></div>
+  </div>`;
+}
+// Send the magic link and swap the form for the "check your email" box.
+async function sendLink(form, email, name) {
+  const btn = form.querySelector('button[type=submit]'); btn.disabled = true; btn.textContent = 'Sending…';
+  const { error } = await auth.signIn(email);
+  const box = h(error ? linkFailedHTML(error, name) : checkEmailHTML(email, name));
+  form.replaceWith(box);
+  const re = box.querySelector('#resend');
+  if (re) re.onclick = async e => { e.preventDefault(); re.textContent = 'sending…'; const r = await auth.signIn(email); re.textContent = r.error ? r.error : 'sent again'; };
+  if (!error && name) confetti(1400);
+}
+
+function start(mode = '') {
+  const user = auth.user;
+  const signin = mode === 'signin' && !user;
+  const accounts = auth.enabled && !auth.offline;
+  const linkError = auth.linkError; auth.linkError = null;
+  const emailField = user
+    ? `<div class="field"><label>Parent</label><div class="help" style="font-size:15px;color:var(--ink-2)">Signed in as <b>${esc(user.email)}</b>. New children follow you to every device.</div></div>`
+    : `<div class="field"><label for="f-email">Parent email${signin ? '' : ' <span class="faint" style="text-transform:none;letter-spacing:0;font-weight:500">(optional)</span>'}</label><input id="f-email" type="email" placeholder="you@example.com" autocomplete="email" ${signin ? 'required' : ''}><div class="help">${accounts ? 'We email you a sign-in link. Progress follows you to any device.' : 'For progress updates and new stages.'}</div></div>`;
   const el = h(`<div>
     <section class="onboard">
       <div>
-        <span class="eyebrow blue">Set up in thirty seconds</span>
-        <h1>Let's meet your phenom.</h1>
-        <p class="lede">A profile keeps the streak, the badges and the Bead Score chart. Add more than one child any time.</p>
+        <span class="eyebrow blue">${signin ? 'Welcome back' : 'Set up in thirty seconds'}</span>
+        <h1>${signin ? 'Pick up where you left off.' : "Let's meet your phenom."}</h1>
+        <p class="lede">${signin ? 'Enter the email you signed up with. Your children and their progress come with it.' : 'A profile keeps the streak, the badges and the Bead Score chart. Add more than one child any time.'}</p>
         <ul>
           <li><b>No soroban yet?</b> The first lessons work on the screen abacus.</li>
           <li><b>Not sure of the level?</b> Everyone starts at Sprout. It takes a fast child a week.</li>
-          <li><b>Progress saves in this browser.</b> Use the same device each time.</li>
+          ${accounts ? '<li><b>Progress follows you.</b> Add your email and every device shows the same streak.</li>' : '<li><b>Progress saves in this browser.</b> Use the same device each time.</li>'}
         </ul>
         <img src="img/hero-kid.webp" alt="" style="max-width:300px;margin-top:8px" loading="lazy">
       </div>
       <form id="signup" autocomplete="off">
-        <div class="field"><label for="f-name">Child's first name</label><input id="f-name" type="text" maxlength="24" placeholder="e.g. Maya" required></div>
-        <div class="field"><label>Age</label><div class="age-pick" id="ages">${[4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map(a => `<button type="button" data-a="${a}" class="${a === 7 ? 'on' : ''}">${a === 13 ? '13+' : a}</button>`).join('')}</div></div>
-        <div class="field"><label for="f-email">Parent email <span class="faint" style="text-transform:none;letter-spacing:0;font-weight:500">(optional)</span></label><input id="f-email" type="email" placeholder="you@example.com"><div class="help">For progress updates and new stages.</div></div>
-        <button class="btn big blue" type="submit" style="width:100%">Create profile →</button>
+        ${linkError ? tip(`${esc(linkError)} Ask for a fresh one below.`, 'warn', 'That link') : ''}
+        ${signin ? '' : `<div class="field"><label for="f-name">Child's first name</label><input id="f-name" type="text" maxlength="24" placeholder="e.g. Maya" required></div>
+        <div class="field"><label>Age</label><div class="age-pick" id="ages">${[4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map(a => `<button type="button" data-a="${a}" class="${a === 7 ? 'on' : ''}">${a === 13 ? '13+' : a}</button>`).join('')}</div></div>`}
+        ${emailField}
+        <button class="btn big blue" type="submit" style="width:100%">${signin ? 'Email me a sign-in link →' : 'Create profile →'}</button>
+        ${accounts && !user ? `<p class="help center" style="margin:14px 0 0;font-size:14px;color:var(--ink-3)">${signin ? '<a href="#/start">New here? Create a profile</a>' : 'Already have an account? <a href="#/start/signin">Sign in</a>'}</p>` : ''}
       </form>
     </section>
   </div>`);
   app.appendChild(el);
   let age = 7;
   el.querySelectorAll('#ages button').forEach(b => b.onclick = () => { age = Number(b.dataset.a); el.querySelectorAll('#ages button').forEach(x => x.classList.toggle('on', x === b)); });
-  el.querySelector('#signup').onsubmit = e => {
+  const form = el.querySelector('#signup');
+  form.onsubmit = e => {
     e.preventDefault();
-    const name = el.querySelector('#f-name').value.trim() || 'Player';
-    const email = el.querySelector('#f-email').value.trim();
-    store.addProfile(name, age, { parentEmail: email });
+    const email = form.querySelector('#f-email')?.value.trim() || '';
+    if (signin) { if (email) sendLink(form, email, ''); return; }
+    const name = form.querySelector('#f-name').value.trim() || 'Player';
+    store.addProfile(name, age, { parentEmail: email || user?.email || '' });
     toast(`Welcome, ${name}!`);
+    if (email && accounts && !user) { sendLink(form, email, name); return; }
     confetti(1400);
     location.hash = '#/';
   };
-  setTimeout(() => el.querySelector('#f-name').focus(), 50);
+  setTimeout(() => el.querySelector(signin ? '#f-email' : '#f-name').focus(), 50);
+}
+
+// Lands here from a magic link (#access_token=…). auth.js finishes the sign-in and sends us to Family.
+function authCallback() {
+  app.appendChild(h(`<div style="max-width:560px;margin:48px auto"><div class="try-box" style="padding:28px">
+    <span class="eyebrow blue">One moment</span>
+    <h2 style="margin:0 0 8px">Signing you in…</h2>
+    <p style="margin:0 0 6px">Your children and their progress are on the way.</p>
+    ${tip('Still here after a few seconds? The link may have been used already. <a href="#/start/signin">Ask for a new one.</a>', 'parent', 'Parent note')}
+  </div></div>`));
+}
+
+// Account box on the Family page: signed in, or the email form that sends a link.
+function accountHTML() {
+  if (!auth.enabled || auth.offline) return '';
+  const u = auth.user;
+  if (u) return `<div class="try-box" id="account" style="padding:22px 24px 18px;margin:22px 0 28px">
+      <span class="eyebrow green">Account</span>
+      <p style="margin:0 0 12px"><span class="sync-dot ${auth.lastError ? 'off' : ''}" aria-hidden="true"></span>Signed in as <b>${esc(u.email)}</b>. Every device you sign in on shows these children. <span class="faint" id="sync-status">${syncStatusText()}</span></p>
+      <div class="btn-row" style="margin:0"><button class="btn sm secondary" id="signout">Sign out on this device</button></div>
+    </div>`;
+  const guess = store.profiles().map(x => x.parentEmail).find(Boolean) || '';
+  return `<div class="try-box" id="account" style="padding:22px 24px 18px;margin:22px 0 28px">
+      <span class="eyebrow blue">Account</span>
+      <h3 style="margin:0 0 6px">Keep progress on every device</h3>
+      <p style="margin:0 0 14px">Add your email and every child here follows you to the tablet, the laptop and grandma's phone.</p>
+      <form class="inline-form" id="acct-form"><input type="email" id="acct-email" placeholder="you@example.com" autocomplete="email" value="${esc(guess)}" required><button class="btn blue" type="submit">Email me a link</button></form>
+      ${tip('One tap in the email and you are in. No password to remember.', 'parent', 'Parent note')}
+    </div>`;
 }
 
 function family() {
@@ -299,15 +380,18 @@ function family() {
     ${crumbs('<a href="#/">Home</a>', 'Family')}
     <h1>Family</h1>
     <p class="lede">Switch between children, fix a name or an age, or move progress to another device.</p>
-    <ul class="lesson-list">${store.profiles().map(x => `<li class="${p && x.id === p.id ? 'next' : ''}"><span class="ix">${esc(x.name[0] || '?')}</span><div><a href="#" data-sel="${x.id}">${esc(x.name)}</a><div class="meta">age ${x.age} · level ${levelFromXP(x.xp).level} · ${Object.values(x.lessons).filter(l => l.done).length} lessons done${x.parentEmail ? ' · ' + esc(x.parentEmail) : ''}</div></div><span class="go"><button class="btn sm ghost" data-edit="${x.id}">Edit</button><button class="btn sm ghost" data-del="${x.id}">Remove</button></span></li>`).join('')}</ul>
+    ${accountHTML()}
+    <ul class="lesson-list">${store.profiles().map(x => `<li class="${p && x.id === p.id ? 'next' : ''}"><span class="ix">${esc(x.name[0] || '?')}</span><div><a href="#" data-sel="${x.id}">${esc(x.name)}</a><div class="meta">age ${x.age} · level ${levelFromXP(x.xp).level} · ${Object.values(x.lessons).filter(l => l.done).length} lessons done${x.parentEmail && !auth.user ? ' · ' + esc(x.parentEmail) : ''}</div></div><span class="go"><button class="btn sm ghost" data-edit="${x.id}">Edit</button><button class="btn sm ghost" data-del="${x.id}">Remove</button></span></li>`).join('')}</ul>
     <div class="btn-row"><a class="btn blue" href="#/start">+ Add a child</a><button class="btn secondary" id="export">Download progress</button><label class="btn secondary" for="import">Load progress<input id="import" type="file" accept="application/json" style="display:none"></label></div>
   </div>`);
   app.appendChild(el);
   el.querySelectorAll('[data-sel]').forEach(a => a.onclick = e => { e.preventDefault(); store.select(a.dataset.sel); toast(`Now playing as ${a.textContent}`); location.hash = '#/'; });
-  el.querySelectorAll('[data-edit]').forEach(b => b.onclick = () => { const x = store.db.profiles[b.dataset.edit]; const n = prompt('Name', x.name); if (n === null) return; const a = prompt('Age', x.age); x.name = n.trim() || x.name; x.age = Number(a) || x.age; store.select(x.id); render(); });
-  el.querySelectorAll('[data-del]').forEach(b => b.onclick = () => { const x = store.db.profiles[b.dataset.del]; if (confirm(`Remove ${x.name} and all progress? This cannot be undone.`)) { store.removeProfile(x.id); render(); } });
+  el.querySelectorAll('[data-edit]').forEach(b => b.onclick = () => { const x = store.db.profiles[b.dataset.edit]; const n = prompt('Name', x.name); if (n === null) return; const a = prompt('Age', x.age); store.updateProfile(x.id, y => { y.name = n.trim() || y.name; y.age = Number(a) || y.age; }); store.select(x.id); render(); });
+  el.querySelectorAll('[data-del]').forEach(b => b.onclick = () => { const x = store.db.profiles[b.dataset.del]; if (confirm(`Remove ${x.name} and all progress${auth.user ? ' on every device' : ''}? This cannot be undone.`)) { store.removeProfile(x.id); render(); } });
   el.querySelector('#export').onclick = () => { const a = document.createElement('a'); a.href = 'data:application/json,' + encodeURIComponent(store.exportJSON()); a.download = 'child-phenoms-progress.json'; a.click(); };
   el.querySelector('#import').onchange = e => { const f = e.target.files[0]; if (!f) return; f.text().then(t => { try { store.importJSON(t); toast('Progress loaded'); render(); } catch { toast('That file did not load'); } }); };
+  const out = el.querySelector('#signout'); if (out) out.onclick = async () => { out.disabled = true; out.textContent = 'Signing out…'; await auth.signOut(); toast('Signed out. Progress stays on this device.'); render(); };
+  const acct = el.querySelector('#acct-form'); if (acct) acct.onsubmit = e => { e.preventDefault(); const email = acct.querySelector('#acct-email').value.trim(); if (email) sendLink(acct, email, ''); };
 }
 
 // ───────────── plan ─────────────
@@ -652,10 +736,11 @@ function render() {
   app.innerHTML = '';
   setNav(path);
   window.scrollTo(0, 0);
+  if (isAuthHash(path)) return authCallback();
   const [a, b, c, d] = parts;
   try {
     if (!a) return home();
-    if (a === 'start') return start();
+    if (a === 'start') return start(b);
     if (a === 'family') return family();
     if (a === 'plan') return plan();
     if (a === 'guide') return guide();
@@ -670,4 +755,16 @@ function render() {
 }
 try { history.scrollRestoration = 'manual'; } catch {}
 window.addEventListener('hashchange', () => { render(); requestAnimationFrame(() => window.scrollTo(0, 0)); });
+
+// Accounts: keep the top-right chip honest and refresh the pages that show account state.
+auth.on((ev, extra) => {
+  const path = location.hash.replace(/^#\/?/, '');
+  const first = path.split('/')[0];
+  if (ev === 'link') { toast(auth.user ? `Signed in as ${auth.user.email}` : 'That link did not work'); const to = auth.user ? '#/family' : '#/start/signin'; if (location.hash === to) render(); else location.hash = to; return; }
+  setNav(path);
+  const quiet = ['', 'family', 'start'].includes(first) && !isAuthHash(path);
+  if (ev === 'auth' || (ev === 'sync' && extra?.changed)) { if (quiet) render(); return; }
+  if (ev === 'sync') { const s = document.getElementById('sync-status'); if (s) s.textContent = syncStatusText(); document.querySelectorAll('.sync-dot').forEach(d => d.classList.toggle('off', !!auth.lastError)); }
+});
+auth.init(); // synchronous part first: it rewrites a failed magic-link hash before the first render
 render();

@@ -1,14 +1,23 @@
 // store.js — progress saved in the browser (localStorage). One file per family, many kids.
 // Key kept as beadbrain.v1 so progress from the Bead Brain name carries over.
+// The store never talks to the network. auth.js listens to the hooks below and mirrors
+// profiles to the parent's account when one is signed in; signed out, this file is the whole app.
 const KEY = 'beadbrain.v1';
 
 function load() {
   try { return JSON.parse(localStorage.getItem(KEY)) || { profiles: {}, current: null }; }
   catch { return { profiles: {}, current: null }; }
 }
-function save(db) { try { localStorage.setItem(KEY, JSON.stringify(db)); } catch {} }
+const hooks = { change: new Set(), remove: new Set() };
+// changedId: the profile that changed ('*' = every profile, null = selection only)
+function save(db, changedId = null) {
+  try { localStorage.setItem(KEY, JSON.stringify(db)); } catch {}
+  if (changedId) for (const fn of hooks.change) { try { fn(changedId); } catch (e) { console.error(e); } }
+}
 
 export const today = () => new Date().toISOString().slice(0, 10);
+const now = () => new Date().toISOString();
+const newId = () => 'p' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
 
 export const store = {
   db: load(),
@@ -18,14 +27,28 @@ export const store = {
     return db.profiles[db.current];
   },
   profiles() { return Object.values(this.db.profiles); },
+  // onChange(fn(profileId)) fires after every save that touched a profile; onRemove(fn(profileId)) after a removal.
+  onChange(fn) { hooks.change.add(fn); return () => hooks.change.delete(fn); },
+  onRemove(fn) { hooks.remove.add(fn); return () => hooks.remove.delete(fn); },
   addProfile(name, age, extra = {}) {
-    const id = 'p' + Date.now().toString(36);
-    this.db.profiles[id] = { id, name, age: Number(age) || 7, created: today(), parentEmail: extra.parentEmail || '', xp: 0, streak: 0, lastDay: null, lessons: {}, bosses: {}, tests: [], bests: {}, log: [], firstSteps: {} };
-    this.db.current = id; save(this.db); return this.db.profiles[id];
+    const id = newId();
+    this.db.profiles[id] = { id, name, age: Number(age) || 7, created: today(), updated: now(), parentEmail: extra.parentEmail || '', xp: 0, streak: 0, lastDay: null, lessons: {}, bosses: {}, tests: [], bests: {}, log: [], firstSteps: {} };
+    this.db.current = id; save(this.db, id); return this.db.profiles[id];
   },
   select(id) { this.db.current = id; save(this.db); },
-  update(fn) { const p = this.profile; if (!p) return; fn(p); save(this.db); },
-  removeProfile(id) { delete this.db.profiles[id]; if (this.db.current === id) this.db.current = Object.keys(this.db.profiles)[0] || null; save(this.db); },
+  update(fn) { const p = this.profile; if (!p) return; fn(p); p.updated = now(); save(this.db, p.id); },
+  // Edit any profile (not just the current one) and stamp it.
+  updateProfile(id, fn) { const p = this.db.profiles[id]; if (!p) return; fn(p); p.updated = now(); save(this.db, id); },
+  // Replace or insert a whole profile that arrived from the account (does not fire onChange: the server already has it).
+  putProfile(p) { this.db.profiles[p.id] = p; if (!this.db.current) this.db.current = p.id; save(this.db); },
+  // Drop a profile locally only (it was removed on another device). No hooks.
+  dropProfile(id) { delete this.db.profiles[id]; if (this.db.current === id) this.db.current = Object.keys(this.db.profiles)[0] || null; save(this.db); },
+  removeProfile(id) {
+    delete this.db.profiles[id];
+    if (this.db.current === id) this.db.current = Object.keys(this.db.profiles)[0] || null;
+    save(this.db);
+    for (const fn of hooks.remove) { try { fn(id); } catch (e) { console.error(e); } }
+  },
   touchStreak() {
     this.update(p => {
       const t = today();
@@ -60,7 +83,13 @@ export const store = {
     return improved;
   },
   exportJSON() { return JSON.stringify(this.db, null, 2); },
-  importJSON(text) { const j = JSON.parse(text); if (j && j.profiles) { this.db = j; save(this.db); } },
+  importJSON(text) {
+    const j = JSON.parse(text);
+    if (!j || !j.profiles) throw new Error('not a progress file');
+    // A file the parent chose on purpose wins over whatever the account holds.
+    for (const p of Object.values(j.profiles)) p.updated = now();
+    this.db = j; save(this.db, '*');
+  },
   reset() { this.db = { profiles: {}, current: null }; save(this.db); },
 };
 
