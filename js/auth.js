@@ -20,6 +20,7 @@ export const auth = {
   linkError: null,         // the error a failed magic link came back with (expired, already used)
   callbackPending: false,  // this page was opened from a magic link; waiting for the session
   on(fn) { subs.add(fn); return () => subs.delete(fn); },
+  client: () => sb,        // the supabase client once loaded (null before, or with accounts off); membership.js reads with it
   init, signIn, signOut, redirectURL, flush,
 };
 

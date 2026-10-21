@@ -8,6 +8,10 @@ import { MAIN_LADDER, TIMES_LADDER, runLadder, renderChart, percentile } from '.
 import { GUIDE_HTML, PLAN_INTRO, HOW_IT_MOVES, TRICKS, FORMULAS_HTML } from './guide.js';
 import { STAGE_PLAIN, PARENT_LINE, FIRST_STEPS, needs, coachTip, stuckHelp } from './coach.js';
 import { auth, isAuthHash } from './auth.js';
+import { membership } from './membership.js';
+import { account } from './account.js';
+import { library, libraryBook, printSheet } from './library.js';
+import { instructors } from './instructors.js';
 
 injectDefs();
 document.getElementById('logo').innerHTML = logo();
@@ -380,6 +384,7 @@ function family() {
     ${crumbs('<a href="#/">Home</a>', 'Family')}
     <h1>Family</h1>
     <p class="lede">Switch between children, fix a name or an age, or move progress to another device.</p>
+    <p><a class="link-arrow" href="#/account">Membership and billing</a></p>
     ${accountHTML()}
     <ul class="lesson-list">${store.profiles().map(x => `<li class="${p && x.id === p.id ? 'next' : ''}"><span class="ix">${esc(x.name[0] || '?')}</span><div><a href="#" data-sel="${x.id}">${esc(x.name)}</a><div class="meta">age ${x.age} · level ${levelFromXP(x.xp).level} · ${Object.values(x.lessons).filter(l => l.done).length} lessons done${x.parentEmail && !auth.user ? ' · ' + esc(x.parentEmail) : ''}</div></div><span class="go"><button class="btn sm ghost" data-edit="${x.id}">Edit</button><button class="btn sm ghost" data-del="${x.id}">Remove</button></span></li>`).join('')}</ul>
     <div class="btn-row"><a class="btn blue" href="#/start">+ Add a child</a><button class="btn secondary" id="export">Download progress</button><label class="btn secondary" for="import">Load progress<input id="import" type="file" accept="application/json" style="display:none"></label></div>
@@ -533,7 +538,7 @@ function lesson(n, key) {
         <details><summary>Stuck? Read this.</summary>${stuckHelp(l.drill).map(x => `<p>${x}</p>`).join('')}</details>
       </div>
     </section>
-    <div class="btn-row" style="margin-top:28px">${nextL ? `<a class="btn secondary" href="#/stage/${s.n}/lesson/${nextL.key}">Next lesson: ${esc(nextL.title)} →</a>` : `<a class="btn red" href="#/stage/${s.n}/boss">Fight the ${s.name} boss →</a>`}<a class="btn ghost" href="#/stage/${s.n}">All ${s.name} lessons</a></div>
+    <div class="btn-row" style="margin-top:28px">${nextL ? `<a class="btn secondary" href="#/stage/${s.n}/lesson/${nextL.key}">Next lesson: ${esc(nextL.title)} →</a>` : `<a class="btn red" href="#/stage/${s.n}/boss">Fight the ${s.name} boss →</a>`}<a class="btn ghost" href="#/stage/${s.n}">All ${s.name} lessons</a><a class="btn ghost" data-needs="handouts" href="#/print/${s.n}/${l.key}" ${membership.can('handouts') ? '' : 'hidden'}>Print a practice sheet</a></div>
   </div>`);
   app.appendChild(el);
   activateDemos(el);
@@ -734,6 +739,7 @@ function render() {
   const path = location.hash.replace(/^#\/?/, '');
   const parts = path.split('/').filter(Boolean);
   app.innerHTML = '';
+  document.body.classList.remove('printing-sheet', 'printing-book', 'print-one');
   setNav(path);
   window.scrollTo(0, 0);
   if (isAuthHash(path)) return authCallback();
@@ -749,6 +755,10 @@ function render() {
     if (a === 'test') return test(b || 'main');
     if (a === 'quest') return quest(b, c);
     if (a === 'worksheet') return worksheet(b);
+    if (a === 'account') return account(app);
+    if (a === 'library') return b ? libraryBook(app, b) : library(app);
+    if (a === 'print') return printSheet(app, b, c, d);
+    if (a === 'instructors') return instructors(app, b);
     if (a === 'stage') { if (c === 'lesson') return lesson(b, d); if (c === 'boss') return boss(b); return stage(b); }
     return notFound();
   } catch (e) { console.error(e); app.appendChild(h(`<div class="card tint-red"><h2>Something broke</h2><pre>${esc(e.stack || e)}</pre></div>`)); }
@@ -762,9 +772,16 @@ auth.on((ev, extra) => {
   const first = path.split('/')[0];
   if (ev === 'link') { toast(auth.user ? `Signed in as ${auth.user.email}` : 'That link did not work'); const to = auth.user ? '#/family' : '#/start/signin'; if (location.hash === to) render(); else location.hash = to; return; }
   setNav(path);
-  const quiet = ['', 'family', 'start'].includes(first) && !isAuthHash(path);
+  const quiet = ['', 'family', 'start', 'account'].includes(first) && !isAuthHash(path);
   if (ev === 'auth' || (ev === 'sync' && extra?.changed)) { if (quiet) render(); return; }
   if (ev === 'sync') { const s = document.getElementById('sync-status'); if (s) s.textContent = syncStatusText(); document.querySelectorAll('.sync-dot').forEach(d => d.classList.toggle('off', !!auth.lastError)); }
+});
+// Membership: the pages that open or lock on it redraw when it is known or changes. Elsewhere (a lesson
+// mid-drill, say) only the member-only buttons marked data-needs switch on or off.
+membership.on(() => {
+  const first = location.hash.replace(/^#\/?/, '').split('/')[0];
+  if (['account', 'library', 'print'].includes(first)) render();
+  else document.querySelectorAll('[data-needs]').forEach(el => { el.hidden = !membership.can(el.dataset.needs); });
 });
 auth.init(); // synchronous part first: it rewrites a failed magic-link hash before the first render
 render();

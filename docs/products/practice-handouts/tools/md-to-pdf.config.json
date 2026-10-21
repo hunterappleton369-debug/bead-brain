@@ -1,0 +1,23 @@
+{
+  "pdf_options": {
+    "format": "Letter",
+    "margin": {
+      "top": "0.45in",
+      "bottom": "0.45in",
+      "left": "0.5in",
+      "right": "0.5in"
+    },
+    "printBackground": true
+  },
+  "body_class": [
+    "handout"
+  ],
+  "launch_options": {
+    "args": [
+      "--no-sandbox"
+    ]
+  },
+  "stylesheet": [
+    "tools/handout.css"
+  ]
+}

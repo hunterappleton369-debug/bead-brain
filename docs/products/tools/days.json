@@ -1,0 +1,10931 @@
+[
+ {
+  "day": 1,
+  "block": "hold",
+  "drill": {
+   "kind": "set",
+   "digits": 1,
+   "nums": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    0
+   ]
+  },
+  "flash": {
+   "kind": "peek",
+   "digits": 1,
+   "seconds": 2,
+   "nums": [
+    9,
+    8,
+    6,
+    3,
+    1
+   ]
+  }
+ },
+ {
+  "day": 2,
+  "block": "hold",
+  "drill": {
+   "kind": "set",
+   "digits": 1,
+   "nums": [
+    6,
+    5,
+    7,
+    2,
+    9,
+    8,
+    1,
+    0,
+    4,
+    3
+   ]
+  },
+  "flash": {
+   "kind": "peek",
+   "digits": 1,
+   "seconds": 2,
+   "nums": [
+    2,
+    8,
+    9,
+    6,
+    0
+   ]
+  }
+ },
+ {
+  "day": 3,
+  "block": "hold",
+  "drill": {
+   "kind": "set",
+   "digits": 1,
+   "nums": [
+    1,
+    9,
+    5,
+    0,
+    6,
+    8,
+    7,
+    2,
+    3,
+    4
+   ]
+  },
+  "flash": {
+   "kind": "peek",
+   "digits": 1,
+   "seconds": 2,
+   "nums": [
+    2,
+    7,
+    6,
+    5,
+    1
+   ]
+  }
+ },
+ {
+  "day": 4,
+  "block": "hold",
+  "drill": {
+   "kind": "set",
+   "digits": 1,
+   "nums": [
+    8,
+    7,
+    6,
+    2,
+    5,
+    3,
+    0,
+    9,
+    1,
+    4
+   ]
+  },
+  "flash": {
+   "kind": "peek",
+   "digits": 1,
+   "seconds": 2,
+   "nums": [
+    1,
+    8,
+    7,
+    0,
+    6
+   ]
+  }
+ },
+ {
+  "day": 5,
+  "block": "read2",
+  "drill": {
+   "kind": "read",
+   "digits": 2,
+   "nums": [
+    99,
+    86,
+    84,
+    69,
+    25,
+    79,
+    72,
+    56,
+    11,
+    91
+   ]
+  },
+  "flash": {
+   "kind": "peek",
+   "digits": 2,
+   "seconds": 2,
+   "nums": [
+    50,
+    15,
+    86,
+    33,
+    92
+   ]
+  }
+ },
+ {
+  "day": 6,
+  "block": "read2",
+  "drill": {
+   "kind": "read",
+   "digits": 2,
+   "nums": [
+    87,
+    88,
+    78,
+    89,
+    93,
+    38,
+    50,
+    64,
+    33,
+    16
+   ]
+  },
+  "flash": {
+   "kind": "peek",
+   "digits": 2,
+   "seconds": 2,
+   "nums": [
+    30,
+    12,
+    80,
+    40,
+    74
+   ]
+  }
+ },
+ {
+  "day": 7,
+  "block": "read2",
+  "drill": {
+   "kind": "read",
+   "digits": 2,
+   "nums": [
+    11,
+    25,
+    27,
+    97,
+    70,
+    52,
+    76,
+    30,
+    95,
+    22
+   ]
+  },
+  "flash": {
+   "kind": "peek",
+   "digits": 2,
+   "seconds": 2,
+   "nums": [
+    79,
+    61,
+    42,
+    40,
+    57
+   ]
+  }
+ },
+ {
+  "day": 8,
+  "block": "read2",
+  "drill": {
+   "kind": "read",
+   "digits": 2,
+   "nums": [
+    53,
+    15,
+    27,
+    73,
+    16,
+    11,
+    12,
+    55,
+    42,
+    40
+   ]
+  },
+  "flash": {
+   "kind": "peek",
+   "digits": 2,
+   "seconds": 2,
+   "nums": [
+    21,
+    93,
+    42,
+    17,
+    79
+   ]
+  }
+ },
+ {
+  "day": 9,
+  "block": "read2",
+  "drill": {
+   "kind": "read",
+   "digits": 2,
+   "nums": [
+    68,
+    65,
+    26,
+    60,
+    91,
+    24,
+    84,
+    29,
+    58,
+    34
+   ]
+  },
+  "flash": {
+   "kind": "peek",
+   "digits": 2,
+   "seconds": 2,
+   "nums": [
+    66,
+    82,
+    73,
+    81,
+    39
+   ]
+  }
+ },
+ {
+  "day": 10,
+  "block": "read3",
+  "drill": {
+   "kind": "read",
+   "digits": 3,
+   "nums": [
+    808,
+    304,
+    995,
+    610,
+    408,
+    989,
+    323,
+    875,
+    742,
+    754
+   ]
+  },
+  "flash": {
+   "kind": "peek",
+   "digits": 3,
+   "seconds": 2,
+   "nums": [
+    426,
+    741,
+    569,
+    943,
+    384
+   ]
+  }
+ },
+ {
+  "day": 11,
+  "block": "read3",
+  "drill": {
+   "kind": "read",
+   "digits": 3,
+   "nums": [
+    222,
+    507,
+    465,
+    587,
+    633,
+    487,
+    387,
+    111,
+    102,
+    750
+   ]
+  },
+  "flash": {
+   "kind": "peek",
+   "digits": 3,
+   "seconds": 2,
+   "nums": [
+    400,
+    228,
+    981,
+    429,
+    628
+   ]
+  }
+ },
+ {
+  "day": 12,
+  "block": "read3",
+  "drill": {
+   "kind": "read",
+   "digits": 3,
+   "nums": [
+    565,
+    474,
+    875,
+    539,
+    735,
+    643,
+    617,
+    373,
+    392,
+    567
+   ]
+  },
+  "flash": {
+   "kind": "peek",
+   "digits": 3,
+   "seconds": 2,
+   "nums": [
+    275,
+    361,
+    442,
+    700,
+    256
+   ]
+  }
+ },
+ {
+  "day": 13,
+  "block": "read3",
+  "drill": {
+   "kind": "read",
+   "digits": 3,
+   "nums": [
+    656,
+    915,
+    232,
+    468,
+    140,
+    214,
+    564,
+    284,
+    221,
+    576
+   ]
+  },
+  "flash": {
+   "kind": "peek",
+   "digits": 3,
+   "seconds": 2,
+   "nums": [
+    297,
+    234,
+    928,
+    405,
+    783
+   ]
+  }
+ },
+ {
+  "day": 14,
+  "block": "read3",
+  "drill": {
+   "kind": "read",
+   "digits": 3,
+   "nums": [
+    354,
+    856,
+    586,
+    863,
+    251,
+    671,
+    892,
+    715,
+    669,
+    601
+   ]
+  },
+  "flash": {
+   "kind": "peek",
+   "digits": 3,
+   "seconds": 2,
+   "nums": [
+    925,
+    386,
+    357,
+    491,
+    959
+   ]
+  }
+ },
+ {
+  "day": 15,
+  "block": "set3",
+  "drill": {
+   "kind": "set",
+   "digits": 3,
+   "nums": [
+    944,
+    182,
+    765,
+    322,
+    179,
+    984,
+    687,
+    779,
+    597,
+    126
+   ]
+  },
+  "flash": {
+   "kind": "peek",
+   "digits": 3,
+   "seconds": 1,
+   "nums": [
+    925,
+    780,
+    256,
+    274,
+    883
+   ]
+  }
+ },
+ {
+  "day": 16,
+  "block": "set3",
+  "drill": {
+   "kind": "set",
+   "digits": 3,
+   "nums": [
+    302,
+    581,
+    988,
+    487,
+    281,
+    489,
+    180,
+    594,
+    222,
+    399
+   ]
+  },
+  "flash": {
+   "kind": "peek",
+   "digits": 3,
+   "seconds": 1,
+   "nums": [
+    880,
+    349,
+    236,
+    324,
+    976
+   ]
+  }
+ },
+ {
+  "day": 17,
+  "block": "set3",
+  "drill": {
+   "kind": "set",
+   "digits": 3,
+   "nums": [
+    971,
+    272,
+    847,
+    276,
+    248,
+    637,
+    311,
+    140,
+    997,
+    382
+   ]
+  },
+  "flash": {
+   "kind": "peek",
+   "digits": 3,
+   "seconds": 1,
+   "nums": [
+    522,
+    731,
+    924,
+    581,
+    777
+   ]
+  }
+ },
+ {
+  "day": 18,
+  "block": "set3",
+  "drill": {
+   "kind": "set",
+   "digits": 3,
+   "nums": [
+    355,
+    498,
+    106,
+    692,
+    277,
+    799,
+    815,
+    214,
+    107,
+    240
+   ]
+  },
+  "flash": {
+   "kind": "peek",
+   "digits": 3,
+   "seconds": 1,
+   "nums": [
+    389,
+    621,
+    366,
+    515,
+    477
+   ]
+  }
+ },
+ {
+  "day": 19,
+  "block": "dadd",
+  "drill": {
+   "kind": "single",
+   "allow": [
+    "direct"
+   ],
+   "items": [
+    {
+     "v": 8,
+     "sign": "+",
+     "d": 1,
+     "answer": 9,
+     "id": "direct"
+    },
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 7,
+     "answer": 8,
+     "id": "direct"
+    },
+    {
+     "v": 3,
+     "sign": "+",
+     "d": 1,
+     "answer": 4,
+     "id": "direct"
+    },
+    {
+     "v": 6,
+     "sign": "+",
+     "d": 3,
+     "answer": 9,
+     "id": "direct"
+    },
+    {
+     "v": 4,
+     "sign": "+",
+     "d": 5,
+     "answer": 9,
+     "id": "direct"
+    },
+    {
+     "v": 2,
+     "sign": "+",
+     "d": 5,
+     "answer": 7,
+     "id": "direct"
+    },
+    {
+     "v": 5,
+     "sign": "+",
+     "d": 1,
+     "answer": 6,
+     "id": "direct"
+    },
+    {
+     "v": 7,
+     "sign": "+",
+     "d": 2,
+     "answer": 9,
+     "id": "direct"
+    },
+    {
+     "v": 5,
+     "sign": "+",
+     "d": 4,
+     "answer": 9,
+     "id": "direct"
+    },
+    {
+     "v": 2,
+     "sign": "+",
+     "d": 6,
+     "answer": 8,
+     "id": "direct"
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      5,
+      2
+     ],
+     "answer": 7
+    },
+    {
+     "terms": [
+      5,
+      1,
+      3
+     ],
+     "answer": 9
+    },
+    {
+     "terms": [
+      6,
+      1,
+      1
+     ],
+     "answer": 8
+    }
+   ]
+  }
+ },
+ {
+  "day": 20,
+  "block": "dadd",
+  "drill": {
+   "kind": "single",
+   "allow": [
+    "direct"
+   ],
+   "items": [
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 5,
+     "answer": 6,
+     "id": "direct"
+    },
+    {
+     "v": 2,
+     "sign": "+",
+     "d": 6,
+     "answer": 8,
+     "id": "direct"
+    },
+    {
+     "v": 3,
+     "sign": "+",
+     "d": 6,
+     "answer": 9,
+     "id": "direct"
+    },
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 8,
+     "answer": 9,
+     "id": "direct"
+    },
+    {
+     "v": 8,
+     "sign": "+",
+     "d": 1,
+     "answer": 9,
+     "id": "direct"
+    },
+    {
+     "v": 3,
+     "sign": "+",
+     "d": 1,
+     "answer": 4,
+     "id": "direct"
+    },
+    {
+     "v": 2,
+     "sign": "+",
+     "d": 1,
+     "answer": 3,
+     "id": "direct"
+    },
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 6,
+     "answer": 7,
+     "id": "direct"
+    },
+    {
+     "v": 6,
+     "sign": "+",
+     "d": 2,
+     "answer": 8,
+     "id": "direct"
+    },
+    {
+     "v": 6,
+     "sign": "+",
+     "d": 1,
+     "answer": 7,
+     "id": "direct"
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      4,
+      5
+     ],
+     "answer": 9
+    },
+    {
+     "terms": [
+      2,
+      1,
+      1
+     ],
+     "answer": 4
+    },
+    {
+     "terms": [
+      1,
+      1,
+      2
+     ],
+     "answer": 4
+    }
+   ]
+  }
+ },
+ {
+  "day": 21,
+  "block": "dadd",
+  "drill": {
+   "kind": "single",
+   "allow": [
+    "direct"
+   ],
+   "items": [
+    {
+     "v": 8,
+     "sign": "+",
+     "d": 1,
+     "answer": 9,
+     "id": "direct"
+    },
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 3,
+     "answer": 4,
+     "id": "direct"
+    },
+    {
+     "v": 2,
+     "sign": "+",
+     "d": 1,
+     "answer": 3,
+     "id": "direct"
+    },
+    {
+     "v": 6,
+     "sign": "+",
+     "d": 2,
+     "answer": 8,
+     "id": "direct"
+    },
+    {
+     "v": 3,
+     "sign": "+",
+     "d": 6,
+     "answer": 9,
+     "id": "direct"
+    },
+    {
+     "v": 5,
+     "sign": "+",
+     "d": 3,
+     "answer": 8,
+     "id": "direct"
+    },
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 1,
+     "answer": 2,
+     "id": "direct"
+    },
+    {
+     "v": 6,
+     "sign": "+",
+     "d": 1,
+     "answer": 7,
+     "id": "direct"
+    },
+    {
+     "v": 7,
+     "sign": "+",
+     "d": 1,
+     "answer": 8,
+     "id": "direct"
+    },
+    {
+     "v": 5,
+     "sign": "+",
+     "d": 4,
+     "answer": 9,
+     "id": "direct"
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      5,
+      2
+     ],
+     "answer": 7
+    },
+    {
+     "terms": [
+      2,
+      1,
+      1
+     ],
+     "answer": 4
+    },
+    {
+     "terms": [
+      1,
+      1,
+      1
+     ],
+     "answer": 3
+    }
+   ]
+  }
+ },
+ {
+  "day": 22,
+  "block": "dadd",
+  "drill": {
+   "kind": "single",
+   "allow": [
+    "direct"
+   ],
+   "items": [
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 1,
+     "answer": 2,
+     "id": "direct"
+    },
+    {
+     "v": 5,
+     "sign": "+",
+     "d": 1,
+     "answer": 6,
+     "id": "direct"
+    },
+    {
+     "v": 3,
+     "sign": "+",
+     "d": 6,
+     "answer": 9,
+     "id": "direct"
+    },
+    {
+     "v": 2,
+     "sign": "+",
+     "d": 6,
+     "answer": 8,
+     "id": "direct"
+    },
+    {
+     "v": 5,
+     "sign": "+",
+     "d": 2,
+     "answer": 7,
+     "id": "direct"
+    },
+    {
+     "v": 8,
+     "sign": "+",
+     "d": 1,
+     "answer": 9,
+     "id": "direct"
+    },
+    {
+     "v": 2,
+     "sign": "+",
+     "d": 7,
+     "answer": 9,
+     "id": "direct"
+    },
+    {
+     "v": 6,
+     "sign": "+",
+     "d": 1,
+     "answer": 7,
+     "id": "direct"
+    },
+    {
+     "v": 5,
+     "sign": "+",
+     "d": 4,
+     "answer": 9,
+     "id": "direct"
+    },
+    {
+     "v": 6,
+     "sign": "+",
+     "d": 2,
+     "answer": 8,
+     "id": "direct"
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      1,
+      8
+     ],
+     "answer": 9
+    },
+    {
+     "terms": [
+      5,
+      1,
+      1
+     ],
+     "answer": 7
+    },
+    {
+     "terms": [
+      1,
+      5,
+      1
+     ],
+     "answer": 7
+    }
+   ]
+  }
+ },
+ {
+  "day": 23,
+  "block": "dadd",
+  "drill": {
+   "kind": "single",
+   "allow": [
+    "direct"
+   ],
+   "items": [
+    {
+     "v": 5,
+     "sign": "+",
+     "d": 3,
+     "answer": 8,
+     "id": "direct"
+    },
+    {
+     "v": 2,
+     "sign": "+",
+     "d": 7,
+     "answer": 9,
+     "id": "direct"
+    },
+    {
+     "v": 7,
+     "sign": "+",
+     "d": 1,
+     "answer": 8,
+     "id": "direct"
+    },
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 8,
+     "answer": 9,
+     "id": "direct"
+    },
+    {
+     "v": 3,
+     "sign": "+",
+     "d": 1,
+     "answer": 4,
+     "id": "direct"
+    },
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 7,
+     "answer": 8,
+     "id": "direct"
+    },
+    {
+     "v": 2,
+     "sign": "+",
+     "d": 1,
+     "answer": 3,
+     "id": "direct"
+    },
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 5,
+     "answer": 6,
+     "id": "direct"
+    },
+    {
+     "v": 4,
+     "sign": "+",
+     "d": 5,
+     "answer": 9,
+     "id": "direct"
+    },
+    {
+     "v": 2,
+     "sign": "+",
+     "d": 2,
+     "answer": 4,
+     "id": "direct"
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      8,
+      1
+     ],
+     "answer": 9
+    },
+    {
+     "terms": [
+      1,
+      1,
+      1
+     ],
+     "answer": 3
+    },
+    {
+     "terms": [
+      2,
+      1,
+      6
+     ],
+     "answer": 9
+    }
+   ]
+  }
+ },
+ {
+  "day": 24,
+  "block": "dadd",
+  "drill": {
+   "kind": "single",
+   "allow": [
+    "direct"
+   ],
+   "items": [
+    {
+     "v": 8,
+     "sign": "+",
+     "d": 1,
+     "answer": 9,
+     "id": "direct"
+    },
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 6,
+     "answer": 7,
+     "id": "direct"
+    },
+    {
+     "v": 5,
+     "sign": "+",
+     "d": 2,
+     "answer": 7,
+     "id": "direct"
+    },
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 5,
+     "answer": 6,
+     "id": "direct"
+    },
+    {
+     "v": 3,
+     "sign": "+",
+     "d": 6,
+     "answer": 9,
+     "id": "direct"
+    },
+    {
+     "v": 6,
+     "sign": "+",
+     "d": 1,
+     "answer": 7,
+     "id": "direct"
+    },
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 3,
+     "answer": 4,
+     "id": "direct"
+    },
+    {
+     "v": 3,
+     "sign": "+",
+     "d": 5,
+     "answer": 8,
+     "id": "direct"
+    },
+    {
+     "v": 6,
+     "sign": "+",
+     "d": 2,
+     "answer": 8,
+     "id": "direct"
+    },
+    {
+     "v": 4,
+     "sign": "+",
+     "d": 5,
+     "answer": 9,
+     "id": "direct"
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      2,
+      5
+     ],
+     "answer": 7
+    },
+    {
+     "terms": [
+      6,
+      1,
+      1
+     ],
+     "answer": 8
+    },
+    {
+     "terms": [
+      1,
+      6,
+      2
+     ],
+     "answer": 9
+    }
+   ]
+  }
+ },
+ {
+  "day": 25,
+  "block": "dsub",
+  "drill": {
+   "kind": "single",
+   "allow": [
+    "direct"
+   ],
+   "items": [
+    {
+     "v": 9,
+     "sign": "-",
+     "d": 7,
+     "answer": 2,
+     "id": "direct"
+    },
+    {
+     "v": 9,
+     "sign": "-",
+     "d": 1,
+     "answer": 8,
+     "id": "direct"
+    },
+    {
+     "v": 4,
+     "sign": "-",
+     "d": 1,
+     "answer": 3,
+     "id": "direct"
+    },
+    {
+     "v": 9,
+     "sign": "-",
+     "d": 5,
+     "answer": 4,
+     "id": "direct"
+    },
+    {
+     "v": 8,
+     "sign": "-",
+     "d": 6,
+     "answer": 2,
+     "id": "direct"
+    },
+    {
+     "v": 8,
+     "sign": "-",
+     "d": 1,
+     "answer": 7,
+     "id": "direct"
+    },
+    {
+     "v": 7,
+     "sign": "-",
+     "d": 6,
+     "answer": 1,
+     "id": "direct"
+    },
+    {
+     "v": 3,
+     "sign": "-",
+     "d": 2,
+     "answer": 1,
+     "id": "direct"
+    },
+    {
+     "v": 9,
+     "sign": "-",
+     "d": 3,
+     "answer": 6,
+     "id": "direct"
+    },
+    {
+     "v": 6,
+     "sign": "-",
+     "d": 1,
+     "answer": 5,
+     "id": "direct"
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      4,
+      5
+     ],
+     "answer": 9
+    },
+    {
+     "terms": [
+      1,
+      7,
+      -7
+     ],
+     "answer": 1
+    },
+    {
+     "terms": [
+      9,
+      -4,
+      4
+     ],
+     "answer": 9
+    }
+   ]
+  }
+ },
+ {
+  "day": 26,
+  "block": "dsub",
+  "drill": {
+   "kind": "single",
+   "allow": [
+    "direct"
+   ],
+   "items": [
+    {
+     "v": 9,
+     "sign": "-",
+     "d": 7,
+     "answer": 2,
+     "id": "direct"
+    },
+    {
+     "v": 7,
+     "sign": "-",
+     "d": 2,
+     "answer": 5,
+     "id": "direct"
+    },
+    {
+     "v": 8,
+     "sign": "-",
+     "d": 3,
+     "answer": 5,
+     "id": "direct"
+    },
+    {
+     "v": 8,
+     "sign": "-",
+     "d": 5,
+     "answer": 3,
+     "id": "direct"
+    },
+    {
+     "v": 4,
+     "sign": "-",
+     "d": 1,
+     "answer": 3,
+     "id": "direct"
+    },
+    {
+     "v": 9,
+     "sign": "-",
+     "d": 1,
+     "answer": 8,
+     "id": "direct"
+    },
+    {
+     "v": 8,
+     "sign": "-",
+     "d": 2,
+     "answer": 6,
+     "id": "direct"
+    },
+    {
+     "v": 4,
+     "sign": "-",
+     "d": 2,
+     "answer": 2,
+     "id": "direct"
+    },
+    {
+     "v": 6,
+     "sign": "-",
+     "d": 5,
+     "answer": 1,
+     "id": "direct"
+    },
+    {
+     "v": 8,
+     "sign": "-",
+     "d": 1,
+     "answer": 7,
+     "id": "direct"
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      2,
+      5
+     ],
+     "answer": 7
+    },
+    {
+     "terms": [
+      9,
+      -1,
+      -3
+     ],
+     "answer": 5
+    },
+    {
+     "terms": [
+      8,
+      -8,
+      1
+     ],
+     "answer": 1
+    }
+   ]
+  }
+ },
+ {
+  "day": 27,
+  "block": "dsub",
+  "drill": {
+   "kind": "single",
+   "allow": [
+    "direct"
+   ],
+   "items": [
+    {
+     "v": 6,
+     "sign": "-",
+     "d": 1,
+     "answer": 5,
+     "id": "direct"
+    },
+    {
+     "v": 7,
+     "sign": "-",
+     "d": 1,
+     "answer": 6,
+     "id": "direct"
+    },
+    {
+     "v": 6,
+     "sign": "-",
+     "d": 5,
+     "answer": 1,
+     "id": "direct"
+    },
+    {
+     "v": 7,
+     "sign": "-",
+     "d": 2,
+     "answer": 5,
+     "id": "direct"
+    },
+    {
+     "v": 7,
+     "sign": "-",
+     "d": 5,
+     "answer": 2,
+     "id": "direct"
+    },
+    {
+     "v": 8,
+     "sign": "-",
+     "d": 3,
+     "answer": 5,
+     "id": "direct"
+    },
+    {
+     "v": 4,
+     "sign": "-",
+     "d": 1,
+     "answer": 3,
+     "id": "direct"
+    },
+    {
+     "v": 4,
+     "sign": "-",
+     "d": 2,
+     "answer": 2,
+     "id": "direct"
+    },
+    {
+     "v": 9,
+     "sign": "-",
+     "d": 2,
+     "answer": 7,
+     "id": "direct"
+    },
+    {
+     "v": 8,
+     "sign": "-",
+     "d": 6,
+     "answer": 2,
+     "id": "direct"
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      2,
+      7
+     ],
+     "answer": 9
+    },
+    {
+     "terms": [
+      9,
+      -1,
+      -1
+     ],
+     "answer": 7
+    },
+    {
+     "terms": [
+      1,
+      7,
+      1
+     ],
+     "answer": 9
+    }
+   ]
+  }
+ },
+ {
+  "day": 28,
+  "block": "dsub",
+  "drill": {
+   "kind": "single",
+   "allow": [
+    "direct"
+   ],
+   "items": [
+    {
+     "v": 9,
+     "sign": "-",
+     "d": 2,
+     "answer": 7,
+     "id": "direct"
+    },
+    {
+     "v": 9,
+     "sign": "-",
+     "d": 1,
+     "answer": 8,
+     "id": "direct"
+    },
+    {
+     "v": 4,
+     "sign": "-",
+     "d": 2,
+     "answer": 2,
+     "id": "direct"
+    },
+    {
+     "v": 6,
+     "sign": "-",
+     "d": 5,
+     "answer": 1,
+     "id": "direct"
+    },
+    {
+     "v": 4,
+     "sign": "-",
+     "d": 3,
+     "answer": 1,
+     "id": "direct"
+    },
+    {
+     "v": 7,
+     "sign": "-",
+     "d": 1,
+     "answer": 6,
+     "id": "direct"
+    },
+    {
+     "v": 8,
+     "sign": "-",
+     "d": 1,
+     "answer": 7,
+     "id": "direct"
+    },
+    {
+     "v": 3,
+     "sign": "-",
+     "d": 1,
+     "answer": 2,
+     "id": "direct"
+    },
+    {
+     "v": 8,
+     "sign": "-",
+     "d": 3,
+     "answer": 5,
+     "id": "direct"
+    },
+    {
+     "v": 8,
+     "sign": "-",
+     "d": 6,
+     "answer": 2,
+     "id": "direct"
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      9,
+      -4
+     ],
+     "answer": 5
+    },
+    {
+     "terms": [
+      7,
+      1,
+      -5
+     ],
+     "answer": 3
+    },
+    {
+     "terms": [
+      1,
+      7,
+      -3
+     ],
+     "answer": 5
+    }
+   ]
+  }
+ },
+ {
+  "day": 29,
+  "block": "dsub",
+  "drill": {
+   "kind": "single",
+   "allow": [
+    "direct"
+   ],
+   "items": [
+    {
+     "v": 7,
+     "sign": "-",
+     "d": 6,
+     "answer": 1,
+     "id": "direct"
+    },
+    {
+     "v": 6,
+     "sign": "-",
+     "d": 5,
+     "answer": 1,
+     "id": "direct"
+    },
+    {
+     "v": 4,
+     "sign": "-",
+     "d": 1,
+     "answer": 3,
+     "id": "direct"
+    },
+    {
+     "v": 8,
+     "sign": "-",
+     "d": 7,
+     "answer": 1,
+     "id": "direct"
+    },
+    {
+     "v": 9,
+     "sign": "-",
+     "d": 6,
+     "answer": 3,
+     "id": "direct"
+    },
+    {
+     "v": 2,
+     "sign": "-",
+     "d": 1,
+     "answer": 1,
+     "id": "direct"
+    },
+    {
+     "v": 3,
+     "sign": "-",
+     "d": 2,
+     "answer": 1,
+     "id": "direct"
+    },
+    {
+     "v": 8,
+     "sign": "-",
+     "d": 2,
+     "answer": 6,
+     "id": "direct"
+    },
+    {
+     "v": 8,
+     "sign": "-",
+     "d": 6,
+     "answer": 2,
+     "id": "direct"
+    },
+    {
+     "v": 7,
+     "sign": "-",
+     "d": 2,
+     "answer": 5,
+     "id": "direct"
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      1,
+      6
+     ],
+     "answer": 7
+    },
+    {
+     "terms": [
+      9,
+      -1,
+      -1
+     ],
+     "answer": 7
+    },
+    {
+     "terms": [
+      3,
+      6,
+      -4
+     ],
+     "answer": 5
+    }
+   ]
+  }
+ },
+ {
+  "day": 30,
+  "block": "twocol",
+  "drill": {
+   "kind": "stacked",
+   "spec": {
+    "terms": 3,
+    "digits": 2,
+    "ops": "mix",
+    "allow": [
+     "direct"
+    ]
+   },
+   "items": [
+    {
+     "terms": [
+      31,
+      13,
+      -21
+     ],
+     "answer": 23,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      48,
+      50,
+      -55
+     ],
+     "answer": 43,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      98,
+      -55,
+      -13
+     ],
+     "answer": 30,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      31,
+      63,
+      -33
+     ],
+     "answer": 61,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      99,
+      -97,
+      82
+     ],
+     "answer": 84,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      50,
+      32,
+      12
+     ],
+     "answer": 94,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      23,
+      21,
+      -31
+     ],
+     "answer": 13,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      19,
+      30,
+      -45
+     ],
+     "answer": 4,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      27,
+      52,
+      -10
+     ],
+     "answer": 69,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      57,
+      11,
+      -18
+     ],
+     "answer": 50,
+     "used": [
+      "direct"
+     ]
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      8,
+      1
+     ],
+     "answer": 9
+    },
+    {
+     "terms": [
+      3,
+      5,
+      -5
+     ],
+     "answer": 3
+    },
+    {
+     "terms": [
+      3,
+      1,
+      -3
+     ],
+     "answer": 1
+    }
+   ]
+  }
+ },
+ {
+  "day": 31,
+  "block": "twocol",
+  "drill": {
+   "kind": "stacked",
+   "spec": {
+    "terms": 3,
+    "digits": 2,
+    "ops": "mix",
+    "allow": [
+     "direct"
+    ]
+   },
+   "items": [
+    {
+     "terms": [
+      15,
+      61,
+      -51
+     ],
+     "answer": 25,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      24,
+      -11,
+      66
+     ],
+     "answer": 79,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      66,
+      13,
+      -25
+     ],
+     "answer": 54,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      78,
+      -13,
+      21
+     ],
+     "answer": 86,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      78,
+      -65,
+      80
+     ],
+     "answer": 93,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      86,
+      -51,
+      11
+     ],
+     "answer": 46,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      55,
+      23,
+      -63
+     ],
+     "answer": 15,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      62,
+      -10,
+      15
+     ],
+     "answer": 67,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      72,
+      -62,
+      27
+     ],
+     "answer": 37,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      18,
+      80,
+      -92
+     ],
+     "answer": 6,
+     "used": [
+      "direct"
+     ]
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      3,
+      -2
+     ],
+     "answer": 1
+    },
+    {
+     "terms": [
+      4,
+      5,
+      -4
+     ],
+     "answer": 5
+    },
+    {
+     "terms": [
+      3,
+      -3,
+      3
+     ],
+     "answer": 3
+    }
+   ]
+  }
+ },
+ {
+  "day": 32,
+  "block": "twocol",
+  "drill": {
+   "kind": "stacked",
+   "spec": {
+    "terms": 3,
+    "digits": 2,
+    "ops": "mix",
+    "allow": [
+     "direct"
+    ]
+   },
+   "items": [
+    {
+     "terms": [
+      43,
+      56,
+      -44
+     ],
+     "answer": 55,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      59,
+      20,
+      -54
+     ],
+     "answer": 25,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      55,
+      44,
+      -84
+     ],
+     "answer": 15,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      41,
+      55,
+      -21
+     ],
+     "answer": 75,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      75,
+      -25,
+      36
+     ],
+     "answer": 86,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      74,
+      -74,
+      66
+     ],
+     "answer": 66,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      99,
+      -80,
+      -15
+     ],
+     "answer": 4,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      68,
+      -55,
+      30
+     ],
+     "answer": 43,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      37,
+      -26,
+      21
+     ],
+     "answer": 32,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      70,
+      15,
+      11
+     ],
+     "answer": 96,
+     "used": [
+      "direct"
+     ]
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      8,
+      -7
+     ],
+     "answer": 1
+    },
+    {
+     "terms": [
+      8,
+      1,
+      -4
+     ],
+     "answer": 5
+    },
+    {
+     "terms": [
+      2,
+      -1,
+      2
+     ],
+     "answer": 3
+    }
+   ]
+  }
+ },
+ {
+  "day": 33,
+  "block": "twocol",
+  "drill": {
+   "kind": "stacked",
+   "spec": {
+    "terms": 3,
+    "digits": 2,
+    "ops": "mix",
+    "allow": [
+     "direct"
+    ]
+   },
+   "items": [
+    {
+     "terms": [
+      42,
+      52,
+      -61
+     ],
+     "answer": 33,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      53,
+      15,
+      -11
+     ],
+     "answer": 57,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      84,
+      -73,
+      56
+     ],
+     "answer": 67,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      96,
+      -11,
+      -80
+     ],
+     "answer": 5,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      12,
+      57,
+      -56
+     ],
+     "answer": 13,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      69,
+      -11,
+      21
+     ],
+     "answer": 79,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      76,
+      -60,
+      80
+     ],
+     "answer": 96,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      36,
+      -21,
+      72
+     ],
+     "answer": 87,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      58,
+      -58,
+      48
+     ],
+     "answer": 48,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      84,
+      -10,
+      -51
+     ],
+     "answer": 23,
+     "used": [
+      "direct"
+     ]
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      4,
+      -1
+     ],
+     "answer": 3
+    },
+    {
+     "terms": [
+      7,
+      -7,
+      7
+     ],
+     "answer": 7
+    },
+    {
+     "terms": [
+      9,
+      -9,
+      9
+     ],
+     "answer": 9
+    }
+   ]
+  }
+ },
+ {
+  "day": 34,
+  "block": "twocol",
+  "drill": {
+   "kind": "stacked",
+   "spec": {
+    "terms": 3,
+    "digits": 2,
+    "ops": "mix",
+    "allow": [
+     "direct"
+    ]
+   },
+   "items": [
+    {
+     "terms": [
+      56,
+      22,
+      -51
+     ],
+     "answer": 27,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      23,
+      65,
+      -50
+     ],
+     "answer": 38,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      88,
+      -37,
+      33
+     ],
+     "answer": 84,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      65,
+      33,
+      -48
+     ],
+     "answer": 50,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      58,
+      -52,
+      70
+     ],
+     "answer": 76,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      51,
+      18,
+      -65
+     ],
+     "answer": 4,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      22,
+      66,
+      -30
+     ],
+     "answer": 58,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      60,
+      15,
+      20
+     ],
+     "answer": 95,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      50,
+      42,
+      -80
+     ],
+     "answer": 12,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      65,
+      23,
+      -21
+     ],
+     "answer": 67,
+     "used": [
+      "direct"
+     ]
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      8,
+      -1
+     ],
+     "answer": 7
+    },
+    {
+     "terms": [
+      7,
+      2,
+      -8
+     ],
+     "answer": 1
+    },
+    {
+     "terms": [
+      8,
+      -6,
+      1
+     ],
+     "answer": 3
+    }
+   ]
+  }
+ },
+ {
+  "day": 35,
+  "block": "twocol",
+  "drill": {
+   "kind": "stacked",
+   "spec": {
+    "terms": 3,
+    "digits": 2,
+    "ops": "mix",
+    "allow": [
+     "direct"
+    ]
+   },
+   "items": [
+    {
+     "terms": [
+      62,
+      22,
+      -70
+     ],
+     "answer": 14,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      98,
+      -77,
+      63
+     ],
+     "answer": 84,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      22,
+      56,
+      -75
+     ],
+     "answer": 3,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      20,
+      60,
+      15
+     ],
+     "answer": 95,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      81,
+      12,
+      -63
+     ],
+     "answer": 30,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      86,
+      -75,
+      35
+     ],
+     "answer": 46,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      31,
+      68,
+      -39
+     ],
+     "answer": 60,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      24,
+      60,
+      -62
+     ],
+     "answer": 22,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      22,
+      76,
+      -21
+     ],
+     "answer": 77,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      35,
+      60,
+      -25
+     ],
+     "answer": 70,
+     "used": [
+      "direct"
+     ]
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      3,
+      6
+     ],
+     "answer": 9
+    },
+    {
+     "terms": [
+      8,
+      -5,
+      -2
+     ],
+     "answer": 1
+    },
+    {
+     "terms": [
+      6,
+      3,
+      -8
+     ],
+     "answer": 1
+    }
+   ]
+  }
+ },
+ {
+  "day": 36,
+  "block": "twocol",
+  "drill": {
+   "kind": "stacked",
+   "spec": {
+    "terms": 3,
+    "digits": 2,
+    "ops": "mix",
+    "allow": [
+     "direct"
+    ]
+   },
+   "items": [
+    {
+     "terms": [
+      36,
+      -10,
+      51
+     ],
+     "answer": 77,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      17,
+      10,
+      60
+     ],
+     "answer": 87,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      92,
+      -12,
+      -60
+     ],
+     "answer": 20,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      25,
+      74,
+      -61
+     ],
+     "answer": 38,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      37,
+      -15,
+      26
+     ],
+     "answer": 48,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      82,
+      10,
+      -31
+     ],
+     "answer": 61,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      23,
+      25,
+      -18
+     ],
+     "answer": 30,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      75,
+      24,
+      -28
+     ],
+     "answer": 71,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      11,
+      63,
+      -70
+     ],
+     "answer": 4,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      30,
+      56,
+      10
+     ],
+     "answer": 96,
+     "used": [
+      "direct"
+     ]
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      8,
+      -7
+     ],
+     "answer": 1
+    },
+    {
+     "terms": [
+      8,
+      -6,
+      -1
+     ],
+     "answer": 1
+    },
+    {
+     "terms": [
+      5,
+      -5,
+      7
+     ],
+     "answer": 7
+    }
+   ]
+  }
+ },
+ {
+  "day": 37,
+  "block": "eyes",
+  "drill": {
+   "kind": "single",
+   "allow": [
+    "direct"
+   ],
+   "items": [
+    {
+     "v": 8,
+     "sign": "-",
+     "d": 3,
+     "answer": 5,
+     "id": "direct"
+    },
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 1,
+     "answer": 2,
+     "id": "direct"
+    },
+    {
+     "v": 7,
+     "sign": "-",
+     "d": 6,
+     "answer": 1,
+     "id": "direct"
+    },
+    {
+     "v": 6,
+     "sign": "+",
+     "d": 3,
+     "answer": 9,
+     "id": "direct"
+    },
+    {
+     "v": 3,
+     "sign": "+",
+     "d": 6,
+     "answer": 9,
+     "id": "direct"
+    },
+    {
+     "v": 2,
+     "sign": "+",
+     "d": 6,
+     "answer": 8,
+     "id": "direct"
+    },
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 7,
+     "answer": 8,
+     "id": "direct"
+    },
+    {
+     "v": 4,
+     "sign": "-",
+     "d": 3,
+     "answer": 1,
+     "id": "direct"
+    },
+    {
+     "v": 7,
+     "sign": "-",
+     "d": 1,
+     "answer": 6,
+     "id": "direct"
+    },
+    {
+     "v": 4,
+     "sign": "-",
+     "d": 2,
+     "answer": 2,
+     "id": "direct"
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      6,
+      -5,
+      8
+     ],
+     "answer": 9
+    },
+    {
+     "terms": [
+      9,
+      -7,
+      6,
+      -3
+     ],
+     "answer": 5
+    },
+    {
+     "terms": [
+      3,
+      5,
+      -1,
+      2
+     ],
+     "answer": 9
+    }
+   ]
+  }
+ },
+ {
+  "day": 38,
+  "block": "eyes",
+  "drill": {
+   "kind": "single",
+   "allow": [
+    "direct"
+   ],
+   "items": [
+    {
+     "v": 5,
+     "sign": "+",
+     "d": 4,
+     "answer": 9,
+     "id": "direct"
+    },
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 3,
+     "answer": 4,
+     "id": "direct"
+    },
+    {
+     "v": 9,
+     "sign": "-",
+     "d": 7,
+     "answer": 2,
+     "id": "direct"
+    },
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 8,
+     "answer": 9,
+     "id": "direct"
+    },
+    {
+     "v": 5,
+     "sign": "+",
+     "d": 1,
+     "answer": 6,
+     "id": "direct"
+    },
+    {
+     "v": 8,
+     "sign": "-",
+     "d": 7,
+     "answer": 1,
+     "id": "direct"
+    },
+    {
+     "v": 7,
+     "sign": "-",
+     "d": 2,
+     "answer": 5,
+     "id": "direct"
+    },
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 5,
+     "answer": 6,
+     "id": "direct"
+    },
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 7,
+     "answer": 8,
+     "id": "direct"
+    },
+    {
+     "v": 8,
+     "sign": "-",
+     "d": 2,
+     "answer": 6,
+     "id": "direct"
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      7,
+      2,
+      -2
+     ],
+     "answer": 7
+    },
+    {
+     "terms": [
+      4,
+      -3,
+      6,
+      -2
+     ],
+     "answer": 5
+    },
+    {
+     "terms": [
+      1,
+      -1,
+      9,
+      -8
+     ],
+     "answer": 1
+    }
+   ]
+  }
+ },
+ {
+  "day": 39,
+  "block": "eyes",
+  "drill": {
+   "kind": "single",
+   "allow": [
+    "direct"
+   ],
+   "items": [
+    {
+     "v": 3,
+     "sign": "-",
+     "d": 2,
+     "answer": 1,
+     "id": "direct"
+    },
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 2,
+     "answer": 3,
+     "id": "direct"
+    },
+    {
+     "v": 9,
+     "sign": "-",
+     "d": 1,
+     "answer": 8,
+     "id": "direct"
+    },
+    {
+     "v": 8,
+     "sign": "-",
+     "d": 6,
+     "answer": 2,
+     "id": "direct"
+    },
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 7,
+     "answer": 8,
+     "id": "direct"
+    },
+    {
+     "v": 7,
+     "sign": "+",
+     "d": 1,
+     "answer": 8,
+     "id": "direct"
+    },
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 8,
+     "answer": 9,
+     "id": "direct"
+    },
+    {
+     "v": 7,
+     "sign": "+",
+     "d": 2,
+     "answer": 9,
+     "id": "direct"
+    },
+    {
+     "v": 9,
+     "sign": "-",
+     "d": 6,
+     "answer": 3,
+     "id": "direct"
+    },
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 5,
+     "answer": 6,
+     "id": "direct"
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      8,
+      -7,
+      2
+     ],
+     "answer": 3
+    },
+    {
+     "terms": [
+      5,
+      3,
+      -2,
+      -1
+     ],
+     "answer": 5
+    },
+    {
+     "terms": [
+      8,
+      1,
+      -7,
+      -1
+     ],
+     "answer": 1
+    }
+   ]
+  }
+ },
+ {
+  "day": 40,
+  "block": "boss1",
+  "drill": {
+   "kind": "boss",
+   "parts": [
+    {
+     "title": "Read hundreds",
+     "kind": "read",
+     "digits": 3,
+     "nums": [
+      608,
+      271,
+      740,
+      972,
+      306,
+      459
+     ],
+     "limit": "under a minute"
+    },
+    {
+     "title": "Set hundreds",
+     "kind": "set",
+     "digits": 3,
+     "nums": [
+      909,
+      882,
+      250,
+      133,
+      330
+     ],
+     "limit": "a minute and a half"
+    },
+    {
+     "title": "Direct add and take away",
+     "kind": "stacked",
+     "spec": {
+      "terms": 3,
+      "digits": 2,
+      "ops": "mix",
+      "allow": [
+       "direct"
+      ]
+     },
+     "items": [
+      {
+       "terms": [
+        68,
+        -10,
+        21
+       ],
+       "answer": 79,
+       "used": [
+        "direct"
+       ]
+      },
+      {
+       "terms": [
+        53,
+        45,
+        -36
+       ],
+       "answer": 62,
+       "used": [
+        "direct"
+       ]
+      },
+      {
+       "terms": [
+        71,
+        -51,
+        28
+       ],
+       "answer": 48,
+       "used": [
+        "direct"
+       ]
+      },
+      {
+       "terms": [
+        50,
+        38,
+        -80
+       ],
+       "answer": 8,
+       "used": [
+        "direct"
+       ]
+      },
+      {
+       "terms": [
+        85,
+        -50,
+        -10
+       ],
+       "answer": 25,
+       "used": [
+        "direct"
+       ]
+      },
+      {
+       "terms": [
+        46,
+        -16,
+        63
+       ],
+       "answer": 93,
+       "used": [
+        "direct"
+       ]
+      }
+     ],
+     "limit": "four minutes"
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      5,
+      1
+     ],
+     "answer": 6
+    },
+    {
+     "terms": [
+      2,
+      5,
+      1
+     ],
+     "answer": 8
+    },
+    {
+     "terms": [
+      1,
+      5,
+      2
+     ],
+     "answer": 8
+    }
+   ]
+  }
+ },
+ {
+  "day": 41,
+  "block": "sf14",
+  "drill": {
+   "kind": "single",
+   "allow": [
+    "direct",
+    "small+1",
+    "small+4"
+   ],
+   "items": [
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 4,
+     "answer": 5,
+     "id": "small+4"
+    },
+    {
+     "v": 4,
+     "sign": "+",
+     "d": 4,
+     "answer": 8,
+     "id": "small+4"
+    },
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 4,
+     "answer": 5,
+     "id": "small+4"
+    },
+    {
+     "v": 3,
+     "sign": "+",
+     "d": 4,
+     "answer": 7,
+     "id": "small+4"
+    },
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 1,
+     "answer": 2,
+     "id": "direct"
+    },
+    {
+     "v": 5,
+     "sign": "+",
+     "d": 2,
+     "answer": 7,
+     "id": "direct"
+    },
+    {
+     "v": 3,
+     "sign": "+",
+     "d": 4,
+     "answer": 7,
+     "id": "small+4"
+    },
+    {
+     "v": 4,
+     "sign": "+",
+     "d": 1,
+     "answer": 5,
+     "id": "small+1"
+    },
+    {
+     "v": 2,
+     "sign": "+",
+     "d": 4,
+     "answer": 6,
+     "id": "small+4"
+    },
+    {
+     "v": 8,
+     "sign": "+",
+     "d": 1,
+     "answer": 9,
+     "id": "direct"
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      7,
+      2
+     ],
+     "answer": 9
+    },
+    {
+     "terms": [
+      5,
+      1,
+      2
+     ],
+     "answer": 8
+    },
+    {
+     "terms": [
+      1,
+      2,
+      1
+     ],
+     "answer": 4
+    }
+   ]
+  }
+ },
+ {
+  "day": 42,
+  "block": "sf14",
+  "drill": {
+   "kind": "single",
+   "allow": [
+    "direct",
+    "small+1",
+    "small+4"
+   ],
+   "items": [
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 3,
+     "answer": 4,
+     "id": "direct"
+    },
+    {
+     "v": 3,
+     "sign": "+",
+     "d": 1,
+     "answer": 4,
+     "id": "direct"
+    },
+    {
+     "v": 3,
+     "sign": "+",
+     "d": 4,
+     "answer": 7,
+     "id": "small+4"
+    },
+    {
+     "v": 2,
+     "sign": "+",
+     "d": 4,
+     "answer": 6,
+     "id": "small+4"
+    },
+    {
+     "v": 3,
+     "sign": "+",
+     "d": 4,
+     "answer": 7,
+     "id": "small+4"
+    },
+    {
+     "v": 6,
+     "sign": "+",
+     "d": 1,
+     "answer": 7,
+     "id": "direct"
+    },
+    {
+     "v": 4,
+     "sign": "+",
+     "d": 1,
+     "answer": 5,
+     "id": "small+1"
+    },
+    {
+     "v": 4,
+     "sign": "+",
+     "d": 4,
+     "answer": 8,
+     "id": "small+4"
+    },
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 4,
+     "answer": 5,
+     "id": "small+4"
+    },
+    {
+     "v": 4,
+     "sign": "+",
+     "d": 4,
+     "answer": 8,
+     "id": "small+4"
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      1,
+      5
+     ],
+     "answer": 6
+    },
+    {
+     "terms": [
+      5,
+      2,
+      2
+     ],
+     "answer": 9
+    },
+    {
+     "terms": [
+      1,
+      1,
+      1
+     ],
+     "answer": 3
+    }
+   ]
+  }
+ },
+ {
+  "day": 43,
+  "block": "sf14",
+  "drill": {
+   "kind": "single",
+   "allow": [
+    "direct",
+    "small+1",
+    "small+4"
+   ],
+   "items": [
+    {
+     "v": 2,
+     "sign": "+",
+     "d": 5,
+     "answer": 7,
+     "id": "direct"
+    },
+    {
+     "v": 7,
+     "sign": "+",
+     "d": 1,
+     "answer": 8,
+     "id": "direct"
+    },
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 4,
+     "answer": 5,
+     "id": "small+4"
+    },
+    {
+     "v": 2,
+     "sign": "+",
+     "d": 4,
+     "answer": 6,
+     "id": "small+4"
+    },
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 4,
+     "answer": 5,
+     "id": "small+4"
+    },
+    {
+     "v": 4,
+     "sign": "+",
+     "d": 4,
+     "answer": 8,
+     "id": "small+4"
+    },
+    {
+     "v": 2,
+     "sign": "+",
+     "d": 4,
+     "answer": 6,
+     "id": "small+4"
+    },
+    {
+     "v": 4,
+     "sign": "+",
+     "d": 1,
+     "answer": 5,
+     "id": "small+1"
+    },
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 5,
+     "answer": 6,
+     "id": "direct"
+    },
+    {
+     "v": 3,
+     "sign": "+",
+     "d": 4,
+     "answer": 7,
+     "id": "small+4"
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      1,
+      1
+     ],
+     "answer": 2
+    },
+    {
+     "terms": [
+      5,
+      1,
+      2
+     ],
+     "answer": 8
+    },
+    {
+     "terms": [
+      1,
+      1,
+      5
+     ],
+     "answer": 7
+    }
+   ]
+  }
+ },
+ {
+  "day": 44,
+  "block": "sf14",
+  "drill": {
+   "kind": "single",
+   "allow": [
+    "direct",
+    "small+1",
+    "small+4"
+   ],
+   "items": [
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 7,
+     "answer": 8,
+     "id": "direct"
+    },
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 8,
+     "answer": 9,
+     "id": "direct"
+    },
+    {
+     "v": 3,
+     "sign": "+",
+     "d": 4,
+     "answer": 7,
+     "id": "small+4"
+    },
+    {
+     "v": 2,
+     "sign": "+",
+     "d": 4,
+     "answer": 6,
+     "id": "small+4"
+    },
+    {
+     "v": 4,
+     "sign": "+",
+     "d": 1,
+     "answer": 5,
+     "id": "small+1"
+    },
+    {
+     "v": 3,
+     "sign": "+",
+     "d": 1,
+     "answer": 4,
+     "id": "direct"
+    },
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 4,
+     "answer": 5,
+     "id": "small+4"
+    },
+    {
+     "v": 4,
+     "sign": "+",
+     "d": 4,
+     "answer": 8,
+     "id": "small+4"
+    },
+    {
+     "v": 4,
+     "sign": "+",
+     "d": 1,
+     "answer": 5,
+     "id": "small+1"
+    },
+    {
+     "v": 3,
+     "sign": "+",
+     "d": 4,
+     "answer": 7,
+     "id": "small+4"
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      1,
+      6
+     ],
+     "answer": 7
+    },
+    {
+     "terms": [
+      1,
+      1,
+      5
+     ],
+     "answer": 7
+    },
+    {
+     "terms": [
+      1,
+      5,
+      1
+     ],
+     "answer": 7
+    }
+   ]
+  }
+ },
+ {
+  "day": 45,
+  "block": "sf14",
+  "drill": {
+   "kind": "single",
+   "allow": [
+    "direct",
+    "small+1",
+    "small+4"
+   ],
+   "items": [
+    {
+     "v": 5,
+     "sign": "+",
+     "d": 3,
+     "answer": 8,
+     "id": "direct"
+    },
+    {
+     "v": 8,
+     "sign": "+",
+     "d": 1,
+     "answer": 9,
+     "id": "direct"
+    },
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 2,
+     "answer": 3,
+     "id": "direct"
+    },
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 4,
+     "answer": 5,
+     "id": "small+4"
+    },
+    {
+     "v": 3,
+     "sign": "+",
+     "d": 4,
+     "answer": 7,
+     "id": "small+4"
+    },
+    {
+     "v": 4,
+     "sign": "+",
+     "d": 4,
+     "answer": 8,
+     "id": "small+4"
+    },
+    {
+     "v": 4,
+     "sign": "+",
+     "d": 1,
+     "answer": 5,
+     "id": "small+1"
+    },
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 4,
+     "answer": 5,
+     "id": "small+4"
+    },
+    {
+     "v": 2,
+     "sign": "+",
+     "d": 4,
+     "answer": 6,
+     "id": "small+4"
+    },
+    {
+     "v": 3,
+     "sign": "+",
+     "d": 4,
+     "answer": 7,
+     "id": "small+4"
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      3,
+      1
+     ],
+     "answer": 4
+    },
+    {
+     "terms": [
+      1,
+      6,
+      1
+     ],
+     "answer": 8
+    },
+    {
+     "terms": [
+      1,
+      1,
+      2
+     ],
+     "answer": 4
+    }
+   ]
+  }
+ },
+ {
+  "day": 46,
+  "block": "sf14",
+  "drill": {
+   "kind": "single",
+   "allow": [
+    "direct",
+    "small+1",
+    "small+4"
+   ],
+   "items": [
+    {
+     "v": 2,
+     "sign": "+",
+     "d": 4,
+     "answer": 6,
+     "id": "small+4"
+    },
+    {
+     "v": 4,
+     "sign": "+",
+     "d": 1,
+     "answer": 5,
+     "id": "small+1"
+    },
+    {
+     "v": 4,
+     "sign": "+",
+     "d": 4,
+     "answer": 8,
+     "id": "small+4"
+    },
+    {
+     "v": 7,
+     "sign": "+",
+     "d": 1,
+     "answer": 8,
+     "id": "direct"
+    },
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 2,
+     "answer": 3,
+     "id": "direct"
+    },
+    {
+     "v": 2,
+     "sign": "+",
+     "d": 4,
+     "answer": 6,
+     "id": "small+4"
+    },
+    {
+     "v": 3,
+     "sign": "+",
+     "d": 1,
+     "answer": 4,
+     "id": "direct"
+    },
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 4,
+     "answer": 5,
+     "id": "small+4"
+    },
+    {
+     "v": 4,
+     "sign": "+",
+     "d": 4,
+     "answer": 8,
+     "id": "small+4"
+    },
+    {
+     "v": 3,
+     "sign": "+",
+     "d": 4,
+     "answer": 7,
+     "id": "small+4"
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      4,
+      5
+     ],
+     "answer": 9
+    },
+    {
+     "terms": [
+      1,
+      5,
+      1
+     ],
+     "answer": 7
+    },
+    {
+     "terms": [
+      1,
+      2,
+      1
+     ],
+     "answer": 4
+    }
+   ]
+  }
+ },
+ {
+  "day": 47,
+  "block": "sf23",
+  "drill": {
+   "kind": "single",
+   "allow": [
+    "direct",
+    "small+"
+   ],
+   "items": [
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 3,
+     "answer": 4,
+     "id": "direct"
+    },
+    {
+     "v": 8,
+     "sign": "+",
+     "d": 1,
+     "answer": 9,
+     "id": "direct"
+    },
+    {
+     "v": 3,
+     "sign": "+",
+     "d": 2,
+     "answer": 5,
+     "id": "small+2"
+    },
+    {
+     "v": 2,
+     "sign": "+",
+     "d": 3,
+     "answer": 5,
+     "id": "small+3"
+    },
+    {
+     "v": 3,
+     "sign": "+",
+     "d": 2,
+     "answer": 5,
+     "id": "small+2"
+    },
+    {
+     "v": 6,
+     "sign": "+",
+     "d": 3,
+     "answer": 9,
+     "id": "direct"
+    },
+    {
+     "v": 4,
+     "sign": "+",
+     "d": 2,
+     "answer": 6,
+     "id": "small+2"
+    },
+    {
+     "v": 3,
+     "sign": "+",
+     "d": 3,
+     "answer": 6,
+     "id": "small+3"
+    },
+    {
+     "v": 2,
+     "sign": "+",
+     "d": 3,
+     "answer": 5,
+     "id": "small+3"
+    },
+    {
+     "v": 4,
+     "sign": "+",
+     "d": 3,
+     "answer": 7,
+     "id": "small+3"
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      6,
+      1
+     ],
+     "answer": 7
+    },
+    {
+     "terms": [
+      6,
+      2,
+      1
+     ],
+     "answer": 9
+    },
+    {
+     "terms": [
+      1,
+      3,
+      5
+     ],
+     "answer": 9
+    }
+   ]
+  }
+ },
+ {
+  "day": 48,
+  "block": "sf23",
+  "drill": {
+   "kind": "single",
+   "allow": [
+    "direct",
+    "small+"
+   ],
+   "items": [
+    {
+     "v": 4,
+     "sign": "+",
+     "d": 2,
+     "answer": 6,
+     "id": "small+2"
+    },
+    {
+     "v": 3,
+     "sign": "+",
+     "d": 3,
+     "answer": 6,
+     "id": "small+3"
+    },
+    {
+     "v": 2,
+     "sign": "+",
+     "d": 3,
+     "answer": 5,
+     "id": "small+3"
+    },
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 1,
+     "answer": 2,
+     "id": "direct"
+    },
+    {
+     "v": 3,
+     "sign": "+",
+     "d": 2,
+     "answer": 5,
+     "id": "small+2"
+    },
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 6,
+     "answer": 7,
+     "id": "direct"
+    },
+    {
+     "v": 4,
+     "sign": "+",
+     "d": 3,
+     "answer": 7,
+     "id": "small+3"
+    },
+    {
+     "v": 3,
+     "sign": "+",
+     "d": 3,
+     "answer": 6,
+     "id": "small+3"
+    },
+    {
+     "v": 4,
+     "sign": "+",
+     "d": 2,
+     "answer": 6,
+     "id": "small+2"
+    },
+    {
+     "v": 3,
+     "sign": "+",
+     "d": 6,
+     "answer": 9,
+     "id": "direct"
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      2,
+      5
+     ],
+     "answer": 7
+    },
+    {
+     "terms": [
+      1,
+      1,
+      1
+     ],
+     "answer": 3
+    },
+    {
+     "terms": [
+      6,
+      1,
+      1
+     ],
+     "answer": 8
+    }
+   ]
+  }
+ },
+ {
+  "day": 49,
+  "block": "sf23",
+  "drill": {
+   "kind": "single",
+   "allow": [
+    "direct",
+    "small+"
+   ],
+   "items": [
+    {
+     "v": 4,
+     "sign": "+",
+     "d": 3,
+     "answer": 7,
+     "id": "small+3"
+    },
+    {
+     "v": 4,
+     "sign": "+",
+     "d": 2,
+     "answer": 6,
+     "id": "small+2"
+    },
+    {
+     "v": 3,
+     "sign": "+",
+     "d": 2,
+     "answer": 5,
+     "id": "small+2"
+    },
+    {
+     "v": 6,
+     "sign": "+",
+     "d": 2,
+     "answer": 8,
+     "id": "direct"
+    },
+    {
+     "v": 2,
+     "sign": "+",
+     "d": 3,
+     "answer": 5,
+     "id": "small+3"
+    },
+    {
+     "v": 4,
+     "sign": "+",
+     "d": 2,
+     "answer": 6,
+     "id": "small+2"
+    },
+    {
+     "v": 3,
+     "sign": "+",
+     "d": 3,
+     "answer": 6,
+     "id": "small+3"
+    },
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 5,
+     "answer": 6,
+     "id": "direct"
+    },
+    {
+     "v": 3,
+     "sign": "+",
+     "d": 2,
+     "answer": 5,
+     "id": "small+2"
+    },
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 3,
+     "answer": 4,
+     "id": "direct"
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      1,
+      5
+     ],
+     "answer": 6
+    },
+    {
+     "terms": [
+      5,
+      1,
+      2
+     ],
+     "answer": 8
+    },
+    {
+     "terms": [
+      1,
+      1,
+      1
+     ],
+     "answer": 3
+    }
+   ]
+  }
+ },
+ {
+  "day": 50,
+  "block": "sf23",
+  "drill": {
+   "kind": "single",
+   "allow": [
+    "direct",
+    "small+"
+   ],
+   "items": [
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 7,
+     "answer": 8,
+     "id": "direct"
+    },
+    {
+     "v": 3,
+     "sign": "+",
+     "d": 3,
+     "answer": 6,
+     "id": "small+3"
+    },
+    {
+     "v": 3,
+     "sign": "+",
+     "d": 2,
+     "answer": 5,
+     "id": "small+2"
+    },
+    {
+     "v": 2,
+     "sign": "+",
+     "d": 3,
+     "answer": 5,
+     "id": "small+3"
+    },
+    {
+     "v": 3,
+     "sign": "+",
+     "d": 2,
+     "answer": 5,
+     "id": "small+2"
+    },
+    {
+     "v": 4,
+     "sign": "+",
+     "d": 2,
+     "answer": 6,
+     "id": "small+2"
+    },
+    {
+     "v": 2,
+     "sign": "+",
+     "d": 3,
+     "answer": 5,
+     "id": "small+3"
+    },
+    {
+     "v": 3,
+     "sign": "+",
+     "d": 6,
+     "answer": 9,
+     "id": "direct"
+    },
+    {
+     "v": 6,
+     "sign": "+",
+     "d": 3,
+     "answer": 9,
+     "id": "direct"
+    },
+    {
+     "v": 4,
+     "sign": "+",
+     "d": 3,
+     "answer": 7,
+     "id": "small+3"
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      1,
+      5
+     ],
+     "answer": 6
+    },
+    {
+     "terms": [
+      1,
+      2,
+      5
+     ],
+     "answer": 8
+    },
+    {
+     "terms": [
+      1,
+      1,
+      2
+     ],
+     "answer": 4
+    }
+   ]
+  }
+ },
+ {
+  "day": 51,
+  "block": "sf23",
+  "drill": {
+   "kind": "single",
+   "allow": [
+    "direct",
+    "small+"
+   ],
+   "items": [
+    {
+     "v": 7,
+     "sign": "+",
+     "d": 1,
+     "answer": 8,
+     "id": "direct"
+    },
+    {
+     "v": 3,
+     "sign": "+",
+     "d": 3,
+     "answer": 6,
+     "id": "small+3"
+    },
+    {
+     "v": 6,
+     "sign": "+",
+     "d": 3,
+     "answer": 9,
+     "id": "direct"
+    },
+    {
+     "v": 2,
+     "sign": "+",
+     "d": 3,
+     "answer": 5,
+     "id": "small+3"
+    },
+    {
+     "v": 4,
+     "sign": "+",
+     "d": 3,
+     "answer": 7,
+     "id": "small+3"
+    },
+    {
+     "v": 2,
+     "sign": "+",
+     "d": 3,
+     "answer": 5,
+     "id": "small+3"
+    },
+    {
+     "v": 5,
+     "sign": "+",
+     "d": 3,
+     "answer": 8,
+     "id": "direct"
+    },
+    {
+     "v": 3,
+     "sign": "+",
+     "d": 2,
+     "answer": 5,
+     "id": "small+2"
+    },
+    {
+     "v": 4,
+     "sign": "+",
+     "d": 2,
+     "answer": 6,
+     "id": "small+2"
+    },
+    {
+     "v": 4,
+     "sign": "+",
+     "d": 3,
+     "answer": 7,
+     "id": "small+3"
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      5,
+      1
+     ],
+     "answer": 6
+    },
+    {
+     "terms": [
+      2,
+      1,
+      5
+     ],
+     "answer": 8
+    },
+    {
+     "terms": [
+      2,
+      1,
+      1
+     ],
+     "answer": 4
+    }
+   ]
+  }
+ },
+ {
+  "day": 52,
+  "block": "sf23",
+  "drill": {
+   "kind": "single",
+   "allow": [
+    "direct",
+    "small+"
+   ],
+   "items": [
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 7,
+     "answer": 8,
+     "id": "direct"
+    },
+    {
+     "v": 4,
+     "sign": "+",
+     "d": 2,
+     "answer": 6,
+     "id": "small+2"
+    },
+    {
+     "v": 1,
+     "sign": "+",
+     "d": 3,
+     "answer": 4,
+     "id": "direct"
+    },
+    {
+     "v": 4,
+     "sign": "+",
+     "d": 3,
+     "answer": 7,
+     "id": "small+3"
+    },
+    {
+     "v": 3,
+     "sign": "+",
+     "d": 3,
+     "answer": 6,
+     "id": "small+3"
+    },
+    {
+     "v": 2,
+     "sign": "+",
+     "d": 3,
+     "answer": 5,
+     "id": "small+3"
+    },
+    {
+     "v": 3,
+     "sign": "+",
+     "d": 2,
+     "answer": 5,
+     "id": "small+2"
+    },
+    {
+     "v": 2,
+     "sign": "+",
+     "d": 7,
+     "answer": 9,
+     "id": "direct"
+    },
+    {
+     "v": 3,
+     "sign": "+",
+     "d": 3,
+     "answer": 6,
+     "id": "small+3"
+    },
+    {
+     "v": 4,
+     "sign": "+",
+     "d": 2,
+     "answer": 6,
+     "id": "small+2"
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      6,
+      1
+     ],
+     "answer": 7
+    },
+    {
+     "terms": [
+      7,
+      1,
+      1
+     ],
+     "answer": 9
+    },
+    {
+     "terms": [
+      1,
+      1,
+      1
+     ],
+     "answer": 3
+    }
+   ]
+  }
+ },
+ {
+  "day": 53,
+  "block": "sfadd2d",
+  "drill": {
+   "kind": "stacked",
+   "spec": {
+    "terms": 4,
+    "digits": 2,
+    "ops": "add",
+    "allow": [
+     "direct",
+     "small+"
+    ],
+    "require": [
+     "small+"
+    ]
+   },
+   "items": [
+    {
+     "terms": [
+      30,
+      26,
+      32,
+      11
+     ],
+     "answer": 99,
+     "used": [
+      "direct",
+      "small+2"
+     ]
+    },
+    {
+     "terms": [
+      30,
+      24,
+      22,
+      22
+     ],
+     "answer": 98,
+     "used": [
+      "direct",
+      "small+2"
+     ]
+    },
+    {
+     "terms": [
+      20,
+      22,
+      32,
+      12
+     ],
+     "answer": 86,
+     "used": [
+      "direct",
+      "small+3",
+      "small+2"
+     ]
+    },
+    {
+     "terms": [
+      63,
+      10,
+      13,
+      10
+     ],
+     "answer": 96,
+     "used": [
+      "direct",
+      "small+3"
+     ]
+    },
+    {
+     "terms": [
+      22,
+      13,
+      10,
+      32
+     ],
+     "answer": 77,
+     "used": [
+      "direct",
+      "small+3"
+     ]
+    },
+    {
+     "terms": [
+      20,
+      40,
+      22,
+      11
+     ],
+     "answer": 93,
+     "used": [
+      "direct",
+      "small+4"
+     ]
+    },
+    {
+     "terms": [
+      34,
+      22,
+      21,
+      10
+     ],
+     "answer": 87,
+     "used": [
+      "direct",
+      "small+2"
+     ]
+    },
+    {
+     "terms": [
+      15,
+      22,
+      20,
+      31
+     ],
+     "answer": 88,
+     "used": [
+      "direct",
+      "small+2"
+     ]
+    },
+    {
+     "terms": [
+      15,
+      24,
+      10,
+      20
+     ],
+     "answer": 69,
+     "used": [
+      "direct",
+      "small+2"
+     ]
+    },
+    {
+     "terms": [
+      40,
+      12,
+      20,
+      20
+     ],
+     "answer": 92,
+     "used": [
+      "direct",
+      "small+1"
+     ]
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      1,
+      1
+     ],
+     "answer": 2
+    },
+    {
+     "terms": [
+      5,
+      1,
+      1
+     ],
+     "answer": 7
+    },
+    {
+     "terms": [
+      5,
+      1,
+      2
+     ],
+     "answer": 8
+    }
+   ]
+  }
+ },
+ {
+  "day": 54,
+  "block": "sfadd2d",
+  "drill": {
+   "kind": "stacked",
+   "spec": {
+    "terms": 4,
+    "digits": 2,
+    "ops": "add",
+    "allow": [
+     "direct",
+     "small+"
+    ],
+    "require": [
+     "small+"
+    ]
+   },
+   "items": [
+    {
+     "terms": [
+      22,
+      12,
+      33,
+      20
+     ],
+     "answer": 87,
+     "used": [
+      "direct",
+      "small+3"
+     ]
+    },
+    {
+     "terms": [
+      11,
+      15,
+      11,
+      21
+     ],
+     "answer": 58,
+     "used": [
+      "direct",
+      "small+2"
+     ]
+    },
+    {
+     "terms": [
+      61,
+      13,
+      13,
+      10
+     ],
+     "answer": 97,
+     "used": [
+      "direct",
+      "small+3"
+     ]
+    },
+    {
+     "terms": [
+      10,
+      26,
+      31,
+      12
+     ],
+     "answer": 79,
+     "used": [
+      "direct",
+      "small+3"
+     ]
+    },
+    {
+     "terms": [
+      13,
+      31,
+      13,
+      20
+     ],
+     "answer": 77,
+     "used": [
+      "direct",
+      "small+1",
+      "small+3"
+     ]
+    },
+    {
+     "terms": [
+      11,
+      63,
+      10,
+      12
+     ],
+     "answer": 96,
+     "used": [
+      "direct",
+      "small+2"
+     ]
+    },
+    {
+     "terms": [
+      36,
+      20,
+      10,
+      23
+     ],
+     "answer": 89,
+     "used": [
+      "direct",
+      "small+2"
+     ]
+    },
+    {
+     "terms": [
+      14,
+      24,
+      40,
+      21
+     ],
+     "answer": 99,
+     "used": [
+      "direct",
+      "small+4"
+     ]
+    },
+    {
+     "terms": [
+      19,
+      10,
+      20,
+      20
+     ],
+     "answer": 69,
+     "used": [
+      "direct",
+      "small+2"
+     ]
+    },
+    {
+     "terms": [
+      10,
+      22,
+      21,
+      40
+     ],
+     "answer": 93,
+     "used": [
+      "direct",
+      "small+2"
+     ]
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      5,
+      2
+     ],
+     "answer": 7
+    },
+    {
+     "terms": [
+      2,
+      5,
+      1
+     ],
+     "answer": 8
+    },
+    {
+     "terms": [
+      1,
+      1,
+      1
+     ],
+     "answer": 3
+    }
+   ]
+  }
+ },
+ {
+  "day": 55,
+  "block": "sfadd2d",
+  "drill": {
+   "kind": "stacked",
+   "spec": {
+    "terms": 4,
+    "digits": 2,
+    "ops": "add",
+    "allow": [
+     "direct",
+     "small+"
+    ],
+    "require": [
+     "small+"
+    ]
+   },
+   "items": [
+    {
+     "terms": [
+      41,
+      33,
+      11,
+      10
+     ],
+     "answer": 95,
+     "used": [
+      "direct",
+      "small+3",
+      "small+1"
+     ]
+    },
+    {
+     "terms": [
+      23,
+      10,
+      13,
+      31
+     ],
+     "answer": 77,
+     "used": [
+      "direct",
+      "small+3"
+     ]
+    },
+    {
+     "terms": [
+      16,
+      12,
+      21,
+      20
+     ],
+     "answer": 69,
+     "used": [
+      "direct",
+      "small+2"
+     ]
+    },
+    {
+     "terms": [
+      21,
+      52,
+      14,
+      10
+     ],
+     "answer": 97,
+     "used": [
+      "direct",
+      "small+4"
+     ]
+    },
+    {
+     "terms": [
+      12,
+      11,
+      11,
+      23
+     ],
+     "answer": 57,
+     "used": [
+      "direct",
+      "small+2",
+      "small+3"
+     ]
+    },
+    {
+     "terms": [
+      31,
+      22,
+      14,
+      11
+     ],
+     "answer": 78,
+     "used": [
+      "direct",
+      "small+2",
+      "small+4"
+     ]
+    },
+    {
+     "terms": [
+      45,
+      11,
+      12,
+      20
+     ],
+     "answer": 88,
+     "used": [
+      "direct",
+      "small+1"
+     ]
+    },
+    {
+     "terms": [
+      10,
+      63,
+      12,
+      11
+     ],
+     "answer": 96,
+     "used": [
+      "direct",
+      "small+2"
+     ]
+    },
+    {
+     "terms": [
+      44,
+      35,
+      10,
+      10
+     ],
+     "answer": 99,
+     "used": [
+      "direct",
+      "small+3"
+     ]
+    },
+    {
+     "terms": [
+      20,
+      47,
+      10,
+      10
+     ],
+     "answer": 87,
+     "used": [
+      "direct",
+      "small+4"
+     ]
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      1,
+      1
+     ],
+     "answer": 2
+    },
+    {
+     "terms": [
+      1,
+      1,
+      1
+     ],
+     "answer": 3
+    },
+    {
+     "terms": [
+      2,
+      6,
+      1
+     ],
+     "answer": 9
+    }
+   ]
+  }
+ },
+ {
+  "day": 56,
+  "block": "sfadd2d",
+  "drill": {
+   "kind": "stacked",
+   "spec": {
+    "terms": 4,
+    "digits": 2,
+    "ops": "add",
+    "allow": [
+     "direct",
+     "small+"
+    ],
+    "require": [
+     "small+"
+    ]
+   },
+   "items": [
+    {
+     "terms": [
+      16,
+      21,
+      11,
+      10
+     ],
+     "answer": 58,
+     "used": [
+      "direct",
+      "small+1"
+     ]
+    },
+    {
+     "terms": [
+      12,
+      31,
+      20,
+      10
+     ],
+     "answer": 73,
+     "used": [
+      "direct",
+      "small+2"
+     ]
+    },
+    {
+     "terms": [
+      51,
+      11,
+      21,
+      14
+     ],
+     "answer": 97,
+     "used": [
+      "direct",
+      "small+4"
+     ]
+    },
+    {
+     "terms": [
+      28,
+      41,
+      10,
+      10
+     ],
+     "answer": 89,
+     "used": [
+      "direct",
+      "small+4"
+     ]
+    },
+    {
+     "terms": [
+      14,
+      23,
+      41,
+      10
+     ],
+     "answer": 88,
+     "used": [
+      "direct",
+      "small+3",
+      "small+4"
+     ]
+    },
+    {
+     "terms": [
+      39,
+      10,
+      10,
+      20
+     ],
+     "answer": 79,
+     "used": [
+      "direct",
+      "small+1"
+     ]
+    },
+    {
+     "terms": [
+      50,
+      23,
+      13,
+      10
+     ],
+     "answer": 96,
+     "used": [
+      "direct",
+      "small+3"
+     ]
+    },
+    {
+     "terms": [
+      31,
+      10,
+      24,
+      21
+     ],
+     "answer": 86,
+     "used": [
+      "direct",
+      "small+2",
+      "small+4"
+     ]
+    },
+    {
+     "terms": [
+      19,
+      20,
+      20,
+      10
+     ],
+     "answer": 69,
+     "used": [
+      "direct",
+      "small+2"
+     ]
+    },
+    {
+     "terms": [
+      43,
+      32,
+      14,
+      10
+     ],
+     "answer": 99,
+     "used": [
+      "direct",
+      "small+3",
+      "small+2"
+     ]
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      1,
+      3
+     ],
+     "answer": 4
+    },
+    {
+     "terms": [
+      2,
+      1,
+      1
+     ],
+     "answer": 4
+    },
+    {
+     "terms": [
+      1,
+      1,
+      5
+     ],
+     "answer": 7
+    }
+   ]
+  }
+ },
+ {
+  "day": 57,
+  "block": "sfadd2d",
+  "drill": {
+   "kind": "stacked",
+   "spec": {
+    "terms": 4,
+    "digits": 2,
+    "ops": "add",
+    "allow": [
+     "direct",
+     "small+"
+    ],
+    "require": [
+     "small+"
+    ]
+   },
+   "items": [
+    {
+     "terms": [
+      30,
+      33,
+      11,
+      11
+     ],
+     "answer": 85,
+     "used": [
+      "direct",
+      "small+3",
+      "small+1"
+     ]
+    },
+    {
+     "terms": [
+      10,
+      60,
+      14,
+      12
+     ],
+     "answer": 96,
+     "used": [
+      "direct",
+      "small+2"
+     ]
+    },
+    {
+     "terms": [
+      34,
+      23,
+      11,
+      11
+     ],
+     "answer": 79,
+     "used": [
+      "direct",
+      "small+2",
+      "small+3"
+     ]
+    },
+    {
+     "terms": [
+      31,
+      32,
+      20,
+      11
+     ],
+     "answer": 94,
+     "used": [
+      "direct",
+      "small+3"
+     ]
+    },
+    {
+     "terms": [
+      16,
+      30,
+      10,
+      10
+     ],
+     "answer": 66,
+     "used": [
+      "direct",
+      "small+1"
+     ]
+    },
+    {
+     "terms": [
+      10,
+      12,
+      11,
+      42
+     ],
+     "answer": 75,
+     "used": [
+      "direct",
+      "small+4",
+      "small+2"
+     ]
+    },
+    {
+     "terms": [
+      26,
+      11,
+      31,
+      30
+     ],
+     "answer": 98,
+     "used": [
+      "direct",
+      "small+3"
+     ]
+    },
+    {
+     "terms": [
+      10,
+      11,
+      22,
+      21
+     ],
+     "answer": 64,
+     "used": [
+      "direct",
+      "small+2"
+     ]
+    },
+    {
+     "terms": [
+      20,
+      32,
+      20,
+      15
+     ],
+     "answer": 87,
+     "used": [
+      "direct",
+      "small+3"
+     ]
+    },
+    {
+     "terms": [
+      14,
+      20,
+      42,
+      13
+     ],
+     "answer": 89,
+     "used": [
+      "direct",
+      "small+4",
+      "small+2"
+     ]
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      2,
+      2
+     ],
+     "answer": 4
+    },
+    {
+     "terms": [
+      1,
+      2,
+      1
+     ],
+     "answer": 4
+    },
+    {
+     "terms": [
+      5,
+      2,
+      1
+     ],
+     "answer": 8
+    }
+   ]
+  }
+ },
+ {
+  "day": 58,
+  "block": "sfadd2d",
+  "drill": {
+   "kind": "stacked",
+   "spec": {
+    "terms": 4,
+    "digits": 2,
+    "ops": "add",
+    "allow": [
+     "direct",
+     "small+"
+    ],
+    "require": [
+     "small+"
+    ]
+   },
+   "items": [
+    {
+     "terms": [
+      14,
+      20,
+      13,
+      20
+     ],
+     "answer": 67,
+     "used": [
+      "direct",
+      "small+3",
+      "small+2"
+     ]
+    },
+    {
+     "terms": [
+      13,
+      11,
+      31,
+      21
+     ],
+     "answer": 76,
+     "used": [
+      "direct",
+      "small+3",
+      "small+1"
+     ]
+    },
+    {
+     "terms": [
+      20,
+      46,
+      12,
+      10
+     ],
+     "answer": 88,
+     "used": [
+      "direct",
+      "small+4"
+     ]
+    },
+    {
+     "terms": [
+      45,
+      10,
+      31,
+      11
+     ],
+     "answer": 97,
+     "used": [
+      "direct",
+      "small+1"
+     ]
+    },
+    {
+     "terms": [
+      25,
+      13,
+      30,
+      10
+     ],
+     "answer": 78,
+     "used": [
+      "direct",
+      "small+3"
+     ]
+    },
+    {
+     "terms": [
+      10,
+      36,
+      21,
+      12
+     ],
+     "answer": 79,
+     "used": [
+      "direct",
+      "small+2"
+     ]
+    },
+    {
+     "terms": [
+      46,
+      20,
+      20,
+      10
+     ],
+     "answer": 96,
+     "used": [
+      "direct",
+      "small+2"
+     ]
+    },
+    {
+     "terms": [
+      34,
+      15,
+      40,
+      10
+     ],
+     "answer": 99,
+     "used": [
+      "direct",
+      "small+4"
+     ]
+    },
+    {
+     "terms": [
+      20,
+      44,
+      10,
+      20
+     ],
+     "answer": 94,
+     "used": [
+      "direct",
+      "small+4"
+     ]
+    },
+    {
+     "terms": [
+      52,
+      13,
+      10,
+      12
+     ],
+     "answer": 87,
+     "used": [
+      "direct",
+      "small+3"
+     ]
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      6,
+      1
+     ],
+     "answer": 7
+    },
+    {
+     "terms": [
+      1,
+      1,
+      1
+     ],
+     "answer": 3
+    },
+    {
+     "terms": [
+      5,
+      2,
+      2
+     ],
+     "answer": 9
+    }
+   ]
+  }
+ },
+ {
+  "day": 59,
+  "block": "sfadd2d",
+  "drill": {
+   "kind": "stacked",
+   "spec": {
+    "terms": 4,
+    "digits": 2,
+    "ops": "add",
+    "allow": [
+     "direct",
+     "small+"
+    ],
+    "require": [
+     "small+"
+    ]
+   },
+   "items": [
+    {
+     "terms": [
+      63,
+      10,
+      11,
+      11
+     ],
+     "answer": 95,
+     "used": [
+      "direct",
+      "small+1"
+     ]
+    },
+    {
+     "terms": [
+      10,
+      31,
+      24,
+      21
+     ],
+     "answer": 86,
+     "used": [
+      "direct",
+      "small+2",
+      "small+4"
+     ]
+    },
+    {
+     "terms": [
+      25,
+      22,
+      30,
+      11
+     ],
+     "answer": 88,
+     "used": [
+      "direct",
+      "small+3"
+     ]
+    },
+    {
+     "terms": [
+      12,
+      64,
+      11,
+      10
+     ],
+     "answer": 97,
+     "used": [
+      "direct",
+      "small+4"
+     ]
+    },
+    {
+     "terms": [
+      22,
+      17,
+      10,
+      20
+     ],
+     "answer": 69,
+     "used": [
+      "direct",
+      "small+2"
+     ]
+    },
+    {
+     "terms": [
+      19,
+      40,
+      30,
+      10
+     ],
+     "answer": 99,
+     "used": [
+      "direct",
+      "small+4"
+     ]
+    },
+    {
+     "terms": [
+      13,
+      14,
+      10,
+      12
+     ],
+     "answer": 49,
+     "used": [
+      "direct",
+      "small+4"
+     ]
+    },
+    {
+     "terms": [
+      12,
+      22,
+      35,
+      10
+     ],
+     "answer": 79,
+     "used": [
+      "direct",
+      "small+3"
+     ]
+    },
+    {
+     "terms": [
+      31,
+      11,
+      40,
+      11
+     ],
+     "answer": 93,
+     "used": [
+      "direct",
+      "small+4"
+     ]
+    },
+    {
+     "terms": [
+      23,
+      12,
+      21,
+      21
+     ],
+     "answer": 77,
+     "used": [
+      "direct",
+      "small+2"
+     ]
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      1,
+      1
+     ],
+     "answer": 2
+    },
+    {
+     "terms": [
+      2,
+      1,
+      1
+     ],
+     "answer": 4
+    },
+    {
+     "terms": [
+      1,
+      1,
+      1
+     ],
+     "answer": 3
+    }
+   ]
+  }
+ },
+ {
+  "day": 60,
+  "block": "sfsub14",
+  "drill": {
+   "kind": "single",
+   "allow": [
+    "direct",
+    "small-1",
+    "small-4"
+   ],
+   "items": [
+    {
+     "v": 9,
+     "sign": "-",
+     "d": 3,
+     "answer": 6,
+     "id": "direct"
+    },
+    {
+     "v": 5,
+     "sign": "-",
+     "d": 1,
+     "answer": 4,
+     "id": "small-1"
+    },
+    {
+     "v": 9,
+     "sign": "-",
+     "d": 5,
+     "answer": 4,
+     "id": "direct"
+    },
+    {
+     "v": 6,
+     "sign": "-",
+     "d": 4,
+     "answer": 2,
+     "id": "small-4"
+    },
+    {
+     "v": 5,
+     "sign": "-",
+     "d": 1,
+     "answer": 4,
+     "id": "small-1"
+    },
+    {
+     "v": 5,
+     "sign": "-",
+     "d": 4,
+     "answer": 1,
+     "id": "small-4"
+    },
+    {
+     "v": 2,
+     "sign": "-",
+     "d": 1,
+     "answer": 1,
+     "id": "direct"
+    },
+    {
+     "v": 8,
+     "sign": "-",
+     "d": 4,
+     "answer": 4,
+     "id": "small-4"
+    },
+    {
+     "v": 5,
+     "sign": "-",
+     "d": 4,
+     "answer": 1,
+     "id": "small-4"
+    },
+    {
+     "v": 7,
+     "sign": "-",
+     "d": 4,
+     "answer": 3,
+     "id": "small-4"
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      1,
+      -1,
+      5
+     ],
+     "answer": 5
+    },
+    {
+     "terms": [
+      7,
+      1,
+      -7,
+      2
+     ],
+     "answer": 3
+    },
+    {
+     "terms": [
+      5,
+      2,
+      -7,
+      3
+     ],
+     "answer": 3
+    }
+   ]
+  }
+ },
+ {
+  "day": 61,
+  "block": "sfsub14",
+  "drill": {
+   "kind": "single",
+   "allow": [
+    "direct",
+    "small-1",
+    "small-4"
+   ],
+   "items": [
+    {
+     "v": 5,
+     "sign": "-",
+     "d": 4,
+     "answer": 1,
+     "id": "small-4"
+    },
+    {
+     "v": 4,
+     "sign": "-",
+     "d": 1,
+     "answer": 3,
+     "id": "direct"
+    },
+    {
+     "v": 8,
+     "sign": "-",
+     "d": 7,
+     "answer": 1,
+     "id": "direct"
+    },
+    {
+     "v": 7,
+     "sign": "-",
+     "d": 6,
+     "answer": 1,
+     "id": "direct"
+    },
+    {
+     "v": 5,
+     "sign": "-",
+     "d": 1,
+     "answer": 4,
+     "id": "small-1"
+    },
+    {
+     "v": 6,
+     "sign": "-",
+     "d": 4,
+     "answer": 2,
+     "id": "small-4"
+    },
+    {
+     "v": 7,
+     "sign": "-",
+     "d": 4,
+     "answer": 3,
+     "id": "small-4"
+    },
+    {
+     "v": 8,
+     "sign": "-",
+     "d": 4,
+     "answer": 4,
+     "id": "small-4"
+    },
+    {
+     "v": 7,
+     "sign": "-",
+     "d": 4,
+     "answer": 3,
+     "id": "small-4"
+    },
+    {
+     "v": 6,
+     "sign": "-",
+     "d": 4,
+     "answer": 2,
+     "id": "small-4"
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      2,
+      7,
+      -2
+     ],
+     "answer": 7
+    },
+    {
+     "terms": [
+      7,
+      1,
+      -8,
+      5
+     ],
+     "answer": 5
+    },
+    {
+     "terms": [
+      4,
+      -1,
+      5,
+      -3
+     ],
+     "answer": 5
+    }
+   ]
+  }
+ },
+ {
+  "day": 62,
+  "block": "sfsub14",
+  "drill": {
+   "kind": "single",
+   "allow": [
+    "direct",
+    "small-1",
+    "small-4"
+   ],
+   "items": [
+    {
+     "v": 9,
+     "sign": "-",
+     "d": 5,
+     "answer": 4,
+     "id": "direct"
+    },
+    {
+     "v": 8,
+     "sign": "-",
+     "d": 4,
+     "answer": 4,
+     "id": "small-4"
+    },
+    {
+     "v": 6,
+     "sign": "-",
+     "d": 5,
+     "answer": 1,
+     "id": "direct"
+    },
+    {
+     "v": 5,
+     "sign": "-",
+     "d": 1,
+     "answer": 4,
+     "id": "small-1"
+    },
+    {
+     "v": 7,
+     "sign": "-",
+     "d": 4,
+     "answer": 3,
+     "id": "small-4"
+    },
+    {
+     "v": 5,
+     "sign": "-",
+     "d": 4,
+     "answer": 1,
+     "id": "small-4"
+    },
+    {
+     "v": 6,
+     "sign": "-",
+     "d": 4,
+     "answer": 2,
+     "id": "small-4"
+    },
+    {
+     "v": 5,
+     "sign": "-",
+     "d": 4,
+     "answer": 1,
+     "id": "small-4"
+    },
+    {
+     "v": 3,
+     "sign": "-",
+     "d": 2,
+     "answer": 1,
+     "id": "direct"
+    },
+    {
+     "v": 8,
+     "sign": "-",
+     "d": 4,
+     "answer": 4,
+     "id": "small-4"
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      5,
+      4,
+      -2
+     ],
+     "answer": 7
+    },
+    {
+     "terms": [
+      3,
+      -3,
+      4,
+      -3
+     ],
+     "answer": 1
+    },
+    {
+     "terms": [
+      9,
+      -7,
+      5,
+      -2
+     ],
+     "answer": 5
+    }
+   ]
+  }
+ },
+ {
+  "day": 63,
+  "block": "sfsub14",
+  "drill": {
+   "kind": "single",
+   "allow": [
+    "direct",
+    "small-1",
+    "small-4"
+   ],
+   "items": [
+    {
+     "v": 5,
+     "sign": "-",
+     "d": 1,
+     "answer": 4,
+     "id": "small-1"
+    },
+    {
+     "v": 8,
+     "sign": "-",
+     "d": 4,
+     "answer": 4,
+     "id": "small-4"
+    },
+    {
+     "v": 5,
+     "sign": "-",
+     "d": 4,
+     "answer": 1,
+     "id": "small-4"
+    },
+    {
+     "v": 6,
+     "sign": "-",
+     "d": 4,
+     "answer": 2,
+     "id": "small-4"
+    },
+    {
+     "v": 8,
+     "sign": "-",
+     "d": 4,
+     "answer": 4,
+     "id": "small-4"
+    },
+    {
+     "v": 6,
+     "sign": "-",
+     "d": 1,
+     "answer": 5,
+     "id": "direct"
+    },
+    {
+     "v": 5,
+     "sign": "-",
+     "d": 4,
+     "answer": 1,
+     "id": "small-4"
+    },
+    {
+     "v": 3,
+     "sign": "-",
+     "d": 2,
+     "answer": 1,
+     "id": "direct"
+    },
+    {
+     "v": 7,
+     "sign": "-",
+     "d": 4,
+     "answer": 3,
+     "id": "small-4"
+    },
+    {
+     "v": 7,
+     "sign": "-",
+     "d": 6,
+     "answer": 1,
+     "id": "direct"
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      3,
+      -3,
+      3
+     ],
+     "answer": 3
+    },
+    {
+     "terms": [
+      4,
+      -3,
+      8,
+      -4
+     ],
+     "answer": 5
+    },
+    {
+     "terms": [
+      1,
+      -1,
+      8,
+      -5
+     ],
+     "answer": 3
+    }
+   ]
+  }
+ },
+ {
+  "day": 64,
+  "block": "sfsub14",
+  "drill": {
+   "kind": "single",
+   "allow": [
+    "direct",
+    "small-1",
+    "small-4"
+   ],
+   "items": [
+    {
+     "v": 5,
+     "sign": "-",
+     "d": 4,
+     "answer": 1,
+     "id": "small-4"
+    },
+    {
+     "v": 9,
+     "sign": "-",
+     "d": 1,
+     "answer": 8,
+     "id": "direct"
+    },
+    {
+     "v": 5,
+     "sign": "-",
+     "d": 4,
+     "answer": 1,
+     "id": "small-4"
+    },
+    {
+     "v": 7,
+     "sign": "-",
+     "d": 6,
+     "answer": 1,
+     "id": "direct"
+    },
+    {
+     "v": 7,
+     "sign": "-",
+     "d": 4,
+     "answer": 3,
+     "id": "small-4"
+    },
+    {
+     "v": 8,
+     "sign": "-",
+     "d": 4,
+     "answer": 4,
+     "id": "small-4"
+    },
+    {
+     "v": 5,
+     "sign": "-",
+     "d": 1,
+     "answer": 4,
+     "id": "small-1"
+    },
+    {
+     "v": 9,
+     "sign": "-",
+     "d": 2,
+     "answer": 7,
+     "id": "direct"
+    },
+    {
+     "v": 6,
+     "sign": "-",
+     "d": 4,
+     "answer": 2,
+     "id": "small-4"
+    },
+    {
+     "v": 5,
+     "sign": "-",
+     "d": 1,
+     "answer": 4,
+     "id": "small-1"
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      6,
+      -5,
+      6
+     ],
+     "answer": 7
+    },
+    {
+     "terms": [
+      1,
+      7,
+      -1,
+      -6
+     ],
+     "answer": 1
+    },
+    {
+     "terms": [
+      8,
+      1,
+      -7,
+      1
+     ],
+     "answer": 3
+    }
+   ]
+  }
+ },
+ {
+  "day": 65,
+  "block": "sfsub14",
+  "drill": {
+   "kind": "single",
+   "allow": [
+    "direct",
+    "small-1",
+    "small-4"
+   ],
+   "items": [
+    {
+     "v": 8,
+     "sign": "-",
+     "d": 5,
+     "answer": 3,
+     "id": "direct"
+    },
+    {
+     "v": 5,
+     "sign": "-",
+     "d": 4,
+     "answer": 1,
+     "id": "small-4"
+    },
+    {
+     "v": 8,
+     "sign": "-",
+     "d": 4,
+     "answer": 4,
+     "id": "small-4"
+    },
+    {
+     "v": 7,
+     "sign": "-",
+     "d": 4,
+     "answer": 3,
+     "id": "small-4"
+    },
+    {
+     "v": 4,
+     "sign": "-",
+     "d": 2,
+     "answer": 2,
+     "id": "direct"
+    },
+    {
+     "v": 6,
+     "sign": "-",
+     "d": 4,
+     "answer": 2,
+     "id": "small-4"
+    },
+    {
+     "v": 7,
+     "sign": "-",
+     "d": 4,
+     "answer": 3,
+     "id": "small-4"
+    },
+    {
+     "v": 5,
+     "sign": "-",
+     "d": 1,
+     "answer": 4,
+     "id": "small-1"
+    },
+    {
+     "v": 3,
+     "sign": "-",
+     "d": 2,
+     "answer": 1,
+     "id": "direct"
+    },
+    {
+     "v": 6,
+     "sign": "-",
+     "d": 4,
+     "answer": 2,
+     "id": "small-4"
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      9,
+      -7,
+      1
+     ],
+     "answer": 3
+    },
+    {
+     "terms": [
+      7,
+      2,
+      -3,
+      -1
+     ],
+     "answer": 5
+    },
+    {
+     "terms": [
+      5,
+      -5,
+      5,
+      4
+     ],
+     "answer": 9
+    }
+   ]
+  }
+ },
+ {
+  "day": 66,
+  "block": "sfsub23",
+  "drill": {
+   "kind": "single",
+   "allow": [
+    "direct",
+    "small-"
+   ],
+   "items": [
+    {
+     "v": 7,
+     "sign": "-",
+     "d": 2,
+     "answer": 5,
+     "id": "direct"
+    },
+    {
+     "v": 5,
+     "sign": "-",
+     "d": 2,
+     "answer": 3,
+     "id": "small-2"
+    },
+    {
+     "v": 4,
+     "sign": "-",
+     "d": 1,
+     "answer": 3,
+     "id": "direct"
+    },
+    {
+     "v": 6,
+     "sign": "-",
+     "d": 2,
+     "answer": 4,
+     "id": "small-2"
+    },
+    {
+     "v": 9,
+     "sign": "-",
+     "d": 6,
+     "answer": 3,
+     "id": "direct"
+    },
+    {
+     "v": 6,
+     "sign": "-",
+     "d": 3,
+     "answer": 3,
+     "id": "small-3"
+    },
+    {
+     "v": 6,
+     "sign": "-",
+     "d": 2,
+     "answer": 4,
+     "id": "small-2"
+    },
+    {
+     "v": 5,
+     "sign": "-",
+     "d": 3,
+     "answer": 2,
+     "id": "small-3"
+    },
+    {
+     "v": 7,
+     "sign": "-",
+     "d": 3,
+     "answer": 4,
+     "id": "small-3"
+    },
+    {
+     "v": 6,
+     "sign": "-",
+     "d": 3,
+     "answer": 3,
+     "id": "small-3"
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      4,
+      -3,
+      8
+     ],
+     "answer": 9
+    },
+    {
+     "terms": [
+      8,
+      -2,
+      -6,
+      5
+     ],
+     "answer": 5
+    },
+    {
+     "terms": [
+      2,
+      -1,
+      7,
+      -1
+     ],
+     "answer": 7
+    }
+   ]
+  }
+ },
+ {
+  "day": 67,
+  "block": "sfsub23",
+  "drill": {
+   "kind": "single",
+   "allow": [
+    "direct",
+    "small-"
+   ],
+   "items": [
+    {
+     "v": 2,
+     "sign": "-",
+     "d": 1,
+     "answer": 1,
+     "id": "direct"
+    },
+    {
+     "v": 5,
+     "sign": "-",
+     "d": 3,
+     "answer": 2,
+     "id": "small-3"
+    },
+    {
+     "v": 6,
+     "sign": "-",
+     "d": 2,
+     "answer": 4,
+     "id": "small-2"
+    },
+    {
+     "v": 9,
+     "sign": "-",
+     "d": 1,
+     "answer": 8,
+     "id": "direct"
+    },
+    {
+     "v": 6,
+     "sign": "-",
+     "d": 3,
+     "answer": 3,
+     "id": "small-3"
+    },
+    {
+     "v": 7,
+     "sign": "-",
+     "d": 3,
+     "answer": 4,
+     "id": "small-3"
+    },
+    {
+     "v": 5,
+     "sign": "-",
+     "d": 2,
+     "answer": 3,
+     "id": "small-2"
+    },
+    {
+     "v": 9,
+     "sign": "-",
+     "d": 6,
+     "answer": 3,
+     "id": "direct"
+    },
+    {
+     "v": 6,
+     "sign": "-",
+     "d": 2,
+     "answer": 4,
+     "id": "small-2"
+    },
+    {
+     "v": 5,
+     "sign": "-",
+     "d": 3,
+     "answer": 2,
+     "id": "small-3"
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      7,
+      -1,
+      -1
+     ],
+     "answer": 5
+    },
+    {
+     "terms": [
+      3,
+      5,
+      -2,
+      1
+     ],
+     "answer": 7
+    },
+    {
+     "terms": [
+      1,
+      -1,
+      9,
+      -2
+     ],
+     "answer": 7
+    }
+   ]
+  }
+ },
+ {
+  "day": 68,
+  "block": "sfsub23",
+  "drill": {
+   "kind": "single",
+   "allow": [
+    "direct",
+    "small-"
+   ],
+   "items": [
+    {
+     "v": 7,
+     "sign": "-",
+     "d": 3,
+     "answer": 4,
+     "id": "small-3"
+    },
+    {
+     "v": 6,
+     "sign": "-",
+     "d": 3,
+     "answer": 3,
+     "id": "small-3"
+    },
+    {
+     "v": 6,
+     "sign": "-",
+     "d": 2,
+     "answer": 4,
+     "id": "small-2"
+    },
+    {
+     "v": 6,
+     "sign": "-",
+     "d": 5,
+     "answer": 1,
+     "id": "direct"
+    },
+    {
+     "v": 4,
+     "sign": "-",
+     "d": 1,
+     "answer": 3,
+     "id": "direct"
+    },
+    {
+     "v": 6,
+     "sign": "-",
+     "d": 3,
+     "answer": 3,
+     "id": "small-3"
+    },
+    {
+     "v": 7,
+     "sign": "-",
+     "d": 3,
+     "answer": 4,
+     "id": "small-3"
+    },
+    {
+     "v": 5,
+     "sign": "-",
+     "d": 2,
+     "answer": 3,
+     "id": "small-2"
+    },
+    {
+     "v": 5,
+     "sign": "-",
+     "d": 3,
+     "answer": 2,
+     "id": "small-3"
+    },
+    {
+     "v": 7,
+     "sign": "-",
+     "d": 2,
+     "answer": 5,
+     "id": "direct"
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      7,
+      1,
+      1
+     ],
+     "answer": 9
+    },
+    {
+     "terms": [
+      5,
+      3,
+      -5,
+      6
+     ],
+     "answer": 9
+    },
+    {
+     "terms": [
+      6,
+      1,
+      -7,
+      7
+     ],
+     "answer": 7
+    }
+   ]
+  }
+ },
+ {
+  "day": 69,
+  "block": "sfsub23",
+  "drill": {
+   "kind": "single",
+   "allow": [
+    "direct",
+    "small-"
+   ],
+   "items": [
+    {
+     "v": 7,
+     "sign": "-",
+     "d": 3,
+     "answer": 4,
+     "id": "small-3"
+    },
+    {
+     "v": 5,
+     "sign": "-",
+     "d": 3,
+     "answer": 2,
+     "id": "small-3"
+    },
+    {
+     "v": 5,
+     "sign": "-",
+     "d": 2,
+     "answer": 3,
+     "id": "small-2"
+    },
+    {
+     "v": 6,
+     "sign": "-",
+     "d": 2,
+     "answer": 4,
+     "id": "small-2"
+    },
+    {
+     "v": 8,
+     "sign": "-",
+     "d": 3,
+     "answer": 5,
+     "id": "direct"
+    },
+    {
+     "v": 9,
+     "sign": "-",
+     "d": 2,
+     "answer": 7,
+     "id": "direct"
+    },
+    {
+     "v": 7,
+     "sign": "-",
+     "d": 1,
+     "answer": 6,
+     "id": "direct"
+    },
+    {
+     "v": 6,
+     "sign": "-",
+     "d": 3,
+     "answer": 3,
+     "id": "small-3"
+    },
+    {
+     "v": 5,
+     "sign": "-",
+     "d": 2,
+     "answer": 3,
+     "id": "small-2"
+    },
+    {
+     "v": 6,
+     "sign": "-",
+     "d": 3,
+     "answer": 3,
+     "id": "small-3"
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      4,
+      -3,
+      8
+     ],
+     "answer": 9
+    },
+    {
+     "terms": [
+      6,
+      2,
+      -2,
+      3
+     ],
+     "answer": 9
+    },
+    {
+     "terms": [
+      4,
+      -2,
+      6,
+      -5
+     ],
+     "answer": 3
+    }
+   ]
+  }
+ },
+ {
+  "day": 70,
+  "block": "sfsub23",
+  "drill": {
+   "kind": "single",
+   "allow": [
+    "direct",
+    "small-"
+   ],
+   "items": [
+    {
+     "v": 5,
+     "sign": "-",
+     "d": 2,
+     "answer": 3,
+     "id": "small-2"
+    },
+    {
+     "v": 7,
+     "sign": "-",
+     "d": 3,
+     "answer": 4,
+     "id": "small-3"
+    },
+    {
+     "v": 6,
+     "sign": "-",
+     "d": 3,
+     "answer": 3,
+     "id": "small-3"
+    },
+    {
+     "v": 5,
+     "sign": "-",
+     "d": 3,
+     "answer": 2,
+     "id": "small-3"
+    },
+    {
+     "v": 6,
+     "sign": "-",
+     "d": 2,
+     "answer": 4,
+     "id": "small-2"
+    },
+    {
+     "v": 4,
+     "sign": "-",
+     "d": 1,
+     "answer": 3,
+     "id": "direct"
+    },
+    {
+     "v": 7,
+     "sign": "-",
+     "d": 6,
+     "answer": 1,
+     "id": "direct"
+    },
+    {
+     "v": 7,
+     "sign": "-",
+     "d": 3,
+     "answer": 4,
+     "id": "small-3"
+    },
+    {
+     "v": 6,
+     "sign": "-",
+     "d": 1,
+     "answer": 5,
+     "id": "direct"
+    },
+    {
+     "v": 6,
+     "sign": "-",
+     "d": 2,
+     "answer": 4,
+     "id": "small-2"
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      5,
+      -5,
+      9
+     ],
+     "answer": 9
+    },
+    {
+     "terms": [
+      5,
+      3,
+      -1,
+      -2
+     ],
+     "answer": 5
+    },
+    {
+     "terms": [
+      8,
+      -6,
+      -1,
+      2
+     ],
+     "answer": 3
+    }
+   ]
+  }
+ },
+ {
+  "day": 71,
+  "block": "sfsub23",
+  "drill": {
+   "kind": "single",
+   "allow": [
+    "direct",
+    "small-"
+   ],
+   "items": [
+    {
+     "v": 6,
+     "sign": "-",
+     "d": 3,
+     "answer": 3,
+     "id": "small-3"
+    },
+    {
+     "v": 6,
+     "sign": "-",
+     "d": 2,
+     "answer": 4,
+     "id": "small-2"
+    },
+    {
+     "v": 7,
+     "sign": "-",
+     "d": 3,
+     "answer": 4,
+     "id": "small-3"
+    },
+    {
+     "v": 5,
+     "sign": "-",
+     "d": 2,
+     "answer": 3,
+     "id": "small-2"
+    },
+    {
+     "v": 7,
+     "sign": "-",
+     "d": 2,
+     "answer": 5,
+     "id": "direct"
+    },
+    {
+     "v": 6,
+     "sign": "-",
+     "d": 2,
+     "answer": 4,
+     "id": "small-2"
+    },
+    {
+     "v": 5,
+     "sign": "-",
+     "d": 3,
+     "answer": 2,
+     "id": "small-3"
+    },
+    {
+     "v": 8,
+     "sign": "-",
+     "d": 2,
+     "answer": 6,
+     "id": "direct"
+    },
+    {
+     "v": 8,
+     "sign": "-",
+     "d": 5,
+     "answer": 3,
+     "id": "direct"
+    },
+    {
+     "v": 5,
+     "sign": "-",
+     "d": 3,
+     "answer": 2,
+     "id": "small-3"
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      1,
+      7,
+      -5
+     ],
+     "answer": 3
+    },
+    {
+     "terms": [
+      8,
+      -6,
+      -1,
+      8
+     ],
+     "answer": 9
+    },
+    {
+     "terms": [
+      5,
+      3,
+      -8,
+      1
+     ],
+     "answer": 1
+    }
+   ]
+  }
+ },
+ {
+  "day": 72,
+  "block": "sfmix",
+  "drill": {
+   "kind": "stacked",
+   "spec": {
+    "terms": 4,
+    "digits": 2,
+    "ops": "mix",
+    "allow": [
+     "direct",
+     "small+",
+     "small-"
+    ],
+    "require": [
+     "small+",
+     "small-"
+    ]
+   },
+   "items": [
+    {
+     "terms": [
+      66,
+      -55,
+      22,
+      53
+     ],
+     "answer": 86,
+     "used": [
+      "direct",
+      "small+3"
+     ]
+    },
+    {
+     "terms": [
+      31,
+      10,
+      -20,
+      35
+     ],
+     "answer": 56,
+     "used": [
+      "direct",
+      "small+3"
+     ]
+    },
+    {
+     "terms": [
+      59,
+      -49,
+      78,
+      -84
+     ],
+     "answer": 4,
+     "used": [
+      "direct",
+      "small-4"
+     ]
+    },
+    {
+     "terms": [
+      69,
+      -35,
+      61,
+      -63
+     ],
+     "answer": 32,
+     "used": [
+      "direct",
+      "small-3",
+      "small+1"
+     ]
+    },
+    {
+     "terms": [
+      83,
+      -51,
+      63,
+      -81
+     ],
+     "answer": 14,
+     "used": [
+      "direct",
+      "small+3",
+      "small-1"
+     ]
+    },
+    {
+     "terms": [
+      94,
+      -42,
+      -32,
+      24
+     ],
+     "answer": 44,
+     "used": [
+      "direct",
+      "small-3"
+     ]
+    },
+    {
+     "terms": [
+      53,
+      24,
+      -34,
+      52
+     ],
+     "answer": 95,
+     "used": [
+      "direct",
+      "small+4",
+      "small-3",
+      "small-4",
+      "small+2"
+     ]
+    },
+    {
+     "terms": [
+      36,
+      40,
+      13,
+      -65
+     ],
+     "answer": 24,
+     "used": [
+      "direct",
+      "small+4"
+     ]
+    },
+    {
+     "terms": [
+      77,
+      -10,
+      -13,
+      25
+     ],
+     "answer": 79,
+     "used": [
+      "direct",
+      "small-3"
+     ]
+    },
+    {
+     "terms": [
+      25,
+      31,
+      -22,
+      34
+     ],
+     "answer": 68,
+     "used": [
+      "direct",
+      "small+3",
+      "small-2",
+      "small+4"
+     ]
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      28,
+      51
+     ],
+     "answer": 79
+    },
+    {
+     "terms": [
+      56,
+      13,
+      10
+     ],
+     "answer": 79
+    },
+    {
+     "terms": [
+      24,
+      10,
+      60
+     ],
+     "answer": 94
+    }
+   ]
+  }
+ },
+ {
+  "day": 73,
+  "block": "sfmix",
+  "drill": {
+   "kind": "stacked",
+   "spec": {
+    "terms": 4,
+    "digits": 2,
+    "ops": "mix",
+    "allow": [
+     "direct",
+     "small+",
+     "small-"
+    ],
+    "require": [
+     "small+",
+     "small-"
+    ]
+   },
+   "items": [
+    {
+     "terms": [
+      85,
+      -20,
+      -41,
+      21
+     ],
+     "answer": 45,
+     "used": [
+      "direct",
+      "small-4",
+      "small-1",
+      "small+1"
+     ]
+    },
+    {
+     "terms": [
+      53,
+      14,
+      -15,
+      44
+     ],
+     "answer": 96,
+     "used": [
+      "direct",
+      "small+4"
+     ]
+    },
+    {
+     "terms": [
+      38,
+      31,
+      -49,
+      43
+     ],
+     "answer": 63,
+     "used": [
+      "direct",
+      "small+3",
+      "small-4",
+      "small+4"
+     ]
+    },
+    {
+     "terms": [
+      18,
+      21,
+      -23,
+      -12
+     ],
+     "answer": 4,
+     "used": [
+      "direct",
+      "small-2"
+     ]
+    },
+    {
+     "terms": [
+      71,
+      -20,
+      44,
+      -82
+     ],
+     "answer": 13,
+     "used": [
+      "direct",
+      "small+4",
+      "small-2"
+     ]
+    },
+    {
+     "terms": [
+      21,
+      51,
+      -30,
+      12
+     ],
+     "answer": 54,
+     "used": [
+      "direct",
+      "small-3",
+      "small+1"
+     ]
+    },
+    {
+     "terms": [
+      93,
+      -51,
+      22,
+      20
+     ],
+     "answer": 84,
+     "used": [
+      "direct",
+      "small+2"
+     ]
+    },
+    {
+     "terms": [
+      93,
+      -30,
+      -33,
+      44
+     ],
+     "answer": 74,
+     "used": [
+      "direct",
+      "small-3",
+      "small+4"
+     ]
+    },
+    {
+     "terms": [
+      57,
+      -22,
+      30,
+      -30
+     ],
+     "answer": 35,
+     "used": [
+      "direct",
+      "small-2",
+      "small+3",
+      "small-3"
+     ]
+    },
+    {
+     "terms": [
+      39,
+      -35,
+      54,
+      -33
+     ],
+     "answer": 25,
+     "used": [
+      "direct",
+      "small+4",
+      "small-3"
+     ]
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      7,
+      -2,
+      2
+     ],
+     "answer": 7
+    },
+    {
+     "terms": [
+      1,
+      -1,
+      8,
+      -1
+     ],
+     "answer": 7
+    },
+    {
+     "terms": [
+      1,
+      6,
+      -1,
+      1
+     ],
+     "answer": 7
+    }
+   ]
+  }
+ },
+ {
+  "day": 74,
+  "block": "sfmix",
+  "drill": {
+   "kind": "stacked",
+   "spec": {
+    "terms": 4,
+    "digits": 2,
+    "ops": "mix",
+    "allow": [
+     "direct",
+     "small+",
+     "small-"
+    ],
+    "require": [
+     "small+",
+     "small-"
+    ]
+   },
+   "items": [
+    {
+     "terms": [
+      65,
+      -41,
+      64,
+      -17
+     ],
+     "answer": 71,
+     "used": [
+      "direct",
+      "small-4",
+      "small-1",
+      "small+4"
+     ]
+    },
+    {
+     "terms": [
+      96,
+      -62,
+      20,
+      -11
+     ],
+     "answer": 43,
+     "used": [
+      "direct",
+      "small-2",
+      "small+2",
+      "small-1"
+     ]
+    },
+    {
+     "terms": [
+      95,
+      -40,
+      31,
+      -32
+     ],
+     "answer": 54,
+     "used": [
+      "direct",
+      "small-2"
+     ]
+    },
+    {
+     "terms": [
+      41,
+      54,
+      -95,
+      82
+     ],
+     "answer": 82,
+     "used": [
+      "direct",
+      "small+4"
+     ]
+    },
+    {
+     "terms": [
+      25,
+      61,
+      -30,
+      -53
+     ],
+     "answer": 3,
+     "used": [
+      "direct",
+      "small-3"
+     ]
+    },
+    {
+     "terms": [
+      40,
+      38,
+      -12,
+      -32
+     ],
+     "answer": 34,
+     "used": [
+      "direct",
+      "small+3",
+      "small-3",
+      "small-2"
+     ]
+    },
+    {
+     "terms": [
+      20,
+      30,
+      30,
+      10
+     ],
+     "answer": 90,
+     "used": [
+      "direct",
+      "small+3"
+     ]
+    },
+    {
+     "terms": [
+      60,
+      13,
+      24,
+      -86
+     ],
+     "answer": 11,
+     "used": [
+      "direct",
+      "small+4"
+     ]
+    },
+    {
+     "terms": [
+      30,
+      36,
+      -11,
+      -30
+     ],
+     "answer": 25,
+     "used": [
+      "direct",
+      "small+3",
+      "small-3"
+     ]
+    },
+    {
+     "terms": [
+      75,
+      -44,
+      61,
+      -31
+     ],
+     "answer": 61,
+     "used": [
+      "direct",
+      "small-4"
+     ]
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      20,
+      50
+     ],
+     "answer": 70
+    },
+    {
+     "terms": [
+      57,
+      21,
+      10
+     ],
+     "answer": 88
+    },
+    {
+     "terms": [
+      64,
+      20,
+      10
+     ],
+     "answer": 94
+    }
+   ]
+  }
+ },
+ {
+  "day": 75,
+  "block": "sfmix",
+  "drill": {
+   "kind": "stacked",
+   "spec": {
+    "terms": 4,
+    "digits": 2,
+    "ops": "mix",
+    "allow": [
+     "direct",
+     "small+",
+     "small-"
+    ],
+    "require": [
+     "small+",
+     "small-"
+    ]
+   },
+   "items": [
+    {
+     "terms": [
+      86,
+      -22,
+      -54,
+      78
+     ],
+     "answer": 88,
+     "used": [
+      "direct",
+      "small-2"
+     ]
+    },
+    {
+     "terms": [
+      10,
+      43,
+      -43,
+      62
+     ],
+     "answer": 72,
+     "used": [
+      "direct",
+      "small+4",
+      "small-4"
+     ]
+    },
+    {
+     "terms": [
+      43,
+      55,
+      -22,
+      -42
+     ],
+     "answer": 34,
+     "used": [
+      "direct",
+      "small-4",
+      "small-2"
+     ]
+    },
+    {
+     "terms": [
+      44,
+      52,
+      -93,
+      76
+     ],
+     "answer": 79,
+     "used": [
+      "direct",
+      "small+2",
+      "small-3"
+     ]
+    },
+    {
+     "terms": [
+      16,
+      40,
+      -45,
+      13
+     ],
+     "answer": 24,
+     "used": [
+      "direct",
+      "small+4",
+      "small-4"
+     ]
+    },
+    {
+     "terms": [
+      21,
+      25,
+      41,
+      -23
+     ],
+     "answer": 64,
+     "used": [
+      "direct",
+      "small+4",
+      "small-3"
+     ]
+    },
+    {
+     "terms": [
+      30,
+      15,
+      -23,
+      24
+     ],
+     "answer": 46,
+     "used": [
+      "direct",
+      "small-3",
+      "small+4"
+     ]
+    },
+    {
+     "terms": [
+      44,
+      24,
+      -11,
+      -54
+     ],
+     "answer": 3,
+     "used": [
+      "direct",
+      "small+2",
+      "small+4",
+      "small-4"
+     ]
+    },
+    {
+     "terms": [
+      73,
+      12,
+      10,
+      -81
+     ],
+     "answer": 14,
+     "used": [
+      "direct",
+      "small+2",
+      "small-1"
+     ]
+    },
+    {
+     "terms": [
+      18,
+      81,
+      -86,
+      42
+     ],
+     "answer": 55,
+     "used": [
+      "direct",
+      "small+4",
+      "small+2"
+     ]
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      5,
+      -5,
+      5
+     ],
+     "answer": 5
+    },
+    {
+     "terms": [
+      3,
+      -3,
+      1,
+      8
+     ],
+     "answer": 9
+    },
+    {
+     "terms": [
+      1,
+      -1,
+      2,
+      7
+     ],
+     "answer": 9
+    }
+   ]
+  }
+ },
+ {
+  "day": 76,
+  "block": "sfmix",
+  "drill": {
+   "kind": "stacked",
+   "spec": {
+    "terms": 4,
+    "digits": 2,
+    "ops": "mix",
+    "allow": [
+     "direct",
+     "small+",
+     "small-"
+    ],
+    "require": [
+     "small+",
+     "small-"
+    ]
+   },
+   "items": [
+    {
+     "terms": [
+      77,
+      -13,
+      15,
+      -49
+     ],
+     "answer": 30,
+     "used": [
+      "direct",
+      "small-3",
+      "small-4"
+     ]
+    },
+    {
+     "terms": [
+      85,
+      -74,
+      47,
+      -40
+     ],
+     "answer": 18,
+     "used": [
+      "direct",
+      "small-4",
+      "small+4"
+     ]
+    },
+    {
+     "terms": [
+      87,
+      -11,
+      -13,
+      11
+     ],
+     "answer": 74,
+     "used": [
+      "direct",
+      "small-3"
+     ]
+    },
+    {
+     "terms": [
+      48,
+      10,
+      -57,
+      82
+     ],
+     "answer": 83,
+     "used": [
+      "direct",
+      "small+1"
+     ]
+    },
+    {
+     "terms": [
+      98,
+      -50,
+      30,
+      -16
+     ],
+     "answer": 62,
+     "used": [
+      "direct",
+      "small+3"
+     ]
+    },
+    {
+     "terms": [
+      20,
+      37,
+      -55,
+      92
+     ],
+     "answer": 94,
+     "used": [
+      "direct",
+      "small+3"
+     ]
+    },
+    {
+     "terms": [
+      95,
+      -14,
+      14,
+      -44
+     ],
+     "answer": 51,
+     "used": [
+      "direct",
+      "small-4",
+      "small+4"
+     ]
+    },
+    {
+     "terms": [
+      97,
+      -82,
+      53,
+      -26
+     ],
+     "answer": 42,
+     "used": [
+      "direct",
+      "small-2"
+     ]
+    },
+    {
+     "terms": [
+      56,
+      -11,
+      53,
+      -93
+     ],
+     "answer": 5,
+     "used": [
+      "direct",
+      "small-1"
+     ]
+    },
+    {
+     "terms": [
+      25,
+      42,
+      -52,
+      21
+     ],
+     "answer": 36,
+     "used": [
+      "direct",
+      "small+4"
+     ]
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      30,
+      67
+     ],
+     "answer": 97
+    },
+    {
+     "terms": [
+      50,
+      18,
+      10
+     ],
+     "answer": 78
+    },
+    {
+     "terms": [
+      25,
+      10,
+      13
+     ],
+     "answer": 48
+    }
+   ]
+  }
+ },
+ {
+  "day": 77,
+  "block": "sfmix",
+  "drill": {
+   "kind": "stacked",
+   "spec": {
+    "terms": 4,
+    "digits": 2,
+    "ops": "mix",
+    "allow": [
+     "direct",
+     "small+",
+     "small-"
+    ],
+    "require": [
+     "small+",
+     "small-"
+    ]
+   },
+   "items": [
+    {
+     "terms": [
+      44,
+      -10,
+      63,
+      -90
+     ],
+     "answer": 7,
+     "used": [
+      "direct",
+      "small+3"
+     ]
+    },
+    {
+     "terms": [
+      41,
+      35,
+      -12,
+      32
+     ],
+     "answer": 96,
+     "used": [
+      "direct",
+      "small+3",
+      "small-2",
+      "small+2"
+     ]
+    },
+    {
+     "terms": [
+      40,
+      29,
+      -41,
+      40
+     ],
+     "answer": 68,
+     "used": [
+      "direct",
+      "small+2",
+      "small-4",
+      "small+4"
+     ]
+    },
+    {
+     "terms": [
+      19,
+      30,
+      30,
+      -45
+     ],
+     "answer": 34,
+     "used": [
+      "direct",
+      "small+3",
+      "small-4"
+     ]
+    },
+    {
+     "terms": [
+      13,
+      84,
+      -22,
+      -14
+     ],
+     "answer": 61,
+     "used": [
+      "direct",
+      "small+4",
+      "small-4"
+     ]
+    },
+    {
+     "terms": [
+      59,
+      -44,
+      33,
+      -32
+     ],
+     "answer": 16,
+     "used": [
+      "direct",
+      "small-4"
+     ]
+    },
+    {
+     "terms": [
+      60,
+      -30,
+      32,
+      16
+     ],
+     "answer": 78,
+     "used": [
+      "direct",
+      "small-3",
+      "small+3"
+     ]
+    },
+    {
+     "terms": [
+      45,
+      43,
+      -83,
+      20
+     ],
+     "answer": 25,
+     "used": [
+      "direct",
+      "small+4"
+     ]
+    },
+    {
+     "terms": [
+      53,
+      14,
+      30,
+      -10
+     ],
+     "answer": 87,
+     "used": [
+      "direct",
+      "small+4"
+     ]
+    },
+    {
+     "terms": [
+      91,
+      -51,
+      48,
+      -37
+     ],
+     "answer": 51,
+     "used": [
+      "direct",
+      "small+4"
+     ]
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      9,
+      -7,
+      5
+     ],
+     "answer": 7
+    },
+    {
+     "terms": [
+      5,
+      3,
+      1,
+      -4
+     ],
+     "answer": 5
+    },
+    {
+     "terms": [
+      7,
+      -5,
+      2,
+      5
+     ],
+     "answer": 9
+    }
+   ]
+  }
+ },
+ {
+  "day": 78,
+  "block": "sfmix",
+  "drill": {
+   "kind": "stacked",
+   "spec": {
+    "terms": 4,
+    "digits": 2,
+    "ops": "mix",
+    "allow": [
+     "direct",
+     "small+",
+     "small-"
+    ],
+    "require": [
+     "small+",
+     "small-"
+    ]
+   },
+   "items": [
+    {
+     "terms": [
+      21,
+      78,
+      -31,
+      -36
+     ],
+     "answer": 32,
+     "used": [
+      "direct",
+      "small-3"
+     ]
+    },
+    {
+     "terms": [
+      42,
+      -20,
+      36,
+      -11
+     ],
+     "answer": 47,
+     "used": [
+      "direct",
+      "small+3",
+      "small-1"
+     ]
+    },
+    {
+     "terms": [
+      91,
+      -51,
+      33,
+      23
+     ],
+     "answer": 96,
+     "used": [
+      "direct",
+      "small+3"
+     ]
+    },
+    {
+     "terms": [
+      61,
+      13,
+      12,
+      -16
+     ],
+     "answer": 70,
+     "used": [
+      "direct",
+      "small+2"
+     ]
+    },
+    {
+     "terms": [
+      14,
+      44,
+      -50,
+      31
+     ],
+     "answer": 39,
+     "used": [
+      "direct",
+      "small+4"
+     ]
+    },
+    {
+     "terms": [
+      18,
+      40,
+      -25,
+      -12
+     ],
+     "answer": 21,
+     "used": [
+      "direct",
+      "small+4",
+      "small-2"
+     ]
+    },
+    {
+     "terms": [
+      53,
+      -12,
+      37,
+      -75
+     ],
+     "answer": 3,
+     "used": [
+      "direct",
+      "small-1",
+      "small+3"
+     ]
+    },
+    {
+     "terms": [
+      77,
+      -21,
+      -36,
+      57
+     ],
+     "answer": 77,
+     "used": [
+      "direct",
+      "small-3"
+     ]
+    },
+    {
+     "terms": [
+      71,
+      14,
+      11,
+      -35
+     ],
+     "answer": 61,
+     "used": [
+      "direct",
+      "small+4"
+     ]
+    },
+    {
+     "terms": [
+      40,
+      48,
+      -34,
+      30
+     ],
+     "answer": 84,
+     "used": [
+      "direct",
+      "small+4",
+      "small-4"
+     ]
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      20,
+      76
+     ],
+     "answer": 96
+    },
+    {
+     "terms": [
+      70,
+      10,
+      14
+     ],
+     "answer": 94
+    },
+    {
+     "terms": [
+      20,
+      65,
+      13
+     ],
+     "answer": 98
+    }
+   ]
+  }
+ },
+ {
+  "day": 79,
+  "block": "sfmix",
+  "drill": {
+   "kind": "stacked",
+   "spec": {
+    "terms": 4,
+    "digits": 2,
+    "ops": "mix",
+    "allow": [
+     "direct",
+     "small+",
+     "small-"
+    ],
+    "require": [
+     "small+",
+     "small-"
+    ]
+   },
+   "items": [
+    {
+     "terms": [
+      57,
+      -33,
+      44,
+      -45
+     ],
+     "answer": 23,
+     "used": [
+      "direct",
+      "small-3",
+      "small+4",
+      "small-4"
+     ]
+    },
+    {
+     "terms": [
+      17,
+      81,
+      -63,
+      41
+     ],
+     "answer": 76,
+     "used": [
+      "direct",
+      "small+4"
+     ]
+    },
+    {
+     "terms": [
+      54,
+      10,
+      -44,
+      36
+     ],
+     "answer": 56,
+     "used": [
+      "direct",
+      "small-4",
+      "small+3"
+     ]
+    },
+    {
+     "terms": [
+      74,
+      15,
+      -85,
+      44
+     ],
+     "answer": 48,
+     "used": [
+      "direct",
+      "small+4"
+     ]
+    },
+    {
+     "terms": [
+      27,
+      32,
+      -15,
+      -40
+     ],
+     "answer": 4,
+     "used": [
+      "direct",
+      "small+3",
+      "small-1"
+     ]
+    },
+    {
+     "terms": [
+      84,
+      -33,
+      45,
+      -12
+     ],
+     "answer": 84,
+     "used": [
+      "direct",
+      "small-2"
+     ]
+    },
+    {
+     "terms": [
+      58,
+      -32,
+      -22,
+      63
+     ],
+     "answer": 67,
+     "used": [
+      "direct",
+      "small-3",
+      "small-2",
+      "small+3"
+     ]
+    },
+    {
+     "terms": [
+      64,
+      14,
+      -50,
+      -13
+     ],
+     "answer": 15,
+     "used": [
+      "direct",
+      "small+4"
+     ]
+    },
+    {
+     "terms": [
+      98,
+      -80,
+      61,
+      -43
+     ],
+     "answer": 36,
+     "used": [
+      "direct",
+      "small-4"
+     ]
+    },
+    {
+     "terms": [
+      84,
+      -30,
+      -10,
+      52
+     ],
+     "answer": 96,
+     "used": [
+      "direct",
+      "small-1",
+      "small+2"
+     ]
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      5,
+      2,
+      2
+     ],
+     "answer": 9
+    },
+    {
+     "terms": [
+      9,
+      -6,
+      6,
+      -6
+     ],
+     "answer": 3
+    },
+    {
+     "terms": [
+      4,
+      -4,
+      7,
+      -2
+     ],
+     "answer": 5
+    }
+   ]
+  }
+ },
+ {
+  "day": 80,
+  "block": "speed",
+  "drill": {
+   "kind": "stacked",
+   "spec": {
+    "terms": 5,
+    "digits": 2,
+    "ops": "mix",
+    "allow": [
+     "direct",
+     "small+",
+     "small-"
+    ]
+   },
+   "items": [
+    {
+     "terms": [
+      18,
+      -12,
+      53,
+      -15,
+      -24
+     ],
+     "answer": 20,
+     "used": [
+      "direct",
+      "small-1"
+     ]
+    },
+    {
+     "terms": [
+      97,
+      -83,
+      -12,
+      44,
+      22
+     ],
+     "answer": 68,
+     "used": [
+      "direct",
+      "small-3",
+      "small+4",
+      "small+2"
+     ]
+    },
+    {
+     "terms": [
+      34,
+      61,
+      -91,
+      41,
+      12
+     ],
+     "answer": 57,
+     "used": [
+      "direct",
+      "small+1",
+      "small-1"
+     ]
+    },
+    {
+     "terms": [
+      90,
+      -70,
+      18,
+      10,
+      -44
+     ],
+     "answer": 4,
+     "used": [
+      "direct",
+      "small-4"
+     ]
+    },
+    {
+     "terms": [
+      99,
+      -41,
+      -30,
+      31,
+      -20
+     ],
+     "answer": 39,
+     "used": [
+      "direct",
+      "small-3",
+      "small+3",
+      "small-2"
+     ]
+    },
+    {
+     "terms": [
+      29,
+      -26,
+      71,
+      -74,
+      91
+     ],
+     "answer": 91,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      15,
+      82,
+      -22,
+      10,
+      -55
+     ],
+     "answer": 30,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      33,
+      -10,
+      16,
+      -38,
+      81
+     ],
+     "answer": 82,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      16,
+      13,
+      -13,
+      60,
+      -25
+     ],
+     "answer": 51,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      48,
+      -21,
+      40,
+      -10,
+      -45
+     ],
+     "answer": 12,
+     "used": [
+      "direct",
+      "small+4",
+      "small-4"
+     ]
+    }
+   ],
+   "timed": true
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      99,
+      -68
+     ],
+     "answer": 31
+    },
+    {
+     "terms": [
+      14,
+      -10,
+      20
+     ],
+     "answer": 24
+    },
+    {
+     "terms": [
+      61,
+      31,
+      -11
+     ],
+     "answer": 81
+    }
+   ]
+  }
+ },
+ {
+  "day": 81,
+  "block": "speed",
+  "drill": {
+   "kind": "stacked",
+   "spec": {
+    "terms": 5,
+    "digits": 2,
+    "ops": "mix",
+    "allow": [
+     "direct",
+     "small+",
+     "small-"
+    ]
+   },
+   "items": [
+    {
+     "terms": [
+      13,
+      32,
+      34,
+      -35,
+      52
+     ],
+     "answer": 96,
+     "used": [
+      "direct",
+      "small+2",
+      "small+3",
+      "small-3"
+     ]
+    },
+    {
+     "terms": [
+      20,
+      35,
+      -15,
+      18,
+      -50
+     ],
+     "answer": 8,
+     "used": [
+      "direct",
+      "small+3",
+      "small-1",
+      "small+1"
+     ]
+    },
+    {
+     "terms": [
+      67,
+      -62,
+      93,
+      -20,
+      -13
+     ],
+     "answer": 65,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      54,
+      11,
+      10,
+      -53,
+      22
+     ],
+     "answer": 44,
+     "used": [
+      "direct",
+      "small+1",
+      "small-3"
+     ]
+    },
+    {
+     "terms": [
+      57,
+      21,
+      -60,
+      71,
+      -37
+     ],
+     "answer": 52,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      30,
+      59,
+      -40,
+      -40,
+      50
+     ],
+     "answer": 59,
+     "used": [
+      "direct",
+      "small-4"
+     ]
+    },
+    {
+     "terms": [
+      12,
+      45,
+      -54,
+      40,
+      31
+     ],
+     "answer": 74,
+     "used": [
+      "direct",
+      "small+4",
+      "small-4",
+      "small+3"
+     ]
+    },
+    {
+     "terms": [
+      15,
+      44,
+      -25,
+      14,
+      -31
+     ],
+     "answer": 17,
+     "used": [
+      "direct",
+      "small+4",
+      "small-2"
+     ]
+    },
+    {
+     "terms": [
+      79,
+      -29,
+      15,
+      -24,
+      -11
+     ],
+     "answer": 30,
+     "used": [
+      "direct",
+      "small-2",
+      "small-4"
+     ]
+    },
+    {
+     "terms": [
+      44,
+      -34,
+      26,
+      41,
+      10
+     ],
+     "answer": 87,
+     "used": [
+      "direct",
+      "small+4"
+     ]
+    }
+   ],
+   "timed": true
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      7,
+      -6,
+      6
+     ],
+     "answer": 7
+    },
+    {
+     "terms": [
+      7,
+      -7,
+      5,
+      2
+     ],
+     "answer": 7
+    },
+    {
+     "terms": [
+      8,
+      -1,
+      -5,
+      -1
+     ],
+     "answer": 1
+    }
+   ]
+  }
+ },
+ {
+  "day": 82,
+  "block": "speed",
+  "drill": {
+   "kind": "stacked",
+   "spec": {
+    "terms": 5,
+    "digits": 2,
+    "ops": "mix",
+    "allow": [
+     "direct",
+     "small+",
+     "small-"
+    ]
+   },
+   "items": [
+    {
+     "terms": [
+      50,
+      48,
+      -70,
+      61,
+      -74
+     ],
+     "answer": 15,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      93,
+      -11,
+      -81,
+      23,
+      54
+     ],
+     "answer": 78,
+     "used": [
+      "direct",
+      "small+4"
+     ]
+    },
+    {
+     "terms": [
+      41,
+      45,
+      -16,
+      15,
+      -40
+     ],
+     "answer": 45,
+     "used": [
+      "direct",
+      "small+4",
+      "small-4"
+     ]
+    },
+    {
+     "terms": [
+      56,
+      21,
+      -10,
+      -14,
+      -50
+     ],
+     "answer": 3,
+     "used": [
+      "direct",
+      "small-4"
+     ]
+    },
+    {
+     "terms": [
+      31,
+      12,
+      52,
+      -45,
+      46
+     ],
+     "answer": 96,
+     "used": [
+      "direct",
+      "small+2"
+     ]
+    },
+    {
+     "terms": [
+      87,
+      -60,
+      50,
+      -52,
+      63
+     ],
+     "answer": 88,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      51,
+      38,
+      -19,
+      28,
+      -34
+     ],
+     "answer": 64,
+     "used": [
+      "direct",
+      "small-4"
+     ]
+    },
+    {
+     "terms": [
+      86,
+      -13,
+      -12,
+      28,
+      -34
+     ],
+     "answer": 55,
+     "used": [
+      "direct",
+      "small-3"
+     ]
+    },
+    {
+     "terms": [
+      51,
+      25,
+      -15,
+      25,
+      -62
+     ],
+     "answer": 24,
+     "used": [
+      "direct",
+      "small-2"
+     ]
+    },
+    {
+     "terms": [
+      79,
+      -18,
+      -10,
+      35,
+      -51
+     ],
+     "answer": 35,
+     "used": [
+      "direct"
+     ]
+    }
+   ],
+   "timed": true
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      99,
+      -87
+     ],
+     "answer": 12
+    },
+    {
+     "terms": [
+      32,
+      -10,
+      50
+     ],
+     "answer": 72
+    },
+    {
+     "terms": [
+      86,
+      -80,
+      83
+     ],
+     "answer": 89
+    }
+   ]
+  }
+ },
+ {
+  "day": 83,
+  "block": "speed",
+  "drill": {
+   "kind": "stacked",
+   "spec": {
+    "terms": 5,
+    "digits": 2,
+    "ops": "mix",
+    "allow": [
+     "direct",
+     "small+",
+     "small-"
+    ]
+   },
+   "items": [
+    {
+     "terms": [
+      52,
+      -42,
+      13,
+      53,
+      -21
+     ],
+     "answer": 55,
+     "used": [
+      "direct",
+      "small-4",
+      "small+3"
+     ]
+    },
+    {
+     "terms": [
+      89,
+      -89,
+      20,
+      66,
+      -53
+     ],
+     "answer": 33,
+     "used": [
+      "direct",
+      "small-3"
+     ]
+    },
+    {
+     "terms": [
+      66,
+      -62,
+      22,
+      -22,
+      40
+     ],
+     "answer": 44,
+     "used": [
+      "direct",
+      "small-2",
+      "small+2"
+     ]
+    },
+    {
+     "terms": [
+      79,
+      -23,
+      -40,
+      23,
+      -26
+     ],
+     "answer": 13,
+     "used": [
+      "direct",
+      "small-4"
+     ]
+    },
+    {
+     "terms": [
+      64,
+      15,
+      -35,
+      41,
+      -62
+     ],
+     "answer": 23,
+     "used": [
+      "direct",
+      "small-3",
+      "small+4",
+      "small+1",
+      "small-2"
+     ]
+    },
+    {
+     "terms": [
+      27,
+      50,
+      -66,
+      27,
+      -35
+     ],
+     "answer": 3,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      21,
+      17,
+      -35,
+      71,
+      -11
+     ],
+     "answer": 63,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      16,
+      61,
+      -57,
+      13,
+      43
+     ],
+     "answer": 76,
+     "used": [
+      "direct",
+      "small+4",
+      "small+3"
+     ]
+    },
+    {
+     "terms": [
+      30,
+      51,
+      -81,
+      81,
+      15
+     ],
+     "answer": 96,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      99,
+      -44,
+      41,
+      -63,
+      51
+     ],
+     "answer": 84,
+     "used": [
+      "direct",
+      "small-3"
+     ]
+    }
+   ],
+   "timed": true
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      8,
+      -1,
+      2
+     ],
+     "answer": 9
+    },
+    {
+     "terms": [
+      8,
+      -5,
+      -3,
+      5
+     ],
+     "answer": 5
+    },
+    {
+     "terms": [
+      9,
+      -8,
+      5,
+      -5
+     ],
+     "answer": 1
+    }
+   ]
+  }
+ },
+ {
+  "day": 84,
+  "block": "speed",
+  "drill": {
+   "kind": "stacked",
+   "spec": {
+    "terms": 5,
+    "digits": 2,
+    "ops": "mix",
+    "allow": [
+     "direct",
+     "small+",
+     "small-"
+    ]
+   },
+   "items": [
+    {
+     "terms": [
+      40,
+      41,
+      11,
+      -71,
+      35
+     ],
+     "answer": 56,
+     "used": [
+      "direct",
+      "small+4",
+      "small+3"
+     ]
+    },
+    {
+     "terms": [
+      75,
+      -13,
+      35,
+      -24,
+      23
+     ],
+     "answer": 96,
+     "used": [
+      "direct",
+      "small-3",
+      "small-4",
+      "small+3"
+     ]
+    },
+    {
+     "terms": [
+      21,
+      73,
+      -42,
+      27,
+      -40
+     ],
+     "answer": 39,
+     "used": [
+      "direct",
+      "small-4"
+     ]
+    },
+    {
+     "terms": [
+      70,
+      -70,
+      86,
+      -41,
+      -42
+     ],
+     "answer": 3,
+     "used": [
+      "direct",
+      "small-4",
+      "small-2"
+     ]
+    },
+    {
+     "terms": [
+      36,
+      -30,
+      81,
+      12,
+      -84
+     ],
+     "answer": 15,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      61,
+      25,
+      -76,
+      64,
+      11
+     ],
+     "answer": 85,
+     "used": [
+      "direct",
+      "small+1"
+     ]
+    },
+    {
+     "terms": [
+      20,
+      57,
+      -47,
+      55,
+      -20
+     ],
+     "answer": 65,
+     "used": [
+      "direct",
+      "small-4"
+     ]
+    },
+    {
+     "terms": [
+      57,
+      -10,
+      -20,
+      -24,
+      46
+     ],
+     "answer": 49,
+     "used": [
+      "direct",
+      "small-1",
+      "small-4"
+     ]
+    },
+    {
+     "terms": [
+      14,
+      84,
+      -21,
+      -65,
+      17
+     ],
+     "answer": 29,
+     "used": [
+      "direct",
+      "small+4"
+     ]
+    },
+    {
+     "terms": [
+      34,
+      51,
+      -41,
+      -30,
+      60
+     ],
+     "answer": 74,
+     "used": [
+      "direct",
+      "small+1",
+      "small-4",
+      "small-1"
+     ]
+    }
+   ],
+   "timed": true
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      26,
+      -10
+     ],
+     "answer": 16
+    },
+    {
+     "terms": [
+      98,
+      -18,
+      12
+     ],
+     "answer": 92
+    },
+    {
+     "terms": [
+      12,
+      61,
+      -20
+     ],
+     "answer": 53
+    }
+   ]
+  }
+ },
+ {
+  "day": 85,
+  "block": "speed",
+  "drill": {
+   "kind": "stacked",
+   "spec": {
+    "terms": 5,
+    "digits": 2,
+    "ops": "mix",
+    "allow": [
+     "direct",
+     "small+",
+     "small-"
+    ]
+   },
+   "items": [
+    {
+     "terms": [
+      11,
+      54,
+      -51,
+      24,
+      51
+     ],
+     "answer": 89,
+     "used": [
+      "direct",
+      "small+4",
+      "small-1"
+     ]
+    },
+    {
+     "terms": [
+      88,
+      -32,
+      -21,
+      42,
+      -64
+     ],
+     "answer": 13,
+     "used": [
+      "direct",
+      "small-2",
+      "small+4",
+      "small-4"
+     ]
+    },
+    {
+     "terms": [
+      58,
+      -36,
+      61,
+      -21,
+      17
+     ],
+     "answer": 79,
+     "used": [
+      "direct",
+      "small-3"
+     ]
+    },
+    {
+     "terms": [
+      30,
+      30,
+      16,
+      -56,
+      49
+     ],
+     "answer": 69,
+     "used": [
+      "direct",
+      "small+3",
+      "small+4"
+     ]
+    },
+    {
+     "terms": [
+      78,
+      -74,
+      15,
+      -15,
+      21
+     ],
+     "answer": 25,
+     "used": [
+      "direct",
+      "small-4",
+      "small+1"
+     ]
+    },
+    {
+     "terms": [
+      67,
+      -15,
+      32,
+      13,
+      -41
+     ],
+     "answer": 56,
+     "used": [
+      "direct",
+      "small+3"
+     ]
+    },
+    {
+     "terms": [
+      10,
+      29,
+      60,
+      -27,
+      24
+     ],
+     "answer": 96,
+     "used": [
+      "direct",
+      "small+4"
+     ]
+    },
+    {
+     "terms": [
+      89,
+      -24,
+      -35,
+      49,
+      -33
+     ],
+     "answer": 46,
+     "used": [
+      "direct",
+      "small-3",
+      "small+4"
+     ]
+    },
+    {
+     "terms": [
+      25,
+      64,
+      -45,
+      -30,
+      21
+     ],
+     "answer": 35,
+     "used": [
+      "direct",
+      "small-4",
+      "small+1"
+     ]
+    },
+    {
+     "terms": [
+      18,
+      41,
+      -44,
+      74,
+      -86
+     ],
+     "answer": 3,
+     "used": [
+      "direct",
+      "small+4",
+      "small-4"
+     ]
+    }
+   ],
+   "timed": true
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      7,
+      -5,
+      7
+     ],
+     "answer": 9
+    },
+    {
+     "terms": [
+      5,
+      2,
+      -1,
+      -5
+     ],
+     "answer": 1
+    },
+    {
+     "terms": [
+      8,
+      -2,
+      -6,
+      3
+     ],
+     "answer": 3
+    }
+   ]
+  }
+ },
+ {
+  "day": 86,
+  "block": "mental",
+  "drill": {
+   "kind": "mental",
+   "spec": {
+    "terms": 3,
+    "digits": 1,
+    "ops": "add",
+    "allow": [
+     "direct"
+    ]
+   },
+   "items": [
+    {
+     "terms": [
+      6,
+      2,
+      1
+     ],
+     "answer": 9,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      1,
+      7,
+      1
+     ],
+     "answer": 9,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      5,
+      2,
+      1
+     ],
+     "answer": 8,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      2,
+      1,
+      1
+     ],
+     "answer": 4,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      6,
+      1,
+      2
+     ],
+     "answer": 9,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      1,
+      6,
+      1
+     ],
+     "answer": 8,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      5,
+      1,
+      2
+     ],
+     "answer": 8,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      1,
+      1,
+      1
+     ],
+     "answer": 3,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      1,
+      5,
+      1
+     ],
+     "answer": 7,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      5,
+      1,
+      1
+     ],
+     "answer": 7,
+     "used": [
+      "direct"
+     ]
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      8,
+      -2,
+      3
+     ],
+     "answer": 9
+    },
+    {
+     "terms": [
+      9,
+      -1,
+      1,
+      -4
+     ],
+     "answer": 5
+    },
+    {
+     "terms": [
+      1,
+      8,
+      -2,
+      -2
+     ],
+     "answer": 5
+    }
+   ]
+  }
+ },
+ {
+  "day": 87,
+  "block": "mental",
+  "drill": {
+   "kind": "mental",
+   "spec": {
+    "terms": 3,
+    "digits": 1,
+    "ops": "add",
+    "allow": [
+     "direct"
+    ]
+   },
+   "items": [
+    {
+     "terms": [
+      1,
+      5,
+      2
+     ],
+     "answer": 8,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      2,
+      5,
+      2
+     ],
+     "answer": 9,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      5,
+      1,
+      1
+     ],
+     "answer": 7,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      1,
+      2,
+      5
+     ],
+     "answer": 8,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      2,
+      1,
+      1
+     ],
+     "answer": 4,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      1,
+      1,
+      1
+     ],
+     "answer": 3,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      1,
+      5,
+      1
+     ],
+     "answer": 7,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      3,
+      5,
+      1
+     ],
+     "answer": 9,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      1,
+      1,
+      6
+     ],
+     "answer": 8,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      3,
+      1,
+      5
+     ],
+     "answer": 9,
+     "used": [
+      "direct"
+     ]
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      2,
+      2,
+      -3
+     ],
+     "answer": 1
+    },
+    {
+     "terms": [
+      8,
+      -1,
+      -7,
+      7
+     ],
+     "answer": 7
+    },
+    {
+     "terms": [
+      8,
+      1,
+      -7,
+      5
+     ],
+     "answer": 7
+    }
+   ]
+  }
+ },
+ {
+  "day": 88,
+  "block": "mental",
+  "drill": {
+   "kind": "mental",
+   "spec": {
+    "terms": 3,
+    "digits": 1,
+    "ops": "add",
+    "allow": [
+     "direct"
+    ]
+   },
+   "items": [
+    {
+     "terms": [
+      2,
+      6,
+      1
+     ],
+     "answer": 9,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      1,
+      1,
+      5
+     ],
+     "answer": 7,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      5,
+      1,
+      1
+     ],
+     "answer": 7,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      6,
+      1,
+      1
+     ],
+     "answer": 8,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      1,
+      2,
+      1
+     ],
+     "answer": 4,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      2,
+      1,
+      1
+     ],
+     "answer": 4,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      6,
+      2,
+      1
+     ],
+     "answer": 9,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      1,
+      2,
+      5
+     ],
+     "answer": 8,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      3,
+      1,
+      5
+     ],
+     "answer": 9,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      1,
+      1,
+      6
+     ],
+     "answer": 8,
+     "used": [
+      "direct"
+     ]
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      1,
+      1,
+      5
+     ],
+     "answer": 7
+    },
+    {
+     "terms": [
+      7,
+      1,
+      -5,
+      6
+     ],
+     "answer": 9
+    },
+    {
+     "terms": [
+      7,
+      2,
+      -8,
+      2
+     ],
+     "answer": 3
+    }
+   ]
+  }
+ },
+ {
+  "day": 89,
+  "block": "mental",
+  "drill": {
+   "kind": "mental",
+   "spec": {
+    "terms": 3,
+    "digits": 1,
+    "ops": "add",
+    "allow": [
+     "direct"
+    ]
+   },
+   "items": [
+    {
+     "terms": [
+      5,
+      1,
+      2
+     ],
+     "answer": 8,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      1,
+      1,
+      2
+     ],
+     "answer": 4,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      5,
+      3,
+      1
+     ],
+     "answer": 9,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      6,
+      1,
+      1
+     ],
+     "answer": 8,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      6,
+      1,
+      2
+     ],
+     "answer": 9,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      5,
+      1,
+      1
+     ],
+     "answer": 7,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      1,
+      5,
+      1
+     ],
+     "answer": 7,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      1,
+      6,
+      1
+     ],
+     "answer": 8,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      1,
+      2,
+      1
+     ],
+     "answer": 4,
+     "used": [
+      "direct"
+     ]
+    },
+    {
+     "terms": [
+      1,
+      2,
+      6
+     ],
+     "answer": 9,
+     "used": [
+      "direct"
+     ]
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      9,
+      -7,
+      5
+     ],
+     "answer": 7
+    },
+    {
+     "terms": [
+      8,
+      -3,
+      3,
+      -1
+     ],
+     "answer": 7
+    },
+    {
+     "terms": [
+      2,
+      7,
+      -4,
+      2
+     ],
+     "answer": 7
+    }
+   ]
+  }
+ },
+ {
+  "day": 90,
+  "block": "boss2",
+  "drill": {
+   "kind": "boss",
+   "parts": [
+    {
+     "title": "Friend or free?",
+     "kind": "single",
+     "allow": [
+      "direct",
+      "small+",
+      "small-"
+     ],
+     "items": [
+      {
+       "v": 3,
+       "sign": "+",
+       "d": 5,
+       "answer": 8,
+       "id": "direct"
+      },
+      {
+       "v": 4,
+       "sign": "+",
+       "d": 3,
+       "answer": 7,
+       "id": "small+3"
+      },
+      {
+       "v": 4,
+       "sign": "+",
+       "d": 4,
+       "answer": 8,
+       "id": "small+4"
+      },
+      {
+       "v": 5,
+       "sign": "-",
+       "d": 2,
+       "answer": 3,
+       "id": "small-2"
+      },
+      {
+       "v": 8,
+       "sign": "-",
+       "d": 4,
+       "answer": 4,
+       "id": "small-4"
+      },
+      {
+       "v": 6,
+       "sign": "-",
+       "d": 5,
+       "answer": 1,
+       "id": "direct"
+      },
+      {
+       "v": 6,
+       "sign": "-",
+       "d": 2,
+       "answer": 4,
+       "id": "small-2"
+      },
+      {
+       "v": 4,
+       "sign": "-",
+       "d": 3,
+       "answer": 1,
+       "id": "direct"
+      },
+      {
+       "v": 4,
+       "sign": "+",
+       "d": 1,
+       "answer": 5,
+       "id": "small+1"
+      },
+      {
+       "v": 6,
+       "sign": "-",
+       "d": 3,
+       "answer": 3,
+       "id": "small-3"
+      }
+     ],
+     "limit": "two minutes"
+    },
+    {
+     "title": "2-digit, 4 lines",
+     "kind": "stacked",
+     "spec": {
+      "terms": 4,
+      "digits": 2,
+      "ops": "mix",
+      "allow": [
+       "direct",
+       "small+",
+       "small-"
+      ]
+     },
+     "items": [
+      {
+       "terms": [
+        11,
+        47,
+        -51,
+        40
+       ],
+       "answer": 47,
+       "used": [
+        "direct",
+        "small+4"
+       ]
+      },
+      {
+       "terms": [
+        53,
+        -43,
+        72,
+        -52
+       ],
+       "answer": 30,
+       "used": [
+        "direct",
+        "small-4"
+       ]
+      },
+      {
+       "terms": [
+        40,
+        39,
+        -72,
+        52
+       ],
+       "answer": 59,
+       "used": [
+        "direct",
+        "small+3"
+       ]
+      },
+      {
+       "terms": [
+        98,
+        -64,
+        62,
+        -86
+       ],
+       "answer": 10,
+       "used": [
+        "direct",
+        "small-4",
+        "small+2"
+       ]
+      },
+      {
+       "terms": [
+        62,
+        23,
+        -55,
+        47
+       ],
+       "answer": 77,
+       "used": [
+        "direct",
+        "small+3",
+        "small+4"
+       ]
+      },
+      {
+       "terms": [
+        73,
+        -63,
+        43,
+        40
+       ],
+       "answer": 93,
+       "used": [
+        "direct",
+        "small+4"
+       ]
+      }
+     ],
+     "limit": "four minutes"
+    },
+    {
+     "title": "Mental",
+     "kind": "mental",
+     "spec": {
+      "terms": 3,
+      "digits": 1,
+      "ops": "add",
+      "allow": [
+       "direct"
+      ]
+     },
+     "items": [
+      {
+       "terms": [
+        1,
+        2,
+        1
+       ],
+       "answer": 4,
+       "used": [
+        "direct"
+       ]
+      },
+      {
+       "terms": [
+        1,
+        1,
+        1
+       ],
+       "answer": 3,
+       "used": [
+        "direct"
+       ]
+      },
+      {
+       "terms": [
+        5,
+        1,
+        3
+       ],
+       "answer": 9,
+       "used": [
+        "direct"
+       ]
+      },
+      {
+       "terms": [
+        2,
+        1,
+        5
+       ],
+       "answer": 8,
+       "used": [
+        "direct"
+       ]
+      },
+      {
+       "terms": [
+        1,
+        5,
+        1
+       ],
+       "answer": 7,
+       "used": [
+        "direct"
+       ]
+      }
+     ],
+     "limit": "two minutes"
+    }
+   ]
+  },
+  "flash": {
+   "kind": "spoken",
+   "rounds": [
+    {
+     "terms": [
+      1,
+      5
+     ],
+     "answer": 6
+    },
+    {
+     "terms": [
+      1,
+      1,
+      5
+     ],
+     "answer": 7
+    },
+    {
+     "terms": [
+      1,
+      1,
+      1
+     ],
+     "answer": 3
+    }
+   ]
+  }
+ }
+]

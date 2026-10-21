@@ -1,0 +1,9 @@
+{
+  "_readme": "SAMPLE listings for checking the directory on localhost only (the page loads this file only when you press 'Show sample listings' on localhost). Not real people. Never copy these into instructors.json.",
+  "instructors": [
+    { "id": "SAMPLE-0001", "name": "Sample A. (test)", "certified": "2026-10", "city": "Boulder", "state": "CO", "zip": "80302", "travel": "10 miles", "in_person": true, "online": true, "ages": [7, 11], "format": "Small group, weekly, 45 minutes", "next_class": "2027-01-12", "price_from": 25, "about": "Test listing. Two or three true sentences about the instructor go here.", "contact_url": "", "photo": "", "status": "live" },
+    { "id": "SAMPLE-0002", "name": "Sample B. (test)", "certified": "2026-11", "city": "Denver", "state": "CO", "zip": "80205", "travel": "I host the class", "in_person": true, "online": false, "ages": [6, 9], "format": "Saturday mornings, 60 minutes, six kids", "next_class": "2026-01-03", "price_from": 30, "about": "Test listing with a next-class date in the past, which the page hides.", "contact_url": "", "photo": "", "status": "live" },
+    { "id": "SAMPLE-0003", "name": "Sample C. (test)", "certified": "2026-12", "city": "Austin", "state": "TX", "zip": "78704", "in_person": false, "online": true, "ages": [8, 12], "format": "Online, twice a week, 30 minutes", "about": "Test listing that teaches online only, so it shows for every state under 'Also teaching online'.", "contact_url": "https://example.com/book", "photo": "", "status": "live" },
+    { "id": "SAMPLE-0004", "name": "Sample D. (test)", "certified": "2026-12", "city": "Sheridan", "state": "WY", "zip": "82801", "in_person": true, "online": false, "ages": [7, 10], "format": "After school, weekly, 45 minutes", "about": "Test listing in review. It must not show.", "status": "review" }
+  ]
+}

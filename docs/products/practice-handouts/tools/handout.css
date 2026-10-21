@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Inter:wght@400;600;700&family=Caveat:wght@600&display=swap');
+/* Phenom-U practice handout. Letter/A4 safe: 0.5in margins, one sheet per page. Mirrors js/app.js printWorksheet. */
+@page { size: letter; margin: 0.45in 0.5in; }
+:root { --ink:#121826; --ink-2:#4b5567; --ink-3:#8a93a6; --hair:#e6e8ee; --paper-2:#f7f8fb; --c:#2457f5; --c-soft:#e8eeff; }
+.sheet.green  { --c:#22c55e; --c-soft:#e7f8ee; } .sheet.orange { --c:#ff8a1f; --c-soft:#fff1e3; }
+.sheet.blue   { --c:#2457f5; --c-soft:#e8eeff; } .sheet.purple { --c:#7c5cff; --c-soft:#efebff; }
+.sheet.red    { --c:#f03e3e; --c-soft:#fde8e8; } .sheet.pink   { --c:#ff4fa3; --c-soft:#ffe8f3; }
+.sheet.teal   { --c:#0fb5c9; --c-soft:#e2f7fa; }
+html, body { margin: 0; padding: 0; background: #fff; }
+body { font-family: Inter, system-ui, -apple-system, 'Segoe UI', sans-serif; color: var(--ink); font-size: 12.5px; line-height: 1.35; }
+.markdown-body { max-width: none; padding: 0; }
+.sheet { width: 100%; display: flex; flex-direction: column; min-height: 9.8in; }
+.strip { margin-top: auto; }
+.top { display: flex; justify-content: space-between; align-items: center; font-size: 10.5px; color: var(--ink-2); border-bottom: 2.5px solid var(--ink); padding-bottom: 4px; }
+.top b { font-family: Unbounded, Inter, sans-serif; font-weight: 800; color: var(--ink); letter-spacing: -.01em; font-size: 11px; }
+.chip { display: inline-block; border: 1.5px solid var(--c); background: var(--c-soft); border-radius: 999px; padding: 1px 9px; font-weight: 600; font-size: 10.5px; color: var(--ink); margin-left: 4px; }
+.sheet h1, .sheet h2 { font-family: Unbounded, Inter, sans-serif; font-weight: 800; letter-spacing: -.02em; border: 0; }
+.sheet h1 { font-size: 19px; margin: 8px 0 2px; line-height: 1.2; }
+.sheet h1 small { display: block; font-size: 10.5px; font-weight: 600; color: var(--c); letter-spacing: .04em; text-transform: uppercase; margin-bottom: 2px; }
+.sheet h2 { font-size: 13px; margin: 10px 0 4px; }
+.fields { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 12px; margin: 6px 0 6px; padding: 6px 10px; border: 1.5px solid var(--ink); border-radius: 10px; }
+.fields span { white-space: nowrap; }
+.fields u { display: inline-block; min-width: 110px; border-bottom: 1.2px solid var(--ink); text-decoration: none; }
+.fields u.s { min-width: 42px; }
+.fields .pass { margin-left: auto; font-weight: 700; color: var(--ink); background: var(--c-soft); border-radius: 6px; padding: 0 6px; }
+.howto { margin: 4px 0; font-size: 12px; }
+.howto p { margin: 2px 0; }
+.howto b { color: var(--ink); }
+.formulas { margin: 4px 0 2px; }
+.formulas .f { display: inline-block; border: 1.5px solid var(--ink-3); border-radius: 6px; padding: 0 6px; margin: 0 4px 3px 0; font-weight: 600; font-size: 11.5px; font-variant-numeric: tabular-nums; }
+.formulas .f.small { border-color: #ff8a1f; } .formulas .f.big { border-color: #2457f5; } .formulas .f.combo { border-color: #7c5cff; }
+.grid { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 6px; margin: 8px 0 4px; }
+.grid.g5 { grid-template-columns: repeat(5, 1fr); gap: 8px 10px; }
+.grid.g4 { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px 10px; }
+.grid > * { min-width: 0; }
+.p { border: 1.2px solid var(--ink-3); border-radius: 7px; padding: 3px 4px 4px; display: flex; flex-direction: column; break-inside: avoid; page-break-inside: avoid; }
+.p .n { font-size: 9.5px; color: var(--ink-3); font-weight: 600; }
+.st { font-size: var(--fs, 15px); line-height: var(--lh, 1.22); font-variant-numeric: tabular-nums; font-weight: 600; margin: 1px 0 3px; }
+.st .t { display: flex; justify-content: space-between; }
+.st .t i { font-style: normal; color: var(--ink-2); width: 12px; text-align: left; }
+.st .rule { border-top: 2px solid var(--ink); margin-top: 2px; }
+.box { border: 1.5px solid var(--ink); border-radius: 5px; height: 28px; margin-top: auto; background: #fff; }
+.p.line { padding: 5px 10px 8px; }
+.p.line .q { font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; margin: 1px 0 6px; }
+.p.line .ab { display: flex; gap: 6px; align-items: center; }
+.p.line .ab .box { flex: 1; height: 34px; margin: 0; }
+.p.line .ab .r { font-size: 13px; font-weight: 600; color: var(--ink-2); }
+.p.line .ab .box.rem { flex: 0 0 44px; }
+.p.beads { align-items: center; }
+.p.beads svg { display: block; margin: 2px auto 4px; }
+.p.beads .box { width: 100%; }
+.p.set { align-items: center; }
+.p.set .big { font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; margin: 4px 0 6px; }
+.p.set .tick { width: 22px; height: 22px; border: 1.5px solid var(--ink); border-radius: 5px; margin-top: auto; }
+.p.ans { align-items: stretch; }
+.p.ans .box { height: 34px; }
+.foot { margin-top: 6px; display: flex; justify-content: space-between; gap: 12px; align-items: baseline; font-size: 12px; }
+.foot .say { white-space: nowrap; font-family: Unbounded, Inter, sans-serif; font-weight: 800; font-size: 12px; letter-spacing: -.01em; }
+.foot .parent { font-family: Caveat, 'Comic Sans MS', cursive; font-size: 17px; color: var(--ink-2); text-align: right; }
+.fold { margin-top: 8px; border-top: 1.5px dashed var(--ink-3); padding-top: 3px; font-size: 10px; color: var(--ink-3); display: flex; justify-content: space-between; }
+.key { font-size: 10.5px; color: var(--ink-2); font-variant-numeric: tabular-nums; display: flex; flex-wrap: wrap; gap: 1px 14px; margin-top: 2px; }
+.key span b { color: var(--ink-3); font-weight: 600; margin-right: 4px; }
+.part { margin-top: 8px; padding-top: 4px; border-top: 1.2px solid var(--hair); }
+.part h2 .meta { font-family: Inter, sans-serif; font-weight: 600; font-size: 11px; color: var(--ink-2); letter-spacing: 0; margin-left: 6px; }
+.readaloud { width: auto; min-width: 60%; border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: var(--rfs, 13px); margin-top: 6px; }
+.readaloud th, .readaloud td { border: 0; border-bottom: 1px solid var(--hair); padding: 4px 10px; text-align: right; }
+.readaloud th { font-size: 10px; color: var(--ink-3); font-weight: 600; text-align: right; }
+.readaloud td.r { text-align: left; color: var(--ink-3); font-size: 10.5px; width: 22px; }
+.readaloud td.a { font-weight: 700; border-left: 1.5px solid var(--ink); }
+.tempo { border: 1.5px solid var(--c); background: var(--c-soft); border-radius: 10px; padding: 6px 10px; margin: 6px 0; font-size: 12px; }
+.tempo p { margin: 2px 0; }
+.page-break { page-break-after: always; break-after: page; height: 0; }
+/* stack sizes by line count, read-aloud sizes, bead pictures (kept here so the .md files carry no inline styles) */
+.st.l2, .st.l5 { --fs: 16px; --lh: 1.25; } .st.l6 { --fs: 14px; --lh: 1.18; } .st.l10 { --fs: 13px; --lh: 1.13; } .st.l15 { --fs: 12px; --lh: 1.1; }
+.readaloud.l5 { --rfs: 14px; } .readaloud.l10 { --rfs: 12.5px; } .readaloud.l15 { --rfs: 11.5px; }
+svg.sb .fr { fill: #fff; stroke: #121826; stroke-width: 1.6; }
+svg.sb .rod { stroke: #8a93a6; stroke-width: 1; }
+svg.sb .b { fill: #e9ecf2; stroke: #121826; stroke-width: 1.1; }
+svg.sb .beam { stroke: #121826; stroke-width: 2.6; }
+svg.sb .dot { fill: #fff; }

@@ -201,12 +201,12 @@ export const STAGES = [
     time: '5–6 weeks',
     unlocks: NOCOMBO,
     why: 'A column holds at most 9. Going past it means carrying 1 to the next rod and giving back the difference from 10. This is where the soroban starts beating fingers and paper.',
-    intro: `<p>Two numbers that make 10 are <b>big friends</b>: 1 and 9, 2 and 8, 3 and 7, 4 and 6, 5 and 5. To add a number that will not fit, take away its big friend and carry 1 to the column on the left. To subtract a number that is not there, borrow 1 from the left and add its big friend.</p>
+    intro: `<p>Two numbers that make 10 are <b>big friends</b>: 1 and 9, 2 and 8, 3 and 7, 4 and 6, 5 and 5. To add a number that will not fit, take away its big friend and carry 1 to the column on the left. To subtract a number that is not there, add its big friend, then borrow 1 from the left.</p>
       <div class="formula-grid">
         <div class="formula big">+9 = −1 +10</div><div class="formula big">+8 = −2 +10</div><div class="formula big">+7 = −3 +10</div><div class="formula big">+6 = −4 +10</div><div class="formula big">+5 = −5 +10</div><div class="formula big">+4 = −6 +10</div><div class="formula big">+3 = −7 +10</div><div class="formula big">+2 = −8 +10</div><div class="formula big">+1 = −9 +10</div>
         <div class="formula big">−9 = +1 −10</div><div class="formula big">−8 = +2 −10</div><div class="formula big">−7 = +3 −10</div><div class="formula big">−6 = +4 −10</div><div class="formula big">−5 = +5 −10</div><div class="formula big">−4 = +6 −10</div><div class="formula big">−3 = +7 −10</div><div class="formula big">−2 = +8 −10</div><div class="formula big">−1 = +9 −10</div>
       </div>
-      <p>The order of the two moves matters on a real soroban: for adding, take away the friend on this rod first, then carry. For subtracting, borrow first, then add the friend. Doing it in this order keeps your eyes moving left to right.</p>`,
+      <p>The order of the two moves matters on a real soroban. Work the rod you are on first, then the rod to its left. For adding: take away the friend, then carry. For taking away: add the friend, then borrow. One rule for both.</p>`,
     lessons: [
       {
         key: 'bf-9-8-7', title: '+9, +8, +7', minutes: 15,
@@ -243,23 +243,23 @@ export const STAGES = [
       },
       {
         key: 'bf-sub-9-7', title: '−9, −8, −7: borrowing', minutes: 15,
-        teach: `<p>You have 13 and want to take away 9. The ones rod holds 3, and 9 is not there. Borrow 1 from the tens (−10), then add the big friend of 9, which is 1. 13 − 9 = 4.</p>
-          ${demo(13, '-9', '13 − 9 = borrow 1, +1')}
-          ${demo(12, '-8', '12 − 8 = borrow 1, +2')}
-          ${demo(15, '-7', '15 − 7 = borrow 1, +3')}`,
+        teach: `<p>You have 13 and want to take away 9. The ones rod holds 3, and 9 is not there. Add the big friend of 9, which is 1, then borrow 1 from the tens (−10). 13 − 9 = 4.</p>
+          ${demo(13, '-9', '13 − 9 = +1, borrow 1')}
+          ${demo(12, '-8', '12 − 8 = +2, borrow 1')}
+          ${demo(15, '-7', '15 − 7 = +3, borrow 1')}`,
         drill: { kind: 'twocol', spec: { allow: ['direct', 'small-', 'big-7', 'big-8', 'big-9'], require: ['big-7', 'big-8', 'big-9'], sign: '-', min: 10, max: 99 }, count: 10, target: { acc: 0.9 } },
       },
       {
         key: 'bf-sub-6-1', title: '−6 down to −1', minutes: 15,
-        teach: `<p>Same move for every digit: borrow 1, add the friend. −6 adds 4. −5 adds 5. −4 adds 6. −3 adds 7. −2 adds 8. −1 adds 9.</p>
-          ${demo(10, '-6', '10 − 6 = borrow 1, +4')}
-          ${demo(12, '-5', '12 − 5 = borrow 1, +5')}
-          ${demo(10, '-1', '10 − 1 = borrow 1, +9')}`,
+        teach: `<p>Same move for every digit: add the friend, then borrow 1. −6 adds 4. −5 adds 5. −4 adds 6. −3 adds 7. −2 adds 8. −1 adds 9.</p>
+          ${demo(10, '-6', '10 − 6 = +4, borrow 1')}
+          ${demo(12, '-5', '12 − 5 = +5, borrow 1')}
+          ${demo(10, '-1', '10 − 1 = +9, borrow 1')}`,
         drill: { kind: 'twocol', spec: { allow: ['direct', 'small-', 'big-'], require: ['big-1', 'big-2', 'big-3', 'big-4', 'big-5', 'big-6'], sign: '-', min: 10, max: 99 }, count: 10, target: { acc: 0.9 } },
       },
       {
         key: 'borrow-chain', title: 'Borrow chains and mixed problems', minutes: 15,
-        teach: `<p>100 − 1: the ones rod is empty, borrow from the tens. The tens rod is empty too, so borrow from the hundreds first. Then everything falls into place: 100 − 1 = 99.</p>
+        teach: `<p>100 − 1: the ones rod is empty, so add 9, then borrow 1 from the tens. The tens rod is empty too, so it does the same: add 9, then borrow 1 from the hundreds. 100 − 1 = 99.</p>
           ${demo(100, '-1', '100 − 1: borrow twice')}
           ${demo(203, '-7', '203 − 7')}
           <p>Now plus and minus mixed, five lines. This is the real thing.</p>`,
@@ -316,7 +316,7 @@ export const STAGES = [
       },
       {
         key: 'combo-sub', title: 'Combo take-aways: 11−6, 12−7, 13−8, 14−9', minutes: 15,
-        teach: `<p>11 − 6: borrow 1 from the tens, then add 4 to the ones. The ones rod shows 1, and 1 + 4 needs a small friend: +5 −1. So −6 = +5 −1, borrow 1.</p>
+        teach: `<p>11 − 6: add 4 to the ones first, then borrow 1 from the tens. The ones rod shows 1, and 1 + 4 needs a small friend: +5 −1. So −6 = +5 −1, then borrow 1.</p>
           ${demo(11, '-6', '11 − 6 = +5 −1, borrow')}
           ${demo(12, '-7', '12 − 7 = +5 −2, borrow')}
           ${demo(14, '-9', '14 − 9 = +5 −4, borrow')}`,
