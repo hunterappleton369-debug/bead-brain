@@ -77,6 +77,7 @@ Everything above that is built is committed and pushed today. Later changes: tel
 - **Print**: Playbook interior PDF, quick-start card, instructor badge, signature image.
 - **Support**: hello@childphenoms.com answered within a day, macros in `docs/products/legal-and-ops/`.
 - **Ops until the webhook is live**: after each order, add the `purchases` row (kit, playbook) or `memberships` row by hand (`docs/APP-DELIVERY.md` §3).
+- **Ops the webhook does not cover** (by hand in Stripe and Supabase): a University member who buys the certification keeps the $67 subscription unless you pause it for the free year; the instructor year never ends on its own (set the row to `canceled` after 12 months or renew it); refunds and chargebacks do not remove access.
 
 ## Open decisions
 

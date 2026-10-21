@@ -5,8 +5,8 @@
 export const CONFIG = {
   shipping: 9.95,                 // what the parent pays on the free kit
   bumpPrice: 27,                  // Child Prodigy Secrets Playbook (printed) + audiobook + digital copy
-  checkoutUrl: '',                // kit + shipping: Shopify cart permalink https://STORE.myshopify.com/cart/KIT_VARIANT:1
-  checkoutUrlWithBump: '',        // kit + shipping + Playbook: https://STORE.myshopify.com/cart/KIT_VARIANT:1,PLAYBOOK_VARIANT:1 (both links required)
+  checkoutUrl: '',                // Stripe Payment Link A: kit ($9.95 shipping and handling), US shipping address; after payment redirect to university.html?paid=kit
+  checkoutUrlWithBump: '',        // Stripe Payment Link B: kit + $27 Playbook, same redirect (both links required; a Shopify /cart/ link also works and gets name/email/phone prefilled)
   universityTrialUrl: '',         // Stripe Payment Link: $67/mo with a 14-day trial; after payment redirect to certify.html?paid=university
   certifyUrl: '',                 // Stripe Payment Link: $297 once; after payment redirect to thanks.html?paid=certify
   metaPixelId: '',                // [HUNTER] Meta Pixel (dataset) ID from Events Manager. Empty = no pixel loads. Disclose it in the privacy policy.

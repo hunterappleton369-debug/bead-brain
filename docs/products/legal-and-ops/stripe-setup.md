@@ -51,7 +51,7 @@ Open **Product catalog** → **+ Add product**. Make four.
 | # | Name (customer sees this) | Description | Price | Billing |
 |---|---|---|---|---|
 | 1 | Child Phenoms Abacus Kit: shipping & handling | Free abacus + Child Prodigy Secrets Playbook. You pay shipping only. USPS, US addresses. | $9.95 | One-off |
-| 2 | Prodigy Maker Workbook + Audiobook | 90-day printed workbook, ships in the same box. Playbook audiobook by email. | $27.00 | One-off |
+| 2 | Child Prodigy Secrets Playbook + Audiobook | 90-day printed workbook, ships in the same box. Playbook audiobook by email. | $27.00 | One-off |
 | 3 | Phenom University | 14 days free, then $67/month (regular $197). Cancel anytime. One membership covers every child in your home. | $67.00 | Recurring, Monthly |
 | 4 | Certified Phenom Instructor | Certification course, exam, Launch Kit, listing and badge, plus one free year of the trainer. | $297.00 | One-off |
 
