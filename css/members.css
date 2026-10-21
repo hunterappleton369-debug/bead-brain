@@ -107,6 +107,57 @@ code { font-size: .9em; background: var(--paper-2); border: 1px solid var(--hair
   .lib-table.stack td { font-size: 15px; }
 }
 
+/* ───────── the Playbook (#/playbook) ───────── */
+.pb-lock .pb-signin { margin: 4px 0 0; font-size: 16px; }
+.pb-lock .pb-signin a { font-weight: 600; }
+.pb-lock .btn-row { margin: 14px 0; }
+.pb-lock .pb-who { margin: 8px 0 0; overflow-wrap: anywhere; }
+.pb-audio { background: #fff; border: 2px solid var(--ink); border-radius: 18px; padding: 16px 18px 12px; margin: 18px 0 8px; max-width: 620px; }
+.pb-audio h3 { margin: 0 0 10px; }
+.pb-audio p { margin: 4px 0 2px; }
+.pb-audio audio { display: block; width: 100%; margin: 4px 0; }
+.pb-audio.compact { padding: 10px 14px 8px; margin: 10px 0 0; }
+.pb-start { margin-top: 18px; }
+.pb-bar { display: flex; align-items: baseline; justify-content: space-between; gap: 6px 14px; flex-wrap: wrap; padding-top: 18px; }
+.pb-bar .eyebrow { margin: 0; }
+.pb-pages .lib-page:not(.on) { display: none; }   /* one page at a time on screen; "Print the whole Playbook" shows them all */
+.pb-pages .lib-page.on { margin-top: 16px; }
+.pb .lib-doc { font-size: 17px; line-height: 1.6; }
+.pb .lib-doc h2.page-title { line-height: 1.2; }
+.pb-nav { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin: 36px 0 8px; padding-top: 18px; border-top: 1px solid var(--hair); }
+.pb-all { margin: 10px 0 0; }
+@media (max-width: 560px) {
+  .pb .lib-doc { font-size: 16.5px; }
+  .pb-nav .btn { flex: 1 1 100%; justify-content: center; }
+  .pb-nav .btn.blue { order: -1; }
+}
+
+/* ───────── stages 2 to 10: the University gate and the trail lock ───────── */
+.stage-lock .stage-signin { margin: 4px 0 8px; font-size: 16px; }
+.stage-lock .btn-row { margin: 14px 0; }
+.stage-lock p.small { margin: 6px 0 0; max-width: 560px; }
+.stage-lock .stage-who { overflow-wrap: anywhere; }
+.stage-node .lock-line { display: flex; align-items: center; justify-content: center; gap: 5px; margin-top: 10px; font-weight: 600; color: var(--ink-2); }
+.stage-node .lock-line svg { width: 16px; height: 16px; flex: none; filter: none; opacity: 1; }
+.stage-node.paid { border-style: dashed; }
+
+/* ───────── sign in: "check your email" ───────── */
+.check-email .ce-spam { margin: 10px 0 0; font-weight: 600; color: var(--ink); }
+.check-email .ce-mail { margin: 14px 0 8px; }
+.check-email .ce-resend { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 6px; }
+.check-email .ce-resend .btn[disabled] { opacity: .55; cursor: default; }
+.check-email .ce-addr { overflow-wrap: anywhere; }
+@media (max-width: 480px) { .check-email .ce-mail .btn { flex: 1 1 40%; justify-content: center; } }
+
+/* ───────── account: what you own ───────── */
+.acct-own { margin-top: 28px; }
+.acct-own .section-head { margin-bottom: 12px; }
+.own-list li { align-items: flex-start; }
+.own-list .ix { background: var(--green); }
+.own-list .status-chip { margin-left: 8px; padding: 5px 10px; font-size: 12px; }
+.own-list .own-go { display: inline-block; margin-top: 6px; font-weight: 600; }
+.own-none { color: var(--ink-2); max-width: 620px; }
+
 /* ───────── a practice sheet (#/print) ───────── */
 .print-bar { display: grid; grid-template-columns: 1fr auto; gap: 8px 24px; align-items: end; padding: 6px 0 4px; }
 .print-bar h1 { margin-bottom: 8px; }
@@ -245,6 +296,9 @@ code { font-size: .9em; background: var(--paper-2); border: 1px solid var(--hair
   body.printing-book .lib-page { border: 0; margin: 0; padding: 0; break-before: page; }
   body.printing-book .book-body > .lib-page:first-of-type, body.print-one .lib-page.print-target { break-before: auto; }
   body.print-one .lib-page:not(.print-target) { display: none !important; }
+  body.printing-book .pb-audio, body.printing-book .pb-bar, body.printing-book .pb-nav, body.printing-book .pb-all, body.printing-book .pb-list, body.printing-book .pb-start { display: none !important; }
+  body.pb-print-all .pb-pages .lib-page { display: block !important; }
+  body.printing-book .pb .lib-doc { font-size: 10.5pt; line-height: 1.38; }
   /* Sized so a lesson (about 330 words, three bead pictures, a ten-problem drill) fits one Letter page. */
   body.printing-book .lib-doc { max-width: none; font-size: 10.5pt; line-height: 1.38; color: #2b3240; }
   body.printing-book .lib-doc p { margin: 0 0 .5em; }
@@ -263,3 +317,9 @@ code { font-size: .9em; background: var(--paper-2); border: 1px solid var(--hair
   body.printing-book .beads { margin: 1px 2px; }
   body.printing-book .bead-pic { height: 42px; }
 }
+
+/* Playbook cover art (img/funnel/playbook.webp) */
+.pb-cover { width: 150px; max-width: 42vw; height: auto; border-radius: 10px; box-shadow: 0 10px 24px rgba(18, 24, 38, .25); }
+.lib-lock .lock-art .pb-cover + .ic { display: none; }
+.pb-cover-top { width: 120px; margin-bottom: 12px; }
+@media print { .pb-cover { display: none; } }

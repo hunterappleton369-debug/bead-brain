@@ -2,7 +2,7 @@
 // build-members.mjs — builds what the member area reads, from the product files in docs/products.
 // The app never loads anything from docs/ at runtime; this script copies or converts it at build time.
 //
-//   node tools/build-members.mjs            all three steps below
+//   node tools/build-members.mjs            all four steps below
 //   node tools/build-members.mjs --check    step 2 only (no files written)
 //
 // 1. js/lesson-notes.js   copied from docs/products/practice-handouts/tools/lesson-notes.mjs (the written half of each sheet)
@@ -10,6 +10,8 @@
 //                         for the samples' seed, and every problem must pass the re-check. Exit 1 if not.
 // 3. library/*.json       the Prodigy Secrets Program (docs/products/prodigy-secrets-program/*.md) as HTML pages,
 //                         split at the book's page breaks, for #/library in the app.
+// 4. library/playbook.json  Child Prodigy Secrets Playbook (docs/products/playbook.md), the $27 add-on, with the same
+//                         converter, split at the book's chapter breaks (---), for #/playbook in the app.
 import { readFileSync, writeFileSync, mkdirSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve, relative } from 'node:path';
@@ -83,7 +85,8 @@ function table(lines) {
 function toHTML(md) {
   const out = []; let para = [], list = null, quote = [], tbl = [], titled = false;
   const flush = () => {
-    if (para.length) { out.push(`<p>${inline(para.join(' '))}</p>`); para = []; }
+    // A paragraph line that starts with a signed number (+4 = +5 −1) is a formula row: keep its line break.
+    if (para.length) { out.push(`<p>${inline(para.map((l, i) => (i ? (/^[+−]\d/.test(l) ? '\u0001' : ' ') : '') + l).join('')).replace(/\u0001/g, '<br>')}</p>`); para = []; }
     if (list) { out.push(`<${list.tag}>${list.items.map(i => `<li>${inline(i)}</li>`).join('')}</${list.tag}>`); list = null; }
     if (quote.length) {
       const text = quote.join(' ');
@@ -124,12 +127,15 @@ function kindOf(title) {
   if (/Boss$/.test(title)) return 'boss-note';
   return 'opener';
 }
-function convert(file, extra = {}) {
-  const md = readFileSync(join(LIB, file), 'utf8').replace(/<!--[\s\S]*?-->/g, '');
-  const chunks = md.split(/^<div class="page-break"><\/div>$/m).map(s => s.trim()).filter(Boolean);
+// One book file → { title, sections: [{ kind, title, html }] }. The Program splits at its page-break divs;
+// the Playbook (step 4) passes its own folder, its chapter breaks and its own page kinds.
+const PAGE_BREAK = /^<div class="page-break"><\/div>$/m;
+function convert(file, extra = {}, { dir = LIB, split = PAGE_BREAK, kind = kindOf } = {}) {
+  const md = readFileSync(join(dir, file), 'utf8').replace(/<!--[\s\S]*?-->/g, '');
+  const chunks = md.split(split).map(s => s.trim()).filter(Boolean);
   const sections = chunks.map((chunk, i) => {
     const title = (chunk.match(/^#{1,3} (.*)$/m) || [, `Page ${i + 1}`])[1].trim();
-    const s = { kind: kindOf(title), title, html: toHTML(chunk) };
+    const s = { kind: kind(title, i), title, html: toHTML(chunk) };
     const m = title.match(/^Lesson (\d+)\.(\d+) · (.*)$/);
     if (m) {
       const stage = STAGES[Number(m[1]) - 1], lesson = stage?.lessons[Number(m[2]) - 1];
@@ -156,3 +162,21 @@ for (const b of books) {
 }
 writeFileSync(join(OUT, 'index.json'), JSON.stringify({ built: new Date().toISOString().slice(0, 10), source: rel(LIB), books: index }, null, 1));
 console.log(`library: ${index.length} books, ${index.reduce((a, b) => a + b.pages, 0)} pages, ${index.reduce((a, b) => a + b.lessons, 0)} lessons → ${rel(OUT)}/`);
+
+// ───────────── 4. the Playbook ─────────────
+// Pages = the book's chapter breaks (a line of ---). The printed Contents page is left out: its page numbers are
+// the paperback's, and the app shows its own chapter list. Chapters carry `no` for the list ("Chapter 3").
+{
+  const file = 'playbook.md';
+  const kind = (title, i) => (i === 0 ? 'cover' : /^Chapter \d+:/.test(title) ? 'chapter' : /^Page \d+$/.test(title) ? 'copyright' : /^Contents$/.test(title) ? 'contents' : 'appendix');
+  const doc = convert(file, {}, { dir: PRODUCTS, split: /^---+$/m, kind });
+  const sections = doc.sections.filter(s => s.kind !== 'contents').map(s => {
+    if (s.kind === 'copyright') return { ...s, title: 'Copyright' };
+    const m = s.title.match(/^Chapter (\d+): (.*)$/);
+    return m ? { ...s, no: Number(m[1]), title: m[2] } : s;
+  });
+  if (!sections.some(s => s.kind === 'chapter')) throw new Error(`${file}: no chapters found`);
+  const out = { title: doc.title, built: new Date().toISOString().slice(0, 10), source: rel(join(PRODUCTS, file)), sections };
+  writeFileSync(join(OUT, 'playbook.json'), JSON.stringify(out));
+  console.log(`playbook: ${sections.length} pages, ${sections.filter(s => s.kind === 'chapter').length} chapters → ${rel(join(OUT, 'playbook.json'))}`);
+}

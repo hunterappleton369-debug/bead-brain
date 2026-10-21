@@ -2,7 +2,7 @@
 
 Mental math superpowers for kids. A self-contained soroban (Japanese abacus) program for children, run by a parent at home. (Formerly Bead Brain; the GitHub repo and Pages URL still carry the old name until renamed.) Ten stages take a child from reading beads to competition-style mental arithmetic. No build step and no server of its own: open `index.html` through any static web server and progress is saved in the browser. A parent can also sign in with an email link, and then the children and their progress follow them to any device (Supabase, see **Accounts** below).
 
-**Live site:** https://hunterappleton369-debug.github.io/bead-brain/
+**Live site:** https://childphenoms.com/ (custom domain; until its DNS flips, https://hunterappleton369-debug.github.io/bead-brain/). Funnel: `/free-abacus/`. Launch state: `docs/LAUNCH-CHECKLIST.md`.
 
 ## Run it
 

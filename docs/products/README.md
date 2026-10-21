@@ -10,15 +10,16 @@ Start with `BUILD-BRIEF.md` (the rules, the facts sheet and the specs every buil
 |---|---|---|---|
 | `BUILD-BRIEF.md` | The one brief: hard rules, facts you may use, voice and grade targets, frameworks, specs per deliverable. | | reference |
 | `REVIEW.md` | Reviewer's audit of every folder, the before-launch list, the verdict. | | reference |
-| `playbook.md` | **Child Prodigy Secrets: The Playbook.** Nine chapters plus a science appendix and formula card, ~13,600 words. | Kit page ($47 value) | needs Hunter: deslop 1/5, a 20-minute fix |
-| `workbook.md` | **Prodigy Maker Workbook.** Ninety daily pages for Stages 1 and 2, with the answer key, ~19,700 words. | Order bump ($27) | ready for design |
+| `playbook.md` | **Child Prodigy Secrets: The Playbook.** Nine chapters plus a science appendix and formula card, ~13,600 words. | Order bump ($27, printed copy in the box + audiobook + digital copy in the parent account; since 2026-10-21) | needs Hunter: deslop 1/5, a 20-minute fix |
+| `workbook.md` | **Prodigy Maker Workbook.** Ninety daily pages for Stages 1 and 2, with the answer key, ~19,700 words. | Retired from the funnel 2026-10-21 (was the order bump); keep as a future University bonus | ready for design |
+| `welcome-card.md` | **The 3-Night Quick-Start Card.** One side of a 5 × 7 card in every kit box: three 15-minute nights, then Lesson 1 in the parent account. About 130 words, deslop 5/5, grade 0.7. | Kit page (free, in every box) | needs Hunter: design and print |
 | `audiobook-notes.md` | Recording guide for the Playbook audiobook. | Order bump | ready |
 | `bonus-guides/` | **Valedictorian Secrets** and **Win the Future: The Career-Picking Guide**, with cover notes. | University stack ($97 each) | needs Hunter: covers, two wording confirmations |
 | `prodigy-secrets-program/` | **Prodigy Secrets Program.** The printable lesson library: 76 lessons, 28 quest cards and 10 boss tests across all 10 stages, with the generator and verifier. | University gift ($997) | ready; designer renders the bead pictures |
 | `practice-handouts/` | **Phenom-U Practice Handouts.** Template, parent guide, catalog, 86 sample sheets and the generator that makes fresh ones. | University stack ($297) | ready; Hunter picks where members print |
 | `certification-course/` | **Full Certification Course Library.** Syllabus, 20 lesson scripts with drills, the 40-question exam in three forms, Pass Promise operations, certificate wording. | Certify page ($297 once) | needs Hunter: record videos, pick exam host |
 | `instructor-launch-kit/` | Class plans, drills, pricing sheet, parent flyer, sign-up script, first-class checklist, directory listing spec, intake form, progress report. | Certify stack ($297 value) | needs Hunter: directory page, badge art, 13 decisions |
-| `marketing-sequences/` | 41 emails, 5 texts and 5 ad angles: soap opera, abandon cart, trial onboarding, shipping, Seinfeld bank, certification, ad copy, SMS bank, send map. | Every step | needs Hunter: 5 memory lines, consent line, provider |
+| `marketing-sequences/` | 49 emails, 5 texts and 5 ad angles: soap opera, abandon cart, trial onboarding, shipping, Seinfeld bank, certification, ad copy, SMS bank, post-purchase loyalty, send map. | Every step | needs Hunter: 5 memory lines, consent line, provider |
 | `legal-and-ops/` | Privacy policy, terms, refund policy and earnings disclaimer (markdown and HTML), consent text, instructor agreement, Stripe setup, ops runbook, support macros, launch checklist. | Every page footer | needs Hunter: counsel review, business details |
 | `tools/` | `gen.js`, `build.js`, `verify.js`, `text.js` (the workbook problem pipeline) and `readlevel.py` (the reading-grade checker every folder reports). | | ready |
 

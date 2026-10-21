@@ -18,6 +18,7 @@ export const auth = {
   lastSync: null,          // Date of the last successful push or pull
   lastError: null,         // short text for the UI
   linkError: null,         // the error a failed magic link came back with (expired, already used)
+  linkCode: null,          // its error_code, e.g. otp_expired (the sign-in page words that one plainly)
   callbackPending: false,  // this page was opened from a magic link; waiting for the session
   on(fn) { subs.add(fn); return () => subs.delete(fn); },
   client: () => sb,        // the supabase client once loaded (null before, or with accounts off); membership.js reads with it
@@ -49,6 +50,7 @@ async function init() {
     // A link that expired or was used already comes back as #error=…&error_description=…
     const q = new URLSearchParams(hash);
     auth.linkError = (q.get('error_description') || q.get('error') || 'That link did not work.').replace(/\+/g, ' ');
+    auth.linkCode = q.get('error_code') || null;
     history.replaceState(null, '', location.pathname + location.search + '#/start/signin');
   } else if (isAuthHash(hash)) auth.callbackPending = true;
 
@@ -95,6 +97,7 @@ async function init() {
 
 // ───────── sign in / out ─────────
 async function signIn(email) {
+  email = String(email || '').trim().toLowerCase(); // the purchases and memberships rows are keyed on the lower-case email
   if (!sb) return { error: auth.offline ? 'You look offline. Progress is still saved on this device.' : auth.enabled ? 'Still connecting. Try again in a moment.' : 'Accounts are not switched on yet.' };
   const { error } = await sb.auth.signInWithOtp({ email, options: { emailRedirectTo: redirectURL(), shouldCreateUser: true } });
   return { error: error ? friendly(error) : null };

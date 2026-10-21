@@ -33,11 +33,11 @@ You got as far as step 2, then stopped. That happens. A kid walks in. Dinner bur
 Here is what's waiting for you:
 
 - The Child Phenoms Abacus ($39 value)
-- Child Prodigy Secrets: The Playbook ($47 value)
+- The 3-Night Quick-Start Card
 
-That's $86 of kit for free. You just pay $9.95 shipping. It ships by USPS in 2 to 3 business days.
+That's a $39 abacus for free. You just pay $9.95 shipping. It ships by USPS in 2 to 3 business days.
 
-The Playbook gives you the words to say. The beads do the rest. Your job is a chair beside your child for 15 minutes a day.
+The card tells you what to do the first three nights. Lesson 1 in the free trainer walks you through the rest. Your job is a chair beside your child for 15 minutes a day.
 
 [Finish my order]({{link_kit}})
 
@@ -71,7 +71,7 @@ There is no such thing. I'm the proof. C's in math. ADHD. Always in trouble. Lat
 
 **"I'm not a math person. I don't have time to teach it."**
 
-You don't teach. You sit beside your child for 15 minutes. The Playbook gives you the words. The free trainer picks each problem and grades it.
+You don't teach. You sit beside your child for 15 minutes. The quick-start card and Lesson 1 walk you through it. The free trainer picks each problem and grades it.
 
 **"My child will fight me on it."**
 
@@ -107,7 +107,7 @@ This is my last email about the kit. I don't like to nag.
 
 So here is the promise that comes with it. We call it the Keep-the-Kit Promise.
 
-Try it for 30 days. If your child does not light up on the beads, email us. We refund your shipping. You keep the abacus. You keep the Playbook.
+Try it for 30 days. If your child does not light up on the beads, email us. We refund your shipping. You keep the abacus.
 
 So the most this can cost you is nothing.
 

@@ -15,7 +15,7 @@ const pad2 = n => String(n).padStart(2, '0');
 const bookId = id => (/^\d+$/.test(id) ? `stage-${pad2(id)}` : id);
 const BOOKS = { start: 'How to use the program', bosses: 'All ten boss tests' };
 const cache = new Map();
-async function loadBook(id) {
+export async function loadBook(id) {
   if (!cache.has(id)) cache.set(id, fetch(`library/${id}.json`).then(r => { if (!r.ok) throw new Error(`library/${id}.json: ${r.status}`); return r.json(); }));
   try { return await cache.get(id); } catch (e) { cache.delete(id); throw e; }
 }
@@ -142,7 +142,7 @@ export function libraryBook(app, id) {
 const KIND = { opener: 'Stage opener', lesson: 'Lesson', quests: 'Quest cards', 'boss-note': 'Boss', boss: 'Boss test', trainer: 'The trainer', answers: 'Answers' };
 
 // Print one section: everything else is hidden by css/members.css while body.print-one is set.
-function printOne(section) {
+export function printOne(section) {
   section.classList.add('print-target');
   document.body.classList.add('print-one');
   const done = () => { section.classList.remove('print-target'); document.body.classList.remove('print-one'); };

@@ -24,14 +24,14 @@ Your box is on its way by USPS. Most boxes land within 7 days.
 **What's inside:**
 
 - The Child Phenoms Abacus
-- Child Prodigy Secrets: The Playbook
-- {{if_bump}}The Prodigy Maker Workbook (your audiobook link is in your receipt email){{end_if}}
+- The 3-Night Quick-Start Card
+- {{if_bump}}The printed Child Prodigy Secrets Playbook. The digital copy and the audiobook are in your parent account, under "What you own."{{end_if}}
 
 [Track my box]({{link_tracking}})
 
 **While you wait:** Stage 1 is open on the screen abacus. Ten minutes tonight makes the wooden one feel familiar the day it arrives.
 
-**When the box lands, do this first:** sit beside your child, not across. Clear the beads together. Then open Lesson 1.
+**When the box lands, do this first:** sit beside your child, not across. Clear the beads together. Then do night 1 on the quick-start card, or open Lesson 1.
 
 I'll text you the day it lands with the one thing to do first.
 
@@ -93,4 +93,4 @@ Send me a video of the cover trick at the end of the week. I watch every one.
 
 Hunter
 
-<!-- status: needs Hunter: connect the fulfilment tool's tracking link and delivered scan; confirm the audiobook is sent by link -->
+<!-- status: needs Hunter: connect the fulfilment tool's tracking link and delivered scan; confirm the digital Playbook and the audiobook show under "What you own" for buyers of the $27 add-on -->

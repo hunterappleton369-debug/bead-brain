@@ -94,3 +94,14 @@ Single column, 16px gutters, 48px inputs (16px font so iOS doesn't zoom), full-w
 - **Day-one text** (Hunter's rule from the Enamelogic funnel): the phone field exists for this. Send the "print Lesson 1" link the morning after the order.
 - **Bead Score challenge ad**: a 60-second clip of a kid's score climbing on the chart, cut from real users.
 - **Grandparent gift angle** for Q4: "The gift that makes them the smartest kid in the class."
+
+## Decisions on 2026-10-21 (launch day)
+
+- **The free kit is the abacus plus a 3-night quick-start card.** The printed Child Prodigy Secrets Playbook left the kit and became the $27 order bump, "Child Prodigy Secrets Playbook + Audiobook: How to Teach Your Child to Answer Any Math Problem, Instantly" (printed copy in the same box, digital copy and audiobook under "What you own" in the parent account). The Prodigy Maker Workbook bump is retired. Kit value on the page is $39.
+- **The bump is text only**, a last-second decision above the checkout button. No product image in the bump box. The Expert-Secrets-style cover is used on the thank-you page, in emails and in ads, not on page 1.
+- **Step 1 of the order form collects name, email and phone only.** The hosted checkout collects the address and card, so the page never asks for the address twice.
+- **Checkout is Stripe for everything** (kit, kit + Playbook, University trial, certification) because a hosted Stripe Payment Link can send the parent straight back to the next funnel page. Shopify holds the same two products and the $9.95 rate as the fulfilment back office for CJ; orders reach it by Zapier or by hand. A paid return carries `?paid=kit|university|certify`, and only that marks the item as bought.
+- **Stages 2 to 10 of the trainer are gated** behind a trialing or active University membership. Stage 1 is free for every kit buyer.
+- **Email only.** No text-message consent is collected and no SMS goes out at launch. The SMS rows in the send map are parked.
+- **Meta Pixel** loads only when `metaPixelId` is set in `free-abacus/config.js`. Events: PageView, Lead (step 1), AddToCart (bump ticked), InitiateCheckout (checkout and both upsell buttons), Purchase (kit return, certification), StartTrial (University return). Once per browser for the conversions.
+- Copy fixes from the Codex review: no "share your info" claim, no "almost none in America", "many families" not "most", the 2019 study described as a memory-test result, NAEP "proficient" wording, founder initials HM, the fake video player on page 2 replaced by a "how one lesson works" box until the VSL is recorded, "cancel from your account page" instead of "two taps", pause by request, "your rate never goes up" instead of "locked for life", trial first-charge date shown next to the price, "many instructors" instead of "most".

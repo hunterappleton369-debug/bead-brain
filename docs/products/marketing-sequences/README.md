@@ -6,18 +6,19 @@ Every email, text and ad the Child Phenoms free-abacus funnel needs to run, writ
 
 | File | What it is | Messages | Words | Deslop | FK grade | Status |
 |---|---|---|---|---|---|---|
-| `01-kit-buyer-soap-opera.md` | Soap Opera Sequence, days 0 to 4. Email 1 is the receipt and welcome the thank-you page promises. Includes the day-one text. | 5 emails + 1 text | 1,685 | 5/5 | 2.7 | needs Hunter |
-| `02-abandon-cart.md` | Step-1 leads who did not pay shipping, over 48 hours | 3 emails + 2 texts | 899 | 5/5 | 2.6 (2.5 without the table) | needs Hunter |
+| `01-kit-buyer-soap-opera.md` | Soap Opera Sequence, days 0 to 4. Email 1 is the receipt and welcome the thank-you page promises. Includes the day-one text. | 5 emails + 1 text | 1,713 | 5/5 | 2.7 | needs Hunter |
+| `02-abandon-cart.md` | Step-1 leads who did not pay shipping, over 48 hours | 3 emails + 2 texts | 905 | 5/5 | 2.7 (2.5 without the table) | needs Hunter |
 | `03-trial-onboarding.md` | University 14-day test drive: days 0, 1, 3, 5, 7, 10, 12, 13. Day 13 is the "card is charged $67 tomorrow" note. | 8 emails | 1,626 | 5/5 | 3.4 | needs Hunter |
-| `04-shipping-and-first-week.md` | Tracking email, box-landed text, week-one plan reply with three age blocks | 2 emails + 1 text | 740 | 5/5 | 3.2 | needs Hunter |
+| `04-shipping-and-first-week.md` | Tracking email, box-landed text, week-one plan reply with three age blocks | 2 emails + 1 text | 767 | 5/5 | 3.2 | needs Hunter |
 | `05-seinfeld-bank.md` | 20 daily story emails, 157 to 206 words each, one link in the P.S. | 20 emails | 3,943 | 5/5 | 2.0 | needs Hunter |
 | `06-certification-sequence.md` | Members who did not certify: story, stack, questions | 3 emails | 847 | 5/5 | 4.1 | needs Hunter |
-| `07-ad-copy.md` | Five Facebook angles: 3 primary texts, 3 headlines and a video script of 30 s or less each | 15 texts, 15 headlines, 5 scripts | 1,967 | 5/5 | 3.0 | needs Hunter |
+| `07-ad-copy.md` | Five Facebook angles: 3 primary texts, 3 headlines and a video script of 30 s or less each | 15 texts, 15 headlines, 5 scripts | 1,982 | 5/5 | 2.9 | needs Hunter |
 | `08-sms-bank.md` | All five texts with character counts, consent and quiet-hour rules | 5 texts | 567 | 5/5 | 4.9 (4.6 without the table) | needs Hunter |
-| `send-map.md` | One table: trigger, delay, channel, file, subject | 46 rows of sends | 821 | 5/5 | 11.2 (6.1 without the table; ops file, no target) | ready |
+| `09-post-purchase-loyalty.md` | Loyalty emails for every kit buyer, days 6 to 75: the Whole Brain family, the first-week video, the Sprout Boss, a kit for a friend, a three-line review ask, the stall, the year ahead. One link each, in the P.S. | 8 emails | 2,202 | 5/5 | 1.7 | needs Hunter |
+| `send-map.md` | One table: trigger, delay, channel, file, subject | 54 rows of sends | 1,053 | 5/5 | 12.1 (6.2 without the table; ops file, no target) | ready |
 | `README.md` | This file | | | | | ready |
 
-**Totals:** 41 emails (one is a manual reply), 5 texts, 5 ad angles. Every subject line is 45 characters or less. Every text is 160 characters or less with the opt-out line (longest is 156).
+**Totals:** 49 emails (one is a manual reply), 5 texts (parked at launch until text consent is collected), 5 ad angles. Every subject line is 45 characters or less. Every text is 160 characters or less with the opt-out line (longest is 156).
 
 Checker commands, run from the repo root:
 
@@ -46,7 +47,7 @@ Every `{{link_…}}` tag in the emails maps to one URL. Set them once in the ema
 | `{{link_account}}` | [HUNTER: the cancel and pause page. Until it exists, https://childphenoms.com/#/family] |
 | `{{link_tracking}}` | the carrier link from the fulfilment tool |
 
-Other merge fields: `{{first_name}}`, `{{order_id}}`, `{{order_total}}`, `{{if_bump}}…{{end_if}}` (show only when the $27 bump was bought), and `{{child}}` (typed by hand in the week-one reply).
+Other merge fields: `{{first_name}}`, `{{order_id}}`, `{{order_total}}`, `{{if_bump}}…{{end_if}}` (show only when the $27 Playbook add-on was bought; every Playbook line sits inside it), and `{{child}}` (typed by hand in the week-one reply).
 
 ## Shared email footer
 
@@ -64,7 +65,7 @@ Put this under every email. It holds the notes that the brief keeps out of body 
 - **Hook, Story, Offer** (`02`, `06`, `07`): every ad and every sales email opens with a hook, tells a short story and makes one offer. Source: https://www.clickfunnels.com/blog/hook-story-offer/
 - **Three secrets** (`02` email A3, `06` email C3): the three false beliefs from `docs/FUNNEL.md`, each answered with Hunter's story or the 2016 trial.
 - **The Stack** (`01` email 4, `03` days 12 and 13, `06` email C2): every piece by its printed name and value, the total, then the price, a trial close, the guarantee and one button.
-- **Value ladder:** free kit and $9.95, then the $27 bump, then the $67 a month University, then the $297 certification. Each sequence points only to the next rung. Source: https://www.clickfunnels.com/blog/value-ladder/
+- **Value ladder:** free kit and $9.95, then the $27 Playbook add-on, then the $67 a month University, then the $297 certification. Each sequence points only to the next rung. Source: https://www.clickfunnels.com/blog/value-ladder/
 - **Proven abacus programs** (`05` emails 4, 7, 8, 16): daily short drills with a weekly class, graded tests per level, accuracy before speed, and the flash anzan kyu ladder, as summed up in the brief, section 3.
 
 ## Sources cited in the copy
@@ -78,6 +79,7 @@ Put this under every email. It holds the notes that the brief keeps out of body 
 
 ## Choices made, and why
 
+- **The kit is the abacus and the 3-Night Quick-Start Card (offer change, 2026-10-21).** The Playbook is now the $27 add-on, "Child Prodigy Secrets Playbook + Audiobook." Every Playbook line sits inside `{{if_bump}}…{{end_if}}`, so a kit-only family is never told the Playbook is in their box. Where the Playbook used to give everyone an instruction, the copy points to the quick-start card or Lesson 1 in the trainer. The old Prodigy Maker Workbook bump is gone. The card text is in `../welcome-card.md`.
 - **"102 lessons" is left out.** The app has 76 lessons and 28 quests. The stacks say "Prodigy Secrets Program, all 10 stages" with the printed $997 value. Add "102 lessons" back once the page count is fixed.
 - **"Backed by 3 randomized trials" became "Backed by a 3-year randomized trial."** Only the 2016 study is a confirmed randomized trial in the brief's sources.
 - **No borrowed footage.** The ad scripts call for Hunter and real families on camera, never the NBC, PBS or TikTok clips.

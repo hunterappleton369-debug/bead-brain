@@ -7,6 +7,8 @@ Every email and text in one table. Load these into the email and SMS tool in thi
 - **One sequence wins.** A paid order stops the abandon sequence. A cancelled trial stops onboarding. A certification order stops the certification emails.
 - **Trial members** get soap opera emails 1 to 3 and skip 4 and 5. On days when an onboarding email and a soap opera email both fall, send onboarding at 7 a.m. and the soap opera email at 7 p.m.
 - **Seinfeld emails** pause on any day a sequence email goes out to the same person, and pick up the next day where they left off.
+- **Loyalty emails** win their day. On a day when a loyalty email and a Seinfeld email both fall, the loyalty email goes out and the Seinfeld email moves to the next day.
+- **Texts are off at launch.** The funnel collects no text consent and sends email only; every SMS row below is parked until consent is collected.
 - **Texts** go only to numbers that ticked the consent line, and only between 8 a.m. and 8 p.m. local.
 - **Test sends** go to hunterappleton369@gmail.com (or a +alias) and 9857681025. Nothing else.
 
@@ -43,11 +45,19 @@ Every email and text in one table. Load these into the email and SMS tool in thi
 | C1 | Paying member, not certified | Day 21 of trial | Email | 06-certification-sequence.md | The best coach in town |
 | C2 | Paying member, not certified | Day 24 | Email | 06-certification-sequence.md | Everything in the instructor kit |
 | C3 | Paying member, not certified | Day 27 | Email | 06-certification-sequence.md | Four questions before you certify |
+| L1 | Kit order paid | Day 6 | Email | 09-post-purchase-loyalty.md | You are not a normal parent now |
+| L2 | Kit order paid | Day 9 | Email | 09-post-purchase-loyalty.md | Why I call it whole brain |
+| L3 | Kit order paid | Day 12 | Email | 09-post-purchase-loyalty.md | Send me the video |
+| L4 | Kit order paid | Day 18 | Email | 09-post-purchase-loyalty.md | The Sprout Boss, and how to cheer |
+| L5 | Kit order paid | Day 25 | Email | 09-post-purchase-loyalty.md | One kit for one friend |
+| L6 | Kit order paid | Day 35 | Email | 09-post-purchase-loyalty.md | Three lines about week one |
+| L7 | Kit order paid | Day 50 | Email | 09-post-purchase-loyalty.md | When your child stalls |
+| L8 | Kit order paid | Day 75 | Email | 09-post-purchase-loyalty.md | Your child, one year from now |
 
 ## Totals
 
-- Emails: 5 soap opera, 3 abandon, 8 onboarding, 2 shipping (one is a manual reply), 20 Seinfeld, 3 certification. **41 emails.**
-- Texts: **5.**
+- Emails: 5 soap opera, 3 abandon, 8 onboarding, 2 shipping (one is a manual reply), 20 Seinfeld, 3 certification, 8 loyalty. **49 emails.**
+- Texts: **5**, all parked until text consent is collected.
 - Ads: 5 angles, 15 primary texts, 15 headlines, 5 video scripts in `07-ad-copy.md`.
 
 <!-- status: ready -->

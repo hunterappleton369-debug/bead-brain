@@ -310,7 +310,7 @@ So what do you do instead? Three small things, one at a time:
 
 A finished problem, checked and redone, beats a saved one. Every time.
 
-There's a full chapter on this in the Playbook. It's the one I'd read twice.
+{{if_bump}}There's a full chapter on this in your Playbook. It's the one I'd read twice.{{end_if}}
 
 Hunter
 

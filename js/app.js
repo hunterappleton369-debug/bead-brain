@@ -12,6 +12,8 @@ import { membership } from './membership.js';
 import { account } from './account.js';
 import { library, libraryBook, printSheet } from './library.js';
 import { instructors } from './instructors.js';
+import { playbook } from './playbook.js';
+import { UNIVERSITY_URL, MEMBER_PRICE } from './config.js';
 
 injectDefs();
 document.getElementById('logo').innerHTML = logo();
@@ -113,16 +115,60 @@ function syncStatusText() {
 const crumbs = (...items) => `<div class="crumbs">${items.map((it, i) => i ? `<span>${it}</span>` : it).join('')}</div>`;
 const stageColor = s => ({ sprout: 'green', explorer: 'orange', apprentice: 'blue', adept: 'purple', ace: 'yellow', wizard: 'purple', champion: 'red', prodigy: 'pink', grandmaster: 'teal', legend: 'blue' }[s.key] || 'blue');
 
+// ───────────── the University gate: stages 2 to 10 ─────────────
+// Stage 1 (every lesson, drill and its boss) is free for everyone, signed in or not. Stages 2 to 10 need
+// ACCESS.stages in js/membership.js. The gate only decides what renders: a child's saved progress in a later
+// stage is never touched, so it is all there again when the membership starts again.
+const stagePaid = n => Number(n) !== 1 && membership.loaded && !membership.can('stages'); // show the lock (only once we know)
+// What a page that depends on stage access was drawn with (null when it does not); a change redraws it.
+const accessSig = () => JSON.stringify([membership.loaded, membership.can('stages'), membership.can('library'), membership.state().email, !!auth.user]);
+let accessShown = null;
+const noteAccess = () => { accessShown = accessSig(); };
+function stageGateBody(st) {
+  if (!membership.loaded) return `<span class="eyebrow blue">Stage ${st.n} · ${esc(st.name)}</span><h2>Checking your membership…</h2><p class="muted">One moment.</p>`;
+  const m = membership.state(), p = store.profile;
+  const saved = p && (Object.keys(p.lessons).some(k => k.startsWith(`s${st.n}.`)) || p.bosses[st.n]);
+  const signedIn = !!(auth.user || m.preview);
+  return `<span class="eyebrow green">Stage ${st.n} · ${esc(st.name)}</span>
+    <h2>Stage ${st.n} opens with Child Phenom University</h2>
+    <p class="lede">Free for 14 days, then $${MEMBER_PRICE} a month. Cancel any time from your account page.</p>
+    <div class="btn-row"><a class="btn green" href="${UNIVERSITY_URL}">Start the free test drive</a></div>
+    <p class="stage-signin"><a class="link-arrow" href="#/start/signin" data-switch>Already a member? Sign in with the email you paid with</a></p>
+    ${saved ? `<p class="small">${esc(p.name)}'s work in ${esc(st.name)} is saved. It comes back when the membership starts again.</p>` : ''}
+    ${membership.can('library') ? `<p class="small">Your ${esc(st.name)} pages are still in the library. <a class="link-arrow" href="#/library/${st.n}">Open them</a></p>` : ''}
+    ${signedIn && m.email ? `<p class="small muted stage-who">You are signed in as <b>${esc(m.email)}</b>.</p>` : ''}`;
+}
+function wireSwitch(root) {
+  // Signed in with another email: sign out first, so the sign-in page asks for the email they paid with.
+  root.querySelectorAll('[data-switch]').forEach(a => { if (auth.user) a.onclick = async e => { e.preventDefault(); a.textContent = 'One moment…'; await auth.signOut(); location.hash = '#/start/signin'; }; });
+}
+// Called by the router before any stage, lesson, drill, quest, boss or worksheet route. False = the gate was drawn.
+function stageGate(n) {
+  const st = stageByN(n);
+  if (!st || st.n === 1) return true; // unknown stages fall through to "not found"; Stage 1 never asks
+  noteAccess();
+  if (membership.can('stages')) return true;
+  const el = h(`<div>${crumbs('<a href="#/">Home</a>', `<a href="#/plan">The plan</a>`, `Stage ${st.n}`)}
+    <section class="section" style="margin-top:24px"><div class="block yellow split lib-lock stage-lock"><div>${stageGateBody(st)}</div><div class="lock-art">${icon('lock', 'ic')}</div></div></section></div>`);
+  app.appendChild(el);
+  wireSwitch(el);
+  return false;
+}
+
 // ───────────── home ─────────────
 function home() { return store.profile ? dashboard() : marketing(); }
 
 function trailHTML(preview = false) {
   const p = store.profile;
   const cur = p ? currentStage() : null;
+  noteAccess();
   return `<div class="trail">${STAGES.map(s => {
-    const unlocked = preview || stageUnlocked(s.n); const done = !preview && p && p.bosses[s.n]?.passed; const pr = stageProgress(s);
+    const paid = stagePaid(s.n); // stages 2 to 10 without a membership: a lock and one line, progress kept but not shown
+    const unlocked = !paid && (preview || stageUnlocked(s.n)); const done = !preview && p && p.bosses[s.n]?.passed; const pr = stageProgress(s);
     const isCur = cur && cur.n === s.n;
-    return `<a class="stage-node ${unlocked ? '' : 'locked'} ${done ? 'done' : ''} ${isCur ? 'current' : ''}" href="${preview ? '#/plan' : '#/stage/' + s.n}"><span class="num">${s.n}</span>${done ? '<span class="check">✓</span>' : ''}${badge(s.key)}<div class="name">${s.name}</div><div class="sub">${esc(s.tagline)}</div>${preview ? `<div class="sub faint">${s.time}</div>` : `<div class="bar"><i style="width:${Math.round(100 * pr.done / pr.total)}%"></i></div><div class="sub">${pr.done}/${pr.total} lessons</div>`}</a>`;
+    const foot = paid ? `<div class="sub lock-line">${icon('lock', 'ic')}<span>Opens with your University test drive</span></div>`
+      : preview ? `<div class="sub faint">${s.time}</div>` : `<div class="bar"><i style="width:${Math.round(100 * pr.done / pr.total)}%"></i></div><div class="sub">${pr.done}/${pr.total} lessons</div>`;
+    return `<a class="stage-node ${unlocked ? '' : 'locked'} ${paid ? 'paid' : ''} ${done ? 'done' : ''} ${isCur ? 'current' : ''}" href="${preview && !paid ? '#/plan' : '#/stage/' + s.n}"><span class="num">${s.n}</span>${done ? '<span class="check">✓</span>' : ''}${badge(s.key)}<div class="name">${s.name}</div><div class="sub">${esc(s.tagline)}</div>${foot}</a>`;
   }).join('')}</div>`;
 }
 
@@ -232,7 +278,7 @@ function dashboard() {
       <ul class="checklist">${FIRST_STEPS.map(s => `<li class="${steps[s.key] ? 'done' : ''}" data-k="${s.key}"><span class="box">${steps[s.key] ? '✓' : ''}</span><span>${s.text}</span></li>`).join('')}</ul>
       <div class="btn-row"><a class="btn" href="#/stage/1/lesson/hold">Open the first lesson →</a></div></div></section>` : ''}
 
-    ${dailyQuestHTML(cur)}
+    ${stagePaid(cur.n) ? `<section class="section" style="margin-top:48px"><div class="block yellow lib-lock stage-lock">${stageGateBody(cur)}</div></section>` : dailyQuestHTML(cur)}
 
     <section class="section">
       <div class="section-head"><span class="eyebrow">The trail</span><h2>Ten stages</h2><p>Pass a boss to unlock the next stage. Tap a stage to see its lessons.</p></div>
@@ -240,6 +286,7 @@ function dashboard() {
     </section>
   </div>`);
   app.appendChild(el);
+  wireSwitch(el);
   el.querySelectorAll('.checklist li').forEach(li => li.onclick = () => { store.update(x => { x.firstSteps = x.firstSteps || {}; x.firstSteps[li.dataset.k] = !x.firstSteps[li.dataset.k]; }); render(); });
 }
 
@@ -270,15 +317,49 @@ function quest(stageN, idx) {
 }
 
 // ───────────── sign-up / onboarding ─────────────
+const RESEND_WAIT = 30; // seconds before "Resend link" works (Supabase also limits how often a link can go out)
+// Where to go after the magic link signs them in, when it is not #/family. Kept per tab (sessionStorage), and
+// also on the device for an hour, because a link tapped in Gmail or Outlook usually opens in a new tab.
+const NEXT_KEY = 'cp.after-signin';
+const NEXT_OK = /^#\/(playbook(\/\d+)?|stage\/\d+(\/(lesson\/[\w-]+|boss))?)$/; // only these may be sent back to
+function rememberNext(hash) {
+  try { if (NEXT_OK.test(hash)) { sessionStorage.setItem(NEXT_KEY, hash); localStorage.setItem(NEXT_KEY, JSON.stringify({ hash, at: Date.now() })); } else { sessionStorage.removeItem(NEXT_KEY); localStorage.removeItem(NEXT_KEY); } } catch {}
+}
+function takeNext() {
+  let hash = '';
+  try {
+    hash = sessionStorage.getItem(NEXT_KEY) || '';
+    if (!hash) { const l = JSON.parse(localStorage.getItem(NEXT_KEY) || 'null'); if (l && Date.now() - l.at < 3600e3) hash = l.hash; }
+    sessionStorage.removeItem(NEXT_KEY); localStorage.removeItem(NEXT_KEY);
+  } catch {}
+  return NEXT_OK.test(hash) ? hash : '';
+}
+let prevHash = ''; // the page before this one: the sign-in page sends people back to the Playbook if they came from it
+const cleanEmail = v => String(v || '').trim().toLowerCase();
+
 // The "check your email" state after a magic link goes out. Replaces the sign-up form in place.
 function checkEmailHTML(email, name) {
-  return `<div class="try-box" style="padding:28px">
+  return `<div class="try-box check-email" style="padding:28px">
     <span class="eyebrow blue">One tap to sign in</span>
     <h2 style="margin:0 0 10px">Check your email.</h2>
-    <p style="margin:0 0 6px">We sent a link to <b>${esc(email)}</b>. Tap it on any device and ${name ? `${esc(name)}'s` : 'the'} progress is there too.</p>
-    ${tip('Nothing after a minute? Look in spam, or <a href="#" id="resend">send it again</a>.', 'parent', 'Parent note')}
+    <p style="margin:0 0 6px">We sent a sign-in link to <b class="ce-addr">${esc(email)}</b>.</p>
+    <p style="margin:0 0 6px">Tap the link in that email. ${name ? `${esc(name)}'s progress comes with you to any device.` : 'You will be signed in.'}</p>
+    <p class="ce-spam">Look in spam or promotions if it is not there in a minute.</p>
+    <div class="btn-row ce-mail"><a class="btn secondary" href="https://mail.google.com" target="_blank" rel="noopener">Open Gmail</a><a class="btn secondary" href="https://outlook.live.com" target="_blank" rel="noopener">Open Outlook</a></div>
+    <div class="ce-resend"><button class="btn ghost" type="button" id="resend" disabled>Resend link</button><span class="small muted" id="resend-note" aria-live="polite"></span></div>
+    <p class="small faint" style="margin:10px 0 0">Wrong email? <a href="#/start/signin" id="ce-again">Type it again</a></p>
     ${name ? '<div class="btn-row" style="margin-bottom:0"><a class="btn big blue" href="#/">Start the first lesson →</a></div>' : ''}
   </div>`;
+}
+// "Resend link" stays off for RESEND_WAIT seconds after each send, counting down on the button.
+function resendTimer(btn) {
+  let left = RESEND_WAIT; btn.disabled = true;
+  const tick = () => {
+    if (!btn.isConnected) return clearInterval(t);
+    if (left <= 0) { clearInterval(t); btn.disabled = false; btn.textContent = 'Resend link'; return; }
+    btn.textContent = `Resend link in ${left--} s`;
+  };
+  const t = setInterval(tick, 1000); tick();
 }
 function linkFailedHTML(msg, name) {
   return `<div class="try-box" style="padding:28px">
@@ -290,13 +371,26 @@ function linkFailedHTML(msg, name) {
   </div>`;
 }
 // Send the magic link and swap the form for the "check your email" box.
-async function sendLink(form, email, name) {
+async function sendLink(form, email, name, next = '') {
+  email = cleanEmail(email);
   const btn = form.querySelector('button[type=submit]'); btn.disabled = true; btn.textContent = 'Sending…';
+  rememberNext(next); // before the link goes out: the tab that opens it reads this after sign-in
   const { error } = await auth.signIn(email);
+  if (!error) auth.linkError = auth.linkCode = null;
   const box = h(error ? linkFailedHTML(error, name) : checkEmailHTML(email, name));
   form.replaceWith(box);
-  const re = box.querySelector('#resend');
-  if (re) re.onclick = async e => { e.preventDefault(); re.textContent = 'sending…'; const r = await auth.signIn(email); re.textContent = r.error ? r.error : 'sent again'; };
+  const re = box.querySelector('#resend'), note = box.querySelector('#resend-note');
+  if (re) {
+    resendTimer(re);
+    re.onclick = async () => {
+      re.disabled = true; re.textContent = 'Sending…'; note.textContent = '';
+      const r = await auth.signIn(email);
+      note.textContent = r.error ? r.error : 'Sent again. Check your email.';
+      resendTimer(re);
+    };
+  }
+  const again = box.querySelector('#ce-again');
+  if (again) again.onclick = e => { e.preventDefault(); if (location.hash === '#/start/signin') render(); else location.hash = '#/start/signin'; };
   if (!error && name) confetti(1400);
 }
 
@@ -304,7 +398,10 @@ function start(mode = '') {
   const user = auth.user;
   const signin = mode === 'signin' && !user;
   const accounts = auth.enabled && !auth.offline;
-  const linkError = auth.linkError; auth.linkError = null;
+  // A magic link that failed lands here (auth.js). Kept until a new link goes out or they leave this page.
+  const linkError = auth.linkError;
+  const expired = auth.linkCode === 'otp_expired' || /expired/i.test(linkError || '');
+  const next = signin && NEXT_OK.test(prevHash) ? prevHash : ''; // came here from the Playbook: go back there after
   const emailField = user
     ? `<div class="field"><label>Parent</label><div class="help" style="font-size:15px;color:var(--ink-2)">Signed in as <b>${esc(user.email)}</b>. New children follow you to every device.</div></div>`
     : `<div class="field"><label for="f-email">Parent email${signin ? '' : ' <span class="faint" style="text-transform:none;letter-spacing:0;font-weight:500">(optional)</span>'}</label><input id="f-email" type="email" placeholder="you@example.com" autocomplete="email" ${signin ? 'required' : ''}><div class="help">${accounts ? 'We email you a sign-in link. Progress follows you to any device.' : 'For progress updates and new stages.'}</div></div>`;
@@ -322,7 +419,7 @@ function start(mode = '') {
         <img src="img/hero-kid.webp" alt="" style="max-width:300px;margin-top:8px" loading="lazy">
       </div>
       <form id="signup" autocomplete="off">
-        ${linkError ? tip(`${esc(linkError)} Ask for a fresh one below.`, 'warn', 'That link') : ''}
+        ${expired ? tip('That link expired. Enter your email and we will send a fresh one.', 'warn', 'That link') : linkError ? tip(`${esc(linkError)} Ask for a fresh one below.`, 'warn', 'That link') : ''}
         ${signin ? '' : `<div class="field"><label for="f-name">Child's first name</label><input id="f-name" type="text" maxlength="24" placeholder="e.g. Maya" required></div>
         <div class="field"><label>Age</label><div class="age-pick" id="ages">${[4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map(a => `<button type="button" data-a="${a}" class="${a === 7 ? 'on' : ''}">${a === 13 ? '13+' : a}</button>`).join('')}</div></div>`}
         ${emailField}
@@ -337,8 +434,8 @@ function start(mode = '') {
   const form = el.querySelector('#signup');
   form.onsubmit = e => {
     e.preventDefault();
-    const email = form.querySelector('#f-email')?.value.trim() || '';
-    if (signin) { if (email) sendLink(form, email, ''); return; }
+    const email = cleanEmail(form.querySelector('#f-email')?.value);
+    if (signin) { if (email) sendLink(form, email, '', next); return; }
     const name = form.querySelector('#f-name').value.trim() || 'Player';
     store.addProfile(name, age, { parentEmail: email || user?.email || '' });
     toast(`Welcome, ${name}!`);
@@ -350,13 +447,16 @@ function start(mode = '') {
 }
 
 // Lands here from a magic link (#access_token=…). auth.js finishes the sign-in and sends us to Family.
+// The "ask for a new one" tip waits 8 seconds, so a sign-in that works never shows it.
 function authCallback() {
-  app.appendChild(h(`<div style="max-width:560px;margin:48px auto"><div class="try-box" style="padding:28px">
+  const el = h(`<div style="max-width:560px;margin:48px auto"><div class="try-box" style="padding:28px">
     <span class="eyebrow blue">One moment</span>
     <h2 style="margin:0 0 8px">Signing you in…</h2>
     <p style="margin:0 0 6px">Your children and their progress are on the way.</p>
-    ${tip('Still here after a few seconds? The link may have been used already. <a href="#/start/signin">Ask for a new one.</a>', 'parent', 'Parent note')}
-  </div></div>`));
+    <div class="cb-tip" hidden>${tip('Still here after a few seconds? The link may have been used already. <a href="#/start/signin">Ask for a new one.</a>', 'parent', 'Parent note')}</div>
+  </div></div>`);
+  app.appendChild(el);
+  setTimeout(() => { const t = el.querySelector('.cb-tip'); if (t && el.isConnected) t.hidden = false; }, 8000);
 }
 
 // Account box on the Family page: signed in, or the email form that sends a link.
@@ -396,7 +496,7 @@ function family() {
   el.querySelector('#export').onclick = () => { const a = document.createElement('a'); a.href = 'data:application/json,' + encodeURIComponent(store.exportJSON()); a.download = 'child-phenoms-progress.json'; a.click(); };
   el.querySelector('#import').onchange = e => { const f = e.target.files[0]; if (!f) return; f.text().then(t => { try { store.importJSON(t); toast('Progress loaded'); render(); } catch { toast('That file did not load'); } }); };
   const out = el.querySelector('#signout'); if (out) out.onclick = async () => { out.disabled = true; out.textContent = 'Signing out…'; await auth.signOut(); toast('Signed out. Progress stays on this device.'); render(); };
-  const acct = el.querySelector('#acct-form'); if (acct) acct.onsubmit = e => { e.preventDefault(); const email = acct.querySelector('#acct-email').value.trim(); if (email) sendLink(acct, email, ''); };
+  const acct = el.querySelector('#acct-form'); if (acct) acct.onsubmit = e => { e.preventDefault(); const email = cleanEmail(acct.querySelector('#acct-email').value); if (email) sendLink(acct, email, ''); };
 }
 
 // ───────────── plan ─────────────
@@ -739,11 +839,13 @@ function render() {
   const path = location.hash.replace(/^#\/?/, '');
   const parts = path.split('/').filter(Boolean);
   app.innerHTML = '';
-  document.body.classList.remove('printing-sheet', 'printing-book', 'print-one');
+  document.body.classList.remove('printing-sheet', 'printing-book', 'print-one', 'pb-print-all');
+  accessShown = null;
   setNav(path);
   window.scrollTo(0, 0);
   if (isAuthHash(path)) return authCallback();
   const [a, b, c, d] = parts;
+  if (a !== 'start') auth.linkError = auth.linkCode = null; // a failed-link note belongs to the sign-in page only
   try {
     if (!a) return home();
     if (a === 'start') return start(b);
@@ -753,10 +855,12 @@ function render() {
     if (a === 'practice') return practice();
     if (a === 'flash') return flash();
     if (a === 'test') return test(b || 'main');
+    if (['stage', 'quest', 'worksheet'].includes(a) && !stageGate(b)) return; // stages 2 to 10: University only
     if (a === 'quest') return quest(b, c);
     if (a === 'worksheet') return worksheet(b);
     if (a === 'account') return account(app);
     if (a === 'library') return b ? libraryBook(app, b) : library(app);
+    if (a === 'playbook') return playbook(app, b);
     if (a === 'print') return printSheet(app, b, c, d);
     if (a === 'instructors') return instructors(app, b);
     if (a === 'stage') { if (c === 'lesson') return lesson(b, d); if (c === 'boss') return boss(b); return stage(b); }
@@ -764,13 +868,13 @@ function render() {
   } catch (e) { console.error(e); app.appendChild(h(`<div class="card tint-red"><h2>Something broke</h2><pre>${esc(e.stack || e)}</pre></div>`)); }
 }
 try { history.scrollRestoration = 'manual'; } catch {}
-window.addEventListener('hashchange', () => { render(); requestAnimationFrame(() => window.scrollTo(0, 0)); });
+window.addEventListener('hashchange', e => { try { prevHash = new URL(e.oldURL).hash; } catch { prevHash = ''; } render(); requestAnimationFrame(() => window.scrollTo(0, 0)); });
 
 // Accounts: keep the top-right chip honest and refresh the pages that show account state.
 auth.on((ev, extra) => {
   const path = location.hash.replace(/^#\/?/, '');
   const first = path.split('/')[0];
-  if (ev === 'link') { toast(auth.user ? `Signed in as ${auth.user.email}` : 'That link did not work'); const to = auth.user ? '#/family' : '#/start/signin'; if (location.hash === to) render(); else location.hash = to; return; }
+  if (ev === 'link') { toast(auth.user ? `Signed in as ${auth.user.email}` : 'That link did not work'); const to = auth.user ? takeNext() || '#/family' : '#/start/signin'; if (location.hash === to) render(); else location.hash = to; return; }
   setNav(path);
   const quiet = ['', 'family', 'start', 'account'].includes(first) && !isAuthHash(path);
   if (ev === 'auth' || (ev === 'sync' && extra?.changed)) { if (quiet) render(); return; }
@@ -780,7 +884,8 @@ auth.on((ev, extra) => {
 // mid-drill, say) only the member-only buttons marked data-needs switch on or off.
 membership.on(() => {
   const first = location.hash.replace(/^#\/?/, '').split('/')[0];
-  if (['account', 'library', 'print'].includes(first)) render();
+  if (['account', 'library', 'print', 'playbook'].includes(first)) render();
+  else if (accessShown && accessShown !== accessSig()) render(); // a stage page, the gate or the trail
   else document.querySelectorAll('[data-needs]').forEach(el => { el.hidden = !membership.can(el.dataset.needs); });
 });
 auth.init(); // synchronous part first: it rewrites a failed magic-link hash before the first render

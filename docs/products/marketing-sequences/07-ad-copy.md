@@ -30,7 +30,7 @@ The five test angles from `docs/FUNNEL.md`. Each has three primary texts, three 
 
 It starts with a wooden abacus and 15 minutes a day.
 
-We'll send your child the abacus and the parent Playbook for free. You just pay $9.95 shipping. Made for ages 7 to 11.
+We'll send your child the abacus and a quick-start card for free. You just pay $9.95 shipping. Made for ages 7 to 11.
 
 **1B.** The world record: fifteen 3-digit numbers, added in 1.61 seconds. (Guinness, 2024.)
 
@@ -42,7 +42,7 @@ In America, almost none do. Your child can start at the kitchen table this week.
 
 That's how abacus kids do big sums fast. They see the number and move the beads in their mind.
 
-The first step is a real abacus and a parent who sits beside them. We'll send both the abacus and the Playbook that tells you what to say. Free. You cover $9.95 shipping.
+The first step is a real abacus and a parent who sits beside them. We'll send the abacus and a card that tells you what to do the first three nights. Free. You cover $9.95 shipping.
 
 ### Headlines
 
@@ -57,7 +57,7 @@ The first step is a real abacus and a parent who sits beside them. We'll send bo
 | 0–3 s | Child, eyes closed, fingers moving in the air. Text: "She's adding in her head." | "Watch her hands." |
 | 3–10 s | Close up of the soroban. Beads move fast. | "She's moving beads in her head. It's called mental abacus." |
 | 10–18 s | Parent and child side by side at a kitchen table. | "It starts with a real abacus and fifteen minutes a day, with you beside them." |
-| 18–28 s | The kit box opens. Text: "FREE kit. $9.95 shipping." | "We'll send your child the abacus and the parent Playbook free. Just pay shipping. Tap the link." |
+| 18–28 s | The kit box opens. Text: "FREE kit. $9.95 shipping." | "We'll send your child the abacus and a quick-start card free. Just pay shipping. Tap the link." |
 
 [HUNTER: film your own child or a family who signs a release. No borrowed clips.]
 
@@ -75,7 +75,7 @@ This is the thing that makes yours different.
 
 Mental math on the abacus. Fifteen minutes a day at home. A skill most kids in America never see.
 
-Free abacus kit and parent Playbook. You just pay $9.95 shipping.
+Free abacus kit with a quick-start card. You just pay $9.95 shipping.
 
 **2B.** In 2024, only 28% of US 8th graders were proficient in math. (Nation's Report Card.)
 
@@ -87,7 +87,7 @@ If you want your child to stand out, it has to come from home. Start with a free
 
 You say, "Fifteen minutes a day."
 
-That's the whole plan. A wooden abacus. A chair beside your child. A Playbook that tells you what to say. We'll send the kit free. You cover $9.95 shipping.
+That's the whole plan. A wooden abacus. A chair beside your child. A card for the first three nights. We'll send the kit free. You cover $9.95 shipping.
 
 ### Headlines
 
@@ -102,7 +102,7 @@ That's the whole plan. A wooden abacus. A chair beside your child. A Playbook th
 | 0–3 s | Hunter at a kitchen table. Text: "Tuition buys the same lesson every kid gets." | "Your tuition buys the same lesson every kid in the room gets." |
 | 3–12 s | Cut to the soroban, beads moving. | "Same page. Same pace. School isn't built to make one kid stand out." |
 | 12–20 s | Parent and child at the table. | "This is. Mental math on the abacus, fifteen minutes a day, at home." |
-| 20–27 s | Kit box. Text: "FREE kit. $9.95 shipping." | "We'll send the abacus and the parent Playbook free. Just pay shipping." |
+| 20–27 s | Kit box. Text: "FREE kit. $9.95 shipping." | "We'll send the abacus and a quick-start card free. Just pay shipping." |
 
 ---
 
@@ -118,7 +118,7 @@ Then I trained my brain like an athlete. Mental math and abacus drills, fifteen 
 
 Perfect ACT. Full ride. Scholar-Athlete of the Year at a Division I school.
 
-Here's the tool I used. We'll send your child the abacus and the Playbook free. Just pay shipping.
+Here's the tool I used. We'll send your child the abacus and a quick-start card free. Just pay shipping.
 
 **3B.** I was the kid teachers gave up on.
 
@@ -126,13 +126,13 @@ My grades were a wall. So I stopped studying harder and started training differe
 
 Around week three, it clicked. I started to like it.
 
-I put the whole plan in a box for parents. Free kit. You cover $9.95 shipping.
+I put the first step in a box for parents. Free kit. You cover $9.95 shipping.
 
-**3C.** When I trained, there was no kit. No book for parents. No plan. I pieced it together alone.
+**3C.** When I trained, there was no kit. No plan. No one to say what came next. I pieced it together alone.
 
 Your child doesn't have to.
 
-The Child Phenoms kit has the abacus and a Playbook that tells you what to say at each step. Free. Just pay $9.95 shipping. For ages 7 to 11.
+The Child Phenoms kit has the abacus and a card for the first three nights. The free trainer takes it from there. Free. Just pay $9.95 shipping. For ages 7 to 11.
 
 ### Headlines
 
@@ -147,7 +147,7 @@ The Child Phenoms kit has the abacus and a Playbook that tells you what to say a
 | 0–3 s | Hunter close up. Text: "C's in math." | "I got C's in math. I had ADHD." |
 | 3–12 s | Hunter, then hands on a soroban. | "My grades were a wall. So I trained my brain like an athlete. Mental math and abacus drills, fifteen minutes a day." |
 | 12–20 s | Hunter. Text: "Perfect ACT. Full ride." | "Perfect ACT. Full ride. Scholar-Athlete of the Year at a Division I school." |
-| 20–30 s | Kit box. Text: "FREE kit. $9.95 shipping." | "I put the whole plan in a box. The abacus and the Playbook are free. Just pay shipping." |
+| 20–30 s | Kit box. Text: "FREE kit. $9.95 shipping." | "I put the first step in a box. The abacus and a quick-start card are free. Just pay shipping." |
 
 [HUNTER: no school name, sport or year on screen. No report cards or score sheets in the shot.]
 
@@ -171,7 +171,7 @@ Your child can start at home in 15 minutes a day. Free abacus kit. Just pay ship
 
 The method is old. The proof is new.
 
-We'll send your child the abacus and the parent Playbook free. You cover $9.95 shipping.
+We'll send your child the abacus and a quick-start card free. You cover $9.95 shipping.
 
 **4C.** Brain scans show something odd about abacus kids. They do sums with the parts of the brain that handle pictures and hand moves.
 
@@ -192,7 +192,7 @@ Free abacus kit for ages 7 to 11. Just pay shipping.
 | 0–4 s | Text: "A 3-year trial. Ordinary kids." | "A three-year trial. Ordinary kids." |
 | 4–13 s | Soroban close up. Text: "Child Development, 2016" | "Three hours a week on the abacus. They beat the kids who got extra math class." |
 | 13–19 s | Parent and child at the table. | "You can start at home, fifteen minutes a day." |
-| 19–26 s | Kit box. Text: "FREE kit. $9.95 shipping." | "Free abacus kit and parent Playbook. Just pay shipping." |
+| 19–26 s | Kit box. Text: "FREE kit. $9.95 shipping." | "Free abacus kit with a quick-start card. Just pay shipping." |
 
 [HUNTER: the kit page should link the study summary. URL in `README.md`.]
 
@@ -210,13 +210,13 @@ This is math you do with your hands. Push a bead up. Push a bead down. Say the m
 
 It feels like a game. Kids ask for one more flash round.
 
-Free abacus kit and parent Playbook. You just pay $9.95 shipping.
+Free abacus kit with a quick-start card. You just pay $9.95 shipping.
 
 **5B.** I was the kid who couldn't sit still in math class.
 
 The abacus gave my hands a job. Fifteen minutes a day. Around week three, I started to like it.
 
-We'll send your child the same tool, plus a Playbook for you. Free. Just pay shipping.
+We'll send your child the same tool, plus a quick-start card for you. Free. Just pay shipping.
 
 **5C.** Worksheets ask kids to sit still and stare.
 
@@ -237,6 +237,6 @@ That's why it feels like a game, not homework. Free abacus kit for ages 7 to 11.
 | 0–3 s | A child's hands, tapping the table. Text: "Some kids can't sit still." | "Some kids can't sit still." |
 | 3–10 s | Same hands on a soroban, moving beads. | "Good. This is math you do with your hands." |
 | 10–17 s | Child says a move out loud, smiling. | "Push a bead. Say the move. It feels like a game." |
-| 17–25 s | Kit box. Text: "FREE kit. $9.95 shipping." | "Free abacus kit and parent Playbook. Just pay shipping." |
+| 17–25 s | Kit box. Text: "FREE kit. $9.95 shipping." | "Free abacus kit with a quick-start card. Just pay shipping." |
 
 <!-- status: needs Hunter: film all five videos with your own footage and releases; approve the "Backed by a 3-year randomized trial" headline in place of "3 randomized trials" -->

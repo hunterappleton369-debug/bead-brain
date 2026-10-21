@@ -1,5 +1,5 @@
-// account.js — #/account: the parent, the membership (and plainly what day 14 means), the billing buttons,
-// the children. Billing itself lives in Stripe's hosted customer portal (STRIPE_PORTAL_URL in config.js);
+// account.js — #/account: the parent, what they own (kit, Playbook, University, instructor), the membership
+// (and plainly what day 14 means), the billing buttons, the children. Billing itself lives in Stripe's hosted customer portal (STRIPE_PORTAL_URL in config.js);
 // pauses go to support, because the portal cannot pause (docs/products/legal-and-ops/ops-runbook.md §3.8).
 import { h, esc, tip, crumbs, day, shortDay, mailto } from './ui.js';
 import { auth } from './auth.js';
@@ -106,6 +106,42 @@ function planHTML(s) {
       <div class="btn-row"><a class="btn blue" href="${JOIN_URL}">Start with a free abacus kit</a>${btn({ href: mailto(SUPPORT_EMAIL, 'Link my membership', `Hi, I paid with a different email. Please link my membership to ${s.email}.\n\nThe email I paid with: `) }, 'Email us')}</div></div>`;
 }
 
+// "What you own": one line per thing, from the purchases row (kit, Playbook) and the memberships row.
+function uniState(s) {
+  switch (s.status) {
+    case 'trialing':
+      if (s.cancelAt) return ['blue', 'Test drive, cancelled', `Open until ${shortDay(s.cancelAt)}. No charge.`];
+      if (s.trialOver || !s.trialDay) return ['blue', 'Test drive', 'Your billing page shows the first charge.'];
+      return ['blue', `Test drive · day ${s.trialDay} of 14`, `Free through ${shortDay(s.lastFreeDay)}.`];
+    case 'active':
+      if (s.cancelAt) return ['green', 'Cancelled', `Open until ${shortDay(s.cancelAt)}.`];
+      if (s.plan === 'instructor') return ['green', 'Free year', s.periodEnd ? `Runs until ${shortDay(s.periodEnd)}.` : 'Comes with your certificate.'];
+      return ['green', 'Active', s.periodEnd ? `Next charge ${shortDay(s.periodEnd)}.` : `$${s.price} a month.`];
+    case 'past_due': return ['red', 'Payment missed', 'Update your card below.'];
+    case 'paused': return ['yellow', 'Paused', s.pausedUntil ? `Starts again ${shortDay(s.pausedUntil)}.` : 'Nothing is charged.'];
+    case 'canceled': return ['purple', 'Ended', s.keepsLibrary ? 'The library is yours to keep.' : 'Nothing more is charged.'];
+  }
+  return null;
+}
+function ownedHTML(s) {
+  const head = `<div class="section-head"><span class="eyebrow">Yours</span><h2>What you own</h2></div>`;
+  if (!membership.loaded) return `<section class="section acct-own">${head}<p class="muted">Checking…</p></section>`;
+  const row = (title, meta, extra = '', chip = '') => `<li><span class="ix">✓</span><div><b>${title}</b>${chip}<div class="meta">${meta}</div>${extra}</div></li>`;
+  const items = [];
+  if (s.kit) items.push(row('Abacus kit', `The abacus and the welcome card.${s.kitPaidAt ? ` Ordered ${shortDay(s.kitPaidAt)}.` : ''}`));
+  if (membership.can('playbook')) items.push(row('Child Prodigy Secrets Playbook',
+    s.boughtPlaybook ? 'The book in your box, the audiobook, and a copy to read here.' : 'Comes with your membership. Read it here.',
+    '<a class="link-arrow own-go" href="#/playbook">Open the Playbook</a>'));
+  const uni = uniState(s);
+  if (uni) items.push(row('Child Phenom University', uni[2], '', ` <span class="status-chip ${uni[0]}">${uni[1]}</span>`));
+  if (s.status !== 'none' && s.plan === 'instructor') items.push(row('Certified Phenom Instructor', 'Your listing in the instructor directory.', '<a class="link-arrow own-go" href="#/instructors">The directory</a>'));
+  if (items.length) return `<section class="section acct-own">${head}<ul class="lesson-list own-list">${items.join('')}</ul></section>`;
+  const none = !auth.user && !s.preview
+    ? 'Sign in with the email you ordered with. What you bought shows up here.'
+    : `We do not see an order for ${s.email ? `<b>${esc(s.email)}</b>` : 'this account'}. Ordered with another email? Sign in with that one.`;
+  return `<section class="section acct-own">${head}<p class="own-none">${none}</p></section>`;
+}
+
 function perksHTML(s) {
   const lib = membership.can('library'), sheets = membership.can('handouts');
   const row = (ix, title, meta, href, on, label) => `<li class="${on ? 'done' : ''}"><span class="ix">${ix}</span><div><a href="${href}">${title}</a><div class="meta">${meta}</div></div><a class="btn sm ${on ? 'secondary' : 'ghost'} go" href="${href}">${label}</a></li>`;
@@ -130,6 +166,7 @@ function childrenHTML() {
 
 function whoHTML() {
   const u = auth.user;
+  if (!u && membership.demo) return `<div class="acct-who"><span class="ix">D</span><div><b>${esc(membership.state().email)}</b><div class="meta">Demo family (?demo=${esc(membership.demo)}) · localhost only, not signed in</div></div></div>`;
   if (u) return `<div class="acct-who"><span class="ix">${esc(u.email[0].toUpperCase())}</span><div><b>${esc(u.email)}</b><div class="meta"><span class="sync-dot ${auth.lastError ? 'off' : ''}" aria-hidden="true"></span>Parent account · signed in on this device</div></div><button class="btn sm secondary" id="acct-signout">Sign out</button></div>`;
   if (!auth.enabled || auth.offline) return `<div class="acct-who"><span class="ix">?</span><div><b>Accounts are off right now</b><div class="meta">Progress saves on this device. Billing still works through the buttons below.</div></div></div>`;
   return `<div class="acct-who"><span class="ix">?</span><div><b>Not signed in</b><div class="meta">Use the email you paid with.</div></div><a class="btn sm blue" href="#/start/signin">Sign in</a></div>`;
@@ -156,7 +193,8 @@ function previewHTML() {
     <h3>Preview a membership state</h3>
     <p class="small muted">Stands in for the <code>memberships</code> row so the account page, the library and the print pages can be checked without a payment. ${membership.setupMissing ? '<b>The memberships table is not on the server yet</b> (apply <code>supabase/memberships.sql</code>). ' : ''}${STRIPE_PORTAL_URL ? '' : '<b>[HUNTER] STRIPE_PORTAL_URL is empty in js/config.js</b>, so the billing buttons open an email to support. '}</p>
     <div class="btn-row">${PRESETS.map(([label], i) => `<button class="btn sm secondary" data-preset="${i}">${label}</button>`).join('')}<button class="btn sm ghost" data-preset="off">Use the real account</button></div>
-    <p class="small faint" style="margin:0">Now: ${esc(cur)}</p>
+    <p class="small faint" style="margin:0">Now: ${esc(cur)}${membership.demo ? ` · <b>?demo=${esc(membership.demo)} is on</b>: it wins while nobody is signed in. Take it out of the address to use these buttons.` : ''}</p>
+    <p class="small faint" style="margin:6px 0 0">Whole family without a session: add <code>?demo=member</code>, <code>?demo=playbook</code> or <code>?demo=kit</code> before the <code>#</code>.</p>
   </div></section>`;
 }
 
@@ -170,6 +208,7 @@ export function account(app) {
       <p class="lede">Your membership, your children, and the buttons to change, pause or cancel. No phone call needed.</p>
     </div></section>
     ${whoHTML()}
+    ${ownedHTML(s)}
     <section class="section" style="margin-top:28px">${planHTML(s)}</section>
     ${membership.error && !membership.preview ? tip(`We could not check your membership just now (${esc(membership.error)}). Try again in a minute.`, 'warn', 'Heads up') : ''}
     ${perksHTML(s)}

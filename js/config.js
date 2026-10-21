@@ -15,3 +15,11 @@ export const SUPPORT_EMAIL = 'hello@childphenoms.com';
 export const MEMBER_PRICE = 67;                       // $ a month after the 14-day test drive (free-abacus/university.html)
 export const JOIN_URL = 'free-abacus/';               // where someone without a membership starts
 export const CERTIFY_URL = 'free-abacus/certify.html'; // the certification offer, linked from the instructor directory
+export const UNIVERSITY_URL = 'free-abacus/university.html'; // the 14-day test drive; stages 2 to 10 send non-members here
+
+// The Playbook (#/playbook): Child Prodigy Secrets Playbook, the $27 add-on on the free-abacus order form, also
+// free for Child Phenom University members. Who may read it comes from the `purchases` and `memberships` tables.
+// [HUNTER] Paste the hosted MP3 link of the audiobook here when it is recorded (docs/products/audiobook-notes.md).
+// Empty: the page says the audiobook is not ready yet and shows no player.
+export const PLAYBOOK_AUDIO_URL = '';
+export const PLAYBOOK_PRICE = 27;

@@ -157,3 +157,13 @@ Found and fixed while checking: the book's bead pictures had a number printed ne
 - University FAQ: "Cancel any time before that from your account page" works once the portal link is set. "Pause for a month at a time from your account page" sends a pause request to support (Stripe's portal cannot pause).
 - Thanks page: "a link to your parent account" in the welcome email should point to `SITE/#/account` (or `SITE/#/start/signin` for a first sign-in).
 - Certify page: "your name in the directory" — the directory exists now, but listings go live only after you add them by hand (§5).
+
+## 5. Added 2026-10-21: purchases, the Playbook, the stage gate, the webhook
+
+- **`purchases` table** (`supabase/purchases.sql`, applied): one row per buyer email with `kit`, `playbook`, `kit_paid_at`, `order_ref`. Same row-level security as `memberships`: a signed-in parent reads only their own row.
+- **`#/playbook`** (`js/playbook.js`, pages in `library/playbook.json` built by `tools/build-members.mjs` step 4 from `docs/products/playbook.md`): the digital Child Prodigy Secrets Playbook, one chapter per page, print one page or the whole book, an audio player that appears when `PLAYBOOK_AUDIO_URL` in `js/config.js` is set. Access (`ACCESS.playbook` in `js/membership.js`): `purchases.playbook` true, or a trialing, active or past_due membership. Everyone else sees the gate with the sign-in link and the kit link.
+- **Stage gate** (`ACCESS.stages`): stages 2 to 10, their lessons, drills, bosses, quests and worksheets need a trialing, active or past_due membership (or an instructor plan). Stage 1 stays open to everyone. Locked stages show a lock on the map and a gate page that links to `UNIVERSITY_URL`. Saved progress in later stages is untouched while a membership lapses.
+- **Account page**: "What you own" lists the kit, the Playbook (with an "Open the Playbook" link), the University state and the instructor plan.
+- **Sign-in polish**: lower-cased email, "Resend link" after 30 seconds, Gmail and Outlook buttons, the expired-link message, and a return to the page the parent wanted (`#/playbook` or a locked stage) after the link.
+- **Local demo**: on `localhost` only, `?demo=member`, `?demo=kit` or `?demo=playbook` fakes the rows so the pages can be checked without a real sign-in. Dead on any other hostname.
+- **Stripe webhook** (`supabase/functions/stripe-webhook/`, deployed as the edge function `stripe-webhook`): writes `purchases` and `memberships` from Stripe events once the secrets are set. Steps: `docs/products/legal-and-ops/stripe-setup.md` §8. Until then, add rows by hand as in §3 above.

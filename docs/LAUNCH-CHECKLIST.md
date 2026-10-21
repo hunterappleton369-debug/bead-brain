@@ -1,36 +1,86 @@
 # Launch checklist: free abacus funnel
 
-Status on 2026-10-21, after the final copy pass. "Done" means it exists in the repo and was tested in a browser. "You" means only Hunter can do it. Items are in the order they should happen.
+Status on the evening of 2026-10-21. "Done" means built, tested in a browser at phone width, and (once pushed) live at https://childphenoms.com/free-abacus/. "You" means only Hunter can do it, with the exact clicks. Items are in the order they unblock each other. The matching helper for anything you hand to an agent is `docs/AGENT-PROMPT.md`.
 
-## Done
+## Done today
 
-- Funnel pages (`free-abacus/index.html`, `university.html`, `certify.html`, `thanks.html`) match the design canvas: urgency box, red order form under the kit photo, green ClickFunnels-style "yes" buttons with red "no" links, bundle shots, red value stacks, seven public comments on page 1, video-rights line under the clips. Tested at phone width: form step 1 to 2, bump total, preview walk through all four pages, sticky bar, no console errors, no broken local files.
-- Product images regenerated to match the real abacus; University bundle shot reads "100+ Lessons & Drills".
-- Materials under `docs/products/`: two bonus guides, the lesson library, 86 practice sheets, the 20-lesson certification course with exam, instructor launch kit, 41 emails + 5 texts + 5 ad angles, legal and ops pages. All teach the agreed borrow order; founder name, lesson count and certification-for-life wording are settled.
-- App: account and billing page, member library with print-on-demand sheets, public instructor directory (`docs/APP-DELIVERY.md`).
-- Videos: the Little Big Shots clip embeds from the show's official YouTube channel; PBS NOVA and Guinness are links to their own pages. No footage is copied or re-hosted. The comments on page 1 are quoted public comments about abacus videos, named by first name and platform, with no avatars, and the page says they are not about the kit.
+- **Offer**: the free kit is the abacus plus a 3-night quick-start card ($39 value). The $27 bump is the Child Prodigy Secrets Playbook + Audiobook (text-only box, last decision before the checkout button). Step 1 of the form asks name, email and phone only; the hosted checkout takes the address and card. Decisions are in `docs/FUNNEL.md`.
+- **Pages** (`free-abacus/`): regenerated from the design canvas (version 290, https://claude.ai/artifact/MAT8DW8b48fZjrUguLbgoh). Codex's conversion review applied: claims softened, fake video player replaced with a "how one lesson works" box, trial first-charge date shown, "cancel from your account page", pause by request, HM initials, NAEP and brain-study lines corrected.
+- **Images**: Expert-Secrets-style Playbook cover (`img/funnel/playbook.webp`, alternate `playbook-alt.webp`), photoreal abacus (`abacus.webp`), kit box with the card and no book (`kitbox.webp`). Older renders in `img/funnel/v1/` and `v2/`. Candidates and the rerun script in `img/gen/funnel/candidates/`.
+- **Tracking**: Meta Pixel wired in `free-abacus/funnel.js`, off until `metaPixelId` is set in `free-abacus/config.js`. Events: PageView, Lead, AddToCart, InitiateCheckout, Purchase, StartTrial, once per browser.
+- **Checkout logic**: `?paid=kit|university|certify` on a return URL is the only thing that marks an item as bought; thank-you rows follow that. Shopify cart links would prefill name, email and phone; Stripe links get `prefilled_email`.
+- **App**: `#/playbook` (digital Playbook, audiobook slot, print), `#/account` "What you own", stages 2 to 10 gated behind a University membership (Stage 1 free), sign-in polish (lower-cased email, resend link, Gmail/Outlook buttons, expired-link message, return to the page they wanted). Supabase: `memberships` and `purchases` tables are live with row-level security. Stripe webhook edge function in `supabase/functions/stripe-webhook/` (see `docs/products/legal-and-ops/stripe-setup.md` §8).
+- **Shopify** (store j1tu10-he, Basic plan): products "Child Phenoms Free Abacus Kit" (id 10239735988480, $0, inventory not tracked) and "Child Prodigy Secrets Playbook + Audiobook" (id 10239737823488, $27); US-only rate "USPS Ground Advantage (2 to 7 days)" $9.95; checkout collects email. Shopify is the fulfilment back office for CJ, not the checkout (see `docs/FULFILLMENT.md`).
+- **Email**: no SMS at launch. Sequences swept for the new offer; new 8-email loyalty sequence `docs/products/marketing-sequences/09-post-purchase-loyalty.md` ("the Whole Brain family"); quick-start card text in `docs/products/welcome-card.md`.
+- **Ads**: `docs/ADS-BUILD-SHEET.md` (campaign, ad sets, copy, UTMs, creative brief per angle, daily review rules).
 
-## Blocks launch (do these before any ad runs)
+## Blocks launch, in order
 
-1. **Payment links (you).** `free-abacus/config.js` has four empty links: kit, kit + bump, University trial, certification. Until they are filled, every "yes" button only walks to the next page. Set up Shopify + CJ for the kit per `docs/FULFILLMENT.md`, and Stripe for the subscription and the certification per `docs/products/legal-and-ops/stripe-setup.md`. Then the Stripe customer-portal link in `js/config.js` and the `memberships` table in Supabase (`docs/APP-DELIVERY.md`).
-2. **Fulfilment (you).** Stock in a US warehouse, printed Playbooks and Workbooks at the same warehouse, branded box and welcome card, one test order delivered inside 7 days. Children's Product Certificate from the supplier.
-3. **Tracking (needs building).** The funnel has no Meta Pixel and no Conversions API. Add the pixel to the four pages with a Lead event on step 1 and a Purchase event on the thank-you page, and disclose it in the privacy policy. Without it the ads cannot optimise and you cannot see cost per kit.
-4. **Legal pages (you + counsel).** Fill the placeholders in `docs/products/legal-and-ops/site/` (entity, state, address, dates), move the four HTML pages to `legal/` on the site, link privacy and terms from every funnel footer, and have counsel read the trial and auto-renewal wording, the children's privacy section and the instructor agreement.
-5. **Consent (needs building).** A text-message consent checkbox on step 1 of the order form, a mailing address in the email footer, and SMS campaign registration with your provider before the day-one text goes out.
-6. **Email and SMS provider (you).** Connect the provider and the lead webhook (`leadWebhook` in `config.js`), load the sequences from `docs/products/marketing-sequences/send-map.md`, and send every test only to the approved test number and address.
-7. **Domain (you).** `childphenoms.com` DNS at GoDaddy still has to point at GitHub Pages, with HTTPS on, before the ad links go out. The thank-you page and the instructor directory link to that domain.
-8. **Truth check on the page (you).** Urgency box numbers (1,000 kits, 6 weeks), "ships in 2 to 3 business days by USPS", "7 days or less", "thousands of children", and the 30-day refund and keep-the-kit promises all have to match what fulfilment and the refund policy actually do.
-9. **Push (you).** Commit is ready locally; pushing `main` publishes everything on GitHub Pages. The upsell pages are `noindex`; the funnel is unlinked from the home page, so a push before items 1 to 8 only exposes a preview-mode funnel, but do not send traffic until they are done.
+### 1. Domain (you, 2 minutes, then me)
 
-## Should happen in the first two weeks
+GoDaddy sent a 6-digit code to your phone ending 1025 and the DNS panel is waiting for it in the Chrome tab "Domain Portfolio: childphenoms.com".
 
-10. **Recordings (you).** The VSL (`docs/VSL-SCRIPT.md`) into the placeholder on page 2; the Playbook audiobook (`docs/products/audiobook-notes.md`); the 20 certification videos; the five ad videos with your own footage and signed releases. Founder photo replaces the "HA" circle.
-11. **Print and art (you).** Covers for both bonus guides, the instructor badge, your signature image, PDF renders of the lesson library and guides for the member downloads.
-12. **Support (you).** `hello@childphenoms.com` answered within a day, with the macros in `docs/products/legal-and-ops/`; email deliverability set up (Resend) so receipts and magic links land.
-13. **Delivery mechanics (built, needs your settings).** Cancel and pause run through the Stripe portal; handouts and the library print from `#/library`; instructor rows are added by hand after each pass.
+1. In that Chrome tab, type the code into "6-digit code" and press **Verify code**. If it expired, press **Resend code**.
+2. Tell me "code is in". I replace the parked A record with GitHub's four addresses, point `www` at `hunterappleton369-debug.github.io`, set the custom domain on the GitHub Pages settings, and turn on HTTPS.
+
+If you would rather do it yourself: DNS → delete the `A @ Parked` record; add `A @ 185.199.108.153`, `A @ 185.199.109.153`, `A @ 185.199.110.153`, `A @ 185.199.111.153` (TTL 600); edit `CNAME www` to `hunterappleton369-debug.github.io`. Then https://github.com/hunterappleton369-debug/bead-brain/settings/pages → Custom domain `childphenoms.com` → Save → tick **Enforce HTTPS** once the check passes (5 to 30 minutes). Finish signal: https://childphenoms.com/free-abacus/ loads with a padlock.
+
+### 2. Stripe payment links (you sign in, then me; or you, 30 minutes)
+
+Sign in to https://dashboard.stripe.com in Chrome and tell me; I build everything below in test mode, we run one test order with card 4242 4242 4242 4242, then I repeat it in live mode. If you build it yourself:
+
+1. **Products** (Product catalog → Add product): "Child Phenoms Free Abacus Kit (shipping and handling)" one-time **$9.95**; "Child Prodigy Secrets Playbook + Audiobook" one-time **$27**; "Child Phenom University" recurring **$67 / month**; "Certified Phenom Instructor" one-time **$297**. Copy each price id (`price_…`) for step 5 of the webhook.
+2. **Payment links** (Payment links → New):
+   - Link A: kit price only. Collect shipping address, **United States only**. After payment → "Don't show confirmation page", redirect to `https://childphenoms.com/free-abacus/university.html?paid=kit`.
+   - Link B: kit price + Playbook price, same address rule, same redirect.
+   - Link C: University price, **Free trial 14 days**, "Require payment method", redirect to `https://childphenoms.com/free-abacus/certify.html?paid=university`.
+   - Link D: certification price, redirect to `https://childphenoms.com/free-abacus/thanks.html?paid=certify`.
+3. **Customer portal** (Settings → Billing → Customer portal): allow cancel, allow updating card, default redirect `https://childphenoms.com/#/account`. Copy the **Login link**.
+4. Paste A, B, C, D into `free-abacus/config.js` (`checkoutUrl`, `checkoutUrlWithBump`, `universityTrialUrl`, `certifyUrl`) and the portal link into `js/config.js` (`STRIPE_PORTAL_URL`). Push, or tell me and I push.
+5. **Webhook**: `docs/products/legal-and-ops/stripe-setup.md` §8. Endpoint `https://fndemnipqtpmuvcidcxo.supabase.co/functions/v1/stripe-webhook`. Set the signing secret and the four price ids as Supabase secrets. Finish signal: a test order creates a `purchases` row; a test trial creates a `memberships` row with status trialing.
+
+### 3. Fulfilment (you, one to two weeks for stock)
+
+1. Shopify → Settings → General → Business details → the entity row → fill the full street address. Then Online Store → Preferences → turn **Private mode** off (the switch is greyed until the address is in) → Save. Finish signal: https://j1tu10-he.myshopify.com/ opens without a password page.
+2. Install the CJdropshipping app, source the abacus (black frame, natural wood beads, silver bar; `img/funnel/abacus.webp`), buy an opening batch into a **US** warehouse, and get the Children's Product Certificate from the supplier. Print the quick-start card (`docs/products/welcome-card.md`) and the Playbook; ship both to the same warehouse. Confirm bundle kitting in writing.
+3. Connect orders: Zapier → trigger "Stripe: Checkout Session Completed" → action "Shopify: Create Order" (customer email, shipping address from the session, line items kit and, when bought, Playbook, financial status paid). Until the zap runs, create each order by hand in Shopify → Orders → Create order → Mark as paid. CJ picks it up from Shopify either way.
+4. One real test order to your own address. Finish signal: tracking in Shopify within 2 business days, box within 7 with the abacus and the card (and the Playbook when ticked).
+
+### 4. Meta (you, 20 minutes, then me)
+
+1. https://business.facebook.com → Settings → Business assets → **Pages → Add → Create a new Page** "Child Phenoms". **Ad accounts → Add → Create** (USD, your card). **Data sources → Pixels (datasets) → Add** "Child Phenoms Pixel". Copy the **Pixel ID** (15 to 16 digits).
+2. Brand safety → **Domains → Add** `childphenoms.com` → verify with the DNS TXT record (give me the record text and I add it at GoDaddy).
+3. Paste the Pixel ID into `free-abacus/config.js` → `metaPixelId`, or send it to me and I push. Finish signal: Events Manager → Test events shows PageView from https://childphenoms.com/free-abacus/ and Lead after step 1.
+4. Build the campaign from `docs/ADS-BUILD-SHEET.md` (paused until the test order and the email flow pass). Your creative goes in last.
+
+### 5. Email (you create accounts, then me)
+
+1. **Resend** (exists): sign in at https://resend.com in Chrome and tell me; I add the DKIM, SPF and return-path records at GoDaddy and verify the domain. Then Resend → API keys → create "supabase-auth" (sending only) and keep it for step 2.
+2. **Supabase SMTP** (so sign-in links reach every parent, not just team members): https://supabase.com/dashboard/project/fndemnipqtpmuvcidcxo/auth/smtp → Enable custom SMTP → Sender `hello@childphenoms.com`, name "Child Phenoms", host `smtp.resend.com`, port `465`, username `resend`, password = the API key → Save. Then Authentication → Rate limits → emails per hour → 100. Then Authentication → URL configuration → Site URL `https://childphenoms.com/`, redirect URLs `https://childphenoms.com/**` and `https://www.childphenoms.com/**`. Finish signal: `#/start/signin` with hunterappleton369@gmail.com delivers a link that lands you on `#/family`.
+3. **Customer.io** (to create): https://customer.io → create a workspace "Child Phenoms" → Settings → Email → add the sending domain and give me the DNS records. Then load the sequences in the order in `docs/products/marketing-sequences/send-map.md`, with the link tags from its README. Triggers: Stripe → Customer.io via Zapier (kit paid, trial started, certification bought) and the step-1 lead via `leadWebhook` in `free-abacus/config.js` (a Customer.io track endpoint or a Zapier catch hook). Test sends only to hunterappleton369@gmail.com.
+
+### 6. Legal pages (you + counsel, 1 hour)
+
+Fill the placeholders in `docs/products/legal-and-ops/site/` (entity, state, address, dates, the pixel and email-provider disclosure), copy the four HTML pages to `legal/` on the site, link Privacy and Terms from every funnel footer and the app footer. Counsel reads the trial and auto-renewal wording, the children's privacy section and the instructor agreement.
+
+### 7. Truth check (you, 10 minutes)
+
+Page 1: "1,000 kits", "6 weeks", "ships in 2 to 3 business days by USPS", "7 days or less", "thousands of children"; page 2: "$997" as a real former price; page 3: "$297 once". Every line must match what fulfilment, Stripe and the refund policy actually do. Edit on the canvas or tell me.
+
+### 8. Push (me, when you say)
+
+Everything above that is built is committed and pushed today. Later changes: tell me and I port from the canvas and push.
+
+## First two weeks
+
+- **Recordings**: the VSL for page 2 (`docs/VSL-SCRIPT.md`; the "how one lesson works" box is the placeholder), the Playbook audiobook (`docs/products/audiobook-notes.md`; paste the MP3 URL into `PLAYBOOK_AUDIO_URL` in `js/config.js`), the 20 certification videos, the five ad videos with releases, a founder photo for the HM circle.
+- **Print**: Playbook interior PDF, quick-start card, instructor badge, signature image.
+- **Support**: hello@childphenoms.com answered within a day, macros in `docs/products/legal-and-ops/`.
+- **Ops until the webhook is live**: after each order, add the `purchases` row (kit, playbook) or `memberships` row by hand (`docs/APP-DELIVERY.md` §3).
 
 ## Open decisions
 
-- Instructor background checks: required, recommended, or none (agreement §7 placeholder).
-- Whether the "keep it even if you cancel" library means the printable pages in `#/library` only, or PDFs too.
-- Whether "thousands of children" stays on page 1 and page 2 (it refers to abacus training worldwide, not to Child Phenoms customers; the page should make that clear or the line should go).
+- Instructor background checks (agreement §7).
+- Whether the kept library after a cancel includes fresh practice sheets (one line in `ACCESS`, `js/membership.js`).
+- Whether "thousands of children" stays on pages 1 and 2 (it refers to abacus training worldwide).
+- Whether to swap `img/funnel/university.webp` (still prints "102 Training Lessons") for a fresh render.

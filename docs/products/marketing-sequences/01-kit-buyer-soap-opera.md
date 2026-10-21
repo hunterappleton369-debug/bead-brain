@@ -25,9 +25,9 @@ Your kit is in. Thank you. Here is your receipt.
 **Order {{order_id}}**
 
 - Child Phenoms Abacus ($39 value): FREE
-- Child Prodigy Secrets: The Playbook ($47 value): FREE
+- The 3-Night Quick-Start Card: FREE
 - Shipping and handling (USPS): $9.95
-- {{if_bump}}Prodigy Maker Workbook + Audiobook: $27{{end_if}}
+- {{if_bump}}Child Prodigy Secrets Playbook + Audiobook: $27{{end_if}}
 - Total paid today: {{order_total}}
 
 Your box ships in 2 to 3 business days. A tracking email comes the day it leaves.
@@ -37,6 +37,8 @@ Your box ships in 2 to 3 business days. A tracking email comes the day it leaves
 Make your parent account. Then make a profile for your child. Stage 1 is open on the screen abacus right now, so you can start before the box lands.
 
 [Make my parent account]({{link_start}})
+
+{{if_bump}}Your Playbook is ready tonight too. Sign in and look under "What you own" for the digital copy and the audiobook. The printed copy comes in the box.{{end_if}}
 
 **One question for you**
 
@@ -165,7 +167,7 @@ I promised three things the beads gave me that had nothing to do with math. Here
 
 Now the gift.
 
-Your kit has the beads and the book. What it does not have is a plan for every day after Stage 1. That was the part I never had. I guessed. You don't have to.
+Your kit has the beads and a card for the first three nights. What it does not have is a plan for every day after Stage 1. That was the part I never had. I guessed. You don't have to.
 
 So kit families get a free 14-day test drive of Child Phenom University. Here is what's inside, with what each part is worth:
 
@@ -218,7 +220,7 @@ Here it is one more time:
 
 [Yes, start my free test drive]({{link_university}})
 
-If now is not the time, that's fine. The kit and the Playbook are yours. Stage 1 stays free.
+If now is not the time, that's fine. The kit is yours. Stage 1 stays free.
 
 I'll keep sending you one short story a day.
 

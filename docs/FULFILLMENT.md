@@ -4,7 +4,7 @@ Written 2026-10-21 for the free-abacus funnel. The pages promise a kit "delivere
 
 ## The short answer
 
-Use **Shopify as the checkout for the physical kit** and **CJ Dropshipping as the fulfilment app**, with the abacus pre-stocked in a CJ warehouse in the United States and the printed books sent to the same warehouse as your own inventory so every order ships as one branded box. Keep Stripe for the University subscription and the certification (or move them to Shopify Subscriptions later). Once you pass roughly 300 kits a month, or the moment you actually buy 1,000 units up front, move the stock to a US fulfilment house that specialises in kitting (ShipMonk first, ShipBob second).
+**Updated 2026-10-21.** Checkout is **Stripe** for every step, including the kit, because a Stripe Payment Link can send the parent straight back to page 2 after paying; Shopify's checkout ends on Shopify's own thank-you page and would lose the University offer. **Shopify + CJ Dropshipping** is the fulfilment back office: the two products and the $9.95 US rate are already set up in the store (j1tu10-he), and the abacus is pre-stocked in a CJ warehouse in the United States with the printed Playbooks and quick-start cards sent to the same warehouse so every order ships as one branded box. Paid Stripe orders reach Shopify by a Zapier zap (Stripe "Checkout Session Completed" to Shopify "Create Order") or, until the zap runs, by a draft order created by hand. Once you pass roughly 300 kits a month, or the moment you buy 1,000 units up front, move the stock to a US fulfilment house that specialises in kitting (ShipMonk first, ShipBob second).
 
 DSers is the wrong tool for this product. It is an AliExpress order tool: it ships from Chinese suppliers in 7 to 20+ days, it cannot bundle a printed book into the parcel, and it has no branded packaging. Every one of those breaks a promise the page makes.
 
@@ -22,7 +22,7 @@ DSers is the wrong tool for this product. It is an AliExpress order tool: it shi
 Sources are third-party reviews and community posts, not contracts, so confirm numbers with each provider before you commit:
 [CJ US warehouses blog](https://blog.cjdropshipping.cn/detail/Unlock-3-Day-Delivery-with-CJ-s-New-US-Warehouses), [CJ custom packaging guide](https://blog.cjdropshipping.cn/detail/all-you-want-to-know-about-custom-packaging), [CJ review, Spocket 2026](https://www.spocket.co/blogs/cjdropshipping-overview), [CJ review, Super-DS 2026](https://super-ds.com/blog/cjdropshipping-review-2026), [CJ review, hustlegotreal](https://hustlegotreal.com/blog/cj-dropshipping-review/), [DSers vs Zendrop](https://ecommerce-platforms.com/articles/dsers-vs-zendrop), [Zendrop vs CJ](https://ecommerce-platforms.com/dropshipping-comparisons), [ShipBob alternatives 2026](https://www.shipfusion.com/blog/shipbob-alternatives), [best fulfilment companies 2026](https://fitsmallbusiness.com/best-fulfillment-warehouse/), [Shopify cart permalinks](https://community.shopify.com/t/cart-use-permalinks-to-pre-load-the-cart/7494/1).
 
-## Why Shopify becomes the checkout
+## Why Stripe is the checkout and Shopify is the back office (replaces the earlier plan below)
 
 The funnel is a static site. Its order form collects name, email, phone and address, then sends the parent to a hosted checkout link from `free-abacus/config.js`. Today those are meant to be Stripe Payment Links. A Shopify cart link does the same job and drops the order straight into the fulfilment app, with no Zapier glue:
 

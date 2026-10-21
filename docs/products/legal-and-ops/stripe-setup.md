@@ -8,7 +8,7 @@ Click-by-click: four products, four payment links, the billing portal, reminders
 
 - You need: Stripe login, the live site address, and the legal pages published (Stripe asks for their URLs).
 - Site address below is written as `SITE`. Use `https://childphenoms.com` once DNS is live; until then use `https://hunterappleton369-debug.github.io/bead-brain`.
-- Do everything in **test mode** first (toggle **Test mode** top right, or open a **Sandbox**). Section 8 repeats it in live mode.
+- Do everything in **test mode** first (toggle **Test mode** top right, or open a **Sandbox**). Section 9 repeats it in live mode.
 
 ### How the funnel uses the links
 
@@ -150,7 +150,125 @@ Open `free-abacus/config.js` and fill the four slots:
 
 Finish signal: every step above matched. Delete nothing; test data stays in test mode.
 
-## 8. Go live (10 min)
+## 8. Webhook: Stripe writes the access tables (15 min)
+
+When someone pays, Stripe tells our Supabase project. A small program there (the edge function `stripe-webhook`) fills in the two tables the app reads: `purchases` (kit and Playbook) and `memberships` (University and the instructor year). A paying parent signs in and gets in. Nobody types rows by hand. The function is already deployed. It does nothing until you give it the secrets below.
+
+| What happened in Stripe | What the webhook writes |
+|---|---|
+| Kit, or kit + Playbook, paid (Link A or B) | `purchases`: `kit` true, `playbook` true if the Playbook was in the order, `kit_paid_at` = that day, `order_ref` = the checkout id |
+| Test drive started (Link C) | `memberships`: `university`, `trialing`, `trial_end` = the day of the first $67 charge |
+| A $67 charge went through | `active`, `trial_end` empty, `current_period_end` = next renewal |
+| Card failed, cancelled, paused, ended | `past_due`, `cancel_at` filled, `paused` with `paused_until`, or `canceled` |
+| Certification paid (Link D) | `memberships`: `instructor`, `active`, `current_period_end` = one year out |
+
+Each change also adds a line to `note`: the date, the event and its id.
+
+**Endpoint URL:** `https://fndemnipqtpmuvcidcxo.supabase.co/functions/v1/stripe-webhook`
+
+Do this in test mode first, after sections 3 and 4.
+
+### Step 1. Add the endpoint in Stripe (4 min)
+
+1. Test mode on. Open https://dashboard.stripe.com/test/webhooks (**Developers** → **Webhooks**).
+2. Click **+ Add endpoint**. (Newer dashboards say **Add destination**: pick **Your account**, then **Webhook endpoint**.)
+3. **Endpoint URL:** paste the URL above.
+4. **Description:** `Child Phenoms access tables`.
+5. **API version:** leave what Stripe picks.
+6. Click **Select events**. Search for each of these five and tick it. Nothing else.
+   - `checkout.session.completed`
+   - `checkout.session.async_payment_succeeded`
+   - `customer.subscription.updated`
+   - `customer.subscription.deleted`
+   - `invoice.paid`
+7. Click **Add endpoint** (or **Create destination**).
+
+Finish signal: the Webhooks page lists the URL with 5 events.
+
+### Step 2. Copy the signing secret (1 min)
+
+1. Click the new endpoint.
+2. Under **Signing secret**, click **Reveal**. It starts with `whsec_`.
+3. Copy it. Keep it out of chat, email and the repo. You paste it in step 4.
+
+### Step 3. Copy the Stripe key and the four price ids (5 min)
+
+1. **Key:** open https://dashboard.stripe.com/test/apikeys (**Developers** → **API keys**) → **Secret key** → **Reveal test key** → copy it (`sk_test_…`). Safer: **+ Create restricted key** with **Read** on Checkout Sessions, Customers, Invoices, Subscriptions, Products and Prices, and nothing else (`rk_test_…`).
+2. **Price ids:** **Product catalog** → open a product → under **Pricing**, click the price → copy the id at the top right (`price_…`). Do it for all four:
+
+| Product | Secret name |
+|---|---|
+| Kit, $9.95 | `KIT_PRICE_ID` |
+| Playbook, $27 | `PLAYBOOK_PRICE_ID` |
+| Child Phenom University, $67/month | `UNIVERSITY_PRICE_ID` |
+| Certified Phenom Instructor, $297 | `CERT_PRICE_ID` |
+
+The price ids are optional, but set them. Without one, the webhook guesses from the product name ("Playbook" or "Workbook", "University", "Instructor", "Kit" or "Abacus"), and a renamed product would be missed.
+
+### Step 4. Put the secrets in Supabase (3 min)
+
+1. Open https://supabase.com/dashboard/project/fndemnipqtpmuvcidcxo/functions/secrets (**Edge Functions** → **Secrets**).
+2. Type each name, paste its value, click **Save**.
+
+| Name | Value |
+|---|---|
+| `STRIPE_WEBHOOK_SECRET` | the `whsec_…` from step 2 |
+| `STRIPE_SECRET_KEY` | the `sk_test_…` or `rk_test_…` from step 3 |
+| `KIT_PRICE_ID` | `price_…` |
+| `PLAYBOOK_PRICE_ID` | `price_…` |
+| `UNIVERSITY_PRICE_ID` | `price_…` |
+| `CERT_PRICE_ID` | `price_…` |
+
+Do not add `SUPABASE_URL` or `SUPABASE_SERVICE_ROLE_KEY`. Supabase gives the function those by itself.
+
+Or from a terminal, in one line (the dashboard is safer: the terminal keeps a history of what you type):
+
+```bash
+supabase secrets set --project-ref fndemnipqtpmuvcidcxo STRIPE_WEBHOOK_SECRET=whsec_... STRIPE_SECRET_KEY=sk_test_... KIT_PRICE_ID=price_... PLAYBOOK_PRICE_ID=price_... UNIVERSITY_PRICE_ID=price_... CERT_PRICE_ID=price_...
+```
+
+New secrets work on the next event. No redeploy.
+
+Finish signal: the Secrets page lists all six names.
+
+### Step 5. Test it (5 min)
+
+1. Do the section 7 test run, steps 1 to 4, with `hunterappleton369@gmail.com`.
+2. Stripe → **Developers** → **Webhooks** → your endpoint → **Event deliveries**. Each event shows **200**. Click one: the response says what was written, for example `purchases h***@gmail.com: kit true, playbook true`.
+3. Supabase → **Edge Functions** → **stripe-webhook** → **Logs**. One line per event, for example `stripe-webhook checkout.session.completed evt_… [test] memberships h***@gmail.com: university trialing`.
+4. Supabase → **Table Editor**:
+   - `purchases`: a row for your email. `kit` true, `playbook` true, `kit_paid_at` today, `order_ref` `cs_test_…`.
+   - `memberships`: a row for your email. Look right after test-run step 3: `university`, `trialing`, `trial_end` 14 days out. After step 4 (certification) the same row turns `instructor`, `active`, `current_period_end` one year out. That is right: the instructor year wins over the test drive.
+5. Send one event again: Stripe → **Developers** → **Events** → open a `checkout.session.completed` → **Resend** → pick the endpoint. The row stays the same (its event id is already in `note`).
+
+If something is off, the log line says why:
+
+| Logs or Stripe show | Fix |
+|---|---|
+| `NOT SET UP: missing secret …` (Stripe shows 500) | Add that secret (step 4). Stripe tries again by itself for 3 days. |
+| `signature did not verify` (Stripe shows 400) | Wrong `whsec_`. Copy it again from this endpoint, in the same mode (test or live). |
+| `ignored: checkout … has no Child Phenoms item` | A price id does not match. Test ids in test mode, live ids in live mode. |
+| `ignored: subscription … is not Child Phenom University` | `UNIVERSITY_PRICE_ID` is wrong. |
+| `FAILED … memberships write` or `purchases write` | The table is missing or was changed. Fix it; Stripe retries. |
+
+Finish signal: every delivery shows 200, both tables have your test email with the values above, and the Logs show no `FAILED`.
+
+### Step 6. At go-live (with section 9)
+
+1. Live mode on. Do steps 1 and 2 again: same URL, same five events. The live endpoint has its own `whsec_`.
+2. In Supabase Secrets, replace all six values with live ones: the live `whsec_`, an `sk_live_…` or `rk_live_…` key, and the live `price_…` ids.
+3. Open the test endpoint → **…** → **Disable**. Its events would now fail the signature check, and Stripe would email you about it.
+
+Finish signal: the real $9.95 order in section 9 step 5 shows 200 on the live endpoint, and `purchases` has a row for your email. The refund does not remove the row; delete it by hand if you like.
+
+### Still by hand
+
+- **Refunds and chargebacks** change nothing. To take the library away, set `keeps_library` false. To take the Playbook away, set `playbook` false.
+- **The instructor year does not end by itself.** No Stripe event comes a year later, and the app does not check the date. When `current_period_end` passes, set `status` to `canceled`. [HUNTER: or have a nightly job built]
+- **A University member who buys certification** keeps paying $67 a month in Stripe unless you cancel or pause that subscription. The row shows the instructor year either way. [HUNTER: should the free year pause their $67?]
+- **Pause in Stripe** (`ops-runbook.md` §3.8), not only in the table. The next Stripe event for that member overwrites a pause typed into the table.
+
+## 9. Go live (10 min)
 
 1. Switch off **Test mode**.
 2. Make the four products again (or open each test product → **Copy to live mode** where Stripe offers it).

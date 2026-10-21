@@ -797,7 +797,7 @@ Tonight, or tomorrow after breakfast, do the first lesson. It is called "Hold it
 
 Then pick a spot and a time, and make tomorrow a bead day. And the next one. Days two and three are more of the same, single digits until the shapes are known. Days four through seven are two-digit numbers, then three. By the end of the first week your child will be reading three-digit numbers off the beads, and you will have done the first grandparent trick.
 
-If the Prodigy Maker Workbook came in your box, it is one page a day for ninety days, matched to the first two stages. Today's idea in two sentences, ten problems that need only the moves taught so far, a flash round for you to read, and a line for the parent. No printer, no planning. The audiobook of this book is in the same bundle, for the school run.
+Members of Child Phenom University can print a fresh practice sheet for any lesson from their account. Each sheet is one page, matched to the lesson. Today's idea in two sentences, ten problems that need only the moves taught so far, a flash round for you to read, and a line for the parent. No printer, no planning. The audiobook of this book is in the same bundle, for the school run.
 
 Stage 1 of the online trainer is unlocked with your kit. The remaining nine stages, the boss tests, the Bead Score chart and the flash trainer live in Child Phenom University, which you will find at childphenoms.com. It is the road from here to Legend, and this book is the map of it. Whether you take the road a stage at a time or all the way, the abacus and this book are yours.
 

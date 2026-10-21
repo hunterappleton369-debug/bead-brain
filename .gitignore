@@ -1,3 +1,6 @@
 .claude/
 .DS_Store
 img/gen/
+
+# local phone-width previews of the design canvas (built by the scratchpad preview tool)
+free-abacus/_canvas-preview/
