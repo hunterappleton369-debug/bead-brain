@@ -16,7 +16,11 @@ Status on the evening of 2026-10-21. "Done" means built, tested in a browser at 
 
 ## Blocks launch, in order
 
-### 1. Domain (you, 2 minutes, then me)
+### 1. Domain (done except one save)
+
+childphenoms.com points at GitHub Pages, the custom domain is set and HTTPS is enforced: https://childphenoms.com/free-abacus/ is live with a padlock, and the old github.io address redirects to it. Two loose ends: GoDaddy is still waiting for a second code to save the three extra A records (the site works on one, the other three are GitHub's recommended redundancy), and https://www.childphenoms.com shows a certificate warning until the `www` CNAME is changed from `childphenoms.com` to `hunterappleton369-debug.github.io` (one more GoDaddy save and code). Plain http://www already redirects to the live site.
+
+### 1 (old). Domain (you, 2 minutes, then me)
 
 GoDaddy sent a 6-digit code to your phone ending 1025 and the DNS panel is waiting for it in the Chrome tab "Domain Portfolio: childphenoms.com".
 
@@ -46,28 +50,43 @@ Sign in to https://dashboard.stripe.com in Chrome and tell me; I build everythin
 3. Connect orders: Zapier → trigger "Stripe: Checkout Session Completed" → action "Shopify: Create Order" (customer email, shipping address from the session, line items kit and, when bought, Playbook, financial status paid). Until the zap runs, create each order by hand in Shopify → Orders → Create order → Mark as paid. CJ picks it up from Shopify either way.
 4. One real test order to your own address. Finish signal: tracking in Shopify within 2 business days, box within 7 with the abacus and the card (and the Playbook when ticked).
 
-### 4. Meta (you, 20 minutes, then me)
+### 4. Meta (pixel done; Page, ad account and domain are yours)
+
+The pixel is installed: `metaPixelId` is 1239441998349754, the Enamelogic pixel, by your call. One dataset now mixes dentist and parent traffic, so audiences and optimisation blur across the two businesses; if that shows up in Ads Manager, create a Child Phenoms pixel and change that one line. Still yours: the Page, the ad account, domain verification for childphenoms.com, and the campaign build from `docs/ADS-BUILD-SHEET.md`.
+
+### 4 (old). Meta (you, 20 minutes, then me)
 
 1. https://business.facebook.com → Settings → Business assets → **Pages → Add → Create a new Page** "Child Phenoms". **Ad accounts → Add → Create** (USD, your card). **Data sources → Pixels (datasets) → Add** "Child Phenoms Pixel". Copy the **Pixel ID** (15 to 16 digits).
 2. Brand safety → **Domains → Add** `childphenoms.com` → verify with the DNS TXT record (give me the record text and I add it at GoDaddy).
 3. Paste the Pixel ID into `free-abacus/config.js` → `metaPixelId`, or send it to me and I push. Finish signal: Events Manager → Test events shows PageView from https://childphenoms.com/free-abacus/ and Lead after step 1.
 4. Build the campaign from `docs/ADS-BUILD-SHEET.md` (paused until the test order and the email flow pass). Your creative goes in last.
 
-### 5. Email (you create accounts, then me)
+### 5. Supabase sign-in links (you, 3 minutes, blocks every login)
+
+The test link Supabase sent tonight redirects to `http://localhost:3000`, so no parent can finish signing in on the live site yet. Chrome is not signed in to Supabase, so this one is yours:
+
+1. Open https://supabase.com/dashboard/project/fndemnipqtpmuvcidcxo/auth/url-configuration (sign in with GitHub).
+2. **Site URL** → `https://childphenoms.com/` → Save.
+3. **Redirect URLs** → Add URL, one at a time: `https://childphenoms.com/**`, `https://www.childphenoms.com/**`, `http://localhost:8787/**` → Save.
+4. Tell me. I request a fresh link to hunterappleton369@gmail.com and confirm it lands on `#/family` signed in.
+
+Finish signal: the "Sign in" link in the next Supabase email contains `redirect_to=https://childphenoms.com`.
+
+### 6. Email (you create accounts, then me)
 
 1. **Resend** (exists): sign in at https://resend.com in Chrome and tell me; I add the DKIM, SPF and return-path records at GoDaddy and verify the domain. Then Resend → API keys → create "supabase-auth" (sending only) and keep it for step 2.
 2. **Supabase SMTP** (so sign-in links reach every parent, not just team members): https://supabase.com/dashboard/project/fndemnipqtpmuvcidcxo/auth/smtp → Enable custom SMTP → Sender `hello@childphenoms.com`, name "Child Phenoms", host `smtp.resend.com`, port `465`, username `resend`, password = the API key → Save. Then Authentication → Rate limits → emails per hour → 100. Then Authentication → URL configuration → Site URL `https://childphenoms.com/`, redirect URLs `https://childphenoms.com/**` and `https://www.childphenoms.com/**`. Finish signal: `#/start/signin` with hunterappleton369@gmail.com delivers a link that lands you on `#/family`.
 3. **Customer.io** (to create): https://customer.io → create a workspace "Child Phenoms" → Settings → Email → add the sending domain and give me the DNS records. Then load the sequences in the order in `docs/products/marketing-sequences/send-map.md`, with the link tags from its README. Triggers: Stripe → Customer.io via Zapier (kit paid, trial started, certification bought) and the step-1 lead via `leadWebhook` in `free-abacus/config.js` (a Customer.io track endpoint or a Zapier catch hook). Test sends only to hunterappleton369@gmail.com.
 
-### 6. Legal pages (you + counsel, 1 hour)
+### 7. Legal pages (you + counsel, 1 hour)
 
 Fill the placeholders in `docs/products/legal-and-ops/site/` (entity, state, address, dates, the pixel and email-provider disclosure), copy the four HTML pages to `legal/` on the site, link Privacy and Terms from every funnel footer and the app footer. Counsel reads the trial and auto-renewal wording, the children's privacy section and the instructor agreement.
 
-### 7. Truth check (you, 10 minutes)
+### 8. Truth check (you, 10 minutes)
 
 Page 1: "1,000 kits", "6 weeks", "ships in 2 to 3 business days by USPS", "7 days or less", "thousands of children"; page 2: "$997" as a real former price; page 3: "$297 once". Every line must match what fulfilment, Stripe and the refund policy actually do. Edit on the canvas or tell me.
 
-### 8. Push (me, when you say)
+### 9. Push (me, when you say)
 
 Everything above that is built is committed and pushed today. Later changes: tell me and I port from the canvas and push.
 

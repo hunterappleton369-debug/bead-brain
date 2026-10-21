@@ -1,3 +1,5 @@
+> **Pixel in use (2026-10-21):** `1239441998349754`, the Enamelogic pixel, by Hunter's decision. Skip the "create a pixel" step below unless Ads Manager shows the dentist and parent audiences blurring; then create a Child Phenoms dataset and change `metaPixelId` in `free-abacus/config.js`.
+
 # Ads build sheet: free abacus kit launch
 
 Written 2026-10-21. Sources: `docs/products/marketing-sequences/07-ad-copy.md`, `docs/FUNNEL.md` and `~/Desktop/reports/Winning parent Facebook ad funnels.md` (2026-10-19).

@@ -9,7 +9,7 @@ export const CONFIG = {
   checkoutUrlWithBump: '',        // Stripe Payment Link B: kit + $27 Playbook, same redirect (both links required; a Shopify /cart/ link also works and gets name/email/phone prefilled)
   universityTrialUrl: '',         // Stripe Payment Link: $67/mo with a 14-day trial; after payment redirect to certify.html?paid=university
   certifyUrl: '',                 // Stripe Payment Link: $297 once; after payment redirect to thanks.html?paid=certify
-  metaPixelId: '',                // [HUNTER] Meta Pixel (dataset) ID from Events Manager. Empty = no pixel loads. Disclose it in the privacy policy.
+  metaPixelId: '1239441998349754', // Meta Pixel (dataset) ID. Hunter's call 2026-10-21: the Enamelogic pixel, shared. Empty = no pixel loads. Disclosed in the privacy policy.
   leadWebhook: '',                // optional: POST step-1 contact info here (Zapier/Make/CF webhook) for abandon follow-up
   supportEmail: 'hello@childphenoms.com',
   shipDays: '2–3 business days',
