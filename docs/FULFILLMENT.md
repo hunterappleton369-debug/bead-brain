@@ -4,7 +4,7 @@ Written 2026-10-21 for the free-abacus funnel. The pages promise a kit "delivere
 
 ## The short answer
 
-**Updated 2026-10-21.** Checkout is **Stripe** for every step, including the kit, because a Stripe Payment Link can send the parent straight back to page 2 after paying; Shopify's checkout ends on Shopify's own thank-you page and would lose the University offer. **Shopify + CJ Dropshipping** is the fulfilment back office: the two products and the $9.95 US rate are already set up in the store (j1tu10-he), and the abacus is pre-stocked in a CJ warehouse in the United States with the printed Playbooks and quick-start cards sent to the same warehouse so every order ships as one branded box. Paid Stripe orders reach Shopify by a Zapier zap (Stripe "Checkout Session Completed" to Shopify "Create Order") or, until the zap runs, by a draft order created by hand. Once you pass roughly 300 kits a month, or the moment you buy 1,000 units up front, move the stock to a US fulfilment house that specialises in kitting (ShipMonk first, ShipBob second).
+**Updated 2026-10-21.** Checkout is **Stripe** for every step, including the kit, because a Stripe Payment Link can send the parent straight back to page 2 after paying; Shopify's checkout ends on Shopify's own thank-you page and would lose the University offer. **Shopify + CJ Dropshipping** is the fulfilment back office: the two products and the $9.95 US rate are already set up in the store (j1tu10-he), and the abacus is pre-stocked in a CJ warehouse in the United States with the printed Playbooks and quick-start cards sent to the same warehouse so every order ships as one branded box. Paid orders now flow Stripe → Supabase function (`stripe-webhook`) → Shopify automatically once the Shopify token is set (`docs/products/legal-and-ops/stripe-setup.md` §8, "Shopify order creation"); a draft order made by hand (see "Backup" below) stays the fallback. Once you pass roughly 300 kits a month, or the moment you buy 1,000 units up front, move the stock to a US fulfilment house that specialises in kitting (ShipMonk first, ShipBob second).
 
 DSers is the wrong tool for this product. It is an AliExpress order tool: it ships from Chinese suppliers in 7 to 20+ days, it cannot bundle a printed book into the parcel, and it has no branded packaging. Every one of those breaks a promise the page makes.
 
@@ -56,6 +56,21 @@ Costs on the Shopify side: the Basic plan plus card fees. Shipping is collected 
 ### 3. When to move to a 3PL
 
 Move when any of these is true: you are shipping more than about 300 kits a month, you have bought the 1,000-unit batch the urgency box talks about, or CJ cannot confirm bundle kitting. Ask ShipMonk and ShipBob for a kitting quote on the same three-item bundle and compare their per-order total (pick, pack, materials, postage) against CJ's.
+
+## Backup: a Shopify order by hand
+
+Use this when the function could not make the order and a re-send from Stripe will not fix it. That happens when the event is older than 30 days, or when Shopify keeps refusing the address. The Supabase logs say `SHOPIFY ORDER FAILED` or `SHOPIFY NOT SET UP`, and that `purchases` row has an empty `shopify_order_id`.
+
+1. Stripe → **Payments** → open the payment. Note the email, the shipping address, the phone, and whether the Playbook was in it.
+2. Shopify admin → **Orders** → **Drafts** → **Create order**.
+3. **Products**: add "Child Phenoms Free Abacus Kit", plus "Child Prodigy Secrets Playbook + Audiobook" if it was bought.
+4. **Customer**: type the parent's email. Paste the shipping address from Stripe.
+5. **Shipping**: **Add shipping** → pick "USPS Ground Advantage (2 to 7 days)" at $9.95.
+6. **Notes**: `Stripe checkout cs_…` (the checkout id from the `order_ref` column). **Tags**: `childphenoms, stripe`.
+7. **Collect payment** → **Mark as paid** → **Create order**.
+8. Supabase → **Table Editor** → `purchases` → that row: type the order number (for example `#1007`) into `shopify_order_name` and the long number from the order's web address into `shopify_order_id`. A later re-send then leaves it alone.
+
+Finish signal: the order shows **Paid** in Shopify with the right address, and the supplier app lists it.
 
 ## Promises on the page to keep true
 

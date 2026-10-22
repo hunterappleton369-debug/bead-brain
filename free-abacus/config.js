@@ -12,5 +12,5 @@ export const CONFIG = {
   metaPixelId: '1239441998349754', // Meta Pixel (dataset) ID. Hunter's call 2026-10-21: the Enamelogic pixel, shared. Empty = no pixel loads. Disclosed in the privacy policy.
   leadWebhook: '',                // optional: POST step-1 contact info here (Zapier/Make/CF webhook) for abandon follow-up
   supportEmail: 'hello@childphenoms.com',
-  shipDays: '2–3 business days',
+  shipDays: 'within 2 business days',
 };

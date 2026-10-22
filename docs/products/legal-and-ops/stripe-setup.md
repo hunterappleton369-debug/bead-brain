@@ -156,7 +156,7 @@ When someone pays, Stripe tells our Supabase project. A small program there (the
 
 | What happened in Stripe | What the webhook writes |
 |---|---|
-| Kit, or kit + Playbook, paid (Link A or B) | `purchases`: `kit` true, `playbook` true if the Playbook was in the order, `kit_paid_at` = that day, `order_ref` = the checkout id |
+| Kit, or kit + Playbook, paid (Link A or B) | `purchases`: `kit` true, `playbook` true if the Playbook was in the order, `kit_paid_at` = that day, `order_ref` = the checkout id. Then a paid Shopify order for the supplier app, with its number in `shopify_order_name` (once "Shopify order creation" below is done) |
 | Test drive started (Link C) | `memberships`: `university`, `trialing`, `trial_end` = the day of the first $67 charge |
 | A $67 charge went through | `active`, `trial_end` empty, `current_period_end` = next renewal |
 | Card failed, cancelled, paused, ended | `past_due`, `cancel_at` filled, `paused` with `paused_until`, or `canceled` |
@@ -261,9 +261,75 @@ Finish signal: every delivery shows 200, both tables have your test email with t
 
 Finish signal: the real $9.95 order in section 9 step 5 shows 200 on the live endpoint, and `purchases` has a row for your email. The refund does not remove the row; delete it by hand if you like.
 
+### Shopify order creation (15 min)
+
+Every paid kit order (Link A or B) also becomes a paid order in the Shopify store `j1tu10-he`, where the supplier app picks it up. The function makes it with the parent's email and the shipping address from Stripe. It adds the $0 kit, the $27 Playbook when they bought it, the "USPS Ground Advantage (2 to 7 days)" $9.95 shipping line and the Stripe payment. The order is tagged `childphenoms` and has the checkout id in its note. Shopify sends no order receipt (Stripe already did). It sends the shipping confirmation once the order is fulfilled.
+
+Until this is set up, the function still writes `purchases` and logs one line: `SHOPIFY NOT SET UP`.
+
+**Which path.** Shopify admin → **Settings** → **Apps and sales channels** (newer admins: **Apps**) → **Develop apps**. If the page offers **Create an app** (or **Create a legacy custom app**), use path A. If it only offers **Build apps in Dev Dashboard**, use path B. Since January 1, 2026, Shopify no longer lets most stores make new admin apps, so expect path B.
+
+**Path A: custom app in the admin (gives a token that does not expire)**
+
+1. On **Develop apps**, click **Allow custom app development**. Read the warning, then click **Allow custom app development** again.
+2. Click **Create an app**. **App name:** `Child Phenoms orders`. Click **Create app**.
+3. **Configuration** tab → **Admin API integration** → **Configure**. Tick `write_orders`, `read_orders` and `read_products`. Click **Save**.
+4. **API credentials** tab → **Install app** → **Install**.
+5. Under **Admin API access token**, click **Reveal token once**. It starts with `shpat_`. Copy it straight into Supabase (the next step). Shopify shows it only once.
+
+**Path B: Dev Dashboard app (gives a client ID and secret; the function gets a fresh token each day)**
+
+1. On **Develop apps**, click **Build apps in Dev Dashboard**.
+2. Click **Create app**. Under **Start from Dev Dashboard**, name it `Child Phenoms orders` and click **Create**.
+3. In the new version: **App URL** = `https://shopify.dev/apps/default-app-home` (the default). **Webhooks API version**: leave what it shows. **Access** → **Scopes**: `write_orders,read_orders,read_products`. Click **Release**, name it `v1`, and click **Release** again.
+4. In the app's **Installs** section, click **Install app**. Pick `j1tu10-he` and click **Install**.
+5. Open the app's **Settings** and copy the **Client ID** and the **Client secret**.
+6. If the app shows a **Protected customer data** request, ask for **Name**, **Email**, **Phone** and **Address**, with the reason "creating orders to ship". Without these, Shopify can refuse orders that carry a name and address.
+
+**Put the secrets in Supabase.** Open https://supabase.com/dashboard/project/fndemnipqtpmuvcidcxo/functions/secrets, then type each name, paste its value and click **Save**:
+
+| Name | Value |
+|---|---|
+| `SHOPIFY_STORE` | `j1tu10-he` |
+| `SHOPIFY_ADMIN_TOKEN` | path A: the `shpat_…` token |
+| `SHOPIFY_CLIENT_ID` and `SHOPIFY_CLIENT_SECRET` | path B: the two values from path B step 5 |
+
+Set path A's token or path B's pair, not both. With both, the token wins. `SHOPIFY_KIT_PRODUCT_ID` (10239735988480) and `SHOPIFY_PLAYBOOK_PRODUCT_ID` (10239737823488) are built in. Set them only if those Shopify products are ever replaced. No redeploy: the next event uses the secrets.
+
+**Test it.**
+
+1. Place a test order through Link B in Stripe test mode with `hunterappleton369@gmail.com` and a real-looking US address. (Or re-send the `checkout.session.completed` event of a test kit order that has no Shopify order yet. See "Re-send" below.)
+2. Stripe → **Developers** → **Webhooks** → your endpoint → the delivery shows **200**, and the response ends with `shopify #1001: created` (your number will differ).
+3. Shopify admin → **Orders**: a new order tagged `childphenoms`, `stripe`, `stripe-test`. It shows the address you typed in Stripe, the Abacus Kit at $0.00, the Playbook at $27.00 and USPS Ground Advantage at $9.95, and it is marked **Paid**.
+4. Supabase → **Table Editor** → `purchases`: your row has `shopify_order_id` and `shopify_order_name` (`#1001`) filled in.
+5. Cancel the test order: open it → **More actions** → **Cancel order**, with no restock and no customer notification. Don't place it in the supplier app. Test orders are real Shopify orders, and the `stripe-test` tag is there to mark them.
+
+Finish signal: a Stripe test event creates a Shopify order tagged `childphenoms` with the right address and line items, and the `purchases` row shows its number.
+
+**Re-send (when an order did not reach Shopify).** The logs say `SHOPIFY NOT SET UP` or `SHOPIFY ORDER FAILED … for checkout cs_…`, the Stripe delivery still shows 200, and `shopify_order_id` stays empty.
+
+1. Fix the cause (the log line says it): add the secrets, or fix the scope. An address Shopify refuses cannot be fixed by a re-send (Stripe sends the same address again): make that order by hand instead.
+2. Stripe → **Developers** → **Events**. Search for the `cs_…` id from the log and open its `checkout.session.completed` event (`checkout.session.async_payment_succeeded` for a bank payment). Click **Resend** and pick the endpoint. (Or: **Webhooks** → your endpoint → **Event deliveries** → that event → **Resend**.)
+3. The response shows `shopify #10xx: created` and the row gets the number.
+
+A re-send is safe. If the row already has a Shopify order for that checkout, nothing happens. If Shopify already has an order carrying that checkout id (a timeout after Shopify saved it), the function saves that number and does not make a second order. Stripe keeps full events for 30 days. For anything older, make the order by hand (`docs/FULFILLMENT.md`, "Backup"). To list kit orders that never reached Shopify, run this in the SQL editor: `select email, order_ref, kit_paid_at from public.purchases where shopify_order_id is null and order_ref like 'cs_%' order by kit_paid_at;`
+
+| Logs show | Fix |
+|---|---|
+| `SHOPIFY NOT SET UP` | Do path A or B and the Supabase secrets, then re-send. |
+| `SHOPIFY ORDER FAILED … token request answered 400/401` | Wrong client ID or secret, or the app is not installed on `j1tu10-he` (path B step 4). |
+| `SHOPIFY ORDER FAILED … answered 401` | Wrong or revoked `SHOPIFY_ADMIN_TOKEN`. |
+| `SHOPIFY ORDER FAILED … answered 403` | A scope is missing. Path A: add it under **Configuration** and save. Path B: release a new version with it and approve the change on the store. If the 403 text mentions customer data, see path B step 6. Shopify may hold customer names and addresses back from custom apps on the Basic plan. [HUNTER: if so, the fix is the Grow plan] |
+| `SHOPIFY ORDER FAILED … answered 404` | `SHOPIFY_STORE` is wrong, or a product id no longer exists. |
+| `SHOPIFY ORDER FAILED … answered 422` | Shopify did not accept a field, usually the address. The log shows which. Make that order by hand with the corrected address (`docs/FULFILLMENT.md`, "Backup"). |
+| `SHOPIFY ORDER #… HAS NO SHIPPING ADDRESS` | The checkout carried no address. Add it to the Shopify order before it ships. |
+| `SHOPIFY ORDER #… made, but not saved on the purchases row` | Type the two values from the log into the row by hand. |
+
+At go-live nothing changes here. The live and test webhooks both write to the same Shopify store. Live orders carry no `stripe-test` tag.
+
 ### Still by hand
 
-- **Refunds and chargebacks** change nothing. To take the library away, set `keeps_library` false. To take the Playbook away, set `playbook` false.
+- **Refunds and chargebacks** change nothing. To take the library away, set `keeps_library` false. To take the Playbook away, set `playbook` false. A refunded kit's Shopify order stays open: cancel it in Shopify before the supplier app ships it.
 - **The instructor year does not end by itself.** No Stripe event comes a year later, and the app does not check the date. When `current_period_end` passes, set `status` to `canceled`. [HUNTER: or have a nightly job built]
 - **A University member who buys certification** keeps paying $67 a month in Stripe unless you cancel or pause that subscription. The row shows the instructor year either way. [HUNTER: should the free year pause their $67?]
 - **Pause in Stripe** (`ops-runbook.md` §3.8), not only in the table. The next Stripe event for that member overwrites a pause typed into the table.

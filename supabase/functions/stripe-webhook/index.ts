@@ -5,11 +5,15 @@
 // Secrets (Supabase → Edge Functions → Secrets): STRIPE_SECRET_KEY and STRIPE_WEBHOOK_SECRET (required);
 // KIT_PRICE_ID, PLAYBOOK_PRICE_ID, UNIVERSITY_PRICE_ID, CERT_PRICE_ID (optional: while one is empty, that item is
 // recognised by its product name instead). SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are injected by Supabase.
+// Shopify order for each paid kit (optional; without it the purchases row is still written): SHOPIFY_ADMIN_TOKEN, or
+// SHOPIFY_CLIENT_ID + SHOPIFY_CLIENT_SECRET of a Dev Dashboard app; SHOPIFY_STORE (default j1tu10-he);
+// SHOPIFY_KIT_PRODUCT_ID and SHOPIFY_PLAYBOOK_PRODUCT_ID (default the two products in that store).
 // Deployed with verify_jwt off because Stripe cannot send a Supabase JWT: the Stripe signature is the lock.
 //
 // Ground rules: only the signed event and Stripe's own API decide anything (metadata is never read). Every write
 // is worked out from the event plus Stripe's current state, and the event id goes into `note`, so the same event
-// sent twice leaves the same row. A failed write answers 500 and Stripe retries for up to three days.
+// sent twice leaves the same row. A failed write answers 500 and Stripe retries for up to three days. The Shopify
+// order is the exception: a Shopify problem answers 200 (see "Shopify" below).
 
 import Stripe from 'npm:stripe@^17';
 import { createClient, type SupabaseClient } from 'npm:@supabase/supabase-js@2';
@@ -91,16 +95,23 @@ async function checkout(c: Ctx, s: Stripe.Checkout.Session): Promise<string> {
   const items = await c.stripe.checkout.sessions.listLineItems(s.id, { limit: 100, expand: ['data.price.product'] });
   const kinds = new Set(items.data.map((li) => kindOf(li.price, li.description)));
   const done: string[] = [];
-  if (kinds.has('kit') || kinds.has('playbook')) done.push(await writePurchase(c, s, email, kinds.has('kit'), kinds.has('playbook')));
+  if (kinds.has('kit') || kinds.has('playbook')) {
+    const kit = kinds.has('kit'), playbook = kinds.has('playbook');
+    const bought = await writePurchase(c, s, email, kit, playbook); // first: a failed write answers 500 before Shopify is touched
+    done.push(bought.text, await shopifyOrder(c, s, email, kit, playbook, bought.shopify));
+  }
   if (kinds.has('cert')) done.push(await writeCertification(c, s, email));
   return done.length ? done.join('; ') : `ignored: checkout ${s.id} has no Child Phenoms item`;
 }
 
-// Kit and Playbook: one purchases row per email. A repeat order never takes the Playbook away.
+// Kit and Playbook: one purchases row per email. A repeat order never takes the Playbook away. The Shopify columns
+// belong to the checkout in order_ref: a new checkout starts them empty, so a parent's second order ships too.
 async function writePurchase(c: Ctx, s: Stripe.Checkout.Session, email: string, kit: boolean, playbook: boolean) {
-  const { data: old, error } = await c.sb.from('purchases').select('kit,playbook,note').eq('email', email).maybeSingle();
+  const { data: old, error } = await c.sb.from('purchases')
+    .select('kit,playbook,note,order_ref,shopify_order_id,shopify_order_name').eq('email', email).maybeSingle();
   if (error) throw new Error(`purchases read: ${error.message}`);
-  const row = {
+  const sameOrder = old?.order_ref === s.id;
+  const row: Row = {
     email,
     kit: kit || !!old?.kit,
     playbook: playbook || !!old?.playbook,
@@ -108,9 +119,168 @@ async function writePurchase(c: Ctx, s: Stripe.Checkout.Session, email: string, 
     order_ref: s.id,
     note: addNote(c, old?.note),
   };
+  if (!sameOrder) Object.assign(row, { shopify_order_id: null, shopify_order_name: null });
   const { error: werr } = await c.sb.from('purchases').upsert(row, { onConflict: 'email' });
   if (werr) throw new Error(`purchases write: ${werr.message}`);
-  return `purchases ${mask(email)}: kit ${row.kit}, playbook ${row.playbook}`;
+  const shopify: ShopifyRef | null = sameOrder && old?.shopify_order_id
+    ? { id: String(old.shopify_order_id), name: old.shopify_order_name ? String(old.shopify_order_name) : null } : null;
+  return { text: `purchases ${mask(email)}: kit ${row.kit}, playbook ${row.playbook}`, shopify };
+}
+
+// ───────── Shopify: the order the supplier app ships ─────────
+// Shopify is the fulfilment back office (docs/FULFILLMENT.md): the supplier app picks its orders up. Each paid kit
+// checkout becomes one paid Shopify order: the $0 kit, the $27 Playbook when bought, and the $9.95 USPS line, which
+// adds up to what Stripe charged. Nothing here answers 500: a Shopify problem is logged, shopify_order_id stays
+// empty, and Stripe gets 200 (a retry cannot fix a missing token, and retrying a half-finished call could ship twice).
+// Fix the cause, then re-send the event from Stripe (stripe-setup.md §8). Before creating, it asks Shopify for an
+// order already carrying this checkout id, so a re-send after a timeout does not make a second one.
+interface ShopifyRef { id: string; name: string | null }
+interface Shopify { store: string; call: (path: string, post?: unknown) => Promise<Row> }
+const SHOPIFY_API = '2025-01';
+const SHOPIFY_SHIPPING = { title: 'USPS Ground Advantage (2 to 7 days)', price: '9.95', code: 'childphenoms-kit' };
+const SHOPIFY_TIMEOUT_MS = 8000;
+const variantIds = new Map<string, number>(); // "store/product id" → its first variant id, while the function stays warm
+let shopifyToken: { key: string; token: string; until: number } | undefined;
+
+async function shopifyOrder(c: Ctx, s: Stripe.Checkout.Session, email: string, kit: boolean, playbook: boolean, made: ShopifyRef | null): Promise<string> {
+  if (made) return `shopify ${made.name ?? made.id}: already made`;
+  if (!env('SHOPIFY_ADMIN_TOKEN') && !(env('SHOPIFY_CLIENT_ID') && env('SHOPIFY_CLIENT_SECRET'))) {
+    console.error(`stripe-webhook SHOPIFY NOT SET UP: no SHOPIFY_ADMIN_TOKEN (or SHOPIFY_CLIENT_ID + SHOPIFY_CLIENT_SECRET), so checkout ${s.id} has no Shopify order. Add it (stripe-setup.md §8, Shopify order creation), then re-send this event from Stripe.`);
+    return 'shopify: not set up, no order made';
+  }
+  let order: Row | null;
+  let found = false;
+  let noAddress = false;
+  try {
+    const sh = await shopifyApi();
+    order = await shopifyOrderFor(sh, s);
+    found = !!order;
+    if (!order) {
+      const line_items: Row[] = [];
+      if (kit) line_items.push({ variant_id: await variantOf(sh, env('SHOPIFY_KIT_PRODUCT_ID') || '10239735988480'), quantity: 1 });
+      if (playbook) line_items.push({ variant_id: await variantOf(sh, env('SHOPIFY_PLAYBOOK_PRODUCT_ID') || '10239737823488'), quantity: 1 });
+      const body = orderBody(c, s, email, line_items);
+      noAddress = !body.shipping_address;
+      order = (await sh.call('orders.json', { order: body })).order ?? null;
+      if (!order?.id) throw new Error('Shopify answered without an order id');
+    }
+  } catch (e) {
+    console.error(`stripe-webhook ${c.event.id} SHOPIFY ORDER FAILED for checkout ${s.id}: ${short(e, 600)}. shopify_order_id left empty: fix the cause, then re-send this event from Stripe.`);
+    return 'shopify: FAILED, no order made (Supabase logs say why); re-send the event once fixed';
+  }
+  const ref = { shopify_order_id: String(order.id), shopify_order_name: order.name ? String(order.name) : null };
+  const label = ref.shopify_order_name ?? ref.shopify_order_id;
+  if (noAddress) console.warn(`stripe-webhook ${c.event.id} SHOPIFY ORDER ${label} HAS NO SHIPPING ADDRESS: checkout ${s.id} carried none. Add it in Shopify before it ships.`);
+  const { error } = await c.sb.from('purchases').update(ref).eq('email', email).eq('order_ref', s.id);
+  if (error) {
+    // Answer 200 anyway: a Stripe retry would only find this order again. The row needs the two values by hand.
+    console.error(`stripe-webhook ${c.event.id} SHOPIFY ORDER ${label} made, but not saved on the purchases row (${error.message}). Type shopify_order_id ${ref.shopify_order_id} and shopify_order_name ${label} into the row by hand.`);
+    return `shopify ${label}: made, NOT saved on the row (see logs)`;
+  }
+  return `shopify ${label}: ${found ? 'already in Shopify, saved on the row' : 'created'}${noAddress ? ', NO SHIPPING ADDRESS' : ''}`;
+}
+
+function orderBody(c: Ctx, s: Stripe.Checkout.Session, email: string, line_items: Row[]): Row {
+  // deno-lint-ignore no-explicit-any
+  const raw = s as any; // newer API versions move shipping_details under collected_information
+  const ship = raw.collected_information?.shipping_details ?? raw.shipping_details ?? null;
+  const cd = s.customer_details;
+  const buyer: string | null = cd?.name ?? raw.customer_details?.individual_name ?? null;
+  const phone = cd?.phone ?? null;
+  const shipping_address = addressFor(ship?.name ?? buyer, ship?.address, phone) ?? addressFor(buyer ?? ship?.name, cd?.address, phone);
+  const billing_address = addressFor(buyer ?? ship?.name, cd?.address, phone) ?? shipping_address;
+  const amount = (s.amount_total ?? 0) / 100;
+  const pi = idOf(s.payment_intent);
+  return {
+    email,
+    line_items,
+    ...(shipping_address ? { shipping_address } : {}),
+    ...(billing_address ? { billing_address } : {}),
+    shipping_lines: [SHOPIFY_SHIPPING],
+    financial_status: 'paid',
+    transactions: amount > 0 ? [{ kind: 'sale', status: 'success', amount: amount.toFixed(2), gateway: 'Stripe' }] : [],
+    tags: c.event.livemode ? 'childphenoms, stripe' : 'childphenoms, stripe, stripe-test', // a test checkout makes a real Shopify order: never ship it
+    note: `Stripe checkout ${s.id}`,
+    note_attributes: [{ name: 'stripe_session', value: s.id }, ...(pi ? [{ name: 'stripe_payment_intent', value: pi }] : [])],
+    send_receipt: false,
+    send_fulfillment_receipt: true,
+    inventory_behaviour: 'bypass',
+  };
+}
+
+// A Stripe address as a Shopify one. The last word of the name is the last name.
+function addressFor(name: string | null | undefined, a: Stripe.Address | null | undefined, phone: string | null) {
+  if (!a?.line1) return null;
+  const words = (name ?? '').trim().split(/\s+/).filter(Boolean);
+  const last = words.length > 1 ? words.pop()! : '';
+  return {
+    first_name: words.join(' '), last_name: last,
+    address1: a.line1, address2: a.line2 || undefined, city: a.city ?? undefined, province_code: a.state ?? undefined,
+    zip: a.postal_code ?? undefined, country_code: (a.country || 'US').toUpperCase(), phone: phone || undefined,
+  };
+}
+
+// An order this checkout already made: a create that timed out after Shopify saved it, or a row that missed the id.
+// Looks through the newest 250 orders since the checkout opened.
+async function shopifyOrderFor(sh: Shopify, s: Stripe.Checkout.Session): Promise<Row | null> {
+  const since = encodeURIComponent(new Date((s.created - 3600) * 1000).toISOString());
+  const r = await sh.call(`orders.json?status=any&limit=250&fields=id,name,note_attributes&created_at_min=${since}`);
+  const orders: Row[] = r.orders ?? [];
+  return orders.find((o) => (o.note_attributes ?? []).some((a: Row) => a.name === 'stripe_session' && a.value === s.id)) ?? null;
+}
+
+async function variantOf(sh: Shopify, productId: string): Promise<number> {
+  if (!/^\d+$/.test(productId)) throw new Error(`Shopify product id "${productId}" is not a number`);
+  const key = `${sh.store}/${productId}`;
+  let id = variantIds.get(key);
+  if (!id) {
+    id = Number((await sh.call(`products/${productId}.json?fields=id,variants`)).product?.variants?.[0]?.id) || undefined;
+    if (!id) throw new Error(`Shopify product ${productId} has no variant`);
+    variantIds.set(key, id);
+  }
+  return id;
+}
+
+async function shopifyApi(): Promise<Shopify> {
+  const store = (env('SHOPIFY_STORE') || 'j1tu10-he').toLowerCase()
+    .replace(/^https?:\/\//, '').replace(/\/.*$/, '').replace(/\.myshopify\.com$/, ''); // "j1tu10-he", pasted any way
+  if (!/^[a-z0-9][a-z0-9-]*$/.test(store)) throw new Error('SHOPIFY_STORE should be the store name, like j1tu10-he');
+  const token = await shopifyAccessToken(store);
+  const call = async (path: string, post?: unknown): Promise<Row> => {
+    const res = await fetch(`https://${store}.myshopify.com/admin/api/${SHOPIFY_API}/${path}`, {
+      method: post ? 'POST' : 'GET',
+      headers: { 'X-Shopify-Access-Token': token, 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: post ? JSON.stringify(post) : undefined,
+      signal: AbortSignal.timeout(SHOPIFY_TIMEOUT_MS),
+    });
+    const text = await res.text();
+    if (!res.ok) throw new Error(`Shopify ${post ? 'POST' : 'GET'} ${path.split('?')[0]} answered ${res.status}: ${maskEmails(text)}`);
+    return JSON.parse(text);
+  };
+  return { store, call };
+}
+
+// SHOPIFY_ADMIN_TOKEN as given (a custom app made in the Shopify admin before 2026), or a token asked for with the
+// Dev Dashboard app's client id and secret (client credentials grant). That token lasts 24 hours: it is kept while
+// the function stays warm and asked for again 10 minutes before it runs out.
+async function shopifyAccessToken(store: string): Promise<string> {
+  const fixed = env('SHOPIFY_ADMIN_TOKEN');
+  if (fixed) return fixed;
+  const clientId = env('SHOPIFY_CLIENT_ID');
+  const key = `${store}/${clientId}`;
+  if (shopifyToken?.key === key && shopifyToken.until > Date.now()) return shopifyToken.token;
+  const res = await fetch(`https://${store}.myshopify.com/admin/oauth/access_token`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded', Accept: 'application/json' },
+    body: new URLSearchParams({ grant_type: 'client_credentials', client_id: clientId, client_secret: env('SHOPIFY_CLIENT_SECRET') }),
+    signal: AbortSignal.timeout(SHOPIFY_TIMEOUT_MS),
+  });
+  const text = await res.text();
+  if (!res.ok) throw new Error(`Shopify token request answered ${res.status}: ${text.split(env('SHOPIFY_CLIENT_SECRET')).join('***')}`);
+  const j = JSON.parse(text);
+  if (typeof j.access_token !== 'string' || !j.access_token) throw new Error('Shopify token request answered without an access_token');
+  shopifyToken = { key, token: j.access_token, until: Date.now() + ((Number(j.expires_in) || 3600) - 600) * 1000 };
+  return j.access_token;
 }
 
 // Certification ($297): an instructor year. An existing University row keeps its Stripe customer (its subscription
@@ -288,7 +458,8 @@ function plusOneYear(day: string) {
 const idOf = (x: string | { id: string } | null | undefined): string | null => (typeof x === 'string' ? x : x?.id ?? null);
 const cleanEmail = (e: string | null | undefined) => { const v = (e ?? '').trim().toLowerCase(); return v.includes('@') ? v : null; };
 const mask = (email: string) => email.replace(/^(.)[^@]*/, '$1***');
-const short = (e: unknown) => String((e as Error)?.message ?? e).replace(/\s+/g, ' ').slice(0, 200); // one log line
+const maskEmails = (text: string) => text.replace(/[^\s"'<>,:;()[\]{}]+@[^\s"'<>,:;()[\]{}]+/g, mask);
+const short = (e: unknown, max = 200) => String((e as Error)?.message ?? e).replace(/\s+/g, ' ').slice(0, max); // one log line
 const reply = (status: number, text: string) => new Response(text, { status, headers: { 'content-type': 'text/plain; charset=utf-8' } });
 
 let stripeClient: { key: string; client: Stripe } | undefined;
