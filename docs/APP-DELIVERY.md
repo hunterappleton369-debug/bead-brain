@@ -24,7 +24,7 @@ Smaller changes: "Library" in the top nav, "Account & billing" and "Find an inst
 | `library/*.json` | The Prodigy Secrets Program as HTML pages, generated from `docs/products/prodigy-secrets-program/*.md`. |
 | `tools/build-members.mjs` | Rebuilds the two generated items above and checks the handout port (see §3). |
 | `instructors/instructors.json` | The live directory list (empty today). `instructors/sample.json` is test data that only loads on localhost. |
-| `supabase/memberships.sql` | The membership table. Not applied yet. |
+| `supabase/memberships.sql` | The membership table. Applied to child-phenoms (migration `memberships_table`, 2026-10-21). |
 | `css/members.css` | Styles and print rules for all of the above. |
 | `js/config.js` | New: `STRIPE_PORTAL_URL` (empty, `[HUNTER]`), `SUPPORT_EMAIL`, `MEMBER_PRICE`, `JOIN_URL`, `CERTIFY_URL`. |
 | `js/app.js`, `js/auth.js`, `index.html` | Routes and links; `auth.client()` so the membership read can use the same Supabase client. |
@@ -51,7 +51,7 @@ There was no membership flag in the app. It is now one row per paying email in a
 1. Supabase dashboard → project **child-phenoms** → **SQL Editor** → **New query**.
 2. Paste all of `supabase/memberships.sql` and press **Run**.
 
-Finish signal: **Table Editor** lists `memberships`. Checked today: the live project answers `PGRST205 Could not find the table 'public.memberships'`, so it is not there yet. Until it is, everyone is treated as "no membership" and the library stays locked.
+Finish signal: **Table Editor** lists `memberships`. **Done:** the table is on child-phenoms (migration `memberships_table`, applied 2026-10-21) and matches this file. Checked 2026-10-22 with a test that rolled itself back: a signed-in parent sees only their own row, the email is stored lower case, `note` and `stripe_customer_id` are refused, and inserts and updates from the browser are refused. A signed-out request gets "permission denied". The table has no rows yet, so nobody is a member until you add them.
 
 ### Add or change a member
 
@@ -141,7 +141,7 @@ Found and fixed while checking: the book's bead pictures had a number printed ne
 
 ## 7. Still yours to do
 
-1. Apply `supabase/memberships.sql` (§3). Until then the library is locked for everyone.
+1. ~~Apply `supabase/memberships.sql`~~ Done 2026-10-21. The table is empty, so the library stays locked until you add member rows (item 3).
 2. Set up the Stripe customer portal and paste its login link into `js/config.js` (§2). Live-mode link at go-live.
 3. Write a `memberships` row for every University and certification buyer (§3), or have the Stripe webhook built.
 4. Decide: may past members print fresh sheets (one line in `ACCESS`)? Does an instructor's free year come with `keeps_library` (the certify page calls it "Twelve months of the family membership")?

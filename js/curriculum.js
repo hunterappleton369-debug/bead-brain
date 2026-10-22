@@ -73,8 +73,8 @@ export const STAGES = [
       {
         key: 'two-col', title: 'Two columns, left to right', minutes: 15,
         teach: `<p>Bigger numbers are just several columns. Add the tens first, then the ones. Always left to right. This feels backwards if you learned column addition at school, but it is what makes mental math possible later: you say the number the same way you add it.</p>
-          ${demo(21, '36', '21 + 36: tens first (2 + 3), then ones (1 + 6)')}
-          ${demo(57, '-15', '57 − 15: tens first, then ones')}
+          ${demo(32, '51', '32 + 51: tens first (3 + 5), then ones (2 + 1)')}
+          ${demo(68, '-13', '68 − 13: tens first (6 − 1), then ones (8 − 3)')}
           <p>Use your real soroban for the drill. Set the first number, then add or subtract each line. Type the final answer.</p>`,
         drill: { kind: 'addsub', spec: { terms: 3, digits: 2, ops: 'mix', allow: ['direct'] }, count: 8, target: { acc: 0.85 } },
       },
@@ -140,8 +140,8 @@ export const STAGES = [
       {
         key: 'sf-add-2d', title: 'Small-friend adds in 2-digit numbers', minutes: 15,
         teach: `<p>Now the formulas show up inside real problems. Work left to right. On each column ask: free beads, or friend?</p>
-          ${demo(23, '32', '23 + 32: tens 2 + 3 direct. Ones 3 + 2 needs a friend')}
-          ${demo(41, '14', '41 + 14: tens 4 + 1 needs a friend. Ones direct')}
+          ${demo(13, '12', '13 + 12: tens 1 + 1 direct. Ones 3 + 2 needs a friend')}
+          ${demo(42, '11', '42 + 11: tens 4 + 1 needs a friend. Ones 2 + 1 direct')}
           <p>Use your real soroban. Say each formula as you go.</p>`,
         drill: { kind: 'addsub', spec: { terms: 4, digits: 2, ops: 'add', allow: ['direct', 'small+'], require: ['small+'] }, count: 8, target: { acc: 0.85 } },
       },
@@ -213,14 +213,14 @@ export const STAGES = [
         teach: `<p>You have 4 and want to add 9. It will not fit. Take away 1 (the big friend of 9), then carry 1 to the tens. 4 + 9 = 13.</p>
           ${demo(4, '9', '4 + 9 = −1, carry 1')}
           ${demo(7, '8', '7 + 8 = −2, carry 1')}
-          ${demo(6, '7', '6 + 7 = −3, carry 1')}
+          ${demo(8, '7', '8 + 7 = −3, carry 1')}
           <p>The drill shows two columns. Watch the tens column change when you carry.</p>`,
         drill: { kind: 'twocol', spec: { allow: ['direct', 'small+', 'big+7', 'big+8', 'big+9'], require: ['big+7', 'big+8', 'big+9'], sign: '+', min: 1, max: 89 }, count: 10, target: { acc: 0.9 } },
       },
       {
         key: 'bf-6-5', title: '+6 and +5', minutes: 12,
         teach: `<p>+6 = take away 4, carry 1. +5 = take away 5, carry 1 (that is when the heaven bead is already down and you need another 5).</p>
-          ${demo(8, '6', '8 + 6 = −4, carry 1')}
+          ${demo(9, '6', '9 + 6 = −4, carry 1')}
           ${demo(5, '5', '5 + 5 = −5, carry 1')}
           ${demo(9, '5', '9 + 5 = −5, carry 1')}`,
         drill: { kind: 'twocol', spec: { allow: ['direct', 'small+', 'big+5', 'big+6', 'big+7', 'big+8', 'big+9'], require: ['big+5', 'big+6'], sign: '+', min: 1, max: 89 }, count: 10, target: { acc: 0.9 } },
@@ -237,7 +237,7 @@ export const STAGES = [
         key: 'carry-chain', title: 'Carry chains', minutes: 15,
         teach: `<p>Sometimes the carry itself will not fit. 99 + 1: ones say take away 9, carry 1 to the tens. The tens hold 9 too, so take away 9 and carry again. 99 + 1 = 100. Each carry is just another +1, with the same rules.</p>
           ${demo(99, '1', '99 + 1: carry, then carry again')}
-          ${demo(195, '8', '195 + 8')}
+          ${demo(199, '4', '199 + 4: ones −6, carry 1. Tens −9, carry 1')}
           <p>Now real problems: 5 lines, 2 digits, with small and big friends mixed. Use your soroban.</p>`,
         drill: { kind: 'addsub', spec: { terms: 5, digits: 2, ops: 'add', allow: ['direct', 'small+', 'big+'], require: ['big+'] }, count: 8, target: { acc: 0.85 } },
       },
@@ -261,7 +261,7 @@ export const STAGES = [
         key: 'borrow-chain', title: 'Borrow chains and mixed problems', minutes: 15,
         teach: `<p>100 − 1: the ones rod is empty, so add 9, then borrow 1 from the tens. The tens rod is empty too, so it does the same: add 9, then borrow 1 from the hundreds. 100 − 1 = 99.</p>
           ${demo(100, '-1', '100 − 1: borrow twice')}
-          ${demo(203, '-7', '203 − 7')}
+          ${demo(205, '-7', '205 − 7: ones +3, borrow 1. Tens +9, borrow 1')}
           <p>Now plus and minus mixed, five lines. This is the real thing.</p>`,
         drill: { kind: 'addsub', spec: { terms: 5, digits: 2, ops: 'mix', allow: NOCOMBO, require: ['big-'] }, count: 8, target: { acc: 0.85 } },
       },

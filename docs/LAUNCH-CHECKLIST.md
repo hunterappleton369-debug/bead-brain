@@ -29,19 +29,14 @@ GoDaddy sent a 6-digit code to your phone ending 1025 and the DNS panel is waiti
 
 If you would rather do it yourself: DNS → delete the `A @ Parked` record; add `A @ 185.199.108.153`, `A @ 185.199.109.153`, `A @ 185.199.110.153`, `A @ 185.199.111.153` (TTL 600); edit `CNAME www` to `hunterappleton369-debug.github.io`. Then https://github.com/hunterappleton369-debug/bead-brain/settings/pages → Custom domain `childphenoms.com` → Save → tick **Enforce HTTPS** once the check passes (5 to 30 minutes). Finish signal: https://childphenoms.com/free-abacus/ loads with a padlock.
 
-### 2. Stripe payment links (you sign in, then me; or you, 30 minutes)
+### 2. Stripe (test mode done 2026-10-22; live mode waits on your activation)
 
-Sign in to https://dashboard.stripe.com in Chrome and tell me; I build everything below in test mode, we run one test order with card 4242 4242 4242 4242, then I repeat it in live mode. If you build it yourself:
+Built in the new **Child Phenoms** Stripe account (acct_1UTKql9TjRoBaEei), test mode: the four products (kit $9.95, Playbook $27, University $67/month with a 14-day trial, certification $297), the four payment links with US-only shipping and the `?paid=` redirects, and the customer portal (cancel at period end, redirect to `#/account`). The **test** links are in `free-abacus/config.js` and the test portal link in `js/config.js`, and the whole chain was run on the live site with Stripe's 4242 test card: kit + Playbook $36.95 → page 2 → trial (ends Nov 5) → page 3 → certification $297 → thank-you page listing all four. Until the live links replace them, anyone can "order" on the site with a test card and nothing is charged or shipped; no ads are running, so that is fine for now.
 
-1. **Products** (Product catalog → Add product): "Child Phenoms Free Abacus Kit (shipping and handling)" one-time **$9.95**; "Child Prodigy Secrets Playbook + Audiobook" one-time **$27**; "Child Phenom University" recurring **$67 / month**; "Certified Phenom Instructor" one-time **$297**. Copy each price id (`price_…`) for step 5 of the webhook.
-2. **Payment links** (Payment links → New):
-   - Link A: kit price only. Collect shipping address, **United States only**. After payment → "Don't show confirmation page", redirect to `https://childphenoms.com/free-abacus/university.html?paid=kit`.
-   - Link B: kit price + Playbook price, same address rule, same redirect.
-   - Link C: University price, **Free trial 14 days**, "Require payment method", redirect to `https://childphenoms.com/free-abacus/certify.html?paid=university`.
-   - Link D: certification price, redirect to `https://childphenoms.com/free-abacus/thanks.html?paid=certify`.
-3. **Customer portal** (Settings → Billing → Customer portal): allow cancel, allow updating card, default redirect `https://childphenoms.com/#/account`. Copy the **Login link**.
-4. Paste A, B, C, D into `free-abacus/config.js` (`checkoutUrl`, `checkoutUrlWithBump`, `universityTrialUrl`, `certifyUrl`) and the portal link into `js/config.js` (`STRIPE_PORTAL_URL`). Push, or tell me and I push.
-5. **Webhook**: `docs/products/legal-and-ops/stripe-setup.md` §8. Endpoint `https://fndemnipqtpmuvcidcxo.supabase.co/functions/v1/stripe-webhook`. Set the signing secret and the four price ids as Supabase secrets. Finish signal: a test order creates a `purchases` row; a test trial creates a `memberships` row with status trialing.
+Still yours:
+
+1. **Activate the account** (top banner "Verify your business"): legal entity, EIN or SSN, address, bank account. Stripe keeps a new account in sandbox-only until this is done, so nothing can be built in live mode before it. Tell me when it is done; I copy the four products to live mode, create the four live links and the live portal link, paste them in and push. If you want to do it yourself, the steps are in `docs/products/legal-and-ops/stripe-setup.md` §2 to §5.
+2. **Webhook secret**: the endpoint exists in Stripe test mode (and I add the live one after activation). Copy its signing secret into Supabase as `STRIPE_WEBHOOK_SECRET`, plus a restricted key as `STRIPE_SECRET_KEY`, per `stripe-setup.md` §8. Finish signal: a test order creates a `purchases` row and a trial creates a `memberships` row.
 
 ### 3. Fulfilment (you, one to two weeks for stock)
 
