@@ -10,7 +10,7 @@ export const SUPABASE_KEY = 'sb_publishable_v_KV6B8ZMQ4BwHa66F6JyQ_S2JYjRA9';
 // (supabase/memberships.sql), not from here. Steps for both: docs/APP-DELIVERY.md.
 // [HUNTER] Paste the portal's login link (Stripe → Settings → Billing → Customer portal → "Login link",
 // it looks like https://billing.stripe.com/p/login/...). Empty: the billing buttons email support instead.
-export const STRIPE_PORTAL_URL = 'https://billing.stripe.com/p/login/test_fZu28l2Fy9fO2Ctcr3efC00'; // TEST-MODE portal link (Child Phenoms Stripe account); swap for the live link at go-live
+export const STRIPE_PORTAL_URL = 'https://billing.stripe.com/p/login/cNicMY0ISck62iLdo9eZ200'; // LIVE portal login link of the Enamelogic LLC Stripe account (Child Phenoms is a DBA; decided 2026-10-22)
 export const SUPPORT_EMAIL = 'hello@childphenoms.com';
 export const MEMBER_PRICE = 67;                       // $ a month after the 14-day test drive (free-abacus/university.html)
 export const JOIN_URL = 'free-abacus/';               // where someone without a membership starts
