@@ -29,14 +29,26 @@ GoDaddy sent a 6-digit code to your phone ending 1025 and the DNS panel is waiti
 
 If you would rather do it yourself: DNS → delete the `A @ Parked` record; add `A @ 185.199.108.153`, `A @ 185.199.109.153`, `A @ 185.199.110.153`, `A @ 185.199.111.153` (TTL 600); edit `CNAME www` to `hunterappleton369-debug.github.io`. Then https://github.com/hunterappleton369-debug/bead-brain/settings/pages → Custom domain `childphenoms.com` → Save → tick **Enforce HTTPS** once the check passes (5 to 30 minutes). Finish signal: https://childphenoms.com/free-abacus/ loads with a padlock.
 
-### 2. Stripe (test mode done 2026-10-22; live mode waits on your activation)
+### 2. Stripe (live, 2026-10-22)
 
-Built in the new **Child Phenoms** Stripe account (acct_1UTKql9TjRoBaEei), test mode: the four products (kit $9.95, Playbook $27, University $67/month with a 14-day trial, certification $297), the four payment links with US-only shipping and the `?paid=` redirects, and the customer portal (cancel at period end, redirect to `#/account`). The **test** links are in `free-abacus/config.js` and the test portal link in `js/config.js`, and the whole chain was run on the live site with Stripe's 4242 test card: kit + Playbook $36.95 → page 2 → trial (ends Nov 5) → page 3 → certification $297 → thank-you page listing all four. Until the live links replace them, anyone can "order" on the site with a test card and nothing is charged or shipped; no ads are running, so that is fine for now.
+Decision on 2026-10-22: Child Phenoms is a DBA of Enamelogic LLC, so everything runs in the **Enamelogic LLC** Stripe account (acct_1TivQW5uuxnQgoyB), live mode, added alongside Enamelogic's own products and never changing them. The separate "Child Phenoms" Stripe account from earlier today holds only the test-mode rehearsal and can be closed or ignored.
+
+Live and deployed on the site:
+
+| What | Where |
+|---|---|
+| Products | Free Abacus Kit $9.95, Playbook + Audiobook $27, Child Phenom University $67/month (14-day trial), Certified Phenom Instructor $297. Statement descriptor CHILD PHENOMS on each (Stripe applies it to subscription charges; one-time charges show the account's ENAMELOGIC descriptor and receipts say Enamelogic LLC). |
+| Payment links | A kit `https://buy.stripe.com/cNicMY0ISck62iLdo9eZ200`, B kit + Playbook `https://buy.stripe.com/bJe5kw63cck60aD0BneZ201`, C University trial `https://buy.stripe.com/aFa5kw4Z83NAbTl97TeZ202`, D certification `https://buy.stripe.com/4gM28kajsck63mPfwheZ203`. A and B collect a US shipping address; every link returns to the next funnel page with `?paid=`. In `free-abacus/config.js`. |
+| Customer portal | The account's existing live login link `https://billing.stripe.com/p/login/cNicMY0ISck62iLdo9eZ200` in `js/config.js`. Its configuration was left exactly as Enamelogic uses it (cancel allowed; no return URL set, so parents close the portal tab when done; the portal shows the Enamelogic name). |
+| Webhook | Destination `childphenoms-supabase-webhook` (we_1UTLUQ5uuxnQgoyBdpLGJ5tR), five events, URL `https://fndemnipqtpmuvcidcxo.supabase.co/functions/v1/stripe-webhook`. Enamelogic's own destination is untouched; the function ignores events that carry no Child Phenoms product. |
+
+The full chain was rehearsed end to end in test mode earlier today (kit + Playbook, trial, certification, thank-you page). Live links were checked to load.
 
 Still yours:
 
-1. **Activate the account** (top banner "Verify your business"): legal entity, EIN or SSN, address, bank account. Stripe keeps a new account in sandbox-only until this is done, so nothing can be built in live mode before it. Tell me when it is done; I copy the four products to live mode, create the four live links and the live portal link, paste them in and push. If you want to do it yourself, the steps are in `docs/products/legal-and-ops/stripe-setup.md` §2 to §5.
-2. **Webhook secret**: the endpoint exists in Stripe test mode as destination `supabase-stripe-webhook` (we_1UTLAt9TjRoBaEeiftGZyfbU, five events, URL `https://fndemnipqtpmuvcidcxo.supabase.co/functions/v1/stripe-webhook`); I add the live one after activation. Open it in Workbench → Webhooks, press **Reveal** under Signing secret, and Copy its signing secret into Supabase as `STRIPE_WEBHOOK_SECRET`, plus a restricted key as `STRIPE_SECRET_KEY`, per `stripe-setup.md` §8. Finish signal: a test order creates a `purchases` row and a trial creates a `memberships` row.
+1. **Webhook secret**: Workbench → Webhooks → `childphenoms-supabase-webhook` → Reveal under Signing secret → paste into Supabase as `STRIPE_WEBHOOK_SECRET`, plus a restricted key from this Enamelogic account as `STRIPE_SECRET_KEY` (`docs/products/legal-and-ops/stripe-setup.md` §8). Until then, no `purchases` or `memberships` rows are written and you add them by hand.
+2. **One real order**: buy the kit with your own card on https://childphenoms.com/free-abacus/, check the Stripe payment, the receipt wording and the shipping address, then refund it in Stripe. This is the only step that proves live money moves.
+3. **Tax**: the new links do not collect sales tax, so the page's "$9.95" stays exact. The products carry the account's default SaaS tax code, which is wrong for a shipped kit if you ever turn Stripe Tax on for these links; ask your CPA when sales pass a state threshold.
 
 ### 3. Fulfilment (you, one to two weeks for stock)
 
