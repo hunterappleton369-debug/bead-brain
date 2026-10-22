@@ -4,7 +4,7 @@ Status on the evening of 2026-10-21. "Done" means built, tested in a browser at 
 
 ## Done today
 
-- **Offer**: the free kit is the abacus plus a 3-night quick-start card ($39 value). The $27 bump is the Child Prodigy Secrets Playbook + Audiobook (text-only box, last decision before the checkout button). Step 1 of the form asks name, email and phone only; the hosted checkout takes the address and card. Decisions are in `docs/FUNNEL.md`.
+- **Offer**: the free kit is the abacus ($39 value) with a 3-night quick-start by email. The $27 bump is the digital Child Prodigy Secrets Playbook + Audiobook in the parent account (text-only box, last decision before the checkout button); printed copies return when a print path exists. Step 1 of the form asks name, email and phone only; the hosted checkout takes the address and card. Decisions are in `docs/FUNNEL.md`.
 - **Pages** (`free-abacus/`): regenerated from the design canvas (version 290, https://claude.ai/artifact/MAT8DW8b48fZjrUguLbgoh). Codex's conversion review applied: claims softened, fake video player replaced with a "how one lesson works" box, trial first-charge date shown, "cancel from your account page", pause by request, HM initials, NAEP and brain-study lines corrected.
 - **Images**: Expert-Secrets-style Playbook cover (`img/funnel/playbook.webp`, alternate `playbook-alt.webp`), photoreal abacus (`abacus.webp`), kit box with the card and no book (`kitbox.webp`). Older renders in `img/funnel/v1/` and `v2/`. Candidates and the rerun script in `img/gen/funnel/candidates/`.
 - **Tracking**: Meta Pixel wired in `free-abacus/funnel.js`, off until `metaPixelId` is set in `free-abacus/config.js`. Events: PageView, Lead, AddToCart, InitiateCheckout, Purchase, StartTrial, once per browser.
@@ -19,15 +19,6 @@ Status on the evening of 2026-10-21. "Done" means built, tested in a browser at 
 ### 1. Domain (done except one save)
 
 childphenoms.com points at GitHub Pages, the custom domain is set and HTTPS is enforced: https://childphenoms.com/free-abacus/ is live with a padlock, and the old github.io address redirects to it. Two loose ends: GoDaddy is still waiting for a second code to save the three extra A records (the site works on one, the other three are GitHub's recommended redundancy), and https://www.childphenoms.com shows a certificate warning until the `www` CNAME is changed from `childphenoms.com` to `hunterappleton369-debug.github.io` (one more GoDaddy save and code). Plain http://www already redirects to the live site.
-
-### 1 (old). Domain (you, 2 minutes, then me)
-
-GoDaddy sent a 6-digit code to your phone ending 1025 and the DNS panel is waiting for it in the Chrome tab "Domain Portfolio: childphenoms.com".
-
-1. In that Chrome tab, type the code into "6-digit code" and press **Verify code**. If it expired, press **Resend code**.
-2. Tell me "code is in". I replace the parked A record with GitHub's four addresses, point `www` at `hunterappleton369-debug.github.io`, set the custom domain on the GitHub Pages settings, and turn on HTTPS.
-
-If you would rather do it yourself: DNS → delete the `A @ Parked` record; add `A @ 185.199.108.153`, `A @ 185.199.109.153`, `A @ 185.199.110.153`, `A @ 185.199.111.153` (TTL 600); edit `CNAME www` to `hunterappleton369-debug.github.io`. Then https://github.com/hunterappleton369-debug/bead-brain/settings/pages → Custom domain `childphenoms.com` → Save → tick **Enforce HTTPS** once the check passes (5 to 30 minutes). Finish signal: https://childphenoms.com/free-abacus/ loads with a padlock.
 
 ### 2. Stripe (live, 2026-10-22)
 
@@ -51,23 +42,18 @@ Still yours:
 3. **Tax**: the Enamelogic account has Stripe Tax on, so the links show a Tax line. For a Wyoming address it computed $0.00 and the total stayed $9.95; in any state where Enamelogic is registered to collect, tax will be added on top of the $9.95 the page promises. The four products carry the account's default SaaS tax code, which is the wrong category for a shipped kit. Ask your CPA whether to set the kit and Playbook to a tangible-goods code or to turn tax off on these four links.
 4. **Branding**: the checkout page and receipts say "Pay Enamelogic" because the public business name is the account's. That is the DBA trade-off you chose; changing the public name would change it for Enamelogic customers too.
 
-### 3. Fulfilment (you, one to two weeks for stock)
+### 3. Fulfilment (wired 2026-10-22; two clicks left for you)
 
-1. Shopify → Settings → General → Business details → the entity row → fill the full street address. Then Online Store → Preferences → turn **Private mode** off (the switch is greyed until the address is in) → Save. Finish signal: https://j1tu10-he.myshopify.com/ opens without a password page.
-2. Install the CJdropshipping app, source the abacus (black frame, natural wood beads, silver bar; `img/funnel/abacus.webp`), buy an opening batch into a **US** warehouse, and get the Children's Product Certificate from the supplier. Print the quick-start card (`docs/products/welcome-card.md`) and the Playbook; ship both to the same warehouse. Confirm bundle kitting in writing.
-3. Connect orders: Zapier → trigger "Stripe: Checkout Session Completed" → action "Shopify: Create Order" (customer email, shipping address from the session, line items kit and, when bought, Playbook, financial status paid). Until the zap runs, create each order by hand in Shopify → Orders → Create order → Mark as paid. CJ picks it up from Shopify either way.
-4. One real test order to your own address. Finish signal: tracking in Shopify within 2 business days, box within 7 with the abacus and the card (and the Playbook when ticked).
+Pipeline: Stripe → Supabase `stripe-webhook` → Shopify order → DSers → AliExpress (details in `docs/FULFILLMENT.md`). The kit product is imported into DSers and mapped to the AliExpress soroban (item 1005009621460689, variant BN, $8.92 free shipping, 6 to 10 days). The Playbook is digital only; nothing else ships.
+
+1. **DSers → Settings → Supplier → AliExpress → Link** your AliExpress account (and keep a card saved on AliExpress). Finish signal: Open Orders shows an "Order" button on a test order instead of "link account".
+2. **Shopify app credentials for the webhook**: Shopify no longer allows legacy custom apps, so follow `stripe-setup.md` §8 "Shopify order creation" (Dev Dashboard app with `write_orders`, `read_orders`, `read_products`; paste `SHOPIFY_CLIENT_ID` and `SHOPIFY_CLIENT_SECRET` into Supabase secrets). Until then, create each paid order by hand in Shopify (FULFILLMENT.md "Backup").
+3. **First real order**: buy the kit on the live page, confirm the Shopify order appears tagged `childphenoms`, click Order in DSers, pay on AliExpress, and watch tracking come back to Shopify. Then refund yourself in Stripe if you want.
+4. Store housekeeping still open: Settings → General → entity street address, then Online Store → Preferences → Private mode off (not needed for orders, only if you ever send people to the storefront).
 
 ### 4. Meta (pixel done; Page, ad account and domain are yours)
 
 The pixel is installed: `metaPixelId` is 1239441998349754, the Enamelogic pixel, by your call. One dataset now mixes dentist and parent traffic, so audiences and optimisation blur across the two businesses; if that shows up in Ads Manager, create a Child Phenoms pixel and change that one line. Still yours: the Page, the ad account, domain verification for childphenoms.com, and the campaign build from `docs/ADS-BUILD-SHEET.md`.
-
-### 4 (old). Meta (you, 20 minutes, then me)
-
-1. https://business.facebook.com → Settings → Business assets → **Pages → Add → Create a new Page** "Child Phenoms". **Ad accounts → Add → Create** (USD, your card). **Data sources → Pixels (datasets) → Add** "Child Phenoms Pixel". Copy the **Pixel ID** (15 to 16 digits).
-2. Brand safety → **Domains → Add** `childphenoms.com` → verify with the DNS TXT record (give me the record text and I add it at GoDaddy).
-3. Paste the Pixel ID into `free-abacus/config.js` → `metaPixelId`, or send it to me and I push. Finish signal: Events Manager → Test events shows PageView from https://childphenoms.com/free-abacus/ and Lead after step 1.
-4. Build the campaign from `docs/ADS-BUILD-SHEET.md` (paused until the test order and the email flow pass). Your creative goes in last.
 
 ### 5. Supabase sign-in links (done 2026-10-22)
 

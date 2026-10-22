@@ -4,9 +4,17 @@ Written 2026-10-21 for the free-abacus funnel. The pages promise a kit "delivere
 
 ## The short answer
 
-**Updated 2026-10-21.** Checkout is **Stripe** for every step, including the kit, because a Stripe Payment Link can send the parent straight back to page 2 after paying; Shopify's checkout ends on Shopify's own thank-you page and would lose the University offer. **Shopify + CJ Dropshipping** is the fulfilment back office: the two products and the $9.95 US rate are already set up in the store (j1tu10-he), and the abacus is pre-stocked in a CJ warehouse in the United States with the printed Playbooks and quick-start cards sent to the same warehouse so every order ships as one branded box. Paid orders now flow Stripe → Supabase function (`stripe-webhook`) → Shopify automatically once the Shopify token is set (`docs/products/legal-and-ops/stripe-setup.md` §8, "Shopify order creation"); a draft order made by hand (see "Backup" below) stays the fallback. Once you pass roughly 300 kits a month, or the moment you buy 1,000 units up front, move the stock to a US fulfilment house that specialises in kitting (ShipMonk first, ShipBob second).
+**Updated 2026-10-22 (evening).** Hunter chose the cheapest viable dropship route to test the audience before buying stock: **Stripe checkout → Supabase function → Shopify order → DSers → AliExpress**.
 
-DSers is the wrong tool for this product. It is an AliExpress order tool: it ships from Chinese suppliers in 7 to 20+ days, it cannot bundle a printed book into the parcel, and it has no branded packaging. Every one of those breaks a promise the page makes.
+- **The abacus** is the AliExpress listing "Portable Japanese 13 Digits Column Abacus Soroban Caculating School" (item 1005009621460689, seller "Computer Office Store", AliExpress Choice): $8.92 to $9.19 with free shipping to the US, fastest delivery 6 days and about 79% inside 10 days, refund if not delivered in 30 days, 358 sold at 4.8. Variant **BN** (brown) is mapped to the Shopify kit product in DSers with Basic Mapping. It is a light-wood soroban with brown beads; the page's black-frame render is not this product, so swap the photos or the supplier before scaling. DSers showed supplier stock of 5 at mapping time: if an order fails for stock, map variant W as the backup (DSers → My Products → the kit → mapping → Color W).
+- **Nothing else ships.** The Playbook bump is digital (parent account) and the 3-night quick-start goes by email. No card, no book, no branded box for now.
+- **Orders flow in by themselves** once the Supabase function has the Shopify app credentials (`docs/products/legal-and-ops/stripe-setup.md` §8 "Shopify order creation"): every paid Stripe kit order becomes a paid Shopify order tagged `childphenoms`, which DSers picks up under Open Orders. Until the credentials are set, create the order by hand (section "Backup: a Shopify order by hand" below).
+- **Placing the supplier order** is one click per order in DSers → Open Orders → AliExpress → Order (DSers fills the parent's address, you pay on AliExpress). That needs your AliExpress account linked in DSers (Settings → Supplier → AliExpress → Link) with a saved card on AliExpress. DSers' auto-order is a paid plan; turn it on when volume justifies it. Tracking numbers sync back to Shopify, and Shopify emails the parent.
+- **Page promises** now say "about a week" and "most arrive in 6 to 10 days", "ships within 2 business days with tracking". Keep them honest against DSers' delivery data after the first 20 orders.
+
+Move to bulk stock plus a US fulfilment house (or self-shipping from Sheridan) once the offer converts: that is when the branded box, the printed card and the printed Playbook come back, and delivery drops to 2 to 5 days.
+
+DSers alone cannot kit a printed book into the parcel and cannot ship from a US warehouse for this product; those are the trade-offs accepted for the test.
 
 ## How the options compare for this kit
 
