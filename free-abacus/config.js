@@ -5,10 +5,10 @@
 export const CONFIG = {
   shipping: 9.95,                 // what the parent pays on the free kit
   bumpPrice: 27,                  // Child Prodigy Secrets Playbook (printed) + audiobook + digital copy
-  checkoutUrl: '',                // Stripe Payment Link A: kit ($9.95 shipping and handling), US shipping address; after payment redirect to university.html?paid=kit
-  checkoutUrlWithBump: '',        // Stripe Payment Link B: kit + $27 Playbook, same redirect (both links required; a Shopify /cart/ link also works and gets name/email/phone prefilled)
-  universityTrialUrl: '',         // Stripe Payment Link: $67/mo with a 14-day trial; after payment redirect to certify.html?paid=university
-  certifyUrl: '',                 // Stripe Payment Link: $297 once; after payment redirect to thanks.html?paid=certify
+  checkoutUrl: 'https://buy.stripe.com/test_fZu28l2Fy9fO2Ctcr3efC00',                // Stripe Payment Link A: kit ($9.95 shipping and handling), US shipping address; after payment redirect to university.html?paid=kit
+  checkoutUrlWithBump: 'https://buy.stripe.com/test_9B65kxcg89fO5OFfDfefC01',        // Stripe Payment Link B: kit + $27 Playbook, same redirect (both links required; a Shopify /cart/ link also works and gets name/email/phone prefilled)
+  universityTrialUrl: 'https://buy.stripe.com/test_cNi6oBbc4fEcb8Z8aNefC02',         // Stripe Payment Link: $67/mo with a 14-day trial; after payment redirect to certify.html?paid=university
+  certifyUrl: 'https://buy.stripe.com/test_6oUbIV2FyeA85OF62FefC03',                 // Stripe Payment Link: $297 once; after payment redirect to thanks.html?paid=certify
   metaPixelId: '1239441998349754', // Meta Pixel (dataset) ID. Hunter's call 2026-10-21: the Enamelogic pixel, shared. Empty = no pixel loads. Disclosed in the privacy policy.
   leadWebhook: '',                // optional: POST step-1 contact info here (Zapier/Make/CF webhook) for abandon follow-up
   supportEmail: 'hello@childphenoms.com',
