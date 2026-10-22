@@ -1,0 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700;800&family=Inter:wght@500;600;700&family=Caveat:wght@600;700&display=swap');
+:root{--ink:#121826;--ink-2:#4b5567;--blue:#2457f5;--blue-soft:#e8eeff;--yellow:#ffd23f;--red:#f03e3e;--green:#22c55e}
+*{box-sizing:border-box}html,body{margin:0;padding:0;overflow:hidden}
+.paper{background-color:#fff;background-image:radial-gradient(circle,rgba(18,24,38,.10) 1.6px,transparent 2px),repeating-linear-gradient(to bottom,transparent 0 143px,rgba(36,87,245,.07) 143px 145px);background-size:36px 36px,100% 144px;background-position:18px 18px,0 0}

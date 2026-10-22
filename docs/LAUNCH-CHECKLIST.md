@@ -61,16 +61,9 @@ The pixel is installed: `metaPixelId` is 1239441998349754, the Enamelogic pixel,
 3. Paste the Pixel ID into `free-abacus/config.js` → `metaPixelId`, or send it to me and I push. Finish signal: Events Manager → Test events shows PageView from https://childphenoms.com/free-abacus/ and Lead after step 1.
 4. Build the campaign from `docs/ADS-BUILD-SHEET.md` (paused until the test order and the email flow pass). Your creative goes in last.
 
-### 5. Supabase sign-in links (you, 3 minutes, blocks every login)
+### 5. Supabase sign-in links (done 2026-10-22)
 
-The test link Supabase sent tonight redirects to `http://localhost:3000`, so no parent can finish signing in on the live site yet. Chrome is not signed in to Supabase, so this one is yours:
-
-1. Open https://supabase.com/dashboard/project/fndemnipqtpmuvcidcxo/auth/url-configuration (sign in with GitHub).
-2. **Site URL** → `https://childphenoms.com/` → Save.
-3. **Redirect URLs** → Add URL, one at a time: `https://childphenoms.com/**`, `https://www.childphenoms.com/**`, `http://localhost:8787/**` → Save.
-4. Tell me. I request a fresh link to hunterappleton369@gmail.com and confirm it lands on `#/family` signed in.
-
-Finish signal: the "Sign in" link in the next Supabase email contains `redirect_to=https://childphenoms.com`.
+Site URL and redirect URLs are set. Verified end to end: a link requested on https://childphenoms.com/#/start/signin arrived with `redirect_to=https://childphenoms.com/`, opened straight into `#/family` signed in, `#/account` showed the account, `#/playbook` and `#/stage/2` showed their gates, `#/stage/1` opened. Still to do under Email below: custom SMTP through Resend, so links reach every parent and not only team addresses, and the hourly email rate limit.
 
 ### 6. Email (you create accounts, then me)
 

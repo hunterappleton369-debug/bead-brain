@@ -1,0 +1,30 @@
+<!doctype html><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<style>
+body{width:1640px;height:924px;position:relative;font-family:Inter}
+.copy{position:absolute;left:120px;top:205px;width:960px}
+.brand{display:flex;align-items:center;gap:18px;margin-bottom:34px}
+.brand span{font-family:Unbounded;font-weight:700;font-size:38px;letter-spacing:-.02em;color:var(--ink)}
+.brand b{color:var(--blue);font-weight:800}
+h1{font-family:Unbounded;font-weight:800;font-size:64px;line-height:1.04;letter-spacing:-.03em;color:var(--ink);margin:0 0 34px}
+.hi{background:linear-gradient(transparent 58%,var(--yellow) 58%,var(--yellow) 94%,transparent 94%);padding:0 .06em}
+.row{display:flex;gap:14px;align-items:center}
+.chip{font-weight:700;font-size:22px;padding:12px 22px;border:2.5px solid var(--ink);border-radius:999px;background:#fff;color:var(--ink)}
+.chip.blue{background:var(--blue);color:#fff;box-shadow:5px 5px 0 var(--ink)}
+.art{position:absolute;right:90px;top:168px;width:560px;height:560px}
+.art::before{content:'';position:absolute;inset:6%;border-radius:50%;background:radial-gradient(circle,rgba(18,24,38,.14) 2px,transparent 2.6px) 0 0/18px 18px,var(--blue-soft);-webkit-mask:radial-gradient(circle,#000 55%,transparent 72%)}
+.art img{position:relative;width:100%;height:100%}
+.burst{position:absolute;left:-10px;bottom:70px;width:170px;transform:rotate(-8deg);filter:drop-shadow(4px 4px 0 #121826);z-index:2}
+.note{position:absolute;left:1000px;top:640px;font-family:Caveat;font-weight:700;font-size:40px;color:var(--ink);transform:rotate(-4deg)}
+</style>
+<body class="paper">
+<div class="copy">
+ <div class="brand"><svg width="64" height="64" viewBox="0 0 64 64"><rect x="3" y="3" width="58" height="58" rx="16" fill="#2457f5" stroke="#121826" stroke-width="3"/><path d="M 36 8 L 20 36 L 31 36 L 26 56 L 46 26 L 35 26 L 41 8 Z" fill="#ffd23f" stroke="#121826" stroke-width="3" stroke-linejoin="round"/></svg><span>Child <b>Phenoms</b></span></div>
+ <h1>Math in their head.<br><span class="hi">Faster than a calculator.</span></h1>
+ <div class="row"><span class="chip">Ages 5 to 12</span><span class="chip">15 min a day</span><span class="chip blue">childphenoms.com</span></div>
+</div>
+<div class="art"><img src="hero-kid.webp"><svg class="burst" viewBox="0 0 120 120" id="b"></svg></div>
+</body>
+<script>
+const pts=[];for(let i=0;i<28;i++){const r=i%2?50:40,a=Math.PI*i/14;pts.push((60+r*Math.cos(a)).toFixed(1)+','+(60+r*Math.sin(a)).toFixed(1))}
+document.getElementById('b').innerHTML=`<polygon points="${pts.join(' ')}" fill="#ffd23f" stroke="#121826" stroke-width="3" stroke-linejoin="round"/><text x="60" y="56" text-anchor="middle" font-family="Unbounded" font-weight="800" font-size="15" fill="#121826"><tspan x="60">Super</tspan><tspan x="60" dy="17">powers</tspan></text>`;
+</script>
