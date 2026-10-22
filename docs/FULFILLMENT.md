@@ -10,7 +10,7 @@ Written 2026-10-21 for the free-abacus funnel. The pages promise a kit "delivere
 - **Nothing else ships.** The Playbook bump is digital (parent account) and the 3-night quick-start goes by email. No card, no book, no branded box for now.
 - **Orders flow in by themselves** once the Supabase function has the Shopify app credentials (`docs/products/legal-and-ops/stripe-setup.md` §8 "Shopify order creation"): every paid Stripe kit order becomes a paid Shopify order tagged `childphenoms`, which DSers picks up under Open Orders. Until the credentials are set, create the order by hand (section "Backup: a Shopify order by hand" below).
 - **Placing the supplier order** is one click per order in DSers → Open Orders → AliExpress → Order (DSers fills the parent's address, you pay on AliExpress). That needs your AliExpress account linked in DSers (Settings → Supplier → AliExpress → Link) with a saved card on AliExpress. DSers' auto-order is a paid plan; turn it on when volume justifies it. Tracking numbers sync back to Shopify, and Shopify emails the parent.
-- **Page promises** now say "about a week" and "most arrive in 6 to 10 days", "ships within 2 business days with tracking". Keep them honest against DSers' delivery data after the first 20 orders.
+- **Page promises** now say "1 to 2 weeks", "most arrive in 7 to 13 days", "ships within 2 business days with tracking". Keep them honest against DSers' delivery data after the first 20 orders.
 
 Move to bulk stock plus a US fulfilment house (or self-shipping from Sheridan) once the offer converts: that is when the branded box, the printed card and the printed Playbook come back, and delivery drops to 2 to 5 days.
 
