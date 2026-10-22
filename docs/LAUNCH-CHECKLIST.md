@@ -36,7 +36,7 @@ Built in the new **Child Phenoms** Stripe account (acct_1UTKql9TjRoBaEei), test 
 Still yours:
 
 1. **Activate the account** (top banner "Verify your business"): legal entity, EIN or SSN, address, bank account. Stripe keeps a new account in sandbox-only until this is done, so nothing can be built in live mode before it. Tell me when it is done; I copy the four products to live mode, create the four live links and the live portal link, paste them in and push. If you want to do it yourself, the steps are in `docs/products/legal-and-ops/stripe-setup.md` §2 to §5.
-2. **Webhook secret**: the endpoint exists in Stripe test mode (and I add the live one after activation). Copy its signing secret into Supabase as `STRIPE_WEBHOOK_SECRET`, plus a restricted key as `STRIPE_SECRET_KEY`, per `stripe-setup.md` §8. Finish signal: a test order creates a `purchases` row and a trial creates a `memberships` row.
+2. **Webhook secret**: the endpoint exists in Stripe test mode as destination `supabase-stripe-webhook` (we_1UTLAt9TjRoBaEeiftGZyfbU, five events, URL `https://fndemnipqtpmuvcidcxo.supabase.co/functions/v1/stripe-webhook`); I add the live one after activation. Open it in Workbench → Webhooks, press **Reveal** under Signing secret, and Copy its signing secret into Supabase as `STRIPE_WEBHOOK_SECRET`, plus a restricted key as `STRIPE_SECRET_KEY`, per `stripe-setup.md` §8. Finish signal: a test order creates a `purchases` row and a trial creates a `memberships` row.
 
 ### 3. Fulfilment (you, one to two weeks for stock)
 
