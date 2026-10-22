@@ -48,7 +48,8 @@ Still yours:
 
 1. **Webhook secret**: Workbench → Webhooks → `childphenoms-supabase-webhook` → Reveal under Signing secret → paste into Supabase as `STRIPE_WEBHOOK_SECRET`, plus a restricted key from this Enamelogic account as `STRIPE_SECRET_KEY` (`docs/products/legal-and-ops/stripe-setup.md` §8). Until then, no `purchases` or `memberships` rows are written and you add them by hand.
 2. **One real order**: buy the kit with your own card on https://childphenoms.com/free-abacus/, check the Stripe payment, the receipt wording and the shipping address, then refund it in Stripe. This is the only step that proves live money moves.
-3. **Tax**: the new links do not collect sales tax, so the page's "$9.95" stays exact. The products carry the account's default SaaS tax code, which is wrong for a shipped kit if you ever turn Stripe Tax on for these links; ask your CPA when sales pass a state threshold.
+3. **Tax**: the Enamelogic account has Stripe Tax on, so the links show a Tax line. For a Wyoming address it computed $0.00 and the total stayed $9.95; in any state where Enamelogic is registered to collect, tax will be added on top of the $9.95 the page promises. The four products carry the account's default SaaS tax code, which is the wrong category for a shipped kit. Ask your CPA whether to set the kit and Playbook to a tangible-goods code or to turn tax off on these four links.
+4. **Branding**: the checkout page and receipts say "Pay Enamelogic" because the public business name is the account's. That is the DBA trade-off you chose; changing the public name would change it for Enamelogic customers too.
 
 ### 3. Fulfilment (you, one to two weeks for stock)
 
