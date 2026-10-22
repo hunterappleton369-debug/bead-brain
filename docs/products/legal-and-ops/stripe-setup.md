@@ -152,6 +152,8 @@ Finish signal: every step above matched. Delete nothing; test data stays in test
 
 ## 8. Webhook: Stripe writes the access tables (15 min)
 
+> **Live account note (2026-10-22):** everything below was written against test mode. Child Phenoms now runs **live in the Enamelogic LLC account** (acct_1TivQW5uuxnQgoyB) and the live webhook destination already exists, so use these live pages instead of the test ones: signing secret at https://dashboard.stripe.com/acct_1TivQW5uuxnQgoyB/workbench/webhooks/we_1UTLUQ5uuxnQgoyBdpLGJ5tR, API keys at https://dashboard.stripe.com/acct_1TivQW5uuxnQgoyB/apikeys (a live restricted key starts with `rk_live_`), products at https://dashboard.stripe.com/acct_1TivQW5uuxnQgoyB/products. Skip Step 1 (done).
+
 When someone pays, Stripe tells our Supabase project. A small program there (the edge function `stripe-webhook`) fills in the two tables the app reads: `purchases` (kit and Playbook) and `memberships` (University and the instructor year). A paying parent signs in and gets in. Nobody types rows by hand. The function is already deployed. It does nothing until you give it the secrets below.
 
 | What happened in Stripe | What the webhook writes |
