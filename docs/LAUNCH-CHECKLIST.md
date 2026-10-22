@@ -44,7 +44,7 @@ Still yours:
 
 ### 3. Fulfilment (wired 2026-10-22; two clicks left for you)
 
-Pipeline: Stripe → Supabase `stripe-webhook` → Shopify order → DSers → AliExpress (details in `docs/FULFILLMENT.md`). The kit product is imported into DSers and mapped to the AliExpress soroban (item 1005009621460689, variant BN, $8.92 + $1.99 AliExpress Selection Standard, 7 to 13 days). The Playbook is digital only; nothing else ships.
+Pipeline: Stripe → Supabase `stripe-webhook` → Shopify order → DSers → AliExpress (details in `docs/FULFILLMENT.md`). The kit product is imported into DSers and mapped to the AliExpress soroban (item 1005009621460689, variant BN, $8.92 + $1.99 AliExpress Selection Standard, 7 to 13 days). The Playbook is digital only; nothing else ships. DSers' product shipping method for the US is set to AliExpress Selection Standard ($1.99, 7 to 13 days, tracked), so orders do not fall back to the $7.04 default. DSers showed supplier stock of 5 at mapping time: if an order fails for stock, switch the mapping to variant W or pick another listing from `docs/FULFILLMENT.md`.
 
 1. **DSers → Settings → Supplier → AliExpress → Link** your AliExpress account (and keep a card saved on AliExpress). Finish signal: Open Orders shows an "Order" button on a test order instead of "link account".
 2. **Shopify app credentials for the webhook**: Shopify no longer allows legacy custom apps, so follow `stripe-setup.md` §8 "Shopify order creation" (Dev Dashboard app with `write_orders`, `read_orders`, `read_products`; paste `SHOPIFY_CLIENT_ID` and `SHOPIFY_CLIENT_SECRET` into Supabase secrets). Until then, create each paid order by hand in Shopify (FULFILLMENT.md "Backup").
