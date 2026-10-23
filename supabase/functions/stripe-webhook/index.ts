@@ -231,7 +231,7 @@ function firstNameOf(s: Stripe.Checkout.Session): string {
 interface ShopifyRef { id: string; name: string | null }
 interface Shopify { store: string; call: (path: string, post?: unknown) => Promise<Row> }
 const SHOPIFY_API = '2025-01';
-const SHOPIFY_SHIPPING = { title: 'USPS Ground Advantage (2 to 7 days)', price: '9.95', code: 'childphenoms-kit' };
+const SHOPIFY_SHIPPING = { title: 'Standard shipping (9 to 15 days)', price: '9.95', code: 'childphenoms-kit' }; // matches the page promise; the Shopify rate should carry the same name
 const SHOPIFY_TIMEOUT_MS = 8000;
 const variantIds = new Map<string, number>(); // "store/product id" → its first variant id, while the function stays warm
 let shopifyToken: { key: string; token: string; until: number } | undefined;

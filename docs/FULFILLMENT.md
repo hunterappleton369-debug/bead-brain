@@ -74,7 +74,7 @@ Use this when the function could not make the order and a re-send from Stripe wi
 2. Shopify admin → **Orders** → **Drafts** → **Create order**.
 3. **Products**: add "Child Phenoms Free Abacus Kit", plus "Child Prodigy Secrets Playbook + Audiobook" if it was bought.
 4. **Customer**: type the parent's email. Paste the shipping address from Stripe.
-5. **Shipping**: **Add shipping** → pick "USPS Ground Advantage (2 to 7 days)" at $9.95.
+5. **Shipping**: **Add shipping** → pick the US rate ("Standard shipping (9 to 15 days)" once renamed; it was "USPS Ground Advantage (2 to 7 days)") at $9.95.
 6. **Notes**: `Stripe checkout cs_…` (the checkout id from the `order_ref` column). **Tags**: `childphenoms, stripe`.
 7. **Collect payment** → **Mark as paid** → **Create order**.
 8. Supabase → **Table Editor** → `purchases` → that row: type the order number (for example `#1007`) into `shopify_order_name` and the long number from the order's web address into `shopify_order_id`. A later re-send then leaves it alone.
