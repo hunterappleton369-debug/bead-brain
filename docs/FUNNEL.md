@@ -113,3 +113,9 @@ Single column, 16px gutters, 48px inputs (16px font so iOS doesn't zoom), full-w
 - **Delivery promise** on the pages is now "about 2 weeks" / "most arrive in 9 to 15 days" / "ships within 2 business days with tracking".
 - **The Playbook bump is digital only** (the Playbook and audiobook in the parent account). No printed book and no printed card ship; the 3-night quick-start goes out by email. Printed copies come back when a print path (Lulu Direct or a short run) exists.
 - **Order flow:** Stripe Payment Link → Supabase function `stripe-webhook` → Shopify order (tagged childphenoms) → DSers → AliExpress. Hunter places the AliExpress order from DSers (one click per order on the free plan) until auto-order is turned on.
+
+## Decisions on 2026-10-22 (late, after the pre-live check)
+
+- **The urgency box and the product photos stay as they are.** Hunter's call: "only 1,000 kits" / "6 weeks" and the black-frame soroban renders are kept while the audience is tested.
+- **The 3-Night Quick-Start goes out by email**, inside Q1 of `docs/products/marketing-sequences/10-quickstart-soap-opera.md`, the minute a kit is paid, and also lives on the thank-you page and in the parent account. The three Q emails replace E1 to E3 of the kit-buyer sequence: opportunity and epiphany story first, then the strategy (see it, move it, imagine it), then the tactics (the seven table rules). Sending is a Supabase function plus Resend (`scheduled_at` for days 1 and 2); the build is in `docs/AGENT-PROMPT.md`.
+- **Hunter owns:** linking AliExpress in DSers and the first real order. Everything else left is in `docs/AGENT-PROMPT.md`.

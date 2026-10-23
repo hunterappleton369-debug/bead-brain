@@ -14,6 +14,7 @@ Every email, text and ad the Child Phenoms free-abacus funnel needs to run, writ
 | `06-certification-sequence.md` | Members who did not certify: story, stack, questions | 3 emails | 847 | 5/5 | 4.1 | needs Hunter |
 | `07-ad-copy.md` | Five Facebook angles: 3 primary texts, 3 headlines and a video script of 30 s or less each | 15 texts, 15 headlines, 5 scripts | 1,982 | 5/5 | 2.9 | needs Hunter |
 | `08-sms-bank.md` | All five texts with character counts, consent and quiet-hour rules | 5 texts | 567 | 5/5 | 4.9 (4.6 without the table) | needs Hunter |
+| `10-quickstart-soap-opera.md` | Quick-Start soap opera, days 0 to 2, every kit buyer: opportunity and epiphany story, then strategy, then tactics. Q1 carries the full 3-Night Quick-Start and is the welcome email the page promises. Replaces E1 to E3. | 3 emails | 1,856 | 5/5 | see file | needs Hunter |
 | `09-post-purchase-loyalty.md` | Loyalty emails for every kit buyer, days 6 to 75: the Whole Brain family, the first-week video, the Sprout Boss, a kit for a friend, a three-line review ask, the stall, the year ahead. One link each, in the P.S. | 8 emails | 2,202 | 5/5 | 1.7 | needs Hunter |
 | `send-map.md` | One table: trigger, delay, channel, file, subject | 54 rows of sends | 1,053 | 5/5 | 12.1 (6.2 without the table; ops file, no target) | ready |
 | `README.md` | This file | | | | | ready |

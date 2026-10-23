@@ -30,17 +30,17 @@ Verified on the live site and the live accounts tonight:
 
 Not done, in the order that blocks money first:
 
-1. **Link AliExpress in DSers.** Settings → Application Management → Supplier → AliExpress shows "Add Account", so no supplier order can be placed. Needs your AliExpress login and a saved card there.
+1. **Link AliExpress in DSers** (Hunter, in progress). Settings → Application Management → Supplier → AliExpress shows "Add Account", so no supplier order can be placed. Needs your AliExpress login and a saved card there.
 2. **Shopify app credentials in Supabase** (`SHOPIFY_CLIENT_ID` + `SHOPIFY_CLIENT_SECRET`, `stripe-setup.md` §8). Not verifiable from outside; if they are missing, a paid kit writes its `purchases` row but never becomes a Shopify order, and you create it by hand (`docs/FULFILLMENT.md`, "Backup").
-3. **The 3-night quick-start has no sender.** The page promises it "in your welcome email the minute you order", but the only email after checkout is Stripe's receipt. Either put the quick-start on the thank-you page and in the parent account and change that line, or wire the email (Customer.io, or a Supabase function on `checkout.session.completed`).
+3. **The 3-night quick-start has no sender yet.** The emails are written (`docs/products/marketing-sequences/10-quickstart-soap-opera.md`, Q1 carries the quick-start) and the quick-start copy is in `docs/products/welcome-card.md`. The sender is a Supabase function plus Resend, job 1 in `docs/AGENT-PROMPT.md`; job 2 puts the quick-start on the thank-you page and in the parent account.
 4. **Legal pages.** The four templates in `docs/products/legal-and-ops/site/` still carry `[HUNTER: …]` placeholders (entity, mailing address, state, dates, email provider) and are not on the site; no funnel or app footer links Privacy or Terms. Meta will not approve ads to a landing page without a privacy policy, and the pixel has to be disclosed in it.
 5. **Custom SMTP through Resend** for Supabase Auth, plus the hourly email rate limit and branded templates. The default sender caps outgoing mail at a few per hour, so at ad volume most parents would never get a sign-in link.
-6. **One real order** on the live page with your card, through to a Shopify order, a DSers order and tracking; then refund in Stripe.
+6. **One real order** (Hunter) on the live page with your card, through to a Shopify order, a DSers order and tracking; then refund in Stripe. Items 2, 3, 4, 5, 9 and 10 are the follow-on agent's, in `docs/AGENT-PROMPT.md`.
 7. **GoDaddy, second SMS code:** the three remaining A records and `www` → `hunterappleton369-debug.github.io`. `https://www.childphenoms.com` fails today (no certificate); the bare domain works.
 8. **Meta:** Page, ad account, domain verification for childphenoms.com, the campaign from `docs/ADS-BUILD-SHEET.md`. Decide whether sharing the Enamelogic pixel stays acceptable.
 9. **Stripe housekeeping:** confirm receipts go out for successful payments (Settings → Emails); ask the CPA about the tax code on the kit and Playbook (today SaaS).
 10. **Shopify housekeeping:** business street address, Private mode, and the "free over $70" flag on the US rate.
-11. **Truth check before traffic:** the urgency box ("only 1,000 kits", "6 weeks") describes a batch that does not exist under dropshipping; the product photos show a black-frame wooden soroban and the supplier ships a plastic brown-bead one.
+11. ~~Truth check~~ Decided 2026-10-22: Hunter keeps the urgency box numbers and the product photos as they are for the audience test.
 12. **Customer.io workspace and the sequences** (`docs/products/marketing-sequences/`), including the post-purchase loyalty series. Not needed for the first orders.
 
 ### 1. Domain (done except one save)

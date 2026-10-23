@@ -21,10 +21,11 @@ Every email and text in one table. Load these into the email and SMS tool in thi
 | A3 | Step-1 lead, no order | 24 hours | Email | 02-abandon-cart.md | "My child isn't a math kid" |
 | S3 | Step-1 lead, no order | 46 hours | SMS | 08-sms-bank.md | Last note from Hunter |
 | A5 | Step-1 lead, no order | 48 hours | Email | 02-abandon-cart.md | Last note about your kit |
-| E1 | Kit order paid | At once | Email | 01-kit-buyer-soap-opera.md | Your receipt, and one question |
+| Q1 | Kit order paid | At once | Email | 10-quickstart-soap-opera.md | Your kit is ordered. Start tonight. (carries the 3-Night Quick-Start) |
 | S1 | Kit order paid | Next day, 8:30 a.m. | SMS | 08-sms-bank.md | Print Lesson 1 tonight |
-| E2 | Kit order paid | Day 1 | Email | 01-kit-buyer-soap-opera.md | The wall |
-| E3 | Kit order paid | Day 2 | Email | 01-kit-buyer-soap-opera.md | Week three |
+| Q2 | Kit order paid | Day 1 | Email | 10-quickstart-soap-opera.md | The wall, and the 3 steps over it |
+| Q3 | Kit order paid | Day 2 | Email | 10-quickstart-soap-opera.md | What to say at the table |
+| E1–E3 | parked 2026-10-22 | | Email | 01-kit-buyer-soap-opera.md | Replaced by Q1 to Q3; keep for a later test |
 | E4 | Kit order paid, no trial | Day 3 | Email | 01-kit-buyer-soap-opera.md | What the beads gave me besides math |
 | E5 | Kit order paid, no trial | Day 4 | Email | 01-kit-buyer-soap-opera.md | If I started over |
 | W1 | Parent replies with child's name and age | Within 1 business day | Email (manual reply) | 04-shipping-and-first-week.md | Re: your receipt (the plan for {{child}}) |
@@ -56,7 +57,7 @@ Every email and text in one table. Load these into the email and SMS tool in thi
 
 ## Totals
 
-- Emails: 5 soap opera, 3 abandon, 8 onboarding, 2 shipping (one is a manual reply), 20 Seinfeld, 3 certification, 8 loyalty. **49 emails.**
+- Emails: 3 quick-start soap opera (Q1 to Q3, live), 5 kit-buyer soap opera (E1 to E3 parked, E4 and E5 live), 3 abandon, 8 onboarding, 2 shipping (one is a manual reply), 20 Seinfeld, 3 certification, 8 loyalty. **52 emails written, 49 in rotation.**
 - Texts: **5**, all parked until text consent is collected.
 - Ads: 5 angles, 15 primary texts, 15 headlines, 5 video scripts in `07-ad-copy.md`.
 

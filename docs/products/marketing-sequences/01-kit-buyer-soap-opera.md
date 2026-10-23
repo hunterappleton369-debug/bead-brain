@@ -4,6 +4,8 @@ Five emails, one a day, for every parent who paid the $9.95 shipping. Email 1 is
 
 ## How to run it
 
+> **2026-10-22:** Emails 1 to 3 are parked. `10-quickstart-soap-opera.md` (Q1 to Q3) takes days 0 to 2 and carries the 3-Night Quick-Start. Emails 4 and 5 still go out on days 3 and 4.
+
 - **Who gets it:** every kit buyer. Emails 4 and 5 go only to buyers who did not start the University test drive. Trial members get `03-trial-onboarding.md` in their place.
 - **From:** Hunter at Child Phenoms, hello@childphenoms.com
 - **Links:** every `{{link_…}}` tag is listed in `README.md`.
