@@ -289,7 +289,9 @@ let shopifyToken: { key: string; token: string; until: number } | undefined;
 async function shopifyOrder(c: Ctx, s: Stripe.Checkout.Session, email: string, kit: boolean, playbook: boolean, made: ShopifyRef | null): Promise<string> {
   if (made) return `shopify ${made.name ?? made.id}: already made`;
   if (!env('SHOPIFY_ADMIN_TOKEN') && !(env('SHOPIFY_CLIENT_ID') && env('SHOPIFY_CLIENT_SECRET'))) {
-    console.error(`stripe-webhook SHOPIFY NOT SET UP: no SHOPIFY_ADMIN_TOKEN (or SHOPIFY_CLIENT_ID + SHOPIFY_CLIENT_SECRET), so checkout ${s.id} has no Shopify order. Add it (stripe-setup.md §8, Shopify order creation), then re-send this event from Stripe.`);
+    // Names only, never values: a secret saved under a near-miss name ("SHOPIFY_CLIENT_ID " or "Shopify_client_id") shows up here.
+    const seen = Object.keys(Deno.env.toObject()).filter((k) => /shopify/i.test(k)).map((k) => JSON.stringify(k));
+    console.error(`stripe-webhook SHOPIFY NOT SET UP: no SHOPIFY_ADMIN_TOKEN (or SHOPIFY_CLIENT_ID + SHOPIFY_CLIENT_SECRET), so checkout ${s.id} has no Shopify order. Secret names seen with "shopify" in them: ${seen.length ? seen.join(', ') : 'none'}. Add it (stripe-setup.md §8, Shopify order creation), then re-send this event from Stripe.`);
     return 'shopify: not set up, no order made';
   }
   let order: Row | null;
