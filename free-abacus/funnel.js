@@ -62,6 +62,28 @@ export function scrollLinks() {
   }));
 }
 
+// ---------- on-page checkout: Stripe Elements in step 2, the card saved for one-click upsells ----------
+const onPage = () => !!(CONFIG.checkoutApi && CONFIG.stripePublishableKey);
+async function api(payload) {
+  const r = await fetch(CONFIG.checkoutApi, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+  let data = {}; try { data = await r.json(); } catch {}
+  if (!r.ok || data.error) throw new Error(data.error || 'Something went wrong. Try again in a moment.');
+  return data;
+}
+let stripeJs = null;
+function loadStripe() {
+  if (stripeJs) return stripeJs;
+  stripeJs = new Promise((res, rej) => {
+    if (window.Stripe) return res(window.Stripe);
+    const t = document.createElement('script'); t.src = 'https://js.stripe.com/v3/'; t.async = true;
+    t.onload = () => res(window.Stripe); t.onerror = () => { stripeJs = null; rej(new Error('Stripe.js did not load')); };
+    document.head.appendChild(t);
+  });
+  return stripeJs;
+}
+const APPEARANCE = { theme: 'stripe', variables: { colorPrimary: '#2457f5', colorText: '#121826', colorDanger: '#f03e3e', borderRadius: '10px', fontFamily: 'Inter, system-ui, sans-serif', fontSizeBase: '16px', spacingUnit: '4px' } };
+const FONTS = [{ cssSrc: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap' }];
+
 // ---------- the two-step order form ----------
 export function orderForm() {
   const form = $('#order'); if (!form) return;
@@ -71,6 +93,7 @@ export function orderForm() {
   const lead = load(LEAD_KEY) || {};
   // prefill from an earlier visit
   $$('input', pane1).forEach(i => { if (lead[i.name]) i.value = lead[i.name]; });
+  if (onPage()) loadStripe().catch(() => {}); // warm up while the parent types
 
   const valid = pane => {
     let ok = true;
@@ -89,7 +112,51 @@ export function orderForm() {
     $$('[data-bump-price]').forEach(t => t.textContent = '$' + CONFIG.bumpPrice);
   };
   totals();
-  bump && bump.addEventListener('change', () => { totals(); if (bump.checked) track('AddToCart', { content_name: 'playbook', value: CONFIG.bumpPrice, currency: 'USD' }); });
+
+  // ----- the card form on the page -----
+  const payBlock = $('[data-pay-block]', form), payErr = $('[data-pay-error]', form), payLoading = $('[data-pay-loading]', form);
+  const complete = $('[data-complete]', form);
+  let co = null;          // { stripe, elements, intentId, clientSecret, email, amount }
+  let hosted = !onPage(); // true = fall back to the hosted checkout links
+  const showErr = msg => { if (!payErr) return; payErr.textContent = msg || ''; payErr.hidden = !msg; };
+  const useHosted = why => { hosted = true; if (payBlock) payBlock.classList.add('hosted'); if (why) console.warn('on-page checkout off:', why); };
+  const fullName = d => [d.first, d.last].filter(Boolean).join(' ');
+
+  async function mountCheckout(data) {
+    if (co && co.email === data.email) { if (bump) await syncBump(); return; }
+    if (payBlock) payBlock.classList.remove('hosted');
+    showErr(''); if (payLoading) payLoading.classList.remove('hide');
+    try {
+      const Stripe = await loadStripe();
+      const started = await api({ action: 'start', email: data.email, first: data.first, last: data.last, phone: data.phone, bump: !!(bump && bump.checked) });
+      const stripe = Stripe(CONFIG.stripePublishableKey);
+      const elements = stripe.elements({ clientSecret: started.clientSecret, appearance: APPEARANCE, fonts: FONTS, loader: 'auto' });
+      const ship = elements.create('address', { mode: 'shipping', allowedCountries: ['US'], fields: { phone: 'always' }, validation: { phone: { required: 'always' } }, defaultValues: { name: fullName(data), phone: data.phone || '' }, display: { name: 'full' } });
+      const pay = elements.create('payment', {
+        layout: { type: 'accordion', defaultCollapsed: false, radios: true, spacedAccordionItems: false },
+        business: { name: 'Child Phenoms' },
+        fields: { billingDetails: { name: 'never', email: 'never', phone: 'never' } },
+        defaultValues: { billingDetails: { name: fullName(data), email: data.email, phone: data.phone || '' } },
+        terms: { card: 'never', applePay: 'never', googlePay: 'never', link: 'never' },
+      });
+      $$('#ship-el, #pay-el', form).forEach(el => el.innerHTML = '');
+      ship.mount('#ship-el'); pay.mount('#pay-el');
+      pay.on('ready', () => { if (payLoading) payLoading.classList.add('hide'); });
+      pay.on('loaderror', e => { useHosted(e && e.error && e.error.message); if (payLoading) payLoading.classList.add('hide'); });
+      co = { stripe, elements, intentId: started.intentId, clientSecret: started.clientSecret, email: data.email, amount: started.amount };
+    } catch (e) {
+      useHosted(e.message); if (payLoading) payLoading.classList.add('hide');
+    }
+  }
+  async function syncBump() {
+    if (!co) return;
+    try {
+      const u = await api({ action: 'update', intentId: co.intentId, clientSecret: co.clientSecret, bump: !!(bump && bump.checked) });
+      co.amount = u.amount; await co.elements.fetchUpdates();
+    } catch (e) { showErr(e.message); }
+  }
+
+  bump && bump.addEventListener('change', () => { totals(); if (bump.checked) track('AddToCart', { content_name: 'playbook', value: CONFIG.bumpPrice, currency: 'USD' }); if (co && !hosted) syncBump(); });
 
   $('[data-next]', form).addEventListener('click', e => {
     e.preventDefault();
@@ -102,19 +169,38 @@ export function orderForm() {
     ind[0].classList.replace('on', 'done'); ind[1].classList.add('on');
     const ttl = $('[data-pane="2"] h3', form); if (ttl) ttl.textContent = 'Almost done, ' + (data.first || 'friend') + '.';
     form.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    setTimeout(() => { const f = $('input', pane2); f && f.focus({ preventScroll: true }); }, 450);
+    if (!hosted) mountCheckout(data); else setTimeout(() => { const f = $('input', pane2); f && f.focus({ preventScroll: true }); }, 450);
   });
   $('[data-back]', form) && $('[data-back]', form).addEventListener('click', e => { e.preventDefault(); pane2.classList.remove('on'); pane1.classList.add('on'); ind[1].classList.remove('on'); ind[0].classList.replace('done', 'on'); form.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
 
-  $('[data-complete]', form).addEventListener('click', e => {
+  complete.addEventListener('click', async e => {
     e.preventDefault();
     if (!valid(pane2)) { toast('Check the highlighted fields'); return; }
-    const ship = {}; $$('input, select', pane2).forEach(i => { if (i.name) ship[i.name] = i.value.trim(); });
+    const ship = {}; $$('input, select', pane2).forEach(i => { if (i.name && i.type !== 'checkbox') ship[i.name] = i.value.trim(); });
     const withBump = !!(bump && bump.checked);
     const order = { ...(load(LEAD_KEY) || {}), ...ship, bump: withBump, total: CONFIG.shipping + (withBump ? CONFIG.bumpPrice : 0), at: new Date().toISOString() };
     save(ORDER_KEY, order);
     track('InitiateCheckout', { content_name: withBump ? 'kit+playbook' : 'kit', value: order.total, currency: 'USD', num_items: withBump ? 2 : 1 });
-    const url = withBump ? CONFIG.checkoutUrlWithBump : CONFIG.checkoutUrl; // both links must be set; no silent fallback
+
+    if (!hosted && co) {
+      // pay here: the card form on the page; the saved card makes the next two pages one click
+      showErr(''); complete.classList.add('busy'); const label = complete.firstChild.textContent; complete.firstChild.textContent = 'Processing your order… ';
+      try {
+        const lead = load(LEAD_KEY) || {};
+        const { error, paymentIntent } = await co.stripe.confirmPayment({
+          elements: co.elements, redirect: 'if_required',
+          confirmParams: { return_url: new URL('university.html?paid=kit', location.href).toString(), payment_method_data: { billing_details: { name: fullName(lead) || undefined, email: lead.email || undefined, phone: lead.phone || undefined } } },
+        });
+        if (error) { showErr(error.message || 'The card did not go through. Check the details and try again.'); complete.classList.remove('busy'); complete.firstChild.textContent = label; return; }
+        save(ORDER_KEY, { ...order, intentId: co.intentId, clientSecret: co.clientSecret, kit: true, status: paymentIntent && paymentIntent.status });
+        location.href = 'university.html?paid=kit';
+      } catch (err) {
+        showErr(err.message || 'Something went wrong. Try again.'); complete.classList.remove('busy'); complete.firstChild.textContent = label;
+      }
+      return;
+    }
+
+    const url = withBump ? CONFIG.checkoutUrlWithBump : CONFIG.checkoutUrl; // hosted fallback; both links must be set
     if (url) {
       const u = new URL(url);
       if (/\/cart\//.test(u.pathname)) {
@@ -133,19 +219,47 @@ export function orderForm() {
   });
 }
 
-// ---------- upsell pages ----------
+// ---------- upsell pages: one click on the saved card, hosted link as the fallback ----------
 export function upsell(kind) {
   const url = kind === 'university' ? CONFIG.universityTrialUrl : CONFIG.certifyUrl;
   const next = kind === 'university' ? 'certify.html' : 'thanks.html';
-  // A paid hosted checkout sends the parent back with ?paid=<kind>; only then is the item marked bought.
-  const paid = new URLSearchParams(location.search).get('paid');
-  if (paid) { const o = load(ORDER_KEY) || {}; o[paid] = true; save(ORDER_KEY, o); conversion(paid, o); }
+  const q = new URLSearchParams(location.search);
+  // A paid return (?paid=<kind>) is the only thing that marks the item bought. A redirect-based payment method
+  // comes back with the intent in the URL too; keep it so the upsells stay one click.
+  const paid = q.get('paid');
+  if (paid) {
+    const o = load(ORDER_KEY) || {}; o[paid] = true;
+    if (q.get('payment_intent') && q.get('payment_intent_client_secret')) { o.intentId = q.get('payment_intent'); o.clientSecret = q.get('payment_intent_client_secret'); }
+    save(ORDER_KEY, o); conversion(paid, o);
+    if (q.has('payment_intent_client_secret')) history.replaceState(null, '', location.pathname + '?paid=' + paid);
+  }
   const d = new Date(Date.now() + 14 * 864e5);
   $$('[data-trial-date]').forEach(el => el.textContent = d.toLocaleDateString('en-US', { month: 'long', day: 'numeric' }));
-  $$('[data-yes]').forEach(b => b.addEventListener('click', e => {
+  const o0 = load(ORDER_KEY) || {};
+  const oneClick = onPage() && !!(o0.intentId && o0.clientSecret);
+  if (oneClick) $$('[data-yes]').forEach(b => {
+    const n = document.createElement('p'); n.className = 'oneclick-note';
+    n.textContent = kind === 'university' ? 'One click. Your free 14 days start now on the card from your kit order. Cancel from your account page.' : 'One click. $297 goes on the card from your kit order.';
+    b.insertAdjacentElement('afterend', n);
+  });
+  $$('[data-yes]').forEach(b => b.addEventListener('click', async e => {
     e.preventDefault();
-    const o = load(ORDER_KEY) || {}; o[kind] = url ? 'pending' : true; save(ORDER_KEY, o);
+    const o = load(ORDER_KEY) || {}; o[kind] = (url || oneClick) ? 'pending' : true; save(ORDER_KEY, o);
     track('InitiateCheckout', { content_name: kind === 'university' ? 'university-trial' : 'certification', value: kind === 'university' ? 0 : 297, currency: 'USD' });
+    if (oneClick) {
+      const label = b.firstChild.textContent; b.classList.add('busy'); b.firstChild.textContent = kind === 'university' ? 'Starting your test drive… ' : 'Adding it to your order… ';
+      try {
+        await api({ action: 'upsell', kind, intentId: o.intentId, clientSecret: o.clientSecret });
+        location.href = next + '?paid=' + kind; return;
+      } catch (err) {
+        b.classList.remove('busy'); b.firstChild.textContent = label;
+        toast(err.message || 'That did not go through.', 3200);
+        if (!url) return;
+        // the saved card failed: let the parent enter another one on the hosted page
+        setTimeout(() => { const u = new URL(url); if (o.email) u.searchParams.set('prefilled_email', o.email); location.href = u.toString(); }, 1600);
+        return;
+      }
+    }
     if (url) { const u = new URL(url); if (o.email) u.searchParams.set('prefilled_email', o.email); location.href = u.toString(); }
     else { toast('Preview: no payment connected yet'); setTimeout(() => location.href = next, 900); }
   }));
