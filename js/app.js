@@ -13,6 +13,7 @@ import { account } from './account.js';
 import { library, libraryBook, printSheet } from './library.js';
 import { instructors } from './instructors.js';
 import { playbook } from './playbook.js';
+import { quickstart } from './quickstart.js';
 import { UNIVERSITY_URL, MEMBER_PRICE } from './config.js';
 
 injectDefs();
@@ -485,6 +486,7 @@ function family() {
     <h1>Family</h1>
     <p class="lede">Switch between children, fix a name or an age, or move progress to another device.</p>
     <p><a class="link-arrow" href="#/account">Membership and billing</a></p>
+    <p><a class="link-arrow" href="#/quickstart">Your 3-Night Quick-Start</a></p>
     ${accountHTML()}
     <ul class="lesson-list">${store.profiles().map(x => `<li class="${p && x.id === p.id ? 'next' : ''}"><span class="ix">${esc(x.name[0] || '?')}</span><div><a href="#" data-sel="${x.id}">${esc(x.name)}</a><div class="meta">age ${x.age} · level ${levelFromXP(x.xp).level} · ${Object.values(x.lessons).filter(l => l.done).length} lessons done${x.parentEmail && !auth.user ? ' · ' + esc(x.parentEmail) : ''}</div></div><span class="go"><button class="btn sm ghost" data-edit="${x.id}">Edit</button><button class="btn sm ghost" data-del="${x.id}">Remove</button></span></li>`).join('')}</ul>
     <div class="btn-row"><a class="btn blue" href="#/start">+ Add a child</a><button class="btn secondary" id="export">Download progress</button><label class="btn secondary" for="import">Load progress<input id="import" type="file" accept="application/json" style="display:none"></label></div>
@@ -861,6 +863,7 @@ function render() {
     if (a === 'account') return account(app);
     if (a === 'library') return b ? libraryBook(app, b) : library(app);
     if (a === 'playbook') return playbook(app, b);
+    if (a === 'quickstart') return quickstart(app);
     if (a === 'print') return printSheet(app, b, c, d);
     if (a === 'instructors') return instructors(app, b);
     if (a === 'stage') { if (c === 'lesson') return lesson(b, d); if (c === 'boss') return boss(b); return stage(b); }

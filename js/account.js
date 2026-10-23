@@ -128,7 +128,7 @@ function ownedHTML(s) {
   if (!membership.loaded) return `<section class="section acct-own">${head}<p class="muted">Checking…</p></section>`;
   const row = (title, meta, extra = '', chip = '') => `<li><span class="ix">✓</span><div><b>${title}</b>${chip}<div class="meta">${meta}</div>${extra}</div></li>`;
   const items = [];
-  if (s.kit) items.push(row('Abacus kit', `The abacus and the welcome card.${s.kitPaidAt ? ` Ordered ${shortDay(s.kitPaidAt)}.` : ''}`));
+  if (s.kit) items.push(row('Abacus kit', `The abacus, on its way.${s.kitPaidAt ? ` Ordered ${shortDay(s.kitPaidAt)}.` : ''}`, '<a class="link-arrow own-go" href="#/quickstart">Your 3-Night Quick-Start</a>'));
   if (membership.can('playbook')) items.push(row('Child Prodigy Secrets Playbook',
     s.boughtPlaybook ? 'The book in your box, the audiobook, and a copy to read here.' : 'Comes with your membership. Read it here.',
     '<a class="link-arrow own-go" href="#/playbook">Open the Playbook</a>'));
@@ -148,6 +148,7 @@ function perksHTML(s) {
   return `<section class="section acct-sec">
     <div class="section-head"><span class="eyebrow">What comes with it</span><h2>Your member library</h2></div>
     <ul class="lesson-list">
+      ${row('★', '3-Night Quick-Start', 'Your first three nights with the beads: on the screen abacus tonight, again when the box lands.', '#/quickstart', true, 'Open')}
       ${row(lib ? '✓' : '1', 'Prodigy Secrets library', 'All 10 stages on paper, every lesson and boss. Yours to keep, even if you cancel.', '#/library', lib, lib ? 'Open' : 'See it')}
       ${row(sheets ? '✓' : '2', 'Practice handouts', 'A fresh, checked sheet for any lesson, printed on demand.', '#/library', sheets, sheets ? 'Print one' : 'See it')}
       ${row('3', 'Every child in the house', 'One membership covers them all. Each child gets a profile, a chart and badges.', '#/family', s.member, 'Family')}
