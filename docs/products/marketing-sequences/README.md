@@ -48,13 +48,13 @@ Every `{{link_…}}` tag in the emails maps to one URL. Set them once in the ema
 | `{{link_account}}` | https://childphenoms.com/#/account (membership, billing and cancel; pause is an email request) |
 | `{{link_tracking}}` | the carrier link from the fulfilment tool |
 
-Other merge fields: `{{first_name}}`, `{{order_id}}`, `{{order_total}}`, `{{if_bump}}…{{end_if}}` (show only when the $27 Playbook add-on was bought; every Playbook line sits inside it), and `{{child}}` (typed by hand in the week-one reply).
+Other merge fields: `{{first_name}}`, `{{receipt}}` (Q1 only: the order receipt block, filled by the sending function from the Stripe checkout), `{{order_id}}`, `{{order_total}}`, `{{if_bump}}…{{end_if}}` (show only when the $27 Playbook add-on was bought; every Playbook line sits inside it), and `{{child}}` (typed by hand in the week-one reply).
 
 ## Shared email footer
 
 Put this under every email. It holds the notes that the brief keeps out of body copy.
 
-> Child Phenoms, a DBA of Enamelogic LLC · 1309 Coffeen Avenue STE 1200, Sheridan, WY 82801 · hello@childphenoms.com
+> Child Phenoms · 1309 Coffeen Avenue STE 1200, Sheridan, WY 82801 · hello@childphenoms.com
 > You get this because you ordered a kit or started an order at childphenoms.com. Unsubscribe: {{unsubscribe}}
 > Research cited describes group averages in published trials. Your child's progress depends on practice.
 > Instructor earnings are not promised. What you charge is up to you.

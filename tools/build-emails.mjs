@@ -48,6 +48,8 @@ const P = 'margin:0 0 18px;font-size:17px;line-height:1.55';
 function toHTML(md) {
   const out = []; let para = [], list = null;
   const flush = () => {
+    // A line that is only {{receipt}} stays bare: the function drops its own block (a table) in, not a paragraph.
+    if (para.length === 1 && /^\{\{receipt\}\}$/.test(para[0])) { out.push(para[0]); para = []; return; }
     if (para.length) { out.push(`<p style="${P}">${para.map(inline).join('<br>')}</p>`); para = []; }
     if (list) { out.push(`<${list.tag} style="${P};padding-left:24px">${list.items.map(i => `<li style="margin:0 0 10px">${inline(i)}</li>`).join('')}</${list.tag}>`); list = null; }
   };
@@ -130,7 +132,8 @@ console.log(`wrote ${rel(OUT)}: ${out.map(e => `${e.key} "${e.subject}" (${e.tex
 if (previewAt) {
   mkdirSync(previewAt, { recursive: true });
   for (const e of out) {
-    const fill = s => s.replace(/\{\{first_name\}\}/g, 'Sam').replace(/\{\{if_bump\}\}([\s\S]*?)\{\{end_if\}\}/g, '$1').replace(/\{\{unsubscribe\}\}/g, 'mailto:hello@childphenoms.com?subject=Unsubscribe');
+    const receipt = '<div style="border:1.5px solid #e6e8ef;border-radius:12px;padding:14px 16px;margin:0 0 20px;font-size:15px;line-height:1.5"><p style="margin:0 0 6px;font-weight:700;font-size:16px">Your receipt</p><p style="margin:0 0 8px;color:#4b5567">October 23, 2026 · Visa ending 4242</p><table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="font-size:15px"><tr><td style="padding:4px 0">Free Abacus Kit (shipping)</td><td align="right" style="padding:4px 0">$9.95</td></tr><tr><td style="padding:4px 0">Child Prodigy Secrets Playbook + Audiobook</td><td align="right" style="padding:4px 0">$27.00</td></tr><tr><td style="padding:6px 0 0;font-weight:700;border-top:1px solid #e6e8ef">Total paid</td><td align="right" style="padding:6px 0 0;font-weight:700;border-top:1px solid #e6e8ef">$36.95</td></tr></table><p style="margin:10px 0 0"><b>Ships to</b><br>Sam Parent<br>1309 Coffeen Avenue STE 1200<br>Sheridan, WY 82801</p></div>';
+    const fill = s => s.replace(/\{\{first_name\}\}/g, 'Sam').replace(/\{\{if_bump\}\}([\s\S]*?)\{\{end_if\}\}/g, '$1').replace(/\{\{unsubscribe\}\}/g, 'mailto:hello@childphenoms.com?subject=Unsubscribe').replace(/\{\{receipt\}\}/g, s.includes('<html') ? receipt : 'YOUR RECEIPT\nOctober 23, 2026 · Visa ending 4242\nFree Abacus Kit (shipping)  $9.95\nChild Prodigy Secrets Playbook + Audiobook  $27.00\nTotal paid  $36.95\nShips to: Sam Parent, 1309 Coffeen Avenue STE 1200, Sheridan, WY 82801');
     writeFileSync(join(previewAt, `${e.key}.html`), fill(e.html));
     writeFileSync(join(previewAt, `${e.key}.txt`), fill(e.text));
   }

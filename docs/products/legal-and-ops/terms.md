@@ -62,7 +62,7 @@ The Prodigy Secrets Program (all 10 stages of printable lessons) is yours to kee
 
 You can cancel any time, two ways:
 
-1. **Your account page.** Open childphenoms.com/#/account, sign in with the email you paid with, and press Cancel. It opens our billing portal, run by Stripe. The "Manage billing" link in any receipt opens the same portal.
+1. **Your account page.** Open childphenoms.com/#/account, sign in with the email you paid with, and press Cancel. It opens our billing portal, run by Stripe.
 2. **Email.** Write to hello@childphenoms.com with "Cancel" in the subject. We cancel on the day we receive it (or the next business day) and confirm by email.
 
 If you cancel during the trial, nothing is charged. If you cancel after a charge, your membership stays open until the end of the month you paid for, and you are not charged again.

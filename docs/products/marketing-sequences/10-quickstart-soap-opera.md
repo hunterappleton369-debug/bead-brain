@@ -8,6 +8,7 @@ Written 2026-10-22 at Hunter's request. Three emails, days 0 to 2, for every kit
 - **Replaces:** E1, E2 and E3 of `01-kit-buyer-soap-opera.md` (see `send-map.md`). E4 and E5 stay on days 3 and 4 for buyers who did not start the test drive.
 - **From:** Hunter at Child Phenoms, hello@childphenoms.com. Reply-to the same.
 - **Links:** `{{link_…}}` tags are in `README.md`. One main link per email, plus the P.S.
+- **Receipt:** `{{receipt}}` in Q1 is the order receipt, built by the sending function from the Stripe checkout: the date, each item with its price, tax when charged, the total, the card used and the shipping address. Stripe's own receipt emails are off (Hunter, 2026-10-23), so this block is the parent's receipt. Parent-facing text never names the parent company (Hunter, 2026-10-23).
 - **Footer:** the shared footer in `README.md`, under every email.
 - **Trial members:** they get Q1 to Q3 too. In Q3, swap the last section for the short block marked "already on the test drive".
 - **Claims:** only the ones already on the live page (the 2016 three-year study, the 2019 five-year memory study, the Japan figure, the Guinness record, the NAEP figure, Hunter's own story). Nothing new.
@@ -24,7 +25,9 @@ Hi {{first_name}},
 
 Thank you. Your kit is ordered.
 
-The card receipt says Enamelogic. That is our parent company. Same team, same people.
+Your receipt is below. Keep this email.
+
+{{receipt}}
 
 The box ships within 2 business days with tracking. Most kits arrive in 9 to 15 days. You do not have to wait for it. Your first three nights are at the bottom of this email. They work on the screen abacus in your parent account tonight.
 

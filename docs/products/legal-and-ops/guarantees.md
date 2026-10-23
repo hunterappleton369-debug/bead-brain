@@ -49,7 +49,7 @@ Coaching sessions must be booked within 12 months of your purchase.
 
 The membership is free for 14 days. Cancel any time before day 14 and you pay nothing. You keep the Prodigy Secrets Program either way.
 
-- **To cancel:** open your account page at childphenoms.com/#/account and press Cancel (it opens our billing portal), use the "Manage billing" link in any receipt, or email hello@childphenoms.com with "Cancel" in the subject.
+- **To cancel:** open your account page at childphenoms.com/#/account and press Cancel (it opens our billing portal), or email hello@childphenoms.com with "Cancel" in the subject.
 - **After the trial:** monthly charges are not refunded for part of a month. If you forgot to cancel and email us within 7 days of a charge, we refund that charge once.
 
 ## 5. The Playbook add-on

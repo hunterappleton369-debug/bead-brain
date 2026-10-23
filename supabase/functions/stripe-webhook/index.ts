@@ -103,7 +103,7 @@ async function checkout(c: Ctx, s: Stripe.Checkout.Session): Promise<string> {
     const kit = kinds.has('kit'), playbook = kinds.has('playbook');
     const bought = await writePurchase(c, s, email, kit, playbook); // first: a failed write answers 500 before Shopify is touched
     done.push(bought.text, await shopifyOrder(c, s, email, kit, playbook, bought.shopify));
-    if (kit) done.push(await quickStartEmails(c, s, email, playbook, bought.welcomeSentAt));
+    if (kit) done.push(await quickStartEmails(c, s, email, playbook, bought.welcomeSentAt, items.data));
   }
   if (kinds.has('cert')) done.push(await writeCertification(c, s, email));
   return done.length ? done.join('; ') : `ignored: checkout ${s.id} has no Child Phenoms item`;
@@ -147,7 +147,7 @@ const SUPPORT = 'hello@childphenoms.com';
 const UNSUB_MAILTO = `mailto:${SUPPORT}?subject=Unsubscribe`;
 const DAY_S = 86400;
 
-async function quickStartEmails(c: Ctx, s: Stripe.Checkout.Session, email: string, playbook: boolean, sentAt: string | null): Promise<string> {
+async function quickStartEmails(c: Ctx, s: Stripe.Checkout.Session, email: string, playbook: boolean, sentAt: string | null, items: Stripe.LineItem[]): Promise<string> {
   if (sentAt) return `quick-start: already sent ${sentAt.slice(0, 10)}`;
   const key = env('RESEND_API_KEY');
   if (!key) {
@@ -155,6 +155,7 @@ async function quickStartEmails(c: Ctx, s: Stripe.Checkout.Session, email: strin
     return 'quick-start: EMAIL NOT SET UP, nothing sent';
   }
   const firstName = firstNameOf(s) || 'there';
+  const receipt = await receiptFor(c, s, items);
   const now = Math.floor(Date.now() / 1000);
   const ids: string[] = [];
   for (const [i, m] of QUICKSTART.entries()) {
@@ -165,8 +166,8 @@ async function quickStartEmails(c: Ctx, s: Stripe.Checkout.Session, email: strin
       to: [email],
       reply_to: SUPPORT,
       subject: m.subject,
-      html: fill(m.html, firstName, playbook, `<a href="${UNSUB_MAILTO}" style="color:#6b7280">email us</a>`),
-      text: fill(m.text, firstName, playbook, `email ${SUPPORT} with "Unsubscribe" in the subject`),
+      html: fill(m.html, firstName, playbook, `<a href="${UNSUB_MAILTO}" style="color:#6b7280">email us</a>`, receipt.html),
+      text: fill(m.text, firstName, playbook, `email ${SUPPORT} with "Unsubscribe" in the subject`, receipt.text),
       headers: { 'List-Unsubscribe': `<${UNSUB_MAILTO}>` },
       tags: [{ name: 'sequence', value: 'quickstart' }, { name: 'email', value: m.key }, { name: 'mode', value: c.event.livemode ? 'live' : 'test' }],
       ...(at ? { scheduled_at: at } : {}),
@@ -204,12 +205,61 @@ async function markWelcome(c: Ctx, email: string, patch: Row) {
   if (error) console.error(`stripe-webhook ${c.event.id} QUICK-START sent to ${mask(email)}, but the purchases row did not take ${Object.keys(patch).join(', ')} (${error.message}). Type them in by hand: ${JSON.stringify(patch)}.`);
 }
 
-function fill(t: string, firstName: string, playbook: boolean, unsubscribe: string) {
+function fill(t: string, firstName: string, playbook: boolean, unsubscribe: string, receipt: string) {
   return t.replace(/\{\{first_name\}\}/g, firstName)
     .replace(/\{\{if_bump\}\}([\s\S]*?)\{\{end_if\}\}/g, playbook ? '$1' : '')
     .replace(/\{\{unsubscribe\}\}/g, unsubscribe)
+    .replace(/\{\{receipt\}\}/g, () => receipt)
     .replace(/<p[^>]*>\s*<\/p>\n?/g, '') // a Playbook-only paragraph, emptied for a kit-only order
     .replace(/\n{3,}/g, '\n\n');
+}
+
+// The receipt inside Q1 ({{receipt}}): Stripe's own receipt emails are off (Hunter, 2026-10-23), so the welcome email
+// carries the order: the date, each line with its price, tax when charged, the total, the card (one extra Stripe call,
+// skipped on any error) and the shipping address. Child Phenoms only: parent-facing text never names the parent company.
+interface Receipt { html: string; text: string }
+const BRANDS: Record<string, string> = { visa: 'Visa', mastercard: 'Mastercard', amex: 'American Express', discover: 'Discover', diners: 'Diners Club', jcb: 'JCB', unionpay: 'UnionPay' };
+async function receiptFor(c: Ctx, s: Stripe.Checkout.Session, items: Stripe.LineItem[]): Promise<Receipt> {
+  const money = (cents: number | null | undefined) => `$${((cents ?? 0) / 100).toFixed(2)}`;
+  const date = new Intl.DateTimeFormat('en-US', { timeZone: TZ, month: 'long', day: 'numeric', year: 'numeric' }).format(new Date(s.created * 1000));
+  const rows: [string, string][] = items.map((li) => [li.description || 'Item', money(li.amount_total)]);
+  const shipping = s.shipping_cost?.amount_total ?? 0;
+  if (shipping > 0) rows.push(['Shipping', money(shipping)]);
+  const tax = s.total_details?.amount_tax ?? 0;
+  if (tax > 0) rows.push(['Tax', money(tax)]);
+  rows.push(['Total paid', money(s.amount_total)]);
+  let card = '';
+  try {
+    const pi = idOf(s.payment_intent);
+    if (pi) {
+      const intent = await c.stripe.paymentIntents.retrieve(pi, { expand: ['latest_charge'] });
+      const charge = intent.latest_charge;
+      const cd = charge && typeof charge === 'object' ? charge.payment_method_details?.card : null;
+      if (cd?.last4) card = `${BRANDS[cd.brand ?? ''] ?? 'Card'} ending ${cd.last4}`;
+    }
+  } catch (e) {
+    console.warn(`stripe-webhook ${c.event.id} receipt: card details not read, receipt sent without them (${short(e)})`);
+  }
+  // deno-lint-ignore no-explicit-any
+  const raw = s as any;
+  const ship = raw.collected_information?.shipping_details ?? raw.shipping_details ?? null;
+  const a: Stripe.Address | null = ship?.address ?? null;
+  const name: string = ship?.name ?? s.customer_details?.name ?? '';
+  const addr = a?.line1 ? [name, a.line1, a.line2, `${a.city ?? ''}${a.state ? `, ${a.state}` : ''} ${a.postal_code ?? ''}`.trim()].filter(Boolean) as string[] : [];
+  const esc = (t: string) => t.replace(/[&<>"]/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch] as string));
+  const last = rows.length - 1;
+  const html = `<div style="border:1.5px solid #e6e8ef;border-radius:12px;padding:14px 16px;margin:0 0 20px;font-size:15px;line-height:1.5">
+<p style="margin:0 0 6px;font-weight:700;font-size:16px">Your receipt</p>
+<p style="margin:0 0 8px;color:#4b5567">${esc(date)}${card ? ` · ${esc(card)}` : ''}</p>
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="font-size:15px">${rows.map(([l, v], i) => {
+    const st = i === last ? 'padding:6px 0 0;font-weight:700;border-top:1px solid #e6e8ef' : 'padding:4px 0';
+    return `<tr><td style="${st}">${esc(l)}</td><td align="right" style="${st}">${v}</td></tr>`;
+  }).join('')}</table>
+${addr.length ? `<p style="margin:10px 0 0"><b>Ships to</b><br>${addr.map(esc).join('<br>')}</p>` : ''}
+<p style="margin:10px 0 0;color:#6b7280;font-size:13px">Child Phenoms · hello@childphenoms.com</p>
+</div>`;
+  const text = ['YOUR RECEIPT', `${date}${card ? ` · ${card}` : ''}`, ...rows.map(([l, v]) => `${l}  ${v}`), ...(addr.length ? [`Ships to: ${addr.join(', ')}`] : []), 'Child Phenoms · hello@childphenoms.com'].join('\n');
+  return { html, text };
 }
 
 // The parent's first name: the first word of the name Stripe collected (the buyer's, else the shipping name).
