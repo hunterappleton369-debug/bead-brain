@@ -10,6 +10,10 @@ export const CONFIG = {
   universityTrialUrl: 'https://buy.stripe.com/aFa5kw4Z83NAbTl97TeZ202',         // Stripe Payment Link: $67/mo with a 14-day trial; after payment redirect to certify.html?paid=university
   certifyUrl: 'https://buy.stripe.com/4gM28kajsck63mPfwheZ203',                 // Stripe Payment Link: $297 once; after payment redirect to thanks.html?paid=certify
   metaPixelId: '1239441998349754', // Meta Pixel (dataset) ID. Hunter's call 2026-10-21: the Enamelogic pixel, shared. Empty = no pixel loads. Disclosed in the privacy policy.
+  // On-page checkout (ClickFunnels style): the card form lives in step 2 and the upsells are one click on the saved
+  // card. Both values are needed; with either empty the buttons fall back to the hosted links above.
+  stripePublishableKey: 'pk_live_51TivQW5uuxnQgoyBE0DMu1qDmZVdpMTZiHIqFbWu58qIvxzLAhTsTuAY9hRl0tq7TlkN9kWAsdW8bSbaCzi55iiS00H', // public by design (pk_live)
+  checkoutApi: 'https://fndemnipqtpmuvcidcxo.supabase.co/functions/v1/funnel-checkout',                     // supabase/functions/funnel-checkout
   leadWebhook: '',                // optional: POST step-1 contact info here (Zapier/Make/CF webhook) for abandon follow-up
   supportEmail: 'hello@childphenoms.com',
   shipDays: 'within 2 business days',
