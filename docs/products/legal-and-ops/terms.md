@@ -2,11 +2,11 @@
 
 The agreement between you and Child Phenoms when you order a kit, join Phenom University or become a certified instructor.
 
-Effective date: [HUNTER: date the page goes live]
+Effective date: [HUNTER: go-live date]
 
 ## 1. The agreement
 
-These terms are a contract between you and [HUNTER: legal entity name] ("Child Phenoms", "we", "us"). By placing an order, starting a trial or using the trainer, you agree to them and to our privacy policy. If you do not agree, please do not order.
+These terms are a contract between you and Enamelogic LLC, a Wyoming limited liability company doing business as Child Phenoms ("Child Phenoms", "we", "us"). By placing an order, starting a trial or using the trainer, you agree to them and to our privacy policy. If you do not agree, please do not order.
 
 You must be 18 or older and live in the United States to buy from us. You are responsible for how your children use the program.
 
@@ -14,25 +14,25 @@ You must be 18 or older and live in the United States to buy from us. You are re
 
 | Offer | Price | How you pay |
 |---|---|---|
-| Child Phenoms Abacus + Child Prodigy Secrets: The Playbook | free, plus $9.95 shipping | once |
-| Prodigy Maker Workbook + Audiobook (order add-on) | $27 | once |
+| Child Phenoms Abacus Kit | free, plus $9.95 shipping | once |
+| Child Prodigy Secrets Playbook + Audiobook (digital order add-on) | $27 | once |
 | Phenom University membership | 14 days free, then $67 a month | every month until you cancel |
 | Certified Phenom Instructor | $297 | once |
 
-Prices are in US dollars. [HUNTER: sales tax; ask the CPA whether to turn on Stripe Tax for the kit and workbook]
+Prices are in US dollars. Sales tax is added at checkout where the law requires it.
 
 ## 3. The free kit and shipping
 
-1. The abacus and the Playbook are free. You pay $9.95 for shipping and handling.
-2. We ship by USPS to US addresses only. Orders usually leave within 2 to 3 business days, and most arrive within 7 days of ordering. These are estimates, not promises.
+1. The abacus is free. You pay $9.95 for shipping and handling.
+2. We ship to US addresses only, with tracking. Orders usually leave within 2 business days, and most arrive in 9 to 15 days, about 2 weeks. These are estimates, not promises.
 3. Please check your address. If a kit comes back because the address was wrong, we will reship it once you pay shipping again.
-4. If tracking shows your kit was lost, email us and we will send another at no cost. [HUNTER: confirm]
+4. If tracking shows your kit was lost, email us and we will send another at no cost.
 5. Buying the kit does not sign you up for anything. The kit is a one-time order.
-6. **Safety.** The abacus has small parts. It is not for children under 3. An adult should be nearby when young children use it. [HUNTER: confirm the supplier's children's product testing and labels; see launch checklist]
+6. **Safety.** The abacus has small parts. It is not for children under 3. An adult should be nearby when young children use it.
 
-## 4. The workbook add-on
+## 4. The Playbook add-on
 
-The Prodigy Maker Workbook + Audiobook costs $27, ships in the same box as your kit at no extra postage, and is a one-time charge. The audiobook is delivered as a link by email. The 30-day refund in section 8 covers it. [HUNTER: confirm the add-on is refundable for 30 days]
+The Child Prodigy Secrets Playbook + Audiobook costs $27 and is a one-time charge. It is digital: the Playbook opens in your parent account the minute you order, and the audiobook plays there when it is ready. Nothing extra ships. The 30-day refund in section 8 covers it.
 
 ## 5. Phenom University membership
 
@@ -41,7 +41,7 @@ The Prodigy Maker Workbook + Audiobook costs $27, ships in the same box as your 
 1. You get 14 days free. Nothing is charged today.
 2. You give a card when you start the trial. **On day 14 your card is charged $67, and then $67 every month on that date until you cancel.**
 3. Cancel any time before day 14 and you pay nothing.
-4. We send a reminder before the trial ends. [HUNTER: Stripe sends one 7 days before; our own email goes on day 13]
+4. We send a reminder before the trial ends.
 5. One free trial per household.
 
 ### 5.2 Your price
@@ -56,24 +56,24 @@ One membership covers every child in your household. Each child gets their own p
 
 ### 5.4 The gift you keep
 
-The Prodigy Secrets Program (all 10 stages of printable lessons) is yours to keep even if you cancel, including during the free trial. "Keep" means a personal licence to download, print and use it in your own household for as long as you like. [HUNTER: page says 102 lessons; the program has 76 lessons and 28 quest drills]
+The Prodigy Secrets Program (all 10 stages of printable lessons) is yours to keep even if you cancel, including during the free trial. "Keep" means a personal licence to download, print and use it in your own household for as long as you like.
 
 ### 5.5 How to cancel
 
 You can cancel any time, two ways:
 
-1. **Billing portal.** Open the "Manage billing" link in your welcome email or any receipt, sign in with your email, and press Cancel. [HUNTER: the order page says "from your account page"; add the billing portal link to the trainer's account page, or change the wording]
+1. **Your account page.** Open childphenoms.com/#/account, sign in with the email you paid with, and press Cancel. It opens our billing portal, run by Stripe. The "Manage billing" link in any receipt opens the same portal.
 2. **Email.** Write to hello@childphenoms.com with "Cancel" in the subject. We cancel on the day we receive it (or the next business day) and confirm by email.
 
 If you cancel during the trial, nothing is charged. If you cancel after a charge, your membership stays open until the end of the month you paid for, and you are not charged again.
 
 ### 5.6 Pausing
 
-You can pause for one month at a time. Email us with "Pause" in the subject, or use the billing portal if pausing is offered there. No charge is made while you are paused, and your $67 rate is kept. [HUNTER: Stripe's portal cannot pause; pauses are done by hand until the app has a pause button]
+You can pause for one month at a time. Email us with "Pause" in the subject. No charge is made while you are paused, and your $67 rate is kept.
 
 ### 5.7 Monthly charges and refunds
 
-Monthly charges are not refunded for part of a month. If you forgot to cancel and you email us within 7 days of a charge, we will refund that charge once. [HUNTER: decide; recommended to prevent chargebacks]
+Monthly charges are not refunded for part of a month. If you forgot to cancel and you email us within 7 days of a charge, we will refund that charge once.
 
 ### 5.8 Failed payments
 
@@ -85,8 +85,8 @@ If a charge fails, we try again over the next few days and email you a link to u
 2. It includes the certification course, the exam, the Instructor Launch Kit, the directory listing and badge, one year of the instructor account in the trainer, and twelve months of the family membership.
 3. You can take the exam on demand and retake it until you pass.
 4. **The certification is yours for life.** Use of the Child Phenoms name, badge and directory listing is governed by the Instructor Agreement, which you accept when you start the course.
-5. After the first year, the instructor account renews at the member rate only if you choose to keep it. [HUNTER: name the rate and whether it renews automatically; if automatic, add the same disclosures as section 5]
-6. If you already pay for Phenom University, we credit your twelve free months to that membership. [HUNTER: confirm]
+5. After the first year, the instructor account and the family membership end unless you choose to renew them. We email you before then with the price. Nothing renews by itself.
+6. If you already pay for Phenom University when you buy the certification, email us and we pause your $67 billing for the twelve free months.
 7. The Pass Promise and the 30-day money-back guarantee are in section 7.
 8. **No income promise.** See section 11.
 
@@ -95,7 +95,7 @@ If a charge fails, we try again over the next few days and email you a link to u
 These are the three guarantees printed on our order pages. The full steps are on our refund policy page.
 
 1. **Keep-the-Kit Promise (30 days).** If your child doesn't light up on the beads, email us within 30 days of your order. We refund your $9.95 shipping. You keep the abacus and the Playbook. Nothing to send back.
-2. **Pass Promise.** If you don't pass the instructor exam, we coach you one on one until you do. [HUNTER: set a fair limit, for example sessions booked within 12 months of purchase]
+2. **Pass Promise.** If you don't pass the instructor exam, we coach you one on one until you do. Coaching sessions must be booked within 12 months of your purchase.
 3. **30-day money back (certification).** Change your mind within 30 days of buying the certification and we refund the full $297. Your access to the course, the instructor account and the directory listing ends when we refund.
 
 ## 8. Refunds in general
@@ -103,7 +103,7 @@ These are the three guarantees printed on our order pages. The full steps are on
 - Ask by emailing hello@childphenoms.com with your order email and "Refund" in the subject.
 - Refunds go back to the card you paid with. Banks usually show them in 5 to 10 business days.
 - **The shipping charge is non-refundable after 30 days.**
-- The workbook add-on can be refunded within 30 days of your order. You do not need to return it.
+- The Playbook add-on can be refunded within 30 days of your order. You keep the Playbook.
 - Please email us before you dispute a charge with your bank. We answer within one business day and almost always fix it faster than a dispute can.
 
 ## 9. Your account
@@ -115,7 +115,7 @@ These are the three guarantees printed on our order pages. The full steps are on
 
 ## 10. Using our materials
 
-Everything in Child Phenoms (lessons, videos, handouts, software, the Playbook, workbook, audiobook, names and logos) belongs to us or our licensors.
+Everything in Child Phenoms (lessons, videos, handouts, software, the Playbook, audiobook, names and logos) belongs to us or our licensors.
 
 - **Families** may use, download and print the materials for children in their own household.
 - **Certified instructors** may also use them with their own students as the Instructor Agreement allows.
@@ -148,9 +148,8 @@ Where the law allows, we are not liable for indirect, incidental or consequentia
 ## 16. Disputes
 
 1. Please email us first. Most problems are solved in a day.
-2. If we cannot solve it within 30 days, either of us may bring the claim in small claims court, or in the state or federal courts of [HUNTER: county and state].
-3. These terms are governed by the laws of [HUNTER: state], without regard to conflict-of-law rules.
-[HUNTER: counsel to decide whether to add an arbitration clause and class-action waiver]
+2. If we cannot solve it within 30 days, either of us may bring the claim in small claims court, or in the state or federal courts of Sheridan County, Wyoming.
+3. These terms are governed by the laws of Wyoming, without regard to conflict-of-law rules.
 
 ## 17. Facebook
 
@@ -162,6 +161,6 @@ We may update these terms. The effective date at the top shows the latest versio
 
 ## 19. Contact
 
-Child Phenoms · [HUNTER: mailing address] · hello@childphenoms.com
+Child Phenoms · Enamelogic LLC, 1309 Coffeen Avenue STE 1200, Sheridan, WY 82801 · hello@childphenoms.com
 
-<!-- status: needs Hunter: counsel review, entity, state, address, every [HUNTER] decision above -->
+<!-- status: filled 2026-10-23 (entity, address, Wyoming, providers, defaults for every former [HUNTER] decision; the go-live date is the one placeholder left); still needs counsel review -->

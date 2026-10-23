@@ -2,7 +2,7 @@
 """Build the public legal pages (site/*.html) from their markdown sources in this folder.
 
     python3 tools/build_pages.py            # draft build: [HUNTER] gaps highlighted, draft banner shown
-    python3 tools/build_pages.py --final    # publish build: refuses while any [HUNTER: ...] remains
+    python3 tools/build_pages.py --final    # publish build: refuses while any [HUNTER: ...] other than the go-live date remains
 
 The markdown files are the source of truth. Edit them, then rebuild, so the .md and .html never drift.
 Everything after a line `<!-- internal-only -->` in a source file is left out of the page.
@@ -208,8 +208,9 @@ def main():
     for src, out, _ in PAGES:
         text = (HERE / src).read_text(encoding="utf-8").split("<!-- internal-only -->")[0]
         todo = re.findall(r"\[HUNTER:[^\]]*\]", text)
-        if final and todo:
-            print(f"  {src}: {len(todo)} open [HUNTER] item(s); not built"); problems += 1; continue
+        blocking = [t for t in todo if "go-live date" not in t]  # the effective date is filled on launch day
+        if final and blocking:
+            print(f"  {src}: {len(blocking)} open [HUNTER] item(s); not built"); problems += 1; continue
         (OUT / out).write_text(page(src, out, final), encoding="utf-8")
         print(f"  site/{out}  ({len(todo)} open [HUNTER] item(s){'' if final else ', draft'})")
     sys.exit(1 if problems else 0)

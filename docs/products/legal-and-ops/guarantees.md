@@ -2,11 +2,11 @@
 
 Our three guarantees, exactly as our order pages print them, and the steps to use each one.
 
-Effective date: [HUNTER: date the page goes live]
+Effective date: [HUNTER: go-live date]
 
 ## 1. Keep-the-Kit Promise
 
-**As printed:** "If your child doesn't light up on the beads, shipping is on us. Try it for 30 days. Not a fit? Email us and we refund your shipping. Keep the abacus. Keep the Playbook."
+**As printed:** "If your child doesn't light up on the beads, shipping is on us. Try it for 30 days. Not a fit? Email us and we refund your shipping. Keep the abacus."
 
 **What it covers:** the $9.95 shipping charge on the free kit.
 
@@ -31,7 +31,7 @@ After 30 days the shipping charge is non-refundable.
 2. We look at your answers and book a one-on-one video call to work on what you missed.
 3. Retake the exam when you are ready. Repeat until you pass.
 
-[HUNTER: set the limit, for example coaching booked within 12 months of purchase]
+Coaching sessions must be booked within 12 months of your purchase.
 
 ## 3. 30-day money back (certification)
 
@@ -49,12 +49,12 @@ After 30 days the shipping charge is non-refundable.
 
 The membership is free for 14 days. Cancel any time before day 14 and you pay nothing. You keep the Prodigy Secrets Program either way.
 
-- **To cancel:** use the "Manage billing" link in your welcome email or any receipt, or email hello@childphenoms.com with "Cancel" in the subject.
-- **After the trial:** monthly charges are not refunded for part of a month. If you forgot to cancel and email us within 7 days of a charge, we refund that charge once. [HUNTER: confirm]
+- **To cancel:** open your account page at childphenoms.com/#/account and press Cancel (it opens our billing portal), use the "Manage billing" link in any receipt, or email hello@childphenoms.com with "Cancel" in the subject.
+- **After the trial:** monthly charges are not refunded for part of a month. If you forgot to cancel and email us within 7 days of a charge, we refund that charge once.
 
-## 5. The workbook add-on
+## 5. The Playbook add-on
 
-The $27 Prodigy Maker Workbook + Audiobook can be refunded within 30 days of your order. Email us with "Workbook refund" in the subject. You keep the workbook. [HUNTER: confirm]
+The $27 Child Prodigy Secrets Playbook + Audiobook can be refunded within 30 days of your order. Email us with "Playbook refund" in the subject. You keep the Playbook.
 
 ## 6. Before you dispute a charge
 
@@ -71,14 +71,14 @@ Not published. This is the exact routine for whoever answers hello@childphenoms.
 ### Check first
 
 1. Find the customer: Stripe Dashboard → **Customers** → search the email.
-2. Check the date against the window (30 days for the kit shipping, the workbook and the certification; 7 days after a renewal for the goodwill refund).
+2. Check the date against the window (30 days for the kit shipping, the Playbook and the certification; 7 days after a renewal for the goodwill refund).
 3. Check the refund log for an earlier goodwill refund on the same customer. One per household.
 
-### Refund a one-time payment (shipping, workbook, certification)
+### Refund a one-time payment (shipping, Playbook, certification)
 
 1. Stripe → **Payments** → open the payment.
 2. Click **Refund** (or the ⋯ menu → **Refund payment**).
-3. Keep the full amount, or type a partial amount when refunding only part of a payment. Example: a $36.95 order (shipping + workbook) where only shipping is refunded → type 9.95.
+3. Keep the full amount, or type a partial amount when refunding only part of a payment. Example: a $36.95 order (shipping + Playbook) where only shipping is refunded → type 9.95.
 4. Reason: **Requested by customer**. Click **Refund**.
 5. Send macro 6 (kit) or macro 7 (certification) from `support-macros.md`.
 6. Log it: date, email, amount, reason, guarantee used.
@@ -101,4 +101,4 @@ Not published. This is the exact routine for whoever answers hello@childphenoms.
 2. If the customer is entitled to a refund under the guarantees, accept the dispute.
 3. Otherwise submit evidence: the order page and terms checkbox, the receipt, USPS tracking showing delivery, the trial reminder email, and any emails with the customer.
 
-<!-- status: needs Hunter: counsel review, Pass Promise limit, goodwill and workbook refund decisions -->
+<!-- status: filled 2026-10-23 with the drafted defaults (12-month Pass Promise window, one goodwill refund within 7 days, 30-day Playbook refund); still needs counsel review -->

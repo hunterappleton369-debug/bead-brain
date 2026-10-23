@@ -2,11 +2,11 @@
 
 How Child Phenoms collects, uses and protects your information and your child's.
 
-Effective date: [HUNTER: date the page goes live]
+Effective date: [HUNTER: go-live date]
 
 ## 1. Who we are
 
-Child Phenoms ("we", "us") runs childphenoms.com, the free abacus kit offer, the Phenom University membership, the online trainer and the Certified Phenom Instructor program. Child Phenoms is operated by [HUNTER: legal entity name, for example "Example LLC, a Wyoming limited liability company"], [HUNTER: mailing address].
+Child Phenoms ("we", "us") runs childphenoms.com, the free abacus kit offer, the Phenom University membership, the online trainer and the Certified Phenom Instructor program. Child Phenoms is operated by Enamelogic LLC, a Wyoming limited liability company doing business as Child Phenoms, Enamelogic LLC, 1309 Coffeen Avenue STE 1200, Sheridan, WY 82801.
 
 Questions about this policy: **hello@childphenoms.com**. Write "Privacy" in the subject line and we will answer within 10 business days.
 
@@ -24,7 +24,7 @@ Questions about this policy: **hello@childphenoms.com**. Write "Privacy" in the 
 
 On the order form we ask for your first and last name, email, phone number and shipping address. When you pay, you also give your card details to Stripe, our payment processor. We see what you bought, your contact details and addresses, and the card brand and last four digits. We never see or store your full card number.
 
-We also record which offers you chose: the kit, the Prodigy Maker Workbook + Audiobook, the Phenom University trial and the instructor certification.
+We also record which offers you chose: the kit, the Child Prodigy Secrets Playbook + Audiobook, the Phenom University trial and the instructor certification.
 
 We receive what you type on step 1 of the order form even if you do not finish the order, so we can remind you about your kit.
 
@@ -46,14 +46,14 @@ That is all. We do not ask for a child's last name, photo, school, email, phone 
 
 ### 3.4 What you send us
 
-If you reply to our emails, we keep the message. Our welcome email asks for your child's name and age so we can send a first-week plan. Some parents send a photo or video of a practice session. We use these only to reply to you. See section 5.4.
+If you reply to our emails, we keep the message. Some parents reply with their child's name and age so we can send a first-week plan. Some parents send a photo or video of a practice session. We use these only to reply to you. See section 5.4.
 
 ### 3.5 Collected automatically
 
-- **Order pages.** The Meta pixel records page views and order steps (for example "started checkout" and "purchase") and sets a Meta cookie. Meta may link these events to a Facebook or Instagram account. [HUNTER: pixel not installed yet; confirm the events before launch]
+- **Order pages.** The Meta pixel records page views and order steps (page view, order form started, add-on ticked, checkout started, purchase, trial started) and sets a Meta cookie. Meta may link these events to a Facebook or Instagram account.
 - **Every page.** Our web host keeps standard server logs (IP address, browser type, page requested, time). Fonts load from Google Fonts, which receives your IP address.
 - **Videos.** Video players on our pages load from YouTube's privacy-enhanced mode only when you press play.
-- **The trainer.** No advertising cookies, no Meta pixel and no third-party analytics. [HUNTER: keep it that way; confirm before adding any tool to index.html]
+- **The trainer.** No advertising cookies, no Meta pixel and no third-party analytics.
 
 ### 3.6 Instructors
 
@@ -89,7 +89,7 @@ The parent creates each profile and types in a first name or nickname and an age
 
 ### 5.4 Photos and videos you send
 
-If you email us a photo or video of your child practicing, we use it only to give you feedback. We do not post it, share it or use it in ads unless you sign a separate written permission. We delete it within [HUNTER: 90 days] of replying.
+If you email us a photo or video of your child practicing, we use it only to give you feedback. We do not post it, share it or use it in ads unless you sign a separate written permission. We delete it within 90 days of replying.
 
 ### 5.5 Your rights as a parent
 
@@ -109,18 +109,17 @@ We share information only with companies that help us run Child Phenoms, and onl
 |---|---|---|
 | Stripe | takes payments and runs subscriptions, with receipts and a billing portal | your contact details and addresses, plus payment details |
 | Supabase | parent accounts and the progress database (servers in the US) | your email, each child's first name, age and progress |
-| [HUNTER: email provider] | sign-in links and program emails | your name and email |
-| [HUNTER: SMS provider] | text messages, if you agreed to them | your first name and phone number |
-| [HUNTER: fulfilment partner, or "we pack in house"] and USPS | packing and delivering your kit | your name and shipping address |
+| Resend | sends our emails: the welcome and quick-start emails, and the sign-in links Supabase makes | your name and email |
+| Shopify, DSers and AliExpress | our order system (Shopify), the app that passes each kit order to the supplier (DSers), and the supplier that packs and ships the abacus with a tracked carrier (AliExpress) | your name, shipping address and phone number |
 | Meta | ad measurement on order pages only | page and order events, plus Meta's cookie ID and device details |
-| [HUNTER: web host, currently GitHub Pages] | hosting the website | server logs |
+| GitHub Pages | hosting the website | server logs |
 | Google Fonts and YouTube | fonts and video playback | your IP address and browser data |
 
 We may also share information when the law requires it, to protect someone's safety, to stop fraud, or if Child Phenoms is sold or merged (the buyer would be bound by this policy).
 
 ## 7. Emails and texts
 
-If you agreed to texts at checkout, we send messages about your order and the program. Reply **STOP** to any text to stop them and **HELP** for help. Message and data rates may apply. Every marketing email has an unsubscribe link. Receipts and messages about your order or account still come while you are a customer.
+We do not send text messages, and the order form does not ask for text consent. If we add texts later we will ask you first, and you will be able to reply **STOP** at any time. Every marketing email has an unsubscribe link. Receipts and messages about your order or account still come while you are a customer.
 
 ## 8. Sale of data and targeted ads
 
@@ -129,13 +128,11 @@ We do not sell your personal information for money, and we have not done so in t
 Some state laws, including California's, call it "sharing" or "targeted advertising" when a website sends browsing events to an ad platform like Meta. Our order pages do this through the Meta pixel. You can opt out:
 
 - Email hello@childphenoms.com with the subject "Do not share", or
-- Turn on Global Privacy Control in your browser. [HUNTER: our pages must check for this signal before loading the pixel; needs a small code change]
+- Turn on Global Privacy Control in your browser. Our order pages do not load the pixel when your browser sends that signal.
 
 We do not do this in the trainer, and we never do it with children's data.
 
 ## 9. How long we keep it
-
-[HUNTER: confirm each period]
 
 | Data | How long |
 |---|---|
@@ -180,7 +177,7 @@ Residents of other states with privacy laws (for example Virginia, Connecticut, 
 
 ## 12. US only
 
-Child Phenoms ships to US addresses and is meant for families in the United States. Our services store data in the United States.
+Child Phenoms ships to US addresses and is meant for families in the United States. Our account, payment and email services store data in the United States. The supplier that ships your abacus receives your name, shipping address and phone number where it packs the order.
 
 ## 13. Changes
 
@@ -188,6 +185,6 @@ If we change this policy we will update the effective date above. If a change af
 
 ## 14. Contact
 
-Child Phenoms · [HUNTER: mailing address] · hello@childphenoms.com
+Child Phenoms · Enamelogic LLC, 1309 Coffeen Avenue STE 1200, Sheridan, WY 82801 · hello@childphenoms.com
 
 <!-- status: needs Hunter: counsel review, entity name, address, providers, retention periods, GPC code change -->

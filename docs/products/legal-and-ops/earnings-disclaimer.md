@@ -2,7 +2,7 @@
 
 What we can and cannot say about money you might make as a Certified Phenom Instructor.
 
-Effective date: [HUNTER: date the page goes live]
+Effective date: [HUNTER: go-live date]
 
 ## 1. No income promise
 
@@ -12,7 +12,7 @@ Child Phenoms makes no promise or guarantee that you will earn any money as an i
 
 Our certification page says: "Most instructors land between $20 and $40 a session. Your rates are yours to set."
 
-That range is an example of what tutoring sessions often cost. It is not a record of what our instructors have earned, and it is not a forecast of what you will earn. [HUNTER: once real instructors are teaching, replace this with figures you can document, or keep it as an example only]
+That range is an example of what tutoring sessions often cost. It is not a record of what our instructors have earned, and it is not a forecast of what you will earn.
 
 ## 3. What actually decides your income
 

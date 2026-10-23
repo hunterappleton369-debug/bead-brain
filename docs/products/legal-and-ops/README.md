@@ -9,14 +9,14 @@ The legal pages, the payment setup and the day-to-day operating manual for the C
 | File | Purpose | Status | Words | Deslop | FK grade (tables stripped) |
 |---|---|---|---|---|---|
 | `README.md` | This file: file list, checker numbers, build command, funnel problems found, decisions for Hunter and counsel | needs Hunter | 1,413 | 5/5 | 10.8 (9.3) |
-| `privacy-policy.md` | Source of the public privacy policy: funnel and app data, processors, COPPA, sale and sharing, retention periods, plus the CCPA and Colorado rights sections | needs Hunter | 2,184 | 5/5 | 8.0 (7.2) |
-| `terms.md` | Source of the public terms: kit, $9.95 shipping, $27 add-on, 14-day trial then $67/mo vs $197, cancel/pause, $297 certification, guarantees and refunds, plus the disclaimers (research, earnings, Facebook) | needs Hunter | 1,985 | 5/5 | 6.4 (6.2) |
-| `guarantees.md` | Source of the public refund policy: the three guarantees as printed, with parent steps. Below an `internal-only` line, the Stripe steps for each refund and dispute (not published) | needs Hunter | 856 | 5/5 | 6.0 |
-| `earnings-disclaimer.md` | Source of the public earnings disclaimer for the certification | needs Hunter | 347 | 5/5 | 7.9 |
-| `site/privacy-policy.html` | Built page, DESIGN.md style | needs Hunter | built | 5/5 | 6.2 |
-| `site/terms.html` | Built page | needs Hunter | built | 5/5 | 5.5 |
-| `site/refund-policy.html` | Built page (public half of `guarantees.md`) | needs Hunter | built | 5/5 | 4.5 |
-| `site/earnings-disclaimer.html` | Built page | needs Hunter | built | 5/5 | 5.1 |
+| `privacy-policy.md` | Source of the public privacy policy: funnel and app data, processors, COPPA, sale and sharing, retention periods, plus the CCPA and Colorado rights sections | live 2026-10-23, counsel review pending | 2,184 | 5/5 | 8.0 (7.2) |
+| `terms.md` | Source of the public terms: kit, $9.95 shipping, $27 add-on, 14-day trial then $67/mo vs $197, cancel/pause, $297 certification, guarantees and refunds, plus the disclaimers (research, earnings, Facebook) | live 2026-10-23, counsel review pending | 1,985 | 5/5 | 6.4 (6.2) |
+| `guarantees.md` | Source of the public refund policy: the three guarantees as printed, with parent steps. Below an `internal-only` line, the Stripe steps for each refund and dispute (not published) | live 2026-10-23, counsel review pending | 856 | 5/5 | 6.0 |
+| `earnings-disclaimer.md` | Source of the public earnings disclaimer for the certification | live 2026-10-23, counsel review pending | 347 | 5/5 | 7.9 |
+| `site/privacy-policy.html` | Built page, DESIGN.md style | live 2026-10-23, counsel review pending | built | 5/5 | 6.2 |
+| `site/terms.html` | Built page | live 2026-10-23, counsel review pending | built | 5/5 | 5.5 |
+| `site/refund-policy.html` | Built page (public half of `guarantees.md`) | live 2026-10-23, counsel review pending | built | 5/5 | 4.5 |
+| `site/earnings-disclaimer.html` | Built page | live 2026-10-23, counsel review pending | built | 5/5 | 5.1 |
 | `sms-email-consent.md` | Checkout consent wording and HTML, double opt-in, STOP/HELP replies, TCPA and CAN-SPAM rules, 10DLC registration, consent records | needs Hunter | 1,231 | 5/5 | 6.6 (6.4) |
 | `instructor-agreement.md` | Independent-instructor agreement: licence to the name and badge, no employment, no earnings claims, child-safety rules, background-check choice, revocation | needs Hunter | 1,401 | 5/5 | 6.8 |
 | `stripe-setup.md` | Click-by-click Stripe Payment Links setup: business details, four products, four links with redirects, billing portal, reminder emails, `config.js`, test run, go-live | needs Hunter (his clicks) | 1,570 | 5/5 | 6.6 (6.1) |
@@ -31,7 +31,7 @@ Legal pages have no grade target in the brief. The numbers are reported as asked
 
 1. Edit the `.md` files, never the HTML.
 2. `python3 tools/build_pages.py` (draft) to preview: `node serve.mjs`, then http://localhost:8787/docs/products/legal-and-ops/site/terms.html
-3. When every decision is made and counsel has signed off: `python3 tools/build_pages.py --final`, copy `site/*.html` to `Bead-Brain/legal/`, and link them in the footers (`launch-checklist.md` steps 4 and 5).
+3. Done 2026-10-23: `python3 tools/build_pages.py --final` (it tolerates the one `[HUNTER: go-live date]` mark), `site/*.html` copied to `Bead-Brain/legal/`, and Privacy, Terms and Refunds linked from every funnel footer and the app footer. On launch day: put the date on the `Effective date` line of all four sources, rebuild with `--final`, copy to `legal/` again, push. Counsel still reads the trial and auto-renewal wording, the children's privacy section and the instructor agreement.
 
 The pages link `../css/style.css` like the funnel pages do, so from `legal/` they pick up the site's paper background. They also carry their own style block (Unbounded headings, Inter body, hairline rows, no cards), so they look right from this folder too. Checked at 1024 px and 375 px: no sideways scroll, tables fit, contents list drops to one column on phones.
 
