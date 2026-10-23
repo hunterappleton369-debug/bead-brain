@@ -16,6 +16,33 @@ Status on the evening of 2026-10-21. "Done" means built, tested in a browser at 
 
 ## Blocks launch, in order
 
+## Pre-live check (2026-10-22, evening)
+
+Verified on the live site and the live accounts tonight:
+
+- Pages: `/free-abacus/`, `university.html`, `certify.html`, `thanks.html` and the app all answer 200 on https://childphenoms.com; HTTPS is enforced and http redirects (301). GitHub Pages reports the domain built, no pending verification.
+- Config served live: the four Enamelogic payment links, the pixel id, `shipDays`. All four Stripe links and the portal login load (200).
+- Funnel smoke test in a real browser: step 1 accepts name, email, phone; step 2 shows the bump and "Total due today $36.95" when it is ticked; the green button lands on payment link B with `prefilled_email` set; `university.html?paid=kit` shows the trial's first-charge date 14 days out; `thanks.html?paid=certify` lists the right "what you own" rows and the parent-account button; no console errors; the Meta pixel script loads and `fbq` exists.
+- Delivery copy now reads "about 2 weeks" and "most arrive in 9 to 15 days" on the page, the FAQ, the thank-you page and the Stripe kit description (the description used to say a quick-start card ships and "2 to 3 business days"; fixed in Stripe tonight).
+- Webhook: the live destination is Active with 0 deliveries so far. The function has its Stripe secrets: a POST with a fake signature gets 400 "signature did not verify" (a missing secret would give 500). `purchases` and `memberships` tables are empty, as expected before the first order.
+- Shopify: both products Active, inventory not tracked. DSers: the kit maps to the ZZ listing, SKU A5, and the US shipping method is saved on it.
+- Sign-in email: a sign-in request for a Gmail alias was accepted and the email arrived, but from `noreply@mail.app.supabase.io` using Supabase's default "Confirm your email address" template. Custom SMTP is not set yet.
+
+Not done, in the order that blocks money first:
+
+1. **Link AliExpress in DSers.** Settings → Application Management → Supplier → AliExpress shows "Add Account", so no supplier order can be placed. Needs your AliExpress login and a saved card there.
+2. **Shopify app credentials in Supabase** (`SHOPIFY_CLIENT_ID` + `SHOPIFY_CLIENT_SECRET`, `stripe-setup.md` §8). Not verifiable from outside; if they are missing, a paid kit writes its `purchases` row but never becomes a Shopify order, and you create it by hand (`docs/FULFILLMENT.md`, "Backup").
+3. **The 3-night quick-start has no sender.** The page promises it "in your welcome email the minute you order", but the only email after checkout is Stripe's receipt. Either put the quick-start on the thank-you page and in the parent account and change that line, or wire the email (Customer.io, or a Supabase function on `checkout.session.completed`).
+4. **Legal pages.** The four templates in `docs/products/legal-and-ops/site/` still carry `[HUNTER: …]` placeholders (entity, mailing address, state, dates, email provider) and are not on the site; no funnel or app footer links Privacy or Terms. Meta will not approve ads to a landing page without a privacy policy, and the pixel has to be disclosed in it.
+5. **Custom SMTP through Resend** for Supabase Auth, plus the hourly email rate limit and branded templates. The default sender caps outgoing mail at a few per hour, so at ad volume most parents would never get a sign-in link.
+6. **One real order** on the live page with your card, through to a Shopify order, a DSers order and tracking; then refund in Stripe.
+7. **GoDaddy, second SMS code:** the three remaining A records and `www` → `hunterappleton369-debug.github.io`. `https://www.childphenoms.com` fails today (no certificate); the bare domain works.
+8. **Meta:** Page, ad account, domain verification for childphenoms.com, the campaign from `docs/ADS-BUILD-SHEET.md`. Decide whether sharing the Enamelogic pixel stays acceptable.
+9. **Stripe housekeeping:** confirm receipts go out for successful payments (Settings → Emails); ask the CPA about the tax code on the kit and Playbook (today SaaS).
+10. **Shopify housekeeping:** business street address, Private mode, and the "free over $70" flag on the US rate.
+11. **Truth check before traffic:** the urgency box ("only 1,000 kits", "6 weeks") describes a batch that does not exist under dropshipping; the product photos show a black-frame wooden soroban and the supplier ships a plastic brown-bead one.
+12. **Customer.io workspace and the sequences** (`docs/products/marketing-sequences/`), including the post-purchase loyalty series. Not needed for the first orders.
+
 ### 1. Domain (done except one save)
 
 childphenoms.com points at GitHub Pages, the custom domain is set and HTTPS is enforced: https://childphenoms.com/free-abacus/ is live with a padlock, and the old github.io address redirects to it. Two loose ends: GoDaddy is still waiting for a second code to save the three extra A records (the site works on one, the other three are GitHub's recommended redundancy), and https://www.childphenoms.com shows a certificate warning until the `www` CNAME is changed from `childphenoms.com` to `hunterappleton369-debug.github.io` (one more GoDaddy save and code). Plain http://www already redirects to the live site.
@@ -37,7 +64,7 @@ The full chain was rehearsed end to end in test mode earlier today (kit + Playbo
 
 Still yours:
 
-1. **Webhook secret**: Workbench → Webhooks → `childphenoms-supabase-webhook` → Reveal under Signing secret → paste into Supabase as `STRIPE_WEBHOOK_SECRET`, plus a restricted key from this Enamelogic account as `STRIPE_SECRET_KEY` (`docs/products/legal-and-ops/stripe-setup.md` §8). Until then, no `purchases` or `memberships` rows are written and you add them by hand.
+1. ~~Webhook secret~~ Done 2026-10-22: the function answers 400 "signature did not verify" to a forged request, so `STRIPE_WEBHOOK_SECRET` and `STRIPE_SECRET_KEY` are in place.
 2. **One real order**: buy the kit with your own card on https://childphenoms.com/free-abacus/, check the Stripe payment, the receipt wording and the shipping address, then refund it in Stripe. This is the only step that proves live money moves.
 3. **Tax**: the Enamelogic account has Stripe Tax on, so the links show a Tax line. For a Wyoming address it computed $0.00 and the total stayed $9.95; in any state where Enamelogic is registered to collect, tax will be added on top of the $9.95 the page promises. The four products carry the account's default SaaS tax code, which is the wrong category for a shipped kit. Ask your CPA whether to set the kit and Playbook to a tangible-goods code or to turn tax off on these four links.
 4. **Branding**: the checkout page and receipts say "Pay Enamelogic" because the public business name is the account's. That is the DBA trade-off you chose; changing the public name would change it for Enamelogic customers too.
@@ -46,7 +73,7 @@ Still yours:
 
 Pipeline: Stripe → Supabase `stripe-webhook` → Shopify order → DSers → AliExpress (details in `docs/FULFILLMENT.md`). The kit product is imported into DSers and mapped to the AliExpress soroban "ZZ 7/9/11/13/15/17 Digit Rods" (item 1005008927792517, variant A5 = 15 rods, DSers cost $2.85 to $4.19 + $1.99 AliExpress Selection Standard, quoted 9 to 15 days; switched from the $8.92 listing on 2026-10-22). The Playbook is digital only; nothing else ships. DSers' product shipping method for the US is set on this product and SKU (AliExpress Selection Standard, $1.99, tracked), so orders do not fall back to the $7.04 default. Supplier stock showed 45 at mapping time: if an order fails for stock, switch the mapping to variant A6 (17 rods) or back to the earlier listing in `docs/FULFILLMENT.md`. The page promise was changed to match: "about 2 weeks" and "most arrive in 9 to 15 days".
 
-1. **DSers → Settings → Supplier → AliExpress → Link** your AliExpress account (and keep a card saved on AliExpress). Finish signal: Open Orders shows an "Order" button on a test order instead of "link account".
+1. **DSers → Settings → Application Management → Supplier → AliExpress → Add Account** (checked 2026-10-22 evening: not linked). Keep a card saved on AliExpress. Finish signal: that row shows your AliExpress account instead of "Add Account", and Open Orders shows an "Order" button on a test order.
 2. **Shopify app credentials for the webhook**: Shopify no longer allows legacy custom apps, so follow `stripe-setup.md` §8 "Shopify order creation" (Dev Dashboard app with `write_orders`, `read_orders`, `read_products`; paste `SHOPIFY_CLIENT_ID` and `SHOPIFY_CLIENT_SECRET` into Supabase secrets). Until then, create each paid order by hand in Shopify (FULFILLMENT.md "Backup").
 3. **First real order**: buy the kit on the live page, confirm the Shopify order appears tagged `childphenoms`, click Order in DSers, pay on AliExpress, and watch tracking come back to Shopify. Then refund yourself in Stripe if you want.
 4. Store housekeeping still open: Settings → General → entity street address, then Online Store → Preferences → Private mode off (not needed for orders, only if you ever send people to the storefront).
