@@ -223,6 +223,8 @@ The price ids are optional, but set them. Without one, the webhook guesses from 
 
 Do not add `SUPABASE_URL` or `SUPABASE_SERVICE_ROLE_KEY`. Supabase gives the function those by itself.
 
+Two more secrets are optional and have their own pages: `RESEND_API_KEY` for the three Quick-Start emails a paid kit sends (`resend-setup.md`; without it the log says `EMAIL NOT SET UP` and the order still goes through), and the Shopify pair under "Shopify order creation" below.
+
 Or from a terminal, in one line (the dashboard is safer: the terminal keeps a history of what you type):
 
 ```bash

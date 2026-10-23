@@ -8,6 +8,9 @@
 // Shopify order for each paid kit (optional; without it the purchases row is still written): SHOPIFY_ADMIN_TOKEN, or
 // SHOPIFY_CLIENT_ID + SHOPIFY_CLIENT_SECRET of a Dev Dashboard app; SHOPIFY_STORE (default j1tu10-he);
 // SHOPIFY_KIT_PRODUCT_ID and SHOPIFY_PLAYBOOK_PRODUCT_ID (default the two products in that store).
+// Quick-Start emails for each paid kit (optional; without it the row is still written): RESEND_API_KEY, and
+// RESEND_FROM (default "Hunter at Child Phenoms <hello@childphenoms.com>"). The three emails are ./emails.ts, built
+// by tools/build-emails.mjs from docs/products/marketing-sequences/10-quickstart-soap-opera.md.
 // Deployed with verify_jwt off because Stripe cannot send a Supabase JWT: the Stripe signature is the lock.
 //
 // Ground rules: only the signed event and Stripe's own API decide anything (metadata is never read). Every write
@@ -17,6 +20,7 @@
 
 import Stripe from 'npm:stripe@^17';
 import { createClient, type SupabaseClient } from 'npm:@supabase/supabase-js@2';
+import { QUICKSTART } from './emails.ts';
 
 type Status = 'trialing' | 'active' | 'past_due' | 'paused' | 'canceled';
 type Kind = 'kit' | 'playbook' | 'university' | 'cert';
@@ -99,6 +103,7 @@ async function checkout(c: Ctx, s: Stripe.Checkout.Session): Promise<string> {
     const kit = kinds.has('kit'), playbook = kinds.has('playbook');
     const bought = await writePurchase(c, s, email, kit, playbook); // first: a failed write answers 500 before Shopify is touched
     done.push(bought.text, await shopifyOrder(c, s, email, kit, playbook, bought.shopify));
+    if (kit) done.push(await quickStartEmails(c, s, email, playbook, bought.welcomeSentAt));
   }
   if (kinds.has('cert')) done.push(await writeCertification(c, s, email));
   return done.length ? done.join('; ') : `ignored: checkout ${s.id} has no Child Phenoms item`;
@@ -108,7 +113,7 @@ async function checkout(c: Ctx, s: Stripe.Checkout.Session): Promise<string> {
 // belong to the checkout in order_ref: a new checkout starts them empty, so a parent's second order ships too.
 async function writePurchase(c: Ctx, s: Stripe.Checkout.Session, email: string, kit: boolean, playbook: boolean) {
   const { data: old, error } = await c.sb.from('purchases')
-    .select('kit,playbook,note,order_ref,shopify_order_id,shopify_order_name').eq('email', email).maybeSingle();
+    .select('kit,playbook,note,order_ref,shopify_order_id,shopify_order_name,welcome_sent_at').eq('email', email).maybeSingle();
   if (error) throw new Error(`purchases read: ${error.message}`);
   const sameOrder = old?.order_ref === s.id;
   const row: Row = {
@@ -124,7 +129,96 @@ async function writePurchase(c: Ctx, s: Stripe.Checkout.Session, email: string, 
   if (werr) throw new Error(`purchases write: ${werr.message}`);
   const shopify: ShopifyRef | null = sameOrder && old?.shopify_order_id
     ? { id: String(old.shopify_order_id), name: old.shopify_order_name ? String(old.shopify_order_name) : null } : null;
-  return { text: `purchases ${mask(email)}: kit ${row.kit}, playbook ${row.playbook}`, shopify };
+  return { text: `purchases ${mask(email)}: kit ${row.kit}, playbook ${row.playbook}`, shopify, welcomeSentAt: old?.welcome_sent_at ? String(old.welcome_sent_at) : null };
+}
+
+// ───────── Resend: the 3-Night Quick-Start emails ─────────
+// Q1 goes the moment a kit is paid; Q2 and Q3 are handed to Resend with scheduled_at one and two days after the
+// order (Resend holds a scheduled email for up to 30 days). Like Shopify, nothing here answers 500: a Resend problem
+// is logged and Stripe gets 200. Sent once per email address: welcome_sent_at is written as soon as Resend accepts
+// Q1, and a row that has it is skipped, so a retry, a re-sent event or a second kit order never repeats the
+// sequence. Resend's Idempotency-Key (one per checkout and email, honoured 24 hours) covers a retry that lands
+// between the send and the row update. Resend's ids go into welcome_email_ids: cancel Q2 or Q3 there when a parent
+// unsubscribes after Q1 or a kit is refunded (Resend → Emails → the id → Cancel).
+const RESEND_API = 'https://api.resend.com/emails';
+const RESEND_TIMEOUT_MS = 8000;
+const FROM_DEFAULT = 'Hunter at Child Phenoms <hello@childphenoms.com>';
+const SUPPORT = 'hello@childphenoms.com';
+const UNSUB_MAILTO = `mailto:${SUPPORT}?subject=Unsubscribe`;
+const DAY_S = 86400;
+
+async function quickStartEmails(c: Ctx, s: Stripe.Checkout.Session, email: string, playbook: boolean, sentAt: string | null): Promise<string> {
+  if (sentAt) return `quick-start: already sent ${sentAt.slice(0, 10)}`;
+  const key = env('RESEND_API_KEY');
+  if (!key) {
+    console.error(`stripe-webhook EMAIL NOT SET UP: no RESEND_API_KEY, so checkout ${s.id} got no Quick-Start emails. Add it (docs/products/legal-and-ops/resend-setup.md), then re-send this event from Stripe.`);
+    return 'quick-start: EMAIL NOT SET UP, nothing sent';
+  }
+  const firstName = firstNameOf(s) || 'there';
+  const now = Math.floor(Date.now() / 1000);
+  const ids: string[] = [];
+  for (const [i, m] of QUICKSTART.entries()) {
+    // Days 1 and 2 count from the order; a re-sent event days later still lands them at least a minute from now.
+    const at = i ? new Date(Math.max(s.created + i * DAY_S, now + 60) * 1000).toISOString() : null;
+    const body = {
+      from: env('RESEND_FROM') || FROM_DEFAULT,
+      to: [email],
+      reply_to: SUPPORT,
+      subject: m.subject,
+      html: fill(m.html, firstName, playbook, `<a href="${UNSUB_MAILTO}" style="color:#6b7280">email us</a>`),
+      text: fill(m.text, firstName, playbook, `email ${SUPPORT} with "Unsubscribe" in the subject`),
+      headers: { 'List-Unsubscribe': `<${UNSUB_MAILTO}>` },
+      tags: [{ name: 'sequence', value: 'quickstart' }, { name: 'email', value: m.key }, { name: 'mode', value: c.event.livemode ? 'live' : 'test' }],
+      ...(at ? { scheduled_at: at } : {}),
+    };
+    try {
+      const res = await fetch(RESEND_API, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json', 'Idempotency-Key': `quickstart/${s.id}/${m.key}` },
+        body: JSON.stringify(body),
+        signal: AbortSignal.timeout(RESEND_TIMEOUT_MS),
+      });
+      const text = await res.text();
+      if (!res.ok) throw new Error(`Resend answered ${res.status}: ${maskEmails(text).slice(0, 300)}`);
+      const id = String(JSON.parse(text).id ?? '');
+      if (!id) throw new Error('Resend answered without an id');
+      ids.push(id);
+    } catch (e) {
+      if (i === 0) {
+        console.error(`stripe-webhook ${c.event.id} QUICK-START EMAIL FAILED for checkout ${s.id} (${m.key}): ${short(e, 400)}. Nothing sent; fix the cause, then re-send this event from Stripe.`);
+        return 'quick-start: FAILED, nothing sent (Supabase logs say why); re-send the event once fixed';
+      }
+      console.error(`stripe-webhook ${c.event.id} QUICK-START EMAIL ${m.key} FAILED for checkout ${s.id}: ${short(e, 400)}. Q1 went out; send ${m.key} to ${mask(email)} by hand from Resend.`);
+      break;
+    }
+    if (i === 0) await markWelcome(c, email, { welcome_sent_at: new Date().toISOString(), welcome_email_ids: ids.join(',') });
+  }
+  if (ids.length > 1) await markWelcome(c, email, { welcome_email_ids: ids.join(',') });
+  return `quick-start ${mask(email)}: ${ids.length === QUICKSTART.length ? 'q1 sent, q2 and q3 scheduled' : `${ids.length} of ${QUICKSTART.length} accepted (see logs)`}`;
+}
+
+// Q1 is out: the row says so before anything else can fail. A failed update is logged, not thrown (a 500 would
+// make Stripe retry, and the idempotency key is the only thing then stopping a second Q1 after 24 hours).
+async function markWelcome(c: Ctx, email: string, patch: Row) {
+  const { error } = await c.sb.from('purchases').update(patch).eq('email', email);
+  if (error) console.error(`stripe-webhook ${c.event.id} QUICK-START sent to ${mask(email)}, but the purchases row did not take ${Object.keys(patch).join(', ')} (${error.message}). Type them in by hand: ${JSON.stringify(patch)}.`);
+}
+
+function fill(t: string, firstName: string, playbook: boolean, unsubscribe: string) {
+  return t.replace(/\{\{first_name\}\}/g, firstName)
+    .replace(/\{\{if_bump\}\}([\s\S]*?)\{\{end_if\}\}/g, playbook ? '$1' : '')
+    .replace(/\{\{unsubscribe\}\}/g, unsubscribe)
+    .replace(/<p[^>]*>\s*<\/p>\n?/g, '') // a Playbook-only paragraph, emptied for a kit-only order
+    .replace(/\n{3,}/g, '\n\n');
+}
+
+// The parent's first name: the first word of the name Stripe collected (the buyer's, else the shipping name).
+function firstNameOf(s: Stripe.Checkout.Session): string {
+  // deno-lint-ignore no-explicit-any
+  const raw = s as any;
+  const name: string = s.customer_details?.name ?? raw.collected_information?.shipping_details?.name ?? raw.shipping_details?.name ?? '';
+  const first = name.trim().split(/\s+/)[0] ?? '';
+  return /^[\p{L}'’.-]{1,30}$/u.test(first) ? first.replace(/^(.)(.*)$/u, (_, a, b) => a.toUpperCase() + b) : '';
 }
 
 // ───────── Shopify: the order the supplier app ships ─────────
