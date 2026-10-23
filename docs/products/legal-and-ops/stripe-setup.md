@@ -163,6 +163,7 @@ When someone pays, Stripe tells our Supabase project. A small program there (the
 | A $67 charge went through | `active`, `trial_end` empty, `current_period_end` = next renewal |
 | Card failed, cancelled, paused, ended | `past_due`, `cancel_at` filled, `paused` with `paused_until`, or `canceled` |
 | Certification paid (Link D) | `memberships`: `instructor`, `active`, `current_period_end` = one year out |
+| The on-page order form (`funnel-checkout`): a kit PaymentIntent, a certification PaymentIntent, or a trial Subscription, each stamped `metadata.cp = funnel` | The same rows, Shopify order and Quick-Start emails as the matching Payment Link above; `order_ref` is the `pi_…` id |
 
 Each change also adds a line to `note`: the date, the event and its id.
 
@@ -183,6 +184,7 @@ Do this in test mode first, after sections 3 and 4.
    - `customer.subscription.updated`
    - `customer.subscription.deleted`
    - `invoice.paid`
+   - `payment_intent.succeeded` and `customer.subscription.created` (added 2026-10-23 for the on-page order form, `supabase/functions/funnel-checkout`; the webhook acts only on objects that function stamped with `metadata.cp = funnel`)
 7. Click **Add endpoint** (or **Create destination**).
 
 Finish signal: the Webhooks page lists the URL with 5 events.

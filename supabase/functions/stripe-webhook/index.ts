@@ -1,6 +1,9 @@
 // Child Phenoms: Stripe tells this function when someone pays, and it writes the access rows the app reads
 // (supabase/memberships.sql and supabase/purchases.sql), so nobody types them by hand.
 // What each Stripe event does to a row: docs/APP-DELIVERY.md §3. Setup and test: docs/products/legal-and-ops/stripe-setup.md §8.
+// Two ways in: a Payment Link's Checkout Session (checkout.session.*), or the on-page order form's own objects made by
+// supabase/functions/funnel-checkout (payment_intent.succeeded with metadata.cp = 'funnel', customer.subscription.created).
+// Both map onto one Order shape below, so the rows, the Shopify order and the Quick-Start emails come out the same.
 //
 // Secrets (Supabase → Edge Functions → Secrets): STRIPE_SECRET_KEY and STRIPE_WEBHOOK_SECRET (required);
 // KIT_PRICE_ID, PLAYBOOK_PRICE_ID, UNIVERSITY_PRICE_ID, CERT_PRICE_ID (optional: while one is empty, that item is
@@ -13,9 +16,10 @@
 // by tools/build-emails.mjs from docs/products/marketing-sequences/10-quickstart-soap-opera.md.
 // Deployed with verify_jwt off because Stripe cannot send a Supabase JWT: the Stripe signature is the lock.
 //
-// Ground rules: only the signed event and Stripe's own API decide anything (metadata is never read). Every write
-// is worked out from the event plus Stripe's current state, and the event id goes into `note`, so the same event
-// sent twice leaves the same row. A failed write answers 500 and Stripe retries for up to three days. The Shopify
+// Ground rules: only the signed event and Stripe's own API decide anything. Metadata is read in one case only: an
+// object our own funnel-checkout function stamped with metadata.cp = 'funnel' (set server-side with the secret key);
+// anything else carrying metadata is ignored. Every write is worked out from the event plus Stripe's current state,
+// and the event id goes into `note`, so the same event sent twice leaves the same row. A failed write answers 500 and Stripe retries for up to three days. The Shopify
 // order is the exception: a Shopify problem answers 200 (see "Shopify" below).
 
 import Stripe from 'npm:stripe@^17';
@@ -27,6 +31,19 @@ type Kind = 'kit' | 'playbook' | 'university' | 'cert';
 // deno-lint-ignore no-explicit-any
 type Row = Record<string, any>;
 interface Ctx { stripe: Stripe; sb: SupabaseClient; event: Stripe.Event; day: string; today: string }
+// One paid order, however it was paid: a Checkout Session (Payment Link) or a funnel PaymentIntent. Everything after
+// the mapping (purchases row, Shopify order, Quick-Start emails, certification) reads this and nothing else.
+interface Order {
+  id: string;                 // cs_… or pi_…: order_ref on the row, the Shopify note, the Resend idempotency key
+  created: number;            // unix seconds: receipt date, Q2/Q3 schedule, the Shopify lookup window
+  email: string;
+  kit: boolean; playbook: boolean; cert: boolean;
+  lines: [string, number][];  // receipt lines, cents
+  shipping: number; tax: number; total: number; // cents; shipping and tax only when charged on top of the lines
+  buyerName: string | null; phone: string | null;
+  shipName: string | null; shipAddress: Stripe.Address | null; billAddress: Stripe.Address | null;
+  paymentIntent: string | null; customer: string | null;
+}
 type CustomerRef = string | Stripe.Customer | Stripe.DeletedCustomer | null | undefined;
 
 const TZ = 'America/Denver'; // the tables store plain days: a Stripe timestamp becomes its day in US Mountain time
@@ -73,6 +90,9 @@ export async function handle(event: Stripe.Event, stripe: Stripe, sb: SupabaseCl
     case 'checkout.session.completed':
     case 'checkout.session.async_payment_succeeded': // a bank payment that cleared after checkout
       return checkout(c, event.data.object as Stripe.Checkout.Session);
+    case 'payment_intent.succeeded': // the on-page order form (funnel-checkout): kit, or the $297 certification
+      return paymentIntent(c, event.data.object as Stripe.PaymentIntent);
+    case 'customer.subscription.created': // the on-page trial start; a Payment Link trial arrives as a checkout instead
     case 'customer.subscription.updated':
     case 'customer.subscription.deleted': {
       const sent = event.data.object as Stripe.Subscription;
@@ -98,30 +118,79 @@ async function checkout(c: Ctx, s: Stripe.Checkout.Session): Promise<string> {
   if (s.payment_status === 'unpaid') return `waiting: checkout ${s.id} is not paid yet (async_payment_succeeded finishes it)`;
   const items = await c.stripe.checkout.sessions.listLineItems(s.id, { limit: 100, expand: ['data.price.product'] });
   const kinds = new Set(items.data.map((li) => kindOf(li.price, li.description)));
+  // deno-lint-ignore no-explicit-any
+  const raw = s as any; // newer API versions move shipping_details under collected_information
+  const ship = raw.collected_information?.shipping_details ?? raw.shipping_details ?? null;
+  const cd = s.customer_details;
+  const order: Order = {
+    id: s.id, created: s.created, email,
+    kit: kinds.has('kit'), playbook: kinds.has('playbook'), cert: kinds.has('cert'),
+    lines: items.data.map((li) => [li.description || 'Item', li.amount_total ?? 0]),
+    shipping: s.shipping_cost?.amount_total ?? 0, tax: s.total_details?.amount_tax ?? 0, total: s.amount_total ?? 0,
+    buyerName: cd?.name ?? raw.customer_details?.individual_name ?? null, phone: cd?.phone ?? null,
+    shipName: ship?.name ?? null, shipAddress: ship?.address ?? null, billAddress: cd?.address ?? null,
+    paymentIntent: idOf(s.payment_intent), customer: idOf(s.customer),
+  };
+  return fulfil(c, order, `checkout ${s.id}`);
+}
+
+// The on-page order form: funnel-checkout makes the PaymentIntent itself and stamps it (metadata.cp = 'funnel',
+// kind 'kit' or 'cert', the kit and Playbook flags, the parent's email, name and phone); the address rides in
+// `shipping`. A Payment Link's own PaymentIntent carries no such stamp and is ignored here: its Checkout Session
+// is what counts.
+async function paymentIntent(c: Ctx, pi: Stripe.PaymentIntent): Promise<string> {
+  const m = pi.metadata ?? {};
+  if (m.cp !== 'funnel') return `ignored: payment intent ${pi.id} is not from the funnel order form`;
+  if (pi.status !== 'succeeded') return `waiting: payment intent ${pi.id} is ${pi.status}`;
+  const email = await emailOf(c, [m.email], pi.customer);
+  if (!email) return `skipped: payment intent ${pi.id} has no email`;
+  const kind = m.kind === 'kit' || m.kind === 'cert' ? m.kind : null;
+  if (!kind) return `ignored: payment intent ${pi.id} has kind "${m.kind ?? ''}"`;
+  const kit = kind === 'kit' && m.kit !== '0', playbook = kind === 'kit' && m.playbook === '1';
+  const lines: [string, number][] = kind === 'cert'
+    ? [['Certified Phenom Instructor', pi.amount]]
+    : [...(kit ? [['Free Abacus Kit (shipping and handling)', KIT_CENTS] as [string, number]] : []), ...(playbook ? [['Child Prodigy Secrets Playbook + Audiobook', PLAYBOOK_CENTS] as [string, number]] : [])];
+  const total = pi.amount_received || pi.amount;
+  const listed = lines.reduce((a, [, cents]) => a + cents, 0);
+  const name = `${m.first ?? ''} ${m.last ?? ''}`.trim() || pi.shipping?.name || null;
+  const order: Order = {
+    id: pi.id, created: pi.created, email,
+    kit, playbook, cert: kind === 'cert',
+    lines, shipping: 0, tax: Math.max(0, total - listed), total, // anything charged above the listed lines is tax
+    buyerName: name, phone: m.phone || pi.shipping?.phone || null,
+    shipName: pi.shipping?.name ?? name, shipAddress: pi.shipping?.address ?? null, billAddress: null,
+    paymentIntent: pi.id, customer: idOf(pi.customer),
+  };
+  return fulfil(c, order, `payment intent ${pi.id}`);
+}
+const KIT_CENTS = 995, PLAYBOOK_CENTS = 2700; // the on-page prices; a Checkout Session carries its own line amounts
+
+// The rows, the Shopify order and the emails, from an Order of either kind.
+async function fulfil(c: Ctx, o: Order, label: string): Promise<string> {
   const done: string[] = [];
-  if (kinds.has('kit') || kinds.has('playbook')) {
-    const kit = kinds.has('kit'), playbook = kinds.has('playbook');
-    const bought = await writePurchase(c, s, email, kit, playbook); // first: a failed write answers 500 before Shopify is touched
-    done.push(bought.text, await shopifyOrder(c, s, email, kit, playbook, bought.shopify));
-    if (kit) done.push(await quickStartEmails(c, s, email, playbook, bought.welcomeSentAt, items.data));
+  if (o.kit || o.playbook) {
+    const bought = await writePurchase(c, o); // first: a failed write answers 500 before Shopify is touched
+    done.push(bought.text, await shopifyOrder(c, o, bought.shopify));
+    if (o.kit) done.push(await quickStartEmails(c, o, bought.welcomeSentAt));
   }
-  if (kinds.has('cert')) done.push(await writeCertification(c, s, email));
-  return done.length ? done.join('; ') : `ignored: checkout ${s.id} has no Child Phenoms item`;
+  if (o.cert) done.push(await writeCertification(c, o));
+  return done.length ? done.join('; ') : `ignored: ${label} has no Child Phenoms item`;
 }
 
 // Kit and Playbook: one purchases row per email. A repeat order never takes the Playbook away. The Shopify columns
 // belong to the checkout in order_ref: a new checkout starts them empty, so a parent's second order ships too.
-async function writePurchase(c: Ctx, s: Stripe.Checkout.Session, email: string, kit: boolean, playbook: boolean) {
+async function writePurchase(c: Ctx, o: Order) {
+  const { email } = o;
   const { data: old, error } = await c.sb.from('purchases')
     .select('kit,playbook,note,order_ref,shopify_order_id,shopify_order_name,welcome_sent_at').eq('email', email).maybeSingle();
   if (error) throw new Error(`purchases read: ${error.message}`);
-  const sameOrder = old?.order_ref === s.id;
+  const sameOrder = old?.order_ref === o.id;
   const row: Row = {
     email,
-    kit: kit || !!old?.kit,
-    playbook: playbook || !!old?.playbook,
+    kit: o.kit || !!old?.kit,
+    playbook: o.playbook || !!old?.playbook,
     kit_paid_at: c.day,
-    order_ref: s.id,
+    order_ref: o.id,
     note: addNote(c, old?.note),
   };
   if (!sameOrder) Object.assign(row, { shopify_order_id: null, shopify_order_name: null });
@@ -147,20 +216,21 @@ const SUPPORT = 'hello@childphenoms.com';
 const UNSUB_MAILTO = `mailto:${SUPPORT}?subject=Unsubscribe`;
 const DAY_S = 86400;
 
-async function quickStartEmails(c: Ctx, s: Stripe.Checkout.Session, email: string, playbook: boolean, sentAt: string | null, items: Stripe.LineItem[]): Promise<string> {
+async function quickStartEmails(c: Ctx, o: Order, sentAt: string | null): Promise<string> {
   if (sentAt) return `quick-start: already sent ${sentAt.slice(0, 10)}`;
   const key = env('RESEND_API_KEY');
   if (!key) {
-    console.error(`stripe-webhook EMAIL NOT SET UP: no RESEND_API_KEY, so checkout ${s.id} got no Quick-Start emails. Add it (docs/products/legal-and-ops/resend-setup.md), then re-send this event from Stripe.`);
+    console.error(`stripe-webhook EMAIL NOT SET UP: no RESEND_API_KEY, so order ${o.id} got no Quick-Start emails. Add it (docs/products/legal-and-ops/resend-setup.md), then re-send this event from Stripe.`);
     return 'quick-start: EMAIL NOT SET UP, nothing sent';
   }
-  const firstName = firstNameOf(s) || 'there';
-  const receipt = await receiptFor(c, s, items);
+  const { email, playbook } = o;
+  const firstName = firstNameOf(o) || 'there';
+  const receipt = await receiptFor(c, o);
   const now = Math.floor(Date.now() / 1000);
   const ids: string[] = [];
   for (const [i, m] of QUICKSTART.entries()) {
     // Days 1 and 2 count from the order; a re-sent event days later still lands them at least a minute from now.
-    const at = i ? new Date(Math.max(s.created + i * DAY_S, now + 60) * 1000).toISOString() : null;
+    const at = i ? new Date(Math.max(o.created + i * DAY_S, now + 60) * 1000).toISOString() : null;
     const body = {
       from: env('RESEND_FROM') || FROM_DEFAULT,
       to: [email],
@@ -175,7 +245,7 @@ async function quickStartEmails(c: Ctx, s: Stripe.Checkout.Session, email: strin
     try {
       const res = await fetch(RESEND_API, {
         method: 'POST',
-        headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json', 'Idempotency-Key': `quickstart/${s.id}/${m.key}` },
+        headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json', 'Idempotency-Key': `quickstart/${o.id}/${m.key}` },
         body: JSON.stringify(body),
         signal: AbortSignal.timeout(RESEND_TIMEOUT_MS),
       });
@@ -186,10 +256,10 @@ async function quickStartEmails(c: Ctx, s: Stripe.Checkout.Session, email: strin
       ids.push(id);
     } catch (e) {
       if (i === 0) {
-        console.error(`stripe-webhook ${c.event.id} QUICK-START EMAIL FAILED for checkout ${s.id} (${m.key}): ${short(e, 400)}. Nothing sent; fix the cause, then re-send this event from Stripe.`);
+        console.error(`stripe-webhook ${c.event.id} QUICK-START EMAIL FAILED for order ${o.id} (${m.key}): ${short(e, 400)}. Nothing sent; fix the cause, then re-send this event from Stripe.`);
         return 'quick-start: FAILED, nothing sent (Supabase logs say why); re-send the event once fixed';
       }
-      console.error(`stripe-webhook ${c.event.id} QUICK-START EMAIL ${m.key} FAILED for checkout ${s.id}: ${short(e, 400)}. Q1 went out; send ${m.key} to ${mask(email)} by hand from Resend.`);
+      console.error(`stripe-webhook ${c.event.id} QUICK-START EMAIL ${m.key} FAILED for order ${o.id}: ${short(e, 400)}. Q1 went out; send ${m.key} to ${mask(email)} by hand from Resend.`);
       break;
     }
     if (i === 0) await markWelcome(c, email, { welcome_sent_at: new Date().toISOString(), welcome_email_ids: ids.join(',') });
@@ -219,18 +289,16 @@ function fill(t: string, firstName: string, playbook: boolean, unsubscribe: stri
 // skipped on any error) and the shipping address. Child Phenoms only: parent-facing text never names the parent company.
 interface Receipt { html: string; text: string }
 const BRANDS: Record<string, string> = { visa: 'Visa', mastercard: 'Mastercard', amex: 'American Express', discover: 'Discover', diners: 'Diners Club', jcb: 'JCB', unionpay: 'UnionPay' };
-async function receiptFor(c: Ctx, s: Stripe.Checkout.Session, items: Stripe.LineItem[]): Promise<Receipt> {
+async function receiptFor(c: Ctx, o: Order): Promise<Receipt> {
   const money = (cents: number | null | undefined) => `$${((cents ?? 0) / 100).toFixed(2)}`;
-  const date = new Intl.DateTimeFormat('en-US', { timeZone: TZ, month: 'long', day: 'numeric', year: 'numeric' }).format(new Date(s.created * 1000));
-  const rows: [string, string][] = items.map((li) => [li.description || 'Item', money(li.amount_total)]);
-  const shipping = s.shipping_cost?.amount_total ?? 0;
-  if (shipping > 0) rows.push(['Shipping', money(shipping)]);
-  const tax = s.total_details?.amount_tax ?? 0;
-  if (tax > 0) rows.push(['Tax', money(tax)]);
-  rows.push(['Total paid', money(s.amount_total)]);
+  const date = new Intl.DateTimeFormat('en-US', { timeZone: TZ, month: 'long', day: 'numeric', year: 'numeric' }).format(new Date(o.created * 1000));
+  const rows: [string, string][] = o.lines.map(([label, cents]) => [label, money(cents)]);
+  if (o.shipping > 0) rows.push(['Shipping', money(o.shipping)]);
+  if (o.tax > 0) rows.push(['Tax', money(o.tax)]);
+  rows.push(['Total paid', money(o.total)]);
   let card = '';
   try {
-    const pi = idOf(s.payment_intent);
+    const pi = o.paymentIntent;
     if (pi) {
       const intent = await c.stripe.paymentIntents.retrieve(pi, { expand: ['latest_charge'] });
       const charge = intent.latest_charge;
@@ -240,11 +308,8 @@ async function receiptFor(c: Ctx, s: Stripe.Checkout.Session, items: Stripe.Line
   } catch (e) {
     console.warn(`stripe-webhook ${c.event.id} receipt: card details not read, receipt sent without them (${short(e)})`);
   }
-  // deno-lint-ignore no-explicit-any
-  const raw = s as any;
-  const ship = raw.collected_information?.shipping_details ?? raw.shipping_details ?? null;
-  const a: Stripe.Address | null = ship?.address ?? null;
-  const name: string = ship?.name ?? s.customer_details?.name ?? '';
+  const a = o.shipAddress;
+  const name = o.shipName ?? o.buyerName ?? '';
   const addr = a?.line1 ? [name, a.line1, a.line2, `${a.city ?? ''}${a.state ? `, ${a.state}` : ''} ${a.postal_code ?? ''}`.trim()].filter(Boolean) as string[] : [];
   const esc = (t: string) => t.replace(/[&<>"]/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch] as string));
   const last = rows.length - 1;
@@ -263,17 +328,15 @@ ${addr.length ? `<p style="margin:10px 0 0"><b>Ships to</b><br>${addr.map(esc).j
 }
 
 // The parent's first name: the first word of the name Stripe collected (the buyer's, else the shipping name).
-function firstNameOf(s: Stripe.Checkout.Session): string {
-  // deno-lint-ignore no-explicit-any
-  const raw = s as any;
-  const name: string = s.customer_details?.name ?? raw.collected_information?.shipping_details?.name ?? raw.shipping_details?.name ?? '';
+function firstNameOf(o: Order): string {
+  const name = o.buyerName ?? o.shipName ?? '';
   const first = name.trim().split(/\s+/)[0] ?? '';
   return /^[\p{L}'’.-]{1,30}$/u.test(first) ? first.replace(/^(.)(.*)$/u, (_, a, b) => a.toUpperCase() + b) : '';
 }
 
 // ───────── Shopify: the order the supplier app ships ─────────
 // Shopify is the fulfilment back office (docs/FULFILLMENT.md): the supplier app picks its orders up. Each paid kit
-// checkout becomes one paid Shopify order: the $0 kit, the $27 Playbook when bought, and the $9.95 USPS line, which
+// order becomes one paid Shopify order: the $0 kit, the $27 Playbook when bought, and the $9.95 USPS line, which
 // adds up to what Stripe charged. Nothing here answers 500: a Shopify problem is logged, shopify_order_id stays
 // empty, and Stripe gets 200 (a retry cannot fix a missing token, and retrying a half-finished call could ship twice).
 // Fix the cause, then re-send the event from Stripe (stripe-setup.md §8). Before creating, it asks Shopify for an
@@ -286,12 +349,13 @@ const SHOPIFY_TIMEOUT_MS = 8000;
 const variantIds = new Map<string, number>(); // "store/product id" → its first variant id, while the function stays warm
 let shopifyToken: { key: string; token: string; until: number } | undefined;
 
-async function shopifyOrder(c: Ctx, s: Stripe.Checkout.Session, email: string, kit: boolean, playbook: boolean, made: ShopifyRef | null): Promise<string> {
+async function shopifyOrder(c: Ctx, o: Order, made: ShopifyRef | null): Promise<string> {
+  const { email, kit, playbook } = o;
   if (made) return `shopify ${made.name ?? made.id}: already made`;
   if (!env('SHOPIFY_ADMIN_TOKEN') && !(env('SHOPIFY_CLIENT_ID') && env('SHOPIFY_CLIENT_SECRET'))) {
     // Names only, never values: a secret saved under a near-miss name ("SHOPIFY_CLIENT_ID " or "Shopify_client_id") shows up here.
     const seen = Object.keys(Deno.env.toObject()).filter((k) => /shopify/i.test(k)).map((k) => JSON.stringify(k));
-    console.error(`stripe-webhook SHOPIFY NOT SET UP: no SHOPIFY_ADMIN_TOKEN (or SHOPIFY_CLIENT_ID + SHOPIFY_CLIENT_SECRET), so checkout ${s.id} has no Shopify order. Secret names seen with "shopify" in them: ${seen.length ? seen.join(', ') : 'none'}. Add it (stripe-setup.md §8, Shopify order creation), then re-send this event from Stripe.`);
+    console.error(`stripe-webhook SHOPIFY NOT SET UP: no SHOPIFY_ADMIN_TOKEN (or SHOPIFY_CLIENT_ID + SHOPIFY_CLIENT_SECRET), so order ${o.id} has no Shopify order. Secret names seen with "shopify" in them: ${seen.length ? seen.join(', ') : 'none'}. Add it (stripe-setup.md §8, Shopify order creation), then re-send this event from Stripe.`);
     return 'shopify: not set up, no order made';
   }
   let order: Row | null;
@@ -299,25 +363,25 @@ async function shopifyOrder(c: Ctx, s: Stripe.Checkout.Session, email: string, k
   let noAddress = false;
   try {
     const sh = await shopifyApi();
-    order = await shopifyOrderFor(sh, s);
+    order = await shopifyOrderFor(sh, o);
     found = !!order;
     if (!order) {
       const line_items: Row[] = [];
       if (kit) line_items.push({ variant_id: await variantOf(sh, env('SHOPIFY_KIT_PRODUCT_ID') || '10239735988480'), quantity: 1 });
       if (playbook) line_items.push({ variant_id: await variantOf(sh, env('SHOPIFY_PLAYBOOK_PRODUCT_ID') || '10239737823488'), quantity: 1 });
-      const body = orderBody(c, s, email, line_items);
+      const body = orderBody(c, o, line_items);
       noAddress = !body.shipping_address;
       order = (await sh.call('orders.json', { order: body })).order ?? null;
       if (!order?.id) throw new Error('Shopify answered without an order id');
     }
   } catch (e) {
-    console.error(`stripe-webhook ${c.event.id} SHOPIFY ORDER FAILED for checkout ${s.id}: ${short(e, 600)}. shopify_order_id left empty: fix the cause, then re-send this event from Stripe.`);
+    console.error(`stripe-webhook ${c.event.id} SHOPIFY ORDER FAILED for order ${o.id}: ${short(e, 600)}. shopify_order_id left empty: fix the cause, then re-send this event from Stripe.`);
     return 'shopify: FAILED, no order made (Supabase logs say why); re-send the event once fixed';
   }
   const ref = { shopify_order_id: String(order.id), shopify_order_name: order.name ? String(order.name) : null };
   const label = ref.shopify_order_name ?? ref.shopify_order_id;
-  if (noAddress) console.warn(`stripe-webhook ${c.event.id} SHOPIFY ORDER ${label} HAS NO SHIPPING ADDRESS: checkout ${s.id} carried none. Add it in Shopify before it ships.`);
-  const { error } = await c.sb.from('purchases').update(ref).eq('email', email).eq('order_ref', s.id);
+  if (noAddress) console.warn(`stripe-webhook ${c.event.id} SHOPIFY ORDER ${label} HAS NO SHIPPING ADDRESS: order ${o.id} carried none. Add it in Shopify before it ships.`);
+  const { error } = await c.sb.from('purchases').update(ref).eq('email', email).eq('order_ref', o.id);
   if (error) {
     // Answer 200 anyway: a Stripe retry would only find this order again. The row needs the two values by hand.
     console.error(`stripe-webhook ${c.event.id} SHOPIFY ORDER ${label} made, but not saved on the purchases row (${error.message}). Type shopify_order_id ${ref.shopify_order_id} and shopify_order_name ${label} into the row by hand.`);
@@ -326,17 +390,12 @@ async function shopifyOrder(c: Ctx, s: Stripe.Checkout.Session, email: string, k
   return `shopify ${label}: ${found ? 'already in Shopify, saved on the row' : 'created'}${noAddress ? ', NO SHIPPING ADDRESS' : ''}`;
 }
 
-function orderBody(c: Ctx, s: Stripe.Checkout.Session, email: string, line_items: Row[]): Row {
-  // deno-lint-ignore no-explicit-any
-  const raw = s as any; // newer API versions move shipping_details under collected_information
-  const ship = raw.collected_information?.shipping_details ?? raw.shipping_details ?? null;
-  const cd = s.customer_details;
-  const buyer: string | null = cd?.name ?? raw.customer_details?.individual_name ?? null;
-  const phone = cd?.phone ?? null;
-  const shipping_address = addressFor(ship?.name ?? buyer, ship?.address, phone) ?? addressFor(buyer ?? ship?.name, cd?.address, phone);
-  const billing_address = addressFor(buyer ?? ship?.name, cd?.address, phone) ?? shipping_address;
-  const amount = (s.amount_total ?? 0) / 100;
-  const pi = idOf(s.payment_intent);
+function orderBody(c: Ctx, o: Order, line_items: Row[]): Row {
+  const { email, phone } = o;
+  const shipping_address = addressFor(o.shipName ?? o.buyerName, o.shipAddress, phone) ?? addressFor(o.buyerName ?? o.shipName, o.billAddress, phone);
+  const billing_address = addressFor(o.buyerName ?? o.shipName, o.billAddress, phone) ?? shipping_address;
+  const amount = o.total / 100;
+  const pi = o.paymentIntent;
   return {
     email,
     line_items,
@@ -346,8 +405,9 @@ function orderBody(c: Ctx, s: Stripe.Checkout.Session, email: string, line_items
     financial_status: 'paid',
     transactions: amount > 0 ? [{ kind: 'sale', status: 'success', amount: amount.toFixed(2), gateway: 'Stripe' }] : [],
     tags: c.event.livemode ? 'childphenoms, stripe' : 'childphenoms, stripe, stripe-test', // a test checkout makes a real Shopify order: never ship it
-    note: `Stripe checkout ${s.id}`,
-    note_attributes: [{ name: 'stripe_session', value: s.id }, ...(pi ? [{ name: 'stripe_payment_intent', value: pi }] : [])],
+    note: `Stripe ${o.id}`,
+    // stripe_session holds the order id (cs_… or pi_…): the key shopifyOrderFor looks up before creating a second order
+    note_attributes: [{ name: 'stripe_session', value: o.id }, ...(pi ? [{ name: 'stripe_payment_intent', value: pi }] : [])],
     send_receipt: false,
     send_fulfillment_receipt: true,
     inventory_behaviour: 'bypass',
@@ -368,11 +428,11 @@ function addressFor(name: string | null | undefined, a: Stripe.Address | null | 
 
 // An order this checkout already made: a create that timed out after Shopify saved it, or a row that missed the id.
 // Looks through the newest 250 orders since the checkout opened.
-async function shopifyOrderFor(sh: Shopify, s: Stripe.Checkout.Session): Promise<Row | null> {
-  const since = encodeURIComponent(new Date((s.created - 3600) * 1000).toISOString());
+async function shopifyOrderFor(sh: Shopify, o: Order): Promise<Row | null> {
+  const since = encodeURIComponent(new Date((o.created - 3600) * 1000).toISOString());
   const r = await sh.call(`orders.json?status=any&limit=250&fields=id,name,note_attributes&created_at_min=${since}`);
   const orders: Row[] = r.orders ?? [];
-  return orders.find((o) => (o.note_attributes ?? []).some((a: Row) => a.name === 'stripe_session' && a.value === s.id)) ?? null;
+  return orders.find((x) => (x.note_attributes ?? []).some((a: Row) => a.name === 'stripe_session' && a.value === o.id)) ?? null;
 }
 
 async function variantOf(sh: Shopify, productId: string): Promise<number> {
@@ -431,16 +491,17 @@ async function shopifyAccessToken(store: string): Promise<string> {
 
 // Certification ($297): an instructor year. An existing University row keeps its Stripe customer (its subscription
 // still sends events); the subscription dates are cleared so an old cancel date cannot end the paid year early.
-async function writeCertification(c: Ctx, s: Stripe.Checkout.Session, email: string) {
+async function writeCertification(c: Ctx, o: Order) {
+  const { email } = o;
   const old = await membershipByEmail(c, email);
   let yearEnd = plusOneYear(c.day);
   if (old?.plan === 'instructor' && old.current_period_end && String(old.current_period_end) > yearEnd) yearEnd = String(old.current_period_end);
   const row: Row = {
     email, plan: 'instructor', status: 'active', current_period_end: yearEnd,
     trial_end: null, cancel_at: null, paused_until: null,
-    note: addNote(c, old?.note, `certification ${s.id} (${entry(c)})`),
+    note: addNote(c, old?.note, `certification ${o.id} (${entry(c)})`),
   };
-  const cus = idOf(s.customer);
+  const cus = o.customer;
   if (!old) { row.keeps_library = true; row.stripe_customer_id = cus; }
   else if (!old.stripe_customer_id && cus) row.stripe_customer_id = cus;
   await upsertMembership(c, row);
