@@ -12,7 +12,7 @@ export const CONFIG = {
   metaPixelId: '1239441998349754', // Meta Pixel (dataset) ID. Hunter's call 2026-10-21: the Enamelogic pixel, shared. Empty = no pixel loads. Disclosed in the privacy policy.
   // On-page checkout (ClickFunnels style): the card form lives in step 2 and the upsells are one click on the saved
   // card. Both values are needed; with either empty the buttons fall back to the hosted links above.
-  stripePublishableKey: 'pk_live_51TivQW5uuxnQgoyBE0DMu1qDmZVdpMTZiHIqFbWu58qIvxzLAhTsTuAY9hRl0tq7TlkN9kWAsdW8bSbaCzi55iiS00H', // public by design (pk_live)
+  stripePublishableKey: 'pk_live_51TivQW5uuxnQgoyBE0DMu1qDmZVdpMTZiHIqFbWu58qIvxzLAhTsTuAY9hRl0tq7TlkN9kWAsdW8bSbaCzi55iiS00H1wnVqAG', // public by design (pk_live)
   checkoutApi: 'https://fndemnipqtpmuvcidcxo.supabase.co/functions/v1/funnel-checkout',                     // supabase/functions/funnel-checkout
   leadWebhook: '',                // optional: POST step-1 contact info here (Zapier/Make/CF webhook) for abandon follow-up
   supportEmail: 'hello@childphenoms.com',
