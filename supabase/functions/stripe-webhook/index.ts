@@ -482,7 +482,15 @@ async function shopifyAccessToken(store: string): Promise<string> {
     signal: AbortSignal.timeout(SHOPIFY_TIMEOUT_MS),
   });
   const text = await res.text();
-  if (!res.ok) throw new Error(`Shopify token request answered ${res.status}: ${text.split(env('SHOPIFY_CLIENT_SECRET')).join('***')}`);
+  if (!res.ok) {
+    // Shape only, never the values: a Dev Dashboard client id is 32 hex characters and its secret starts with shpss_,
+    // so a swapped or half-pasted secret shows up here without anyone revealing it.
+    const secret = env('SHOPIFY_CLIENT_SECRET');
+    const shape = `client id ${/^[0-9a-f]{32}$/i.test(clientId) ? 'looks right' : `does NOT look like a Shopify client id (${clientId.length} characters)`}; ` +
+      `client secret ${/^shpss_/.test(secret) ? 'starts with shpss_' : 'does NOT start with shpss_'} (${secret.length} characters)` +
+      `${secret === clientId ? '; the client secret IS THE CLIENT ID pasted twice: copy the Client secret value, not the Client ID' : ''}`;
+    throw new Error(`Shopify token request answered ${res.status}: ${text.split(secret).join('***')}. Secrets as the function sees them: ${shape}.`);
+  }
   const j = JSON.parse(text);
   if (typeof j.access_token !== 'string' || !j.access_token) throw new Error('Shopify token request answered without an access_token');
   shopifyToken = { key, token: j.access_token, until: Date.now() + ((Number(j.expires_in) || 3600) - 600) * 1000 };
