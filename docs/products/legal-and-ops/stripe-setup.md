@@ -269,7 +269,7 @@ Finish signal: the real $9.95 order in section 9 step 5 shows 200 on the live en
 
 ### Shopify order creation (15 min)
 
-Every paid kit order (Link A or B) also becomes a paid order in the Shopify store `j1tu10-he`, where the supplier app picks it up. The function makes it with the parent's email and the shipping address from Stripe. It adds the $0 kit, the $27 Playbook when they bought it, the "Standard shipping (9 to 15 days)" $9.95 shipping line and the Stripe payment. The order is tagged `childphenoms` and has the checkout id in its note. Shopify sends no order receipt (Stripe already did). It sends the shipping confirmation once the order is fulfilled.
+Every paid kit order (Link A or B) also becomes a paid order in the Shopify store `j1tu10-he`, where the supplier app picks it up. The function makes it with the parent's email and the shipping address from Stripe. It adds the $0 kit, the $27 Playbook when they bought it, the "Standard shipping (within 7 days)" $9.95 shipping line and the Stripe payment. The order is tagged `childphenoms` and has the checkout id in its note. Shopify sends no order receipt (Stripe already did). It sends the shipping confirmation once the order is fulfilled.
 
 Until this is set up, the function still writes `purchases` and logs one line: `SHOPIFY NOT SET UP`.
 
@@ -306,7 +306,7 @@ Set path A's token or path B's pair, not both. With both, the token wins. `SHOPI
 
 1. Place a test order through Link B in Stripe test mode with `hunterappleton369@gmail.com` and a real-looking US address. (Or re-send the `checkout.session.completed` event of a test kit order that has no Shopify order yet. See "Re-send" below.)
 2. Stripe → **Developers** → **Webhooks** → your endpoint → the delivery shows **200**, and the response ends with `shopify #1001: created` (your number will differ).
-3. Shopify admin → **Orders**: a new order tagged `childphenoms`, `stripe`, `stripe-test`. It shows the address you typed in Stripe, the Abacus Kit at $0.00, the Playbook at $27.00 and Standard shipping (9 to 15 days) at $9.95, and it is marked **Paid**.
+3. Shopify admin → **Orders**: a new order tagged `childphenoms`, `stripe`, `stripe-test`. It shows the address you typed in Stripe, the Abacus Kit at $0.00, the Playbook at $27.00 and Standard shipping (within 7 days) at $9.95, and it is marked **Paid**.
 4. Supabase → **Table Editor** → `purchases`: your row has `shopify_order_id` and `shopify_order_name` (`#1001`) filled in.
 5. Cancel the test order: open it → **More actions** → **Cancel order**, with no restock and no customer notification. Don't place it in the supplier app. Test orders are real Shopify orders, and the `stripe-test` tag is there to mark them.
 

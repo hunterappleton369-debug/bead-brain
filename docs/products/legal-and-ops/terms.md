@@ -24,7 +24,7 @@ Prices are in US dollars. Sales tax is added at checkout where the law requires 
 ## 3. The free kit and shipping
 
 1. The abacus is free. You pay $9.95 for shipping and handling.
-2. We ship to US addresses only, with tracking. Orders usually leave within 2 business days, and most arrive in 9 to 15 days, about 2 weeks. These are estimates, not promises.
+2. We ship to US addresses only, with tracking. Orders usually leave within 2 business days and arrive within 7 days. These are estimates, not promises.
 3. Please check your address. If a kit comes back because the address was wrong, we will reship it once you pay shipping again.
 4. If tracking shows your kit was lost, email us and we will send another at no cost.
 5. Buying the kit does not sign you up for anything. The kit is a one-time order.
