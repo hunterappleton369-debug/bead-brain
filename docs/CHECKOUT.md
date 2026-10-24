@@ -13,6 +13,8 @@ Built 2026-10-23 at Hunter's request: the card form lives in step 2 of the order
 
 The browser proves it owns an order with the PaymentIntent's client secret; prices are fixed in the function, never sent by the browser. Statement descriptor suffix "CHILD PHENOMS" is requested on every charge and dropped if the account refuses it.
 
+**Status 2026-10-24:** live. The restricted key has the permissions below (Hunter applied them), the publishable key in `free-abacus/config.js` is the full 107-character `pk_live_…`, and step 2 mounts the address and card fields on childphenoms.com. The page, FAQ, thank-you page, Quick-Start email Q1 and the Stripe kit description all promise delivery within 7 days (Hunter's call; DSers quotes 9 to 15 days for the listing's US method, so watch the first deliveries).
+
 ## What Stripe needs
 
 - The restricted key in Supabase (`STRIPE_SECRET_KEY`, the one the webhook uses) needs **Customers: Write, Payment Intents: Write, Subscriptions: Write, Payment Methods: Read, Products: Read, Prices: Read**. Without Customers write the function answers 400 "Permission denied" and the page falls back to the hosted links.

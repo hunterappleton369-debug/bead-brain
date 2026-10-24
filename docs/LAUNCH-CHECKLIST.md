@@ -16,6 +16,10 @@ Status on the evening of 2026-10-21. "Done" means built, tested in a browser at 
 
 ## Blocks launch, in order
 
+## 2026-10-24: on-page checkout live
+
+The order form now takes the card on the page (Stripe Payment Element with Apple Pay, Google Pay and Link, Address Element for shipping, the Playbook bump under the card) and the two upsell pages charge the saved card with one click. Design and operations: `docs/CHECKOUT.md`. The delivery promise is "within 7 days" everywhere a parent reads it. DSers ships the ZZ listing, SKU A5. Still to prove with a real on-page order: the `payment_intent.succeeded` path through the webhook (purchases row, Shopify order, Q1 to Q3) and the two one-click upsells.
+
 ## Pre-live check (2026-10-22, evening)
 
 Verified on the live site and the live accounts tonight:
