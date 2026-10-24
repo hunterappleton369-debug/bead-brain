@@ -79,7 +79,7 @@ async function start(stripe: Stripe, b: Body) {
     currency: 'usd',
     customer: customer.id,
     setup_future_usage: 'off_session',
-    payment_method_types: ['card', 'link'], // cards, Apple Pay and Google Pay ride on 'card'; no bank debits, which settle in days and would stall the one-click upsells
+    payment_method_types: ['card'], // Apple Pay, Google Pay and Link's saved cards ride on 'card'; no bank debits (they settle in days and would stall the one-click upsells)
     description: bump ? `${KIT_DESC} + ${PLAYBOOK_DESC}` : KIT_DESC,
     metadata: { cp: 'funnel', kind: 'kit', kit: '1', playbook: bump ? '1' : '0', email, first, last, phone },
   };
