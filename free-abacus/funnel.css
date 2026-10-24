@@ -354,3 +354,6 @@ body { padding-bottom: 92px; }
 .pay-error { color: var(--red); font-size: 14px; font-weight: 600; margin: 10px 0 0; }
 .btn.busy { opacity: .7; pointer-events: none; }
 .oneclick-note { font-size: 13px; color: var(--ink-3); text-align: center; margin: 8px 0 0; }
+
+/* 2026-10-23: every funnel heading in Poppins (the app keeps Unbounded) */
+.fn-wrap h1, .fn-wrap h2, .fn-wrap h3, .fn-wrap h4, .try-box b { font-family: Poppins, Inter, sans-serif; letter-spacing: -.01em; }
