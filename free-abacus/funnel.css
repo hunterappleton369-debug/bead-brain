@@ -357,3 +357,26 @@ body { padding-bottom: 92px; }
 
 /* 2026-10-23: every funnel heading in Poppins (the app keeps Unbounded) */
 .fn-wrap h1, .fn-wrap h2, .fn-wrap h3, .fn-wrap h4, .try-box b { font-family: Poppins, Inter, sans-serif; letter-spacing: -.01em; }
+
+/* step 2: fields first, then the rest; tighter everything */
+.pane.loading .bump, .pane.loading .summary, .pane.loading [data-complete], .pane.loading .lock, .pane.loading .back-row { display: none; }
+.pay-skeleton { display: grid; gap: 10px; padding: 4px 0 2px; }
+.pay-skeleton i { display: block; height: 44px; border-radius: 10px; background: linear-gradient(90deg, #eef0f4 25%, #f7f8fb 50%, #eef0f4 75%); background-size: 200% 100%; animation: cp-shimmer 1.2s linear infinite; }
+.pay-skeleton i.short { width: 55%; }
+@keyframes cp-shimmer { to { background-position: -200% 0; } }
+.pane:not(.loading) .pay-skeleton, .pay-loading { display: none; }
+.order.red h3 { font-size: 17px; margin: 0 0 2px; }
+.order.red .pay-label { margin: 10px 0 6px; font-size: 12px; }
+.order.red .bump { margin: 12px 0 10px; padding: 12px 12px 10px; border-radius: 12px; border-width: 2px; }
+.order.red .bump .tag { font-size: 10px; padding: 4px 9px; top: -12px; }
+.order.red .bump label { grid-template-columns: 26px 1fr; gap: 10px; font-size: 14px; }
+.order.red .bump input { width: 26px; height: 26px; border-width: 2px; }
+.order.red .bump input:checked::after { font-size: 16px; }
+.order.red .bump .head { font-size: 15px; margin-bottom: 4px; }
+.bump-list { margin: 0; padding-left: 16px; font-size: 13px; color: var(--ink-2); line-height: 1.35; }
+.bump-list li { margin: 2px 0; }
+.summary.compact { padding: 2px 12px; margin: 10px 0 8px; }
+.summary.compact div { padding: 6px 0; font-size: 13.5px; }
+.summary.compact div.total { font-size: 15px; }
+.btn.cta.sm-cta { font-size: 15px; padding: 12px 14px; line-height: 1.2; }
+.order.red .lock { margin-top: 8px; font-size: 11.5px; }

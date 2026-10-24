@@ -29,6 +29,8 @@ Your receipt is below. Keep this email.
 
 {{receipt}}
 
+Here is what is in the box. A soroban, the Japanese abacus. A small wooden frame with rows of beads. Every number is a bead your child can see with their eyes and move with their fingers. That is the whole secret behind the kids in the videos: after a few weeks, the beads move inside their head, and they do math faster than a calculator.
+
 The box ships within 2 business days with tracking and arrives within 7 days. You do not have to wait for it. Your first three nights are at the bottom of this email. They work on the screen abacus in your parent account tonight.
 
 {{if_bump}}Your Playbook and the audiobook are waiting too. Sign in and look under "What you own."{{end_if}}
@@ -62,6 +64,8 @@ Hunter
 ---
 
 ### Your 3-Night Quick-Start
+
+Your child's abacus is a frame of beads. Every number is a bead you can see and move. Three nights is all it takes to feel it start.
 
 Start tonight on the screen abacus: {{link_stage1}}. Sign in with the email you ordered with. When the box lands, do the same three nights again with the real beads.
 
@@ -99,7 +103,7 @@ Every child hits a wall in math. For most kids it comes around third grade. Coun
 
 Only 28 of every 100 eighth graders in the US scored proficient in math on the 2024 national test. School is not going to fix this for your child.
 
-For me the wall came later. I wanted to play college sports and my grades were the wall. The beads got me over it.
+For me the wall came later. I wanted to play college sports and my grades were the wall. The beads, the abacus in your kit, got me over it.
 
 The abacus takes a different road. Three steps. Every abacus child in Japan walks them, in this order.
 

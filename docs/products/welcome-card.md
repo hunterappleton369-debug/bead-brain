@@ -8,6 +8,8 @@ Digital since 2026-10-22: nothing printed ships with the kit. This page goes out
 
 ## Your first 3 nights
 
+Your child's kit is a soroban, the Japanese abacus: a small wooden frame with rows of beads. Every number is a bead your child can see and move. After a few weeks, the beads move inside their head, and math gets fast.
+
 Your child's school teaches the word half of the brain. The beads wake up the other half. Pictures and hands. Your child sees the number, moves it, and says it. All of the brain at once. Three nights is all it takes to feel it start.
 
 Start tonight on the screen abacus in your parent account. Sign in at childphenoms.com with the email you ordered with. When the box lands, do the same three nights again with the real beads.

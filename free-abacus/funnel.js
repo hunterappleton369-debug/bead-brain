@@ -117,18 +117,26 @@ export function orderForm() {
   const payBlock = $('[data-pay-block]', form), payErr = $('[data-pay-error]', form), payLoading = $('[data-pay-loading]', form);
   const complete = $('[data-complete]', form);
   let co = null;          // { stripe, elements, intentId, clientSecret, email, amount }
+  let pre = null;         // { email, p } the start call made while the parent was still typing, so step 2 opens fast
   let hosted = !onPage(); // true = fall back to the hosted checkout links
   const showErr = msg => { if (!payErr) return; payErr.textContent = msg || ''; payErr.hidden = !msg; };
   const useHosted = why => { hosted = true; if (payBlock) payBlock.classList.add('hosted'); if (why) console.warn('on-page checkout off:', why); };
   const fullName = d => [d.first, d.last].filter(Boolean).join(' ');
 
+  function prefetch(d) {
+    if (!onPage() || !d.email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(d.email)) return;
+    if (pre && pre.email === d.email) return;
+    const p = loadStripe().then(S => api({ action: 'start', email: d.email, first: d.first, last: d.last, phone: d.phone, bump: !!(bump && bump.checked) }).then(started => ({ S, started })));
+    pre = { email: d.email, p }; p.catch(() => { if (pre && pre.p === p) pre = null; });
+  }
   async function mountCheckout(data) {
     if (co && co.email === data.email) { if (bump) await syncBump(); return; }
     if (payBlock) payBlock.classList.remove('hosted');
     showErr(''); if (payLoading) payLoading.classList.remove('hide');
+    pane2.classList.add('loading');
     try {
-      const Stripe = await loadStripe();
-      const started = await api({ action: 'start', email: data.email, first: data.first, last: data.last, phone: data.phone, bump: !!(bump && bump.checked) });
+      const got = (pre && pre.email === data.email) ? await pre.p : await loadStripe().then(S => api({ action: 'start', email: data.email, first: data.first, last: data.last, phone: data.phone, bump: !!(bump && bump.checked) }).then(started => ({ S, started })));
+      const Stripe = got.S, started = got.started;
       const stripe = Stripe(CONFIG.stripePublishableKey);
       const elements = stripe.elements({ clientSecret: started.clientSecret, appearance: APPEARANCE, fonts: FONTS, loader: 'auto' });
       const ship = elements.create('address', { mode: 'shipping', allowedCountries: ['US'], fields: { phone: 'always' }, validation: { phone: { required: 'always' } }, defaultValues: { name: fullName(data), phone: data.phone || '' }, display: { name: 'full' } });
@@ -141,13 +149,18 @@ export function orderForm() {
       });
       $$('#ship-el, #pay-el', form).forEach(el => el.innerHTML = '');
       ship.mount('#ship-el'); pay.mount('#pay-el');
-      pay.on('ready', () => { if (payLoading) payLoading.classList.add('hide'); });
-      pay.on('loaderror', e => { useHosted(e && e.error && e.error.message); if (payLoading) payLoading.classList.add('hide'); });
+      pay.on('ready', () => { if (payLoading) payLoading.classList.add('hide'); pane2.classList.remove('loading'); if (bump && bump.checked) syncBump(); });
+      pay.on('loaderror', e => { useHosted(e && e.error && e.error.message); if (payLoading) payLoading.classList.add('hide'); pane2.classList.remove('loading'); });
       co = { stripe, elements, intentId: started.intentId, clientSecret: started.clientSecret, email: data.email, amount: started.amount };
     } catch (e) {
-      useHosted(e.message); if (payLoading) payLoading.classList.add('hide');
+      useHosted(e.message); if (payLoading) payLoading.classList.add('hide'); pane2.classList.remove('loading');
     }
   }
+  // Start the payment while the parent is still on step 1, so the card fields are ready when step 2 opens.
+  const p1 = () => { const d = {}; $$('input', pane1).forEach(i => d[i.name] = i.value.trim()); return d; };
+  const emailEl = $('#email', pane1), phoneEl = $('#phone', pane1);
+  emailEl && emailEl.addEventListener('blur', () => prefetch(p1()));
+  phoneEl && phoneEl.addEventListener('input', () => { if (phoneEl.value.replace(/\D/g, '').length >= 10) prefetch(p1()); });
   async function syncBump() {
     if (!co) return;
     try {
