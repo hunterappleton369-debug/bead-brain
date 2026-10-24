@@ -130,7 +130,7 @@ function ownedHTML(s) {
   const items = [];
   if (s.kit) items.push(row('Abacus kit', `The abacus, on its way.${s.kitPaidAt ? ` Ordered ${shortDay(s.kitPaidAt)}.` : ''}`, '<a class="link-arrow own-go" href="#/quickstart">Your 3-Night Quick-Start</a>'));
   if (membership.can('playbook')) items.push(row('Child Prodigy Secrets Playbook',
-    s.boughtPlaybook ? 'The book in your box, the audiobook, and a copy to read here.' : 'Comes with your membership. Read it here.',
+    s.boughtPlaybook ? 'The Playbook and the audiobook, ready to read and listen to here.' : 'Comes with your membership. Read it here.',
     '<a class="link-arrow own-go" href="#/playbook">Open the Playbook</a>'));
   const uni = uniState(s);
   if (uni) items.push(row('Child Phenom University', uni[2], '', ` <span class="status-chip ${uni[0]}">${uni[1]}</span>`));
