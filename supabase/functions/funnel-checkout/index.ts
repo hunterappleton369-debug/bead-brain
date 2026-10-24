@@ -69,8 +69,10 @@ async function start(stripe: Stripe, b: Body) {
   const bump = b.bump === true || b.bump === '1' || b.bump === 1;
   const name = `${first} ${last}`.trim();
 
-  const found = await stripe.customers.list({ email, limit: 1 });
-  let customer = found.data[0] ?? null;
+  // Only a Child Phenoms customer is reused. A parent who is also a customer of the account's other business keeps
+  // two separate customer records, so nothing from one shows up on the other's portal or invoices.
+  const found = await stripe.customers.list({ email, limit: 10 });
+  let customer = found.data.find((c) => c.metadata?.cp === 'funnel') ?? null;
   if (!customer) customer = await stripe.customers.create({ email, name: name || undefined, phone: phone || undefined, metadata: { cp: 'funnel' } });
   else if ((name && !customer.name) || (phone && !customer.phone)) customer = await stripe.customers.update(customer.id, { name: customer.name || name || undefined, phone: customer.phone || phone || undefined });
 
