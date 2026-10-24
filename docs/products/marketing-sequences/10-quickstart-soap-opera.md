@@ -29,7 +29,7 @@ Your receipt is below. Keep this email.
 
 {{receipt}}
 
-The box ships within 2 business days with tracking. Most kits arrive in 9 to 15 days. You do not have to wait for it. Your first three nights are at the bottom of this email. They work on the screen abacus in your parent account tonight.
+The box ships within 2 business days with tracking and arrives within 7 days. You do not have to wait for it. Your first three nights are at the bottom of this email. They work on the screen abacus in your parent account tonight.
 
 {{if_bump}}Your Playbook and the audiobook are waiting too. Sign in and look under "What you own."{{end_if}}
 
