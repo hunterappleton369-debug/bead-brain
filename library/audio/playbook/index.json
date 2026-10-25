@@ -1,0 +1,106 @@
+{
+  "title": "Child Prodigy Secrets Playbook",
+  "author": "Hunter McClain",
+  "voice": "en-US-AndrewMultilingualNeural",
+  "built": "2026-10-25",
+  "narrator": "Narrated edition (AI voice)",
+  "total_seconds": 4917,
+  "chapters": [
+    {
+      "no": 0,
+      "title": "Opening credits",
+      "kind": "intro",
+      "file": "00-intro.mp3",
+      "seconds": 10,
+      "section": 0
+    },
+    {
+      "no": 1,
+      "title": "The lie that cost me a decade",
+      "kind": "chapter",
+      "file": "01-chapter-01.mp3",
+      "seconds": 275,
+      "section": 2
+    },
+    {
+      "no": 2,
+      "title": "Beads to brain: the fifteen-minute routine",
+      "kind": "chapter",
+      "file": "02-chapter-02.mp3",
+      "seconds": 369,
+      "section": 3
+    },
+    {
+      "no": 3,
+      "title": "The most expensive lie in education, and the three-week fix",
+      "kind": "chapter",
+      "file": "03-chapter-03.mp3",
+      "seconds": 540,
+      "section": 4
+    },
+    {
+      "no": 4,
+      "title": "All 34 bead moves, in the order a child's brain learns them",
+      "kind": "chapter",
+      "file": "04-chapter-04.mp3",
+      "seconds": 1079,
+      "section": 5
+    },
+    {
+      "no": 5,
+      "title": "The ten stages, Sprout to Legend",
+      "kind": "chapter",
+      "file": "05-chapter-05.mp3",
+      "seconds": 369,
+      "section": 6
+    },
+    {
+      "no": 6,
+      "title": "Flash rounds at the dinner table",
+      "kind": "chapter",
+      "file": "06-chapter-06.mp3",
+      "seconds": 861,
+      "section": 7
+    },
+    {
+      "no": 7,
+      "title": "The Bead Score",
+      "kind": "chapter",
+      "file": "07-chapter-07.mp3",
+      "seconds": 481,
+      "section": 8
+    },
+    {
+      "no": 8,
+      "title": "What to say when they get stuck (never the answer)",
+      "kind": "chapter",
+      "file": "08-chapter-08.mp3",
+      "seconds": 502,
+      "section": 9
+    },
+    {
+      "no": 9,
+      "title": "What happens next",
+      "kind": "chapter",
+      "file": "09-chapter-09.mp3",
+      "seconds": 122,
+      "section": 10
+    },
+    {
+      "no": 10,
+      "title": "The science, in plain words",
+      "kind": "appendix",
+      "file": "10-appendix-science.mp3",
+      "seconds": 169,
+      "section": 11
+    },
+    {
+      "no": 11,
+      "title": "The formula card",
+      "kind": "appendix",
+      "file": "11-appendix-formula-card.mp3",
+      "seconds": 140,
+      "section": 12
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "_readme": "Certified Phenom Instructor directory, shown at /#/instructors. Add one object to \"instructors\" per instructor who passed the exam and sent the listing form. Only rows with \"status\": \"live\" show. Fields and steps: docs/APP-DELIVERY.md, section 4. Copy the shape from instructors/sample.json.",
+  "updated": "2026-10-21",
+  "instructors": []
+}

@@ -1,0 +1,22 @@
+// Funnel configuration. Fill these in before running traffic.
+// Payment: the site is static, so each "Complete order" button sends the parent to a hosted checkout
+// (a Stripe Payment Link, or the matching ClickFunnels order page). Leave empty to preview the funnel
+// end to end without charging anyone.
+export const CONFIG = {
+  shipping: 9.95,                 // what the parent pays on the free kit
+  bumpPrice: 27,                  // Child Prodigy Secrets Playbook (printed) + audiobook + digital copy
+  checkoutUrl: 'https://buy.stripe.com/cNicMY0ISck62iLdo9eZ200',                // Stripe Payment Link A: kit ($9.95 shipping and handling), US shipping address; after payment redirect to university.html?paid=kit
+  checkoutUrlWithBump: 'https://buy.stripe.com/bJe5kw63cck60aD0BneZ201',        // Stripe Payment Link B: kit + $27 Playbook, same redirect (both links required; a Shopify /cart/ link also works and gets name/email/phone prefilled)
+  universityTrialUrl: 'https://buy.stripe.com/aFa5kw4Z83NAbTl97TeZ202',         // Stripe Payment Link: $67/mo with a 14-day trial; after payment redirect to certify.html?paid=university
+  certifyUrl: 'https://buy.stripe.com/4gM28kajsck63mPfwheZ203',                 // Stripe Payment Link: $297 once; after payment redirect to thanks.html?paid=certify
+  metaPixelId: '1239441998349754', // Meta Pixel (dataset) ID. Hunter's call 2026-10-21: the existing business pixel, shared. Empty = no pixel loads. Disclosed in the privacy policy.
+  posthogKey: 'phc_sLS6Nf8tmibUcx6ucD54Awck7cQrgo8TKTmquzGjzHMv', // PostHog project "Child Phenoms" (US cloud). Public by design. Empty = PostHog does not load; it never loads under Global Privacy Control.
+  posthogHost: 'https://us.i.posthog.com',
+  // On-page checkout (ClickFunnels style): the card form lives in step 2 and the upsells are one click on the saved
+  // card. Both values are needed; with either empty the buttons fall back to the hosted links above.
+  stripePublishableKey: 'pk_live_51TivQW5uuxnQgoyBE0DMu1qDmZVdpMTZiHIqFbWu58qIvxzLAhTsTuAY9hRl0tq7TlkN9kWAsdW8bSbaCzi55iiS00H1wnVqAG', // public by design (pk_live)
+  checkoutApi: 'https://fndemnipqtpmuvcidcxo.supabase.co/functions/v1/funnel-checkout',                     // supabase/functions/funnel-checkout
+  leadWebhook: '',                // optional: POST step-1 contact info here (Zapier/Make/CF webhook) for abandon follow-up
+  supportEmail: 'hello@childphenoms.com',
+  shipDays: 'within 2 business days',
+};
