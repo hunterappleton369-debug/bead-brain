@@ -58,7 +58,7 @@ export function pixel() {
   !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
   /* eslint-enable */
   const lead = load(LEAD_KEY) || {};
-  const am = {}; if (lead.email) am.em = lead.email.trim().toLowerCase(); if (lead.first) am.fn = lead.first.trim().toLowerCase(); if (lead.last) am.ln = lead.last.trim().toLowerCase(); if (lead.phone) am.ph = lead.phone.replace(/\D/g, '');
+  const am = {}; if (lead.email) am.em = lead.email.trim().toLowerCase(); if (lead.first) am.fn = lead.first.trim().toLowerCase(); if (lead.last) am.ln = lead.last.trim().toLowerCase(); if (lead.phone) { const d = lead.phone.replace(/\D/g, ''); am.ph = d.length === 10 ? '1' + d : d; } // Meta wants the country code
   window.fbq('init', CONFIG.metaPixelId, am);
   window.fbq('track', 'PageView');
 }
@@ -179,10 +179,17 @@ export function scrollLinks() {
 
 // ---------- on-page checkout: Stripe Elements in step 2, the card saved for one-click upsells ----------
 const onPage = () => !!(CONFIG.checkoutApi && CONFIG.stripePublishableKey);
+// A call that hangs on a flaky in-app connection would freeze the button it belongs to, so each one gives up: start
+// and update after 15 seconds (the hosted checkout then takes over), an upsell after 40 (the server itself stops
+// waiting on Stripe at 25, and the page treats a timeout like a dropped answer: wait, ask once more).
+const API_MS = { start: 15000, update: 15000, upsell: 40000 };
 async function api(payload) {
   let r;
-  try { r = await fetch(CONFIG.checkoutApi, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }); }
-  catch { throw Object.assign(new Error('Something went wrong. Try again in a moment.'), { code: 'network', status: 0 }); }
+  const ctl = typeof AbortController === 'function' ? new AbortController() : null;
+  const t = ctl ? setTimeout(() => ctl.abort(), API_MS[payload.action] || 15000) : 0;
+  try { r = await fetch(CONFIG.checkoutApi, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload), signal: ctl ? ctl.signal : undefined }); }
+  catch (e) { throw Object.assign(new Error('Something went wrong. Try again in a moment.'), { code: e && e.name === 'AbortError' ? 'timeout' : 'network', status: 0 }); }
+  finally { clearTimeout(t); }
   let data = {}; try { data = await r.json(); } catch {}
   if (!r.ok || data.error) throw Object.assign(new Error(data.error || 'Something went wrong. Try again in a moment.'), { code: 'http_' + r.status, status: r.status, decline: !!data.decline });
   return data;
@@ -200,7 +207,7 @@ function loadStripe() {
   return stripeJs;
 }
 // why the card form is off, for analytics: network | stripe_js | http_<status>: <server message> | loaderror: … | timeout
-const reasonOf = e => { const c = (e && e.code) || 'error'; return c === 'network' || c === 'stripe_js' || !(e && e.message) ? c : c + ': ' + String(e.message).slice(0, 120); };
+const reasonOf = e => { const c = (e && e.code) || 'error'; return c === 'network' || c === 'stripe_js' || c === 'timeout' || !(e && e.message) ? c : c + ': ' + String(e.message).slice(0, 120); };
 const APPEARANCE = { theme: 'stripe', variables: { colorPrimary: '#2457f5', colorText: '#121826', colorDanger: '#f03e3e', borderRadius: '10px', fontFamily: 'Inter, system-ui, sans-serif', fontSizeBase: '16px', spacingUnit: '4px' } };
 const FONTS = [{ cssSrc: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap' }];
 const MOUNT_MS = 12000; // no card form 12 seconds after step 2 opens: the hosted checkout takes over
@@ -214,7 +221,19 @@ export function orderForm() {
   const lead = load(LEAD_KEY) || {};
   // prefill from an earlier visit
   $$('input', pane1).forEach(i => { if (lead[i.name]) i.value = lead[i.name]; });
-  if (onPage()) loadStripe().catch(() => {}); // warm up while the parent types
+  // Warm up Stripe.js (250 KB) once the page's own images and fonts are in, or as soon as the parent touches the
+  // form, whichever comes first, so it never competes with the hero image for a slow connection's first seconds.
+  if (onPage()) {
+    let warmed = false; const warm = () => { if (warmed) return; warmed = true; loadStripe().catch(() => {}); };
+    if (document.readyState === 'complete') warm(); else addEventListener('load', warm, { once: true });
+    pane1.addEventListener('focusin', warm, { once: true });
+    setTimeout(warm, 4000); // a load event held up by a slow third-party script still warms up in time
+  }
+  // Back from a card check that failed or was abandoned (university.html sends ?pay=failed): say so, once
+  if (RETURN_Q.get('pay') === 'failed') {
+    try { const u = new URL(location.href); u.searchParams.delete('pay'); history.replaceState(null, '', u.pathname + u.search + u.hash); } catch {}
+    setTimeout(() => toast('That payment did not go through. Check the card and try again.', 5000), 600);
+  }
 
   const valid = pane => {
     let ok = true;
@@ -246,17 +265,35 @@ export function orderForm() {
   const setState = (mode, reason) => { window.cpCheckoutState = { mode, reason: reason || '' }; };
   const setBusy = on => { complete.classList.toggle('busy', on); if (on) complete.setAttribute('aria-disabled', 'true'); else complete.removeAttribute('aria-disabled'); };
   const fullName = d => [d.first, d.last].filter(Boolean).join(' ');
+  // In hosted mode the button opens Stripe's page, where the address and card are typed: its label says so
+  const LABEL_HOSTED = 'CONTINUE TO SECURE CHECKOUT →';
+  if (!complete.dataset.label) complete.dataset.label = complete.firstChild.textContent;
+  const setLabel = hostedMode => { complete.firstChild.textContent = hostedMode ? LABEL_HOSTED : complete.dataset.label; };
+  // An error the parent can see: the line under the card fields, a toast by the thumb, and the page scrolls up to the
+  // fields (a phone shows the button about a screen below them, so a message left there was never seen).
+  const failed = (msg, toFields) => {
+    showErr(msg); toast(msg, 4200);
+    const target = toFields ? payBlock : payErr;
+    if (target) setTimeout(() => window.scrollTo({ top: target.getBoundingClientRect().top + scrollY - (toFields ? 84 : innerHeight / 2), behavior: 'smooth' }), 50);
+  };
+  // After a confirm that ended in an error: whether Stripe shows the kit as paid anyway (the answer was lost on the way
+  // back, which a dropped in-app connection does). Never a guess: a lookup that fails answers null.
+  const paidAfterAll = async c => {
+    try { const r = await c.stripe.retrievePaymentIntent(c.clientSecret); const pi = r && r.paymentIntent; return pi && (pi.status === 'succeeded' || pi.status === 'processing') ? pi : null; }
+    catch { return null; }
+  };
   // The card form could not start or is too slow: a calm line in its place, and the bump, the summary and the
   // button stay. Complete then opens the hosted Payment Link.
   const useHosted = reason => {
-    hosted = true; mounting = null; clearTimeout(timer);
+    hosted = true; mounting = null; pre = null; clearTimeout(timer); // a start still on its way is dropped: the next Next starts fresh
     if (payBlock) payBlock.classList.add('hosted');
+    setLabel(true);
     if (payLoading) payLoading.classList.add('hide');
     pane2.classList.remove('loading'); showErr('');
     setState('hosted', reason); ph('checkout_hosted_fallback', { reason });
     console.warn('on-page checkout off:', reason);
   };
-  if (hosted) { if (payBlock) payBlock.classList.add('hosted'); setState('hosted', 'not_configured'); }
+  if (hosted) { if (payBlock) payBlock.classList.add('hosted'); setLabel(true); setState('hosted', 'not_configured'); }
   const destroyEls = () => { if (!els) return; [els.ship, els.pay].forEach(x => { try { x.destroy(); } catch {} }); els = null; };
   const startCall = d => {
     const b = !!(bump && bump.checked);
@@ -280,6 +317,7 @@ export function orderForm() {
     const live = () => my === seq && !hosted; // false once a newer try or the fallback has taken over
     hosted = false; co = null; destroyEls();
     if (payBlock) payBlock.classList.remove('hosted');
+    setLabel(false);
     showErr(''); if (payLoading) payLoading.classList.remove('hide');
     pane2.classList.add('loading');
     clearTimeout(timer);
@@ -319,8 +357,16 @@ export function orderForm() {
   // Start the payment while the parent is still on step 1, so the card fields are ready when step 2 opens.
   const p1 = () => { const d = {}; $$('input', pane1).forEach(i => d[i.name] = i.value.trim()); return d; };
   const emailEl = $('#email', pane1), phoneEl = $('#phone', pane1);
+  // The start goes out on the email's blur (speed: the card form is ready by the time Next is tapped) or once the phone
+  // has 10 digits (the in-app browsers' autofill fills every field at once, and some parents type the phone first).
+  // A start made before the phone was typed is the one the card form keeps, so the saved lead often has no phone;
+  // the paid order still gets it from the shipping form. Filling it in would take a lead-only call to the server.
+  const phoneReady = () => !!phoneEl && phoneEl.value.replace(/\D/g, '').length >= 10;
   emailEl && emailEl.addEventListener('blur', () => prefetch(p1()));
-  phoneEl && phoneEl.addEventListener('input', () => { if (phoneEl.value.replace(/\D/g, '').length >= 10) prefetch(p1()); });
+  phoneEl && phoneEl.addEventListener('input', () => { if (phoneReady()) prefetch(p1()); });
+  // the step-1 fields are a form, so the keyboard's Go key is the same as the button
+  const step1 = form.querySelector('form[data-step1]');
+  step1 && step1.addEventListener('submit', e => { e.preventDefault(); $('[data-next]', form).click(); });
   // The bump changed: move the intent to the new total. Complete stays busy until Stripe has it, and the loop
   // re-reads the box after each answer, so quick taps end on the box's last state.
   function syncBump() {
@@ -337,7 +383,11 @@ export function orderForm() {
           await c.elements.fetchUpdates();
         } while (c === co && !hosted && want !== !!(bump && bump.checked));
         showErr('');
-      } catch (e) { showErr(e.message); }
+      } catch (e) {
+        // the total on the page must be the total Stripe will charge: the box goes back to what Stripe has
+        if (bump && co) { bump.checked = !!co.bump; totals(); }
+        failed(e.message, false);
+      }
       finally { syncing = null; setBusy(false); }
     })();
     return syncing;
@@ -387,17 +437,27 @@ export function orderForm() {
       showErr(''); setBusy(true); if (bump) bump.disabled = true;
       const label = complete.firstChild.textContent; complete.firstChild.textContent = 'Processing your order… ';
       const undo = () => { setBusy(false); if (bump) bump.disabled = false; complete.firstChild.textContent = label; };
+      const finish = pi => { saveOrder({ ...order, intentId: co.intentId, clientSecret: co.clientSecret, kit: true, paid: true, paidAt: new Date().toISOString(), status: pi && pi.status }); location.href = 'university.html?paid=kit'; };
       try {
-        const lead = load(LEAD_KEY) || {};
+        const lead = { ...(load(LEAD_KEY) || {}), ...p1() }; // the fields as typed, even where storage is blocked
         const { error, paymentIntent } = await co.stripe.confirmPayment({
           elements: co.elements, redirect: 'if_required',
           confirmParams: { return_url: new URL('university.html?paid=kit', location.href).toString(), payment_method_data: { billing_details: { name: fullName(lead) || undefined, email: lead.email || undefined, phone: lead.phone || undefined } } },
         });
-        if (error) { showErr(error.message || 'The card did not go through. Check the details and try again.'); undo(); return; }
-        saveOrder({ ...order, intentId: co.intentId, clientSecret: co.clientSecret, kit: true, paid: true, paidAt: new Date().toISOString(), status: paymentIntent && paymentIntent.status });
-        location.href = 'university.html?paid=kit';
+        if (error) {
+          // The answer was lost but the charge went through (a dropped in-app connection; a second tap then says
+          // the intent is in an unexpected state): the order is paid, go on. Field and card errors skip the lookup.
+          const known = error.payment_intent && (error.payment_intent.status === 'succeeded' || error.payment_intent.status === 'processing') ? error.payment_intent : null;
+          const done = known || (error.type === 'validation_error' || error.type === 'card_error' ? null : await paidAfterAll(co));
+          if (done) { finish(done); return; }
+          failed(error.type === 'validation_error' ? 'Please fill in the highlighted fields above.' : (error.message || 'The card did not go through. Check the details and try again.'), error.type === 'validation_error');
+          undo(); return;
+        }
+        finish(paymentIntent);
       } catch (err) {
-        showErr(err.message || 'Something went wrong. Try again.'); undo();
+        const done = await paidAfterAll(co);
+        if (done) { finish(done); return; }
+        failed(err.message || 'Something went wrong. Try again.', false); undo();
       }
       return;
     }
@@ -425,7 +485,12 @@ export function orderForm() {
 export function upsell(kind) {
   const url = kind === 'university' ? CONFIG.universityTrialUrl : CONFIG.certifyUrl;
   const next = kind === 'university' ? 'certify.html' : 'thanks.html';
+  // A card that needed the bank's check and came back failed or abandoned: nothing was paid, so the parent goes back
+  // to the order form instead of reading an offer whose one-click cannot work.
+  const rs = RETURN_Q.get('redirect_status');
+  if (kind === 'university' && rs && rs !== 'succeeded') { location.replace(new URL('./?pay=failed#order', location.href).toString()); return; }
   markPaid(); // the step before this page, when it came back paid
+  const yesAll = $$('[data-yes]'); let yesBusy = false; // one tap at a time across every yes button on the page
   $$('[data-trial-date]').forEach(el => el.textContent = day(new Date(Date.now() + 14 * 864e5)));
   const o0 = loadOrder() || {};
   const oneClick = onPage() && !!(o0.intentId && o0.clientSecret);
@@ -437,13 +502,14 @@ export function upsell(kind) {
   });
   $$('[data-yes]').forEach(b => b.addEventListener('click', async e => {
     e.preventDefault();
-    if (b.classList.contains('busy')) return;
+    if (yesBusy) return;
+    yesBusy = true;
     const o = loadOrder() || {}; o[kind] = (url || oneClick) ? 'pending' : true; saveOrder(o);
     const base = o.intentId || o.eventId;
     track('InitiateCheckout', { content_name: kind === 'university' ? 'university-trial' : 'certification', value: kind === 'university' ? 0 : 297, currency: 'USD' }, base ? base + '-' + kind : undefined);
     ph('upsell_yes', { kind }, true);
     if (oneClick) {
-      const label = b.firstChild.textContent; b.classList.add('busy'); b.firstChild.textContent = kind === 'university' ? 'Starting your test drive… ' : 'Adding it to your order… ';
+      const label = b.firstChild.textContent; yesAll.forEach(x => x.classList.add('busy')); b.firstChild.textContent = kind === 'university' ? 'Starting your test drive… ' : 'Adding it to your order… ';
       try {
         await api({ action: 'upsell', kind, intentId: o.intentId, clientSecret: o.clientSecret });
         location.href = next + '?paid=' + kind; return;
@@ -461,7 +527,7 @@ export function upsell(kind) {
             location.href = next + '?paid=' + kind; return;
           } catch (e2) { e = e2 || e; }
         }
-        b.classList.remove('busy'); b.firstChild.textContent = label;
+        yesAll.forEach(x => x.classList.remove('busy')); b.firstChild.textContent = label; yesBusy = false;
         if (url && hostedOk(e)) {
           // the hosted page asks for the card again (and runs the bank's check), so drop any 'button below' wording
           toast(String(e.message || 'That card did not go through.').replace(/\s*Use the button below to confirm it\.?/i, ' We are opening a secure page so you can confirm it.'), 3600);
@@ -477,7 +543,7 @@ export function upsell(kind) {
     else { toast('Preview: no payment connected yet'); setTimeout(() => location.href = next, 900); }
   }));
   $$('[data-no]').forEach(b => b.addEventListener('click', e => { e.preventDefault(); const o = loadOrder() || {}; o[kind] = false; saveOrder(o); ph('upsell_no', { kind }, true); location.href = next; }));
-  const first = load(LEAD_KEY)?.first; if (first) $$('[data-first]').forEach(el => el.textContent = first);
+  const first = (load(LEAD_KEY) || {}).first; if (first) $$('[data-first]').forEach(el => el.textContent = first);
 }
 
 // A paid return (?paid=<kind>) marks the item bought. The pixel and PostHog count it only for a payment this browser
@@ -548,7 +614,9 @@ export function thanks() {
 
 // shared bits
 export function common() {
-  captureAttribution(); pixel(); posthog(); toastRegion();
+  captureAttribution(); pixel(); toastRegion();
+  // PostHog (about 200 KB with session replay) waits for the page's own load, so the hero and the form come first
+  if (document.readyState === 'complete') posthog(); else { addEventListener('load', posthog, { once: true }); setTimeout(posthog, 5000); }
   $$('[data-support]').forEach(el => { el.textContent = CONFIG.supportEmail; el.href = 'mailto:' + CONFIG.supportEmail; });
   $$('[data-year]').forEach(el => el.textContent = new Date().getFullYear());
 }

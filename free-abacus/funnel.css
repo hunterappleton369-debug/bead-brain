@@ -359,7 +359,7 @@ body { padding-bottom: 92px; }
 .fn-wrap h1, .fn-wrap h2, .fn-wrap h3, .fn-wrap h4, .try-box b { font-family: Poppins, Inter, sans-serif; letter-spacing: -.01em; }
 
 /* step 2: fields first, then the rest; tighter everything */
-.pane.loading .bump, .pane.loading .summary, .pane.loading [data-complete], .pane.loading .lock, .pane.loading .back-row { display: none; }
+.pane.loading .bump, .pane.loading .summary, .pane.loading [data-complete], .pane.loading .lock { display: none; } /* the Back button stays: a parent waiting on the card form can still fix step 1 */
 .pay-skeleton { display: grid; gap: 10px; padding: 4px 0 2px; }
 .pay-skeleton i { display: block; height: 44px; border-radius: 10px; background: linear-gradient(90deg, #eef0f4 25%, #f7f8fb 50%, #eef0f4 75%); background-size: 200% 100%; animation: cp-shimmer 1.2s linear infinite; }
 .pay-skeleton i.short { width: 55%; }
