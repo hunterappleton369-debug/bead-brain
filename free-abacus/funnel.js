@@ -33,6 +33,12 @@ try {
     history.replaceState(null, '', u.pathname + u.search + u.hash);
   }
 } catch {}
+// A sign-in link that lands on an order page (#access_token=…) goes on to the app. The hash leaves this page's address
+// first, so neither the pixel nor PostHog (whose replay keeps the full address) ever sees the session.
+try {
+  const h = location.hash;
+  if (/(^|[#&])(access_token|refresh_token)=/.test(h)) { history.replaceState(null, '', location.pathname + location.search); location.replace('/' + h); }
+} catch {}
 // One Meta Lead event id per email: the page's pixel and the server's Conversions API copy share it, so Meta
 // counts the lead once.
 const LEADEV_KEY = 'cp.funnel.leadev';

@@ -1,11 +1,20 @@
-// auth.js — parent accounts and progress sync (Supabase, loaded from a CDN at runtime).
+// auth.js — parent accounts and progress sync (Supabase, our own copy of supabase-js, loaded at runtime).
 // Everything here is optional. With no config, or with no network, the store keeps working from
 // localStorage and the rest of the app never notices. When a parent is signed in, every profile
 // save is mirrored to the server (at most once every 2 s) and the newest copy wins on load.
 import { SUPABASE_URL, SUPABASE_KEY } from './config.js';
 import { store } from './store.js';
 
-const CDN = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/+esm';
+// Self-hosted @supabase/supabase-js 2.118.0 (dist/umd/supabase.js from the npm tarball, unchanged; sha256
+// ee3be8de192b97cb1d73d1e95d6b82bb1f6b658c0f97c4ef757fc331996ed3d3). No third-party script runs on the page that
+// holds parents' sessions (security audit 2026-10-26, M4). To upgrade: replace the file and this line.
+const LIB = new URL('./vendor/supabase-js-2.118.0.umd.js', import.meta.url).href;
+const loadLib = () => new Promise((ok, fail) => {
+  if (window.supabase?.createClient) return ok(window.supabase);
+  const s = document.createElement('script'); s.src = LIB; s.async = true;
+  s.onload = () => (window.supabase?.createClient ? ok(window.supabase) : fail(new Error('supabase-js did not define window.supabase')));
+  s.onerror = () => fail(new Error('supabase-js did not load')); document.head.appendChild(s);
+});
 const SYNC_KEY = 'beadbrain.sync.v1'; // per device: which profile ids each account already holds, deletes still to send
 const PUSH_DELAY = 2000;
 
@@ -55,7 +64,7 @@ async function init() {
   } else if (isAuthHash(hash)) auth.callbackPending = true;
 
   let mod;
-  try { mod = await import(CDN); }
+  try { mod = await loadLib(); }
   catch (e) { console.warn('accounts off: supabase-js did not load', e); auth.offline = true; auth.ready = true; emit('ready'); return; }
 
   sb = mod.createClient(SUPABASE_URL, SUPABASE_KEY, {
