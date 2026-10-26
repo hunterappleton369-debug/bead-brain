@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#2457f5">
+<title>Opening your parent account · Child Phenoms</title>
+<link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+<!--
+  The "Open my parent account" button in the receipt emails Q1, U1 and CW1 lands here: /open/?t=<token>.
+  The token leaves the address bar first, then goes to the open-account function, which answers a fresh one-time
+  sign-in link; the page goes there and Supabase signs the parent in. Unknown, expired or any error: the sign-in
+  button. No analytics, no pixel, nothing loaded from anywhere else. docs/APP-DELIVERY.md, "One-tap account links".
+-->
+<noscript><style>#opening { display: none !important; }</style></noscript>
+<style>
+  :root {
+    --ink: #121826; --ink-2: #4b5567; --hair: #e6e8ee;
+    --paper: #ffffff; --paper-2: #f7f8fb; --blue: #2457f5; --blue-ink: #1a43c4;
+    --display: 'Unbounded', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; min-height: 100vh; min-height: 100dvh;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 24px 16px calc(32px + env(safe-area-inset-bottom));
+    background: var(--paper-2); color: var(--ink);
+    font: 17px/1.55 var(--body);
+  }
+  .logo { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; }
+  .logo svg { width: 34px; height: 34px; flex: none; }
+  .logo .word { font-family: var(--display); font-weight: 700; font-size: 17px; letter-spacing: -.02em; white-space: nowrap; }
+  .logo .word b { color: var(--blue); font-weight: 800; }
+  main { width: 100%; max-width: 430px; margin: auto 0; padding: 32px 0 48px; }
+  .card {
+    background: var(--paper); border: 2px solid var(--ink); border-radius: 28px;
+    box-shadow: 4px 4px 0 var(--ink); padding: 32px 22px 28px; text-align: center;
+  }
+  h1 { font-family: var(--display); font-size: 23px; line-height: 1.25; letter-spacing: -.01em; margin: 0 0 12px; }
+  p { margin: 0 0 26px; color: var(--ink-2); }
+  .btn {
+    display: flex; align-items: center; justify-content: center; width: 100%; min-height: 58px; padding: 14px 20px;
+    border: 2px solid var(--ink); border-radius: 999px; background: var(--blue); color: #fff;
+    font: 700 18px/1.2 var(--body); text-decoration: none; box-shadow: 4px 4px 0 var(--ink);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .btn:hover { background: var(--blue-ink); }
+  .btn:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--ink); }
+  .btn:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+  .spin {
+    width: 44px; height: 44px; margin: 2px auto 22px; border-radius: 50%;
+    border: 4px solid var(--hair); border-top-color: var(--blue); animation: spin .8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .spin { animation-duration: 2.4s; } }
+  #opening h1 { margin: 0; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<a class="logo" href="/" aria-label="Child Phenoms home">
+  <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="3" y="3" width="58" height="58" rx="16" fill="#2457f5" stroke="#121826" stroke-width="3"/><path d="M 36 8 L 20 36 L 31 36 L 26 56 L 46 26 L 35 26 L 41 8 Z" fill="#ffd23f" stroke="#121826" stroke-width="3" stroke-linejoin="round"/></svg>
+  <span class="word">Child <b>Phenoms</b></span>
+</a>
+<main>
+  <section id="opening" class="card" role="status" aria-live="polite">
+    <div class="spin" aria-hidden="true"></div>
+    <h1>Opening your parent account…</h1>
+  </section>
+  <section id="expired" class="card" hidden>
+    <h1>This button has expired.</h1>
+    <p>Sign in with the email you ordered with and we will send you a fresh link.</p>
+    <a class="btn" href="/#/start/signin">Sign in</a>
+  </section>
+  <noscript>
+    <section class="card">
+      <h1>This button has expired.</h1>
+      <p>Sign in with the email you ordered with and we will send you a fresh link.</p>
+      <a class="btn" href="/#/start/signin">Sign in</a>
+    </section>
+  </noscript>
+</main>
+<script>
+(function () {
+  var API = 'https://fndemnipqtpmuvcidcxo.supabase.co/functions/v1/open-account';
+  var VERIFY = 'https://fndemnipqtpmuvcidcxo.supabase.co/auth/v1/verify?';
+  var t = '';
+  try { t = new URLSearchParams(location.search).get('t') || ''; } catch (e) { t = ''; }
+  // The token leaves the address bar first: not in history, a bookmark, a screenshot or a shared address.
+  try { history.replaceState(null, '', location.pathname); } catch (e) { /* the page still works */ }
+  var settled = false;
+  function expired() {
+    if (settled) return;
+    settled = true;
+    document.getElementById('opening').hidden = true;
+    document.getElementById('expired').hidden = false;
+    document.title = 'This button has expired · Child Phenoms';
+  }
+  if (!/^[A-Za-z0-9_-]{43}$/.test(t)) { expired(); return; }
+  var ctrl = typeof AbortController === 'function' ? new AbortController() : null;
+  var timer = setTimeout(function () { if (ctrl) ctrl.abort(); expired(); }, 15000);
+  // text/plain keeps it a simple request (no preflight); the function reads the JSON body either way.
+  fetch(API, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
+    body: JSON.stringify({ t: t }),
+    cache: 'no-store', credentials: 'omit', referrerPolicy: 'no-referrer',
+    signal: ctrl ? ctrl.signal : undefined
+  }).then(function (r) {
+    return r.ok ? r.json() : null;
+  }).then(function (d) {
+    clearTimeout(timer);
+    var url = d && typeof d.url === 'string' ? d.url : '';
+    if (settled) return;
+    if (url.indexOf(VERIFY) === 0) { settled = true; location.replace(url); } else expired();
+  }).catch(function () {
+    clearTimeout(timer);
+    expired();
+  });
+})();
+</script>
+</body>
+</html>
