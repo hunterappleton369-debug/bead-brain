@@ -24,10 +24,9 @@ export const UNIVERSITY_URL = 'free-abacus/university.html'; // the 14-day test 
 export const PLAYBOOK_AUDIO_URL = '';
 export const PLAYBOOK_PRICE = 27;
 
-// The instructor course (#/course/<n>, js/course.js): one video per lesson. A YouTube or Vimeo link plays in a
-// 16:9 player; a link to an .mp4 plays in the browser's own player. Empty: the lesson says the video is on its
-// way, and the words on the page are the same lesson.
-// [HUNTER: paste when ready] the link for each lesson, e.g. L01: 'https://youtu.be/…'
+// The instructor course (#/course/<n>, js/course.js): videos are a later project (Hunter, 2026-10-25), so the
+// lessons are text, drills and checks, and the pages promise no video. Add a lesson's link here when one exists: a
+// YouTube or Vimeo link plays in a 16:9 player, an .mp4 in the browser's own player. Empty: no video slot at all.
 export const COURSE_VIDEO_URLS = {
   L01: '', L02: '', L03: '', L04: '', L05: '', L06: '', L07: '', L08: '', L09: '', L10: '',
   L11: '', L12: '', L13: '', L14: '', L15: '', L16: '', L17: '', L18: '', L19: '', L20: '',

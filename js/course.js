@@ -65,17 +65,17 @@ function setDone(id, on) {
 }
 
 // ───────── the video slot ─────────
-// YouTube or Vimeo → a 16:9 player; an .mp4 → the browser's own player; nothing yet → a calm card.
+// YouTube or Vimeo → a 16:9 player; an .mp4 → the browser's own player; no link → nothing (videos are a later project).
 export function videoHTML(url, title) {
   const u = String(url || '').trim();
   const frame = src => `<div class="course-video"><iframe src="${esc(src)}" title="${esc(title)}" loading="lazy" allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>`;
   let m;
-  if (!u) return `<div class="course-video none"><div><span class="eyebrow">Video</span><p>The video is on its way. The words below are the same lesson.</p></div></div>`;
+  if (!u) return ''; // no video yet: the lesson is the words, nothing promised
   if ((m = u.match(/(?:youtube(?:-nocookie)?\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/)|youtu\.be\/)([\w-]{6,})/i))) return frame(`https://www.youtube-nocookie.com/embed/${m[1]}?rel=0`);
   if ((m = u.match(/vimeo\.com\/(?:video\/)?(\d+)(?:\/(\w+))?/i))) { const hh = u.match(/[?&]h=(\w+)/); const key = hh ? hh[1] : m[2]; return frame(`https://player.vimeo.com/video/${m[1]}${key ? `?h=${key}` : ''}`); }
   if (/^https?:\/\/\S+\.(mp4|m4v|webm)(\?\S*)?$/i.test(u) || /^[\w./-]+\.(mp4|m4v|webm)$/i.test(u)) return `<div class="course-video"><video playsinline controls preload="metadata" src="${esc(u)}">Your browser cannot play this video here.</video></div>`;
   if (/^https:\/\//i.test(u)) return `<div class="course-video none"><div><span class="eyebrow">Video</span><p><a class="link-arrow" href="${esc(u)}" target="_blank" rel="noopener">Watch the video</a></p><p class="small muted">The words below are the same lesson.</p></div></div>`;
-  return `<div class="course-video none"><div><span class="eyebrow">Video</span><p>The video is on its way. The words below are the same lesson.</p></div></div>`;
+  return '';
 }
 // A note left for Hunter in the source ("[HUNTER: …]") never reaches the page.
 const clean = html => String(html || '').replace(/\[HUNTER\b[^\]]*\]/g, '');
@@ -103,7 +103,7 @@ function courseIndex(app) {
     el.querySelector('.course-body').innerHTML = `<section class="page-head"><div>
         <span class="eyebrow blue">Certified Phenom Instructor</span>
         <h1>The instructor course</h1>
-        <p class="lede">${lessons.length} lessons over six weeks, about five hours a week. Each lesson has the lesson to read, drills on your own soroban, a teach-back and a five-question check. Videos are being filmed and appear in each lesson as they are ready.</p>
+        <p class="lede">${lessons.length} lessons over six weeks, about five hours a week. Each lesson has the lesson to read, drills on your own soroban, a teach-back and a five-question check.</p>
         <div class="course-progress"><div class="bar"><i style="width:${lessons.length ? Math.round(100 * count / lessons.length) : 0}%"></i></div><span class="small">${count} of ${lessons.length} done</span></div>
         <div class="btn-row">${next ? `<a class="btn big blue" href="${ROUTE}/${next.n}">${count ? `Go on with Lesson ${next.n}` : 'Start Lesson 1'} →</a>` : `<a class="btn big blue" href="${s.certified ? '#/certificate' : '#/exam'}">${s.certified ? 'Your certificate' : 'Take the test'} →</a>`}</div>
       </div><div class="art">${instructorBadge({ year: s.certified ? String(s.cert.passedOn?.getFullYear() || '') : '', cls: 'ibadge head' })}</div></section>
