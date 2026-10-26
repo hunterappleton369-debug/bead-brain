@@ -260,7 +260,11 @@ export function orderForm() {
   const destroyEls = () => { if (!els) return; [els.ship, els.pay].forEach(x => { try { x.destroy(); } catch {} }); els = null; };
   const startCall = d => {
     const b = !!(bump && bump.checked);
-    return loadStripe().then(S => api({ action: 'start', email: d.email, first: d.first, last: d.last, phone: d.phone, bump: b, attribution: attribution(), lead_event_id: gpc() ? undefined : leadEventId(d.email), gpc: gpc() }).then(started => ({ S, started, bump: b })));
+    // the start call goes out at once, in parallel with Stripe.js: the server saves the lead first, so even a page whose
+    // Stripe.js never loads keeps the parent's contact details
+    const started = api({ action: 'start', email: d.email, first: d.first, last: d.last, phone: d.phone, bump: b, attribution: attribution(), lead_event_id: gpc() ? undefined : leadEventId(d.email), gpc: gpc() });
+    started.catch(() => {});
+    return Promise.all([loadStripe(), started]).then(([S, st]) => ({ S, started: st, bump: b }));
   };
 
   function prefetch(d) {
