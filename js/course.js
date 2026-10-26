@@ -98,7 +98,7 @@ function courseIndex(app) {
     const weeks = [...new Set(lessons.map(l => l.week))].sort((a, b) => a - b);
     const weekName = w => (Array.isArray(c.weeks) && c.weeks.find(x => Number(x.n) === Number(w))?.title) || WEEKS[w] || '';
     const row = l => { const id = l.id || lessonId(l.n), isDone = !!done[id], isNext = next && next.n === l.n;
-      return `<li class="${isDone ? 'done' : ''} ${isNext ? 'next' : ''}"><span class="ix">${isDone ? '✓' : l.n}</span><div><a href="${ROUTE}/${l.n}">${esc(l.title)}</a>${l.lede ? `<div class="lede-line">${esc(l.lede)}</div>` : ''}<div class="meta">${[l.video && `Video ${esc(l.video)}`, l.time && esc(l.time)].filter(Boolean).join(' · ')}</div></div><a class="btn sm ${isNext ? 'blue' : 'secondary'} go" href="${ROUTE}/${l.n}">${isDone ? 'Again' : isNext ? 'Next' : 'Open'}</a></li>`; };
+      return `<li class="${isDone ? 'done' : ''} ${isNext ? 'next' : ''}"><span class="ix">${isDone ? '✓' : l.n}</span><div><a href="${ROUTE}/${l.n}">${esc(l.title)}</a>${l.lede ? `<div class="lede-line">${esc(l.lede)}</div>` : ''}<div class="meta">${[l.video && COURSE_VIDEO_URLS[l.id || lessonId(l.n)] && `Video ${esc(l.video)}`, l.time && esc(l.time)].filter(Boolean).join(' · ')}</div></div><a class="btn sm ${isNext ? 'blue' : 'secondary'} go" href="${ROUTE}/${l.n}">${isDone ? 'Again' : isNext ? 'Next' : 'Open'}</a></li>`; };
     const passed = s.certified ? `You passed${s.cert.passedOn ? ` on ${s.cert.passedOn.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}` : ''}.` : '';
     el.querySelector('.course-body').innerHTML = `<section class="page-head"><div>
         <span class="eyebrow blue">Certified Phenom Instructor</span>

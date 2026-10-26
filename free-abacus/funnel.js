@@ -42,13 +42,7 @@ function leadEventId(email) {
   if (!m[k]) { m[k] = 'lead-' + rid().replace(/[^A-Za-z0-9_-]/g, ''); save(LEADEV_KEY, m); }
   return m[k];
 }
-// A hosted Stripe Payment Link carries the order's event id as client_reference_id, so the server's Purchase or
-// StartTrial event matches the pixel's.
-function withRef(url, ref) {
-  const u = new URL(url);
-  if (ref && /^[A-Za-z0-9_-]{1,200}$/.test(ref) && /(^|\.)stripe\.com$/.test(u.hostname)) u.searchParams.set('client_reference_id', ref);
-  return u;
-}
+
 
 // ---------- Meta Pixel (loads only when CONFIG.metaPixelId is set) ----------
 const PX_KEY = 'cp.px.fired';
@@ -182,9 +176,9 @@ const onPage = () => !!(CONFIG.checkoutApi && CONFIG.stripePublishableKey);
 async function api(payload) {
   let r;
   try { r = await fetch(CONFIG.checkoutApi, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }); }
-  catch { throw Object.assign(new Error('Something went wrong. Try again in a moment.'), { code: 'network' }); }
+  catch { throw Object.assign(new Error('Something went wrong. Try again in a moment.'), { code: 'network', status: 0 }); }
   let data = {}; try { data = await r.json(); } catch {}
-  if (!r.ok || data.error) throw Object.assign(new Error(data.error || 'Something went wrong. Try again in a moment.'), { code: 'http_' + r.status });
+  if (!r.ok || data.error) throw Object.assign(new Error(data.error || 'Something went wrong. Try again in a moment.'), { code: 'http_' + r.status, status: r.status, decline: !!data.decline });
   return data;
 }
 let stripeJs = null;
@@ -404,7 +398,7 @@ export function orderForm() {
 
     const url = withBump ? CONFIG.checkoutUrlWithBump : CONFIG.checkoutUrl; // hosted fallback; both links must be set
     if (url) {
-      const u = withRef(url, order.eventId);
+      const u = new URL(url);
       if (/\/cart\//.test(u.pathname)) {
         // Shopify cart permalink: prefill what step 1 collected; Shopify asks for the address and card
         if (order.email) u.searchParams.set('checkout[email]', order.email);
@@ -448,23 +442,31 @@ export function upsell(kind) {
         await api({ action: 'upsell', kind, intentId: o.intentId, clientSecret: o.clientSecret });
         location.href = next + '?paid=' + kind; return;
       } catch (err) {
-        // A lost response is not a failed charge. The server answers { already: true } for a repeat, so one retry
-        // tells a dropped connection from a real decline before the hosted page (a second card) is offered.
-        if (!err || err.code === 'network' || !err.status || err.status >= 500) {
+        // Only a declined card (402) or an order too old or unknown for one click (400/404) earns the hosted page,
+        // where the parent types a card. Anything else (a dropped answer, 409 busy, 503, offline) may mean the
+        // charge went through or is still running: wait, ask once more (a repeat answers { already: true }), and
+        // never offer a second checkout on a guess.
+        let e = err || {};
+        const hostedOk = x => x.status === 402 || x.status === 400 || x.status === 404;
+        if (!hostedOk(e)) {
+          await new Promise(r => setTimeout(r, 3000));
           try {
             await api({ action: 'upsell', kind, intentId: o.intentId, clientSecret: o.clientSecret });
             location.href = next + '?paid=' + kind; return;
-          } catch (err2) { err = err2 || err; }
+          } catch (e2) { e = e2 || e; }
         }
         b.classList.remove('busy'); b.firstChild.textContent = label;
-        toast((err && err.message) || 'That did not go through.', 3200);
-        if (!url) return;
-        // the saved card failed: let the parent enter another one on the hosted page
-        setTimeout(() => { const u = withRef(url, base ? base + '-' + kind : ''); if (o.email) u.searchParams.set('prefilled_email', o.email); location.href = u.toString(); }, 1600);
+        if (url && hostedOk(e)) {
+          toast(e.message || 'That card did not go through.', 3200);
+          setTimeout(() => { const u = new URL(url); if (o.email) u.searchParams.set('prefilled_email', o.email); location.href = u.toString(); }, 1600);
+          return;
+        }
+        toast('We could not confirm this step yet. Check your email for a receipt before you try again.', 6500);
+        ph('upsell_unconfirmed', { kind, status: e.status || 0 });
         return;
       }
     }
-    if (url) { const u = withRef(url, base ? base + '-' + kind : ''); if (o.email) u.searchParams.set('prefilled_email', o.email); location.href = u.toString(); }
+    if (url) { const u = new URL(url); if (o.email) u.searchParams.set('prefilled_email', o.email); location.href = u.toString(); }
     else { toast('Preview: no payment connected yet'); setTimeout(() => location.href = next, 900); }
   }));
   $$('[data-no]').forEach(b => b.addEventListener('click', e => { e.preventDefault(); const o = loadOrder() || {}; o[kind] = false; saveOrder(o); ph('upsell_no', { kind }, true); location.href = next; }));

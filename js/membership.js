@@ -82,7 +82,9 @@ function state() {
   let status = r.status;
   // The table can lag Stripe by a day or two: a cancel date that has passed means it has ended.
   if (cancelAt && cancelAt <= today && ['trialing', 'active', 'past_due'].includes(status)) status = 'canceled';
-  const member = ['trialing', 'active', 'past_due'].includes(status);
+  // an instructor year ends on its own (a one-time purchase sends no Stripe event at the end): past it, University closes
+  const yearOver = r.plan === 'instructor' && periodEnd && addDays(periodEnd, 1) < today;
+  const member = ['trialing', 'active', 'past_due'].includes(status) && !yearOver;
   const out = { ...base, status, member, keepsLibrary: r.keeps_library !== false, trialEnd, periodEnd, cancelAt, pausedUntil };
   if (status === 'trialing' && trialEnd) {
     // 14 free days end the day before trial_end; the first charge is on trial_end.
