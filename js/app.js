@@ -410,7 +410,11 @@ function start(mode = '') {
   const [route, query = ''] = String(mode || '').split('?'); // #/start/signin?email=… (our emails link there) fills the email box
   const user = auth.user;
   const signin = route === 'signin' && !user;
-  const prefill = signin ? cleanEmail((new URLSearchParams(query).get('email') || '').replace(/ /g, '+')).slice(0, 254) : ''; // an unencoded + reads as a space
+  // the box starts filled: from the link (#/start/signin?email=…), else from the order form on this device (the funnel keeps
+  // the parent's contact details in cp.funnel.lead), so a parent who just bought taps once
+  const fromLink = cleanEmail((new URLSearchParams(query).get('email') || '').replace(/ /g, '+')); // an unencoded + reads as a space
+  const fromOrder = (() => { try { return cleanEmail(JSON.parse(localStorage.getItem('cp.funnel.lead') || 'null')?.email); } catch { return ''; } })();
+  const prefill = signin ? (/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(fromLink) ? fromLink : /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(fromOrder) ? fromOrder : '').slice(0, 254) : '';
   const accounts = auth.enabled && !auth.offline;
   // A magic link that failed lands here (auth.js). Kept until a new link goes out or they leave this page.
   const linkError = auth.linkError;
