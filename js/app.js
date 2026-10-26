@@ -407,8 +407,10 @@ async function sendLink(form, email, name, next = '') {
 }
 
 function start(mode = '') {
+  const [route, query = ''] = String(mode || '').split('?'); // #/start/signin?email=… (our emails link there) fills the email box
   const user = auth.user;
-  const signin = mode === 'signin' && !user;
+  const signin = route === 'signin' && !user;
+  const prefill = signin ? cleanEmail((new URLSearchParams(query).get('email') || '').replace(/ /g, '+')).slice(0, 254) : ''; // an unencoded + reads as a space
   const accounts = auth.enabled && !auth.offline;
   // A magic link that failed lands here (auth.js). Kept until a new link goes out or they leave this page.
   const linkError = auth.linkError;
@@ -416,7 +418,7 @@ function start(mode = '') {
   const next = signin && NEXT_OK.test(prevHash) ? prevHash : ''; // came here from the Playbook: go back there after
   const emailField = user
     ? `<div class="field"><label>Parent</label><div class="help" style="font-size:15px;color:var(--ink-2)">Signed in as <b>${esc(user.email)}</b>. New children follow you to every device.</div></div>`
-    : `<div class="field"><label for="f-email">Parent email${signin ? '' : ' <span class="faint" style="text-transform:none;letter-spacing:0;font-weight:500">(optional)</span>'}</label><input id="f-email" type="email" placeholder="you@example.com" autocomplete="email" ${signin ? 'required' : ''}><div class="help">${accounts ? 'We email you a sign-in link. Progress follows you to any device.' : 'For progress updates and new stages.'}</div></div>`;
+    : `<div class="field"><label for="f-email">Parent email${signin ? '' : ' <span class="faint" style="text-transform:none;letter-spacing:0;font-weight:500">(optional)</span>'}</label><input id="f-email" type="email" placeholder="you@example.com" autocomplete="email" ${signin ? 'required' : ''}${prefill ? ` value="${esc(prefill)}"` : ''}><div class="help">${accounts ? 'We email you a sign-in link. Progress follows you to any device.' : 'For progress updates and new stages.'}</div></div>`;
   const el = h(`<div>
     <section class="onboard">
       <div>

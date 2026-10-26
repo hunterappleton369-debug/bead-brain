@@ -96,11 +96,32 @@ async function init() {
 }
 
 // ───────── sign in / out ─────────
+// The link goes out through the send-signin edge function (Resend, from hello@childphenoms.com): Supabase's own mailer
+// sends two emails an hour for the whole project and only to the team's addresses. That mailer is the fallback, for
+// when the function cannot be reached or fails (it still reaches the team's addresses). Either way the link is
+// Supabase's /auth/v1/verify, so the session lands in the hash as before.
+const SEND_SIGNIN = `${SUPABASE_URL}/functions/v1/send-signin`;
 async function signIn(email) {
   email = String(email || '').trim().toLowerCase(); // the purchases and memberships rows are keyed on the lower-case email
   if (!sb) return { error: auth.offline ? 'You look offline. Progress is still saved on this device.' : auth.enabled ? 'Still connecting. Try again in a moment.' : 'Accounts are not switched on yet.' };
+  const sent = await sendSignin(email);
+  if (sent) return sent;
   const { error } = await sb.auth.signInWithOtp({ email, options: { emailRedirectTo: redirectURL(), shouldCreateUser: true } });
   return { error: error ? friendly(error) : null };
+}
+// { error: null } once the email is out; { error } for a refusal the page shows as it is (429 too many links, 400 not an
+// email); null when the fallback should try (offline, a timeout, a 5xx, the function missing).
+async function sendSignin(email) {
+  let res;
+  try {
+    res = await fetch(SEND_SIGNIN, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ email, redirectTo: redirectURL() }), signal: AbortSignal.timeout?.(25000) });
+  } catch (e) { console.warn('send-signin unreachable, trying Supabase mail', e); return null; }
+  const body = await res.json().catch(() => ({}));
+  if (res.ok && body.ok) return { error: null };
+  if (res.status === 429) return { error: body.error || friendly({ message: 'too many' }) };
+  if (res.status === 400 && body.error) return { error: String(body.error) };
+  console.warn(`send-signin answered ${res.status}, trying Supabase mail`);
+  return null;
 }
 function friendly(e) {
   const m = e?.message || '';
