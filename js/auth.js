@@ -118,7 +118,9 @@ async function sendSignin(email) {
   } catch (e) { console.warn('send-signin unreachable, trying Supabase mail', e); return null; }
   const body = await res.json().catch(() => ({}));
   if (res.ok && body.ok) return { error: null };
-  if (res.status === 429) return { error: body.error || friendly({ message: 'too many' }) };
+  // 429 = too many links for this address or this hour; 503 = sign-in is busy (the throttle could not be checked):
+  // show the server's line instead of falling back to Supabase's mailer, which only reaches the team's addresses
+  if (res.status === 429 || res.status === 503) return { error: body.error || friendly({ message: 'too many' }) };
   if (res.status === 400 && body.error) return { error: String(body.error) };
   console.warn(`send-signin answered ${res.status}, trying Supabase mail`);
   return null;

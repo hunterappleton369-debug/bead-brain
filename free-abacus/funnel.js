@@ -457,7 +457,8 @@ export function upsell(kind) {
         }
         b.classList.remove('busy'); b.firstChild.textContent = label;
         if (url && hostedOk(e)) {
-          toast(e.message || 'That card did not go through.', 3200);
+          // the hosted page asks for the card again (and runs the bank's check), so drop any 'button below' wording
+          toast(String(e.message || 'That card did not go through.').replace(/\s*Use the button below to confirm it\.?/i, ' We are opening a secure page so you can confirm it.'), 3600);
           setTimeout(() => { const u = new URL(url); if (o.email) u.searchParams.set('prefilled_email', o.email); location.href = u.toString(); }, 1600);
           return;
         }
