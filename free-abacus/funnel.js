@@ -97,13 +97,25 @@ function posthog() {
     window.posthog.init(CONFIG.posthogKey, {
       api_host: CONFIG.posthogHost || 'https://us.i.posthog.com',
       person_profiles: 'identified_only',
-      capture_pageview: true,
+      capture_pageview: false, // sent by hand below, at once: a batched one is lost when the in-app browser closes within seconds
+      capture_pageleave: true,
       autocapture: true,
       session_recording: { maskAllInputs: true, maskTextSelector: '[data-ph-mask]' },
       before_send: ev => (ev && ev.event !== '$snapshot' ? scrub(ev) : ev),
     });
     phOn = true;
+    window.posthog.capture('$pageview', {}, { send_instantly: true, transport: 'sendBeacon' });
   } catch {}
+}
+// Meta's link crawler (desktop Chrome in a 1050 by 1893 window, referred by www.facebook.com, two hits a second
+// apart from Europe on 2026-10-26) and its named bots are not visitors: no PostHog for them.
+const crawler = () => (innerWidth === 1050 && innerHeight === 1893) || /facebookexternalhit|facebookcatalog|meta-externalagent|FacebookBot/i.test(navigator.userAgent);
+// A page opened in the background (the in-app browser's preload) is recorded once it is on screen, so a preload that
+// is never opened does not count as a visit.
+function posthogWhenShown() {
+  if (crawler()) return;
+  if (document.visibilityState === 'hidden') { addEventListener('visibilitychange', () => { if (document.visibilityState !== 'hidden') posthog(); }, { once: true }); return; }
+  posthog();
 }
 // beforeNav: the page changes right after this, so send the event now instead of with the next batch
 function ph(name, props, beforeNav) {
@@ -308,10 +320,24 @@ export function orderForm() {
     if (!onPage() || !d.email || !EMAIL.test(d.email)) return;
     if (pre && pre.email === d.email) return;
     const p = startCall(d);
-    pre = { email: d.email, p }; p.catch(() => { if (pre && pre.p === p) pre = null; });
+    pre = { email: d.email, p, sent: d }; p.catch(() => { if (pre && pre.p === p) pre = null; });
   }
+  // The start usually goes out on the email's blur, before the first name or the phone is typed (one order reached
+  // Stripe as first '' / last 'Hernandez', and its welcome email opened "Hi Hernandez"). Once Next has the fields as
+  // finally typed, the server gets them for the lead row, the Customer and the intent. Sent once per intent and set
+  // of values, in the background; nothing waits for it and a failure changes nothing on the page.
+  let contactSent = '';
+  const syncContact = (st, d) => {
+    if (!st || !st.intentId || !st.clientSecret) return;
+    const key = [st.intentId, d.first, d.last, d.phone].join('|');
+    if (contactSent === key) return;
+    contactSent = key;
+    const s0 = pre && pre.email === d.email ? pre.sent : null;
+    if (s0 && s0.first === d.first && s0.last === d.last && s0.phone === d.phone) return; // the start already carried these
+    api({ action: 'update', intentId: st.intentId, clientSecret: st.clientSecret, first: d.first, last: d.last, phone: d.phone }).catch(() => { if (contactSent === key) contactSent = ''; });
+  };
   async function mountCheckout(data) {
-    if (!hosted && co && co.email === data.email) { if (bump && co.bump !== bump.checked) await syncBump(); return; }
+    if (!hosted && co && co.email === data.email) { syncContact(co, data); if (bump && co.bump !== bump.checked) await syncBump(); return; }
     if (mounting && mounting.email === data.email) return; // this email's card form is already on its way
     const my = ++seq; mounting = { email: data.email };
     const live = () => my === seq && !hosted; // false once a newer try or the fallback has taken over
@@ -323,9 +349,11 @@ export function orderForm() {
     clearTimeout(timer);
     timer = setTimeout(() => { if (my === seq && mounting) useHosted('timeout'); }, MOUNT_MS);
     try {
+      if (!(pre && pre.email === data.email)) prefetch(data); // no start on its way for this email: one goes out now
       const got = (pre && pre.email === data.email) ? await pre.p : await startCall(data);
       if (!live()) return;
       const started = got.started;
+      syncContact(started, data);
       const stripe = got.S(CONFIG.stripePublishableKey);
       const elements = stripe.elements({ clientSecret: started.clientSecret, appearance: APPEARANCE, fonts: FONTS, loader: 'auto' });
       const ship = elements.create('address', { mode: 'shipping', allowedCountries: ['US'], fields: { phone: 'always' }, validation: { phone: { required: 'always' } }, defaultValues: { name: fullName(data), phone: data.phone || '' }, display: { name: 'full' } });
@@ -616,7 +644,7 @@ export function thanks() {
 export function common() {
   captureAttribution(); pixel(); toastRegion();
   // PostHog (about 200 KB with session replay) waits for the page's own load, so the hero and the form come first
-  if (document.readyState === 'complete') posthog(); else { addEventListener('load', posthog, { once: true }); setTimeout(posthog, 5000); }
+  if (document.readyState === 'complete') posthogWhenShown(); else { addEventListener('load', posthogWhenShown, { once: true }); setTimeout(posthogWhenShown, 5000); }
   $$('[data-support]').forEach(el => { el.textContent = CONFIG.supportEmail; el.href = 'mailto:' + CONFIG.supportEmail; });
   $$('[data-year]').forEach(el => el.textContent = new Date().getFullYear());
 }
