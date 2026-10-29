@@ -157,24 +157,26 @@ export function toast(msg, ms = 2600) {
   setTimeout(() => t.remove(), ms);
 }
 
-// ---------- sticky CTA: shows once the hero CTA scrolls away, hides while the form is on screen ----------
-export function stickyCTA(target = '#order') {
-  const bar = $('.sticky-cta'); const form = $(target); const hero = $('[data-hero-cta]');
-  if (!bar) return;
+// ---------- sticky CTA: shows only while no other CTA button is on screen ----------
+export function stickyCTA() {
+  const bar = $('.sticky-cta'); if (!bar) return;
   // keep the page's last lines clear of the bar, whatever its button text wraps to on this phone
   const pad = () => { const h = bar.offsetHeight; document.body.style.paddingBottom = h ? (h + 8) + 'px' : ''; };
   pad(); addEventListener('resize', pad, { passive: true }); if (document.fonts) document.fonts.ready.then(pad, () => {});
-  const io = new IntersectionObserver(() => {
-    const heroGone = hero ? hero.getBoundingClientRect().bottom < 0 : true;
-    const formOn = form ? (form.getBoundingClientRect().top < innerHeight * 0.8 && form.getBoundingClientRect().bottom > 120) : false;
-    bar.classList.toggle('show', heroGone && !formOn);
-  }, { threshold: [0, .1, .5, 1] });
-  [hero, form].filter(Boolean).forEach(el => io.observe(el));
-  addEventListener('scroll', () => {
-    const heroGone = hero ? hero.getBoundingClientRect().bottom < 0 : true;
-    const formOn = form ? (form.getBoundingClientRect().top < innerHeight * 0.8 && form.getBoundingClientRect().bottom > 120) : false;
-    bar.classList.toggle('show', heroGone && !formOn);
-  }, { passive: true });
+  // every CTA button on the page except the bar's own; the bar shows once none of them is in the viewport
+  const ctas = $$('.btn.cta').filter(b => !b.closest('.sticky-cta'));
+  const onScreen = new Set();
+  const shown = el => { const pane = el.closest('.pane'); return !pane || pane.classList.contains('on'); }; // a button in the order form's hidden step does not count
+  const update = () => bar.classList.toggle('show', onScreen.size === 0);
+  if (!('IntersectionObserver' in window)) { bar.classList.add('show'); return; }
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting && shown(e.target)) onScreen.add(e.target); else onScreen.delete(e.target); });
+    update();
+  }, { threshold: 0 });
+  ctas.forEach(el => io.observe(el));
+  // a button inside a hidden pane (step 2 of the order form) leaves the viewport without a scroll: re-check on each change
+  const mo = new MutationObserver(() => { ctas.forEach(el => { const r = el.getBoundingClientRect(); const vis = shown(el) && r.width > 0 && r.bottom > 0 && r.top < innerHeight; if (vis) onScreen.add(el); else onScreen.delete(el); }); update(); });
+  $$('.order .pane').forEach(p => mo.observe(p, { attributes: true, attributeFilter: ['class'] }));
 }
 
 // ---------- smooth scroll for in-page CTAs ----------
