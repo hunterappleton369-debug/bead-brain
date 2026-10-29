@@ -103,7 +103,7 @@ function courseIndex(app) {
     el.querySelector('.course-body').innerHTML = `<section class="page-head"><div>
         <span class="eyebrow blue">Certified Phenom Instructor</span>
         <h1>The instructor course</h1>
-        <p class="lede">${lessons.length} lessons over six weeks, about five hours a week. Each lesson has the lesson to read, drills on your own soroban, a teach-back and a five-question check.</p>
+        <p class="lede">${lessons.length} lessons over six weeks, about five hours a week. Each lesson has the lesson to read, drills on your own abacus, a teach-back and a five-question check.</p>
         <div class="course-progress"><div class="bar"><i style="width:${lessons.length ? Math.round(100 * count / lessons.length) : 0}%"></i></div><span class="small">${count} of ${lessons.length} done</span></div>
         <div class="btn-row">${next ? `<a class="btn big blue" href="${ROUTE}/${next.n}">${count ? `Go on with Lesson ${next.n}` : 'Start Lesson 1'} →</a>` : `<a class="btn big blue" href="${s.certified ? '#/certificate' : '#/exam'}">${s.certified ? 'Your certificate' : 'Take the test'} →</a>`}</div>
       </div><div class="art">${instructorBadge({ year: s.certified ? String(s.cert.passedOn?.getFullYear() || '') : '', cls: 'ibadge head' })}</div></section>

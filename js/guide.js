@@ -41,13 +41,13 @@ export const FORMULAS_HTML = `
 export const GUIDE_HTML = `
 <span class="eyebrow blue">Parent guide</span>
 <h1>You do not need to be a math person.</h1>
-<p class="lede">You need a soroban, fifteen minutes a day, and a chair next to your child. Everything else is on the screen. Read this once. Come back to "When it gets hard" when you need it.</p>
+<p class="lede">You need an abacus, fifteen minutes a day, and a chair next to your child. Everything else is on the screen. Read this once. Come back to "When it gets hard" when you need it.</p>
 
 <section class="section">
 <span class="eyebrow">What you need</span>
 <h2>Three things</h2>
 <div class="cols">
-<div><h3>A soroban</h3><p>A 13-rod Japanese abacus: one bead above the beam, four below. Search "13 rod soroban". Not the Chinese one with two top beads, and not the ten-bead school abacus. The tricks only work on a soroban.</p></div>
+<div><h3>An abacus</h3><p>A 13-rod Japanese abacus: one bead above the beam, four below. Search "13 rod abacus". Not the Chinese one with two top beads, and not the ten-bead school abacus. The tricks only work on an abacus.</p></div>
 <div><h3>This site</h3><p>On a laptop or tablet. The screen abacus is for demos and the first lessons. For real problems your child uses the physical one, until the Ace stage when most practice moves into the head.</p></div>
 <div><h3>Fifteen minutes</h3><p>Six days a week. Short and daily beats long and weekly. A few days off and the skill goes dull, so protect the streak.</p></div>
 </div>
@@ -92,7 +92,7 @@ export const GUIDE_HTML = `
 <li><b>XP and levels.</b> Every right answer earns XP. Mental and flash answers earn more. Kids care about the level more than you expect.</li>
 <li><b>Streak.</b> Days in a row with at least one drill. Protect it.</li>
 <li><b>Daily quest.</b> Three short drills for the current stage. All three in a day earns a bonus. On a busy day the quest alone is enough.</li>
-<li><b>Bead Score.</b> A twenty-rung ladder from "add two small numbers" to "fifteen three-digit numbers flashed at 0.2 seconds". Taken with no soroban and no paper, so it measures the mental skill only. The chart shows the climb against typical children of the same age.</li>
+<li><b>Bead Score.</b> A twenty-rung ladder from "add two small numbers" to "fifteen three-digit numbers flashed at 0.2 seconds". Taken with no abacus and no paper, so it measures the mental skill only. The chart shows the climb against typical children of the same age.</li>
 </ul>
 </section>
 

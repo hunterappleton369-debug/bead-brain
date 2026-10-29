@@ -194,7 +194,7 @@ function marketing() {
         <div class="btn-row"><a class="btn big blue" href="#/start">Start free</a><a class="btn big secondary" href="#/plan">See the plan</a></div>
         <p class="small faint">No account needed. Works on any laptop or tablet.</p>
       </div>
-      <div class="hero-art">${burst('15 min\na day')}<img src="img/hero-kid.webp" alt="A child in a superhero cape holding a soroban abacus, picturing beads in a thought bubble" width="880" height="880" fetchpriority="high"></div>
+      <div class="hero-art">${burst('15 min\na day')}<img src="img/hero-kid.webp" alt="A child in a superhero cape holding an abacus, picturing beads in a thought bubble" width="880" height="880" fetchpriority="high"></div>
     </section>
     <div class="strip"><span>10 stages</span><span>76 lessons</span><span>Progress you can see</span><span>Built for parents, not teachers</span></div>
 
@@ -209,7 +209,7 @@ function marketing() {
 
     <section class="section">
       <div class="section-head"><span class="eyebrow">How it works</span><h2>Learn the beads. Then take them away.</h2><p>The whole program in three moves.</p></div>
-      <div class="zig"><div class="zig-art"><img src="img/soroban.webp" alt="A hand moving a bead on a soroban" loading="lazy"></div><div><div class="n">1</div><h3>Learn the beads</h3><p>Your child reads and sets numbers on a real soroban until it is instant. Then the 34 bead moves, one at a time, each drilled on problems built to need exactly that move.</p></div></div>
+      <div class="zig"><div class="zig-art"><img src="img/soroban.webp" alt="A hand moving a bead on an abacus" loading="lazy"></div><div><div class="n">1</div><h3>Learn the beads</h3><p>Your child reads and sets numbers on a real abacus until it is instant. Then the 34 bead moves, one at a time, each drilled on problems built to need exactly that move.</p></div></div>
       <div class="zig"><div class="zig-art"><img src="img/mental-abacus.webp" alt="A child with eyes closed picturing an abacus" loading="lazy"></div><div><div class="n">2</div><h3>Take the beads away</h3><p>Eyes-closed games, numbers read aloud, and flash rounds grow a picture of the abacus in the mind, one column at a time. The picture does the math.</p></div></div>
       <div class="zig"><div class="zig-art"><img src="img/score-climb.webp" alt="A child superhero on top of a rising chart holding a trophy" loading="lazy"></div><div><div class="n">3</div><h3>Watch it climb</h3><p>Every few weeks, a short Bead Score test. The result lands on a chart against typical kids of the same age. Dots go up. Grandparents get a video.</p></div></div>
     </section>
@@ -233,7 +233,7 @@ function marketing() {
           </ul>
           <div class="btn-row"><a class="btn secondary" href="#/guide">Read the parent guide</a></div>
         </div>
-        <img src="img/parent-child.webp" alt="A parent beside a child using a soroban at a laptop" loading="lazy">
+        <img src="img/parent-child.webp" alt="A parent beside a child using an abacus at a laptop" loading="lazy">
       </div>
     </section>
 
@@ -251,7 +251,7 @@ function marketing() {
       <div class="block blue center">
         <span class="eyebrow blue">Start today</span>
         <h2>The first lesson takes ten minutes.</h2>
-        <p class="lede" style="margin:0 auto 20px">Set up your child's profile, sit down together, and move the first bead. The soroban can arrive next week.</p>
+        <p class="lede" style="margin:0 auto 20px">Set up your child's profile, sit down together, and move the first bead. The abacus can arrive next week.</p>
         <div class="btn-row" style="justify-content:center"><a class="btn big" href="#/start">Start free</a><a class="btn big secondary" href="#/stage/1">Peek at stage 1</a></div>
       </div>
     </section>
@@ -430,7 +430,7 @@ function start(mode = '') {
         <h1>${signin ? 'Open your account.' : "Let's meet your phenom."}</h1>
         <p class="lede">${signin ? 'Sign in with the email you ordered with. We email you a link; no password.' : 'A profile keeps the streak, the badges and the Bead Score chart. Add more than one child any time.'}</p>
         <ul>
-          <li><b>No soroban yet?</b> The first lessons work on the screen abacus.</li>
+          <li><b>No abacus yet?</b> The first lessons work on the screen abacus.</li>
           <li><b>Not sure of the level?</b> Everyone starts at Sprout. It takes a fast child a week.</li>
           ${accounts ? '<li><b>Progress follows you.</b> Add your email and every device shows the same streak.</li>' : '<li><b>Progress saves in this browser.</b> Use the same device each time.</li>'}
         </ul>
@@ -575,7 +575,7 @@ function plan() {
         <div>
           <span class="eyebrow green">The secret</span>
           <h2>The abacus is scaffolding. The picture is the skill.</h2>
-          <p class="lede">From the first stage your child practises with eyes closed. Each stage grows the picture by one column. By Prodigy the real soroban is a warm-up toy and every drill happens in the head.</p>
+          <p class="lede">From the first stage your child practises with eyes closed. Each stage grows the picture by one column. By Prodigy the real abacus is a warm-up toy and every drill happens in the head.</p>
         </div>
         <img src="img/mental-abacus.webp" alt="" loading="lazy">
       </div>
@@ -680,7 +680,7 @@ function lesson(n, key) {
       <div class="try-box">
         <span class="sticker">Practice</span>
         <h2 style="margin-top:6px">${drillDesc(l.drill)}</h2>
-        <p class="muted">Target: ${Math.round(l.drill.target.acc * 100)}% correct${l.drill.target.maxSec ? ` in under ${Math.round(l.drill.target.maxSec / 60)} min` : ''}.${l.drill.mode === 'mental' ? ' <b>No soroban, no paper.</b>' : (['addsub', 'mul', 'div'].includes(l.drill.kind) ? ' Use your real soroban.' : '')}</p>
+        <p class="muted">Target: ${Math.round(l.drill.target.acc * 100)}% correct${l.drill.target.maxSec ? ` in under ${Math.round(l.drill.target.maxSec / 60)} min` : ''}.${l.drill.mode === 'mental' ? ' <b>No abacus, no paper.</b>' : (['addsub', 'mul', 'div'].includes(l.drill.kind) ? ' Use your real abacus.' : '')}</p>
         ${tip(coachTip(l.drill, s))}
         <div class="holder"><div class="btn-row"><button class="btn big blue start">Start practice →</button></div></div>
         <details><summary>Stuck? Read this.</summary>${stuckHelp(l.drill).map(x => `<p>${x}</p>`).join('')}</details>
@@ -720,7 +720,7 @@ function drillDesc(d) {
 function boss(n) {
   const s = stageByN(n); if (!s) return notFound();
   const el = h(`<div>${crumbs('<a href="#/">Home</a>', `<a href="#/stage/${s.n}">${s.name}</a>`, 'Boss')}
-    <div class="page-head"><div><span class="eyebrow red">Boss</span><h1>${esc(s.boss.title)}</h1><p class="lede">${esc(s.boss.desc)} Each part is timed. No hints. ${s.boss.parts.some(x => x.mode === 'mental' || x.kind === 'flash') ? 'Mental parts: no soroban, no paper.' : ''}</p></div><img class="art" src="img/boss.webp" alt="" width="150" height="150"></div>
+    <div class="page-head"><div><span class="eyebrow red">Boss</span><h1>${esc(s.boss.title)}</h1><p class="lede">${esc(s.boss.desc)} Each part is timed. No hints. ${s.boss.parts.some(x => x.mode === 'mental' || x.kind === 'flash') ? 'Mental parts: no abacus, no paper.' : ''}</p></div><img class="art" src="img/boss.webp" alt="" width="150" height="150"></div>
     <div class="holder"></div></div>`);
   app.appendChild(el);
   ensureProfile();
@@ -748,7 +748,7 @@ function test(which = 'main') {
   const last = mine.slice(-1)[0];
   const suggested = last ? Math.max(1, last.rung - 1) : 1;
   const el = h(`<div>
-    <div class="page-head" style="padding-top:28px"><div><span class="eyebrow blue">Bead Score</span><h1>How high can they climb?</h1><p class="lede">A ladder of ${ladder.rungs.length} rungs. Four problems a rung, three right to climb, the first miss ends the test. No soroban, no paper, a grown-up as referee. The score is the highest rung plus a speed bonus.</p></div><img class="art" src="img/score-climb.webp" alt="" width="150" height="150"></div>
+    <div class="page-head" style="padding-top:28px"><div><span class="eyebrow blue">Bead Score</span><h1>How high can they climb?</h1><p class="lede">A ladder of ${ladder.rungs.length} rungs. Four problems a rung, three right to climb, the first miss ends the test. No abacus, no paper, a grown-up as referee. The score is the highest rung plus a speed bonus.</p></div><img class="art" src="img/score-climb.webp" alt="" width="150" height="150"></div>
     <div class="pill-nav"><a class="${which === 'main' ? 'on' : ''}" href="#/test">Add &amp; subtract</a><a class="${which === 'times' ? 'on' : ''}" href="#/test/times">Times &amp; divide</a></div>
     <div class="try-box">
       <div class="profile-row"><label>Start at rung <input type="number" id="start-rung" min="1" max="${ladder.rungs.length}" value="${suggested}" style="width:80px"></label><button class="btn big blue" id="go">Take the test</button><span class="small faint">Suggested: one below the last result.</span></div>
@@ -787,7 +787,7 @@ function practice() {
     <div class="try-box">
       <div class="profile-row">
         <label>Kind <select id="kind"><option value="addsub">Add &amp; subtract</option><option value="single">Single column (screen abacus)</option><option value="twocol">Carry / borrow (screen abacus)</option><option value="flash">Flash</option><option value="mul">Multiply</option><option value="div">Divide</option><option value="facts">Times tables</option><option value="read">Read the beads</option></select></label>
-        <label>Mode <select id="mode"><option value="abacus">With soroban</option><option value="mental">Mental</option><option value="spoken">Read aloud</option></select></label>
+        <label>Mode <select id="mode"><option value="abacus">With abacus</option><option value="mental">Mental</option><option value="spoken">Read aloud</option></select></label>
         <label>Problems <input id="count" type="number" value="10" min="1" max="50" style="width:76px"></label>
       </div>
       <div class="profile-row" style="margin-top:10px">

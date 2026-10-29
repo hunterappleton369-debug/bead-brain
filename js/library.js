@@ -158,7 +158,7 @@ export function printOne(section) {
   window.print();
 }
 
-// A soroban picture for the book's [beads: n] tokens. Beads touching the beam are filled; the rest are pale.
+// An abacus picture for the book's [beads: n] tokens. Beads touching the beam are filled; the rest are pale.
 export function beadPicture(n) {
   const rods = Math.max(3, String(n).length + 1);
   const P = 18, W = rods * P + 8, H = 92, beam = 30, ry = 4.2, rx = 7;

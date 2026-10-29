@@ -281,7 +281,7 @@ function timeGoal(d) {
 }
 function typeLabel(d) {
   const t = { set: 'Setting', beads: d.spec.peekMs ? 'Bead reading · Flash peek' : 'Bead reading', money: 'Mental', below: 'Mental', facts: 'Times tables', flash: 'Flash', spoken: 'Listening' }[d.layout]
-    || (d.mode === 'mental' ? 'Mental' : 'Written · Soroban');
+    || (d.mode === 'mental' ? 'Mental' : 'Written · Abacus');
   return timeGoal(d) && !/Timed/.test(t) ? `${t} · Timed` : t;
 }
 function beadsSVG(n, rods) {

@@ -5,7 +5,7 @@
 
 export const NOTES = {
   // 1 · Sprout
-  'hold': 'Thumb pushes beads up. Index finger pushes beads down. Clear the soroban after each number.',
+  'hold': 'Thumb pushes beads up. Index finger pushes beads down. Clear the abacus after each number.',
   'read': 'Look at the ones, then the tens. Say the whole number out loud, then write it.',
   'read3': 'Learn the look of each digit. Seven is the top bead plus two. Do not count beads one by one.',
   'set': 'Set from the left: hundreds, then tens, then ones. Use the right finger every time.',
@@ -21,7 +21,7 @@ export const NOTES = {
   'sf-sub-2-3': 'Minus 2: take away 5, add 3. Minus 3: take away 5, add 2.',
   'sf-mix': 'Plus and minus on one page. No rod goes past 9 or below 0, so small friends are all you need.',
   'speed-sf': 'Right answers first. Then try to beat your last time. Write the time where you can see it.',
-  'mental-1': 'Put the soroban away. See one rod in your head. Tap the table with thumb and finger if the picture fades.',
+  'mental-1': 'Put the abacus away. See one rod in your head. Tap the table with thumb and finger if the picture fades.',
   // 3 · Apprentice
   'bf-9-8-7': 'It will not fit? Take away the big friend and carry 1 to the left. 4 + 9: take away 1, carry 1. You get 13.',
   'bf-6-5': 'Plus 6: take away 4, carry 1. Plus 5: take away 5, carry 1.',
@@ -30,7 +30,7 @@ export const NOTES = {
   'bf-sub-9-7': 'Not enough beads to take away? Add the big friend, then borrow 1 from the left. 13 − 9: add 1, borrow 1. You get 4.',
   'bf-sub-6-1': 'Same move for every digit. Add the friend, then borrow 1. Minus 6 adds 4. Minus 1 adds 9.',
   'borrow-chain': '100 − 1: the ones rod is empty, so add 9, then borrow 1 from the tens. The tens rod is empty too, so it does the same: add 9, then borrow 1 from the hundreds. You get 99.',
-  'mental-2': 'Soroban away. See the top bead come down in your head. Move your fingers if it helps.',
+  'mental-2': 'Abacus away. See the top bead come down in your head. Move your fingers if it helps.',
   'mental-3': 'See two rods. When the ones rod fills up, a bead lands on the tens rod.',
   // 4 · Adept
   'combo-add': 'Both friends at once. Plus 6 when the top bead is down: take away 5, add 1, carry 1.',
@@ -38,7 +38,7 @@ export const NOTES = {
   'all-34': 'Every move you know is on this page. On each rod, ask what fits: free beads, a small friend, a big friend, or both.',
   'three-digit': 'Three rods now. Hundreds, then tens, then ones. A carry can run across all three.',
   'ten-rows': 'Ten lines. Keep your eyes one line ahead of your hand. Check only at the end.',
-  'mental-4': 'Soroban away. Five small numbers, plus and minus. See the rod and the rod next to it.',
+  'mental-4': 'Abacus away. Five small numbers, plus and minus. See the rod and the rod next to it.',
   'mental-5': 'Two rods in your head. 34 + 28: tens first, then ones. Say the answer: 62.',
   'mental-6': 'Keep the total as a picture, not as words. If you hear yourself say the number, go back to the beads.',
   // 5 · Ace
@@ -97,24 +97,24 @@ export const NOTES = {
 export function howTo(d) {
   const peek = d.spec?.peekMs ? Math.round(d.spec.peekMs / 100) / 10 : 0;
   switch (d.layout) {
-    case 'set': return 'Read the number. Set it on your soroban. A grown-up checks it and ticks the box.';
+    case 'set': return 'Read the number. Set it on your abacus. A grown-up checks it and ticks the box.';
     case 'beads': return peek
       ? `Say the number the beads show, then write it. A grown-up covers each picture with a card after ${peek === 1 ? 'one second' : peek + ' seconds'}.`
       : 'Say the number the beads show, then write it in the box.';
     case 'stack': return d.mode === 'mental'
-      ? 'No soroban on this sheet. Work the beads in your head. Write only the answer.'
-      : 'Set the top number on your soroban. Add or take away each line below it. Write what the beads show.';
-    case 'money': return 'No soroban on this sheet. Add the amounts on the beads in your head. Write the total with the dot.';
-    case 'below': return 'No soroban on this sheet. Work it in your head. Every answer is below zero, so write the minus sign.';
-    case 'facts': return 'No soroban. Write each answer as fast as you can say it.';
+      ? 'No abacus on this sheet. Work the beads in your head. Write only the answer.'
+      : 'Set the top number on your abacus. Add or take away each line below it. Write what the beads show.';
+    case 'money': return 'No abacus on this sheet. Add the amounts on the beads in your head. Write the total with the dot.';
+    case 'below': return 'No abacus on this sheet. Work it in your head. Every answer is below zero, so write the minus sign.';
+    case 'facts': return 'No abacus. Write each answer as fast as you can say it.';
     case 'mul': return d.mode === 'mental'
-      ? 'No soroban. Multiply on the beads in your head. Write only the answer.'
+      ? 'No abacus. Multiply on the beads in your head. Write only the answer.'
       : 'Keep the problem on paper. Build only the answer on the beads, left to right.';
     case 'div': return d.mode === 'mental'
-      ? 'No soroban. Divide on the beads in your head. Write only the answer.'
-      : (d.spec?.remainder ? 'Set the number on your soroban. Take away as you go. Write the answer and what is left.' : 'Set the number on your soroban. Take away as you go. Write the answer.');
+      ? 'No abacus. Divide on the beads in your head. Write only the answer.'
+      : (d.spec?.remainder ? 'Set the number on your abacus. Take away as you go. Write the answer and what is left.' : 'Set the number on your abacus. Take away as you go. Write the answer.');
     case 'flash': return 'A grown-up reads the numbers from page 2 at the beat. Keep the total in your head. Write it in the box.';
-    case 'spoken': return 'Put the soroban away. A grown-up reads each problem from page 2. Write the total in the box.';
+    case 'spoken': return 'Put the abacus away. A grown-up reads each problem from page 2. Write the total in the box.';
   }
   return 'Work left to right. Write the answer in the box.';
 }

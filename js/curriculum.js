@@ -17,14 +17,14 @@ export const STAGES = [
     time: '2–3 weeks',
     unlocks: ['direct'],
     why: 'Every later trick is built on reading the beads instantly. A study of U.S. first graders found that after a year, most still could not read multi-digit numbers off an abacus, and they learned little. Do not rush this stage.',
-    intro: `<p>A soroban has a <b>beam</b> across the middle. Above the beam, each rod has one <b>heaven bead</b> worth 5. Below it, four <b>earth beads</b> worth 1 each. A bead counts when it touches the beam.</p>
+    intro: `<p>An abacus has a <b>beam</b> across the middle. Above the beam, each rod has one <b>heaven bead</b> worth 5. Below it, four <b>earth beads</b> worth 1 each. A bead counts when it touches the beam.</p>
       <p>Columns are place values: the rightmost rod you use is the ones, then tens, then hundreds. Little dots on the beam mark every third rod so you can find the ones column fast.</p>
       ${free(5)}
       <p class="muted small">Click or tap beads to try it. The number updates underneath.</p>`,
     lessons: [
       {
         key: 'hold', title: 'Hold it, clear it, move it', minutes: 10,
-        teach: `<p>Put the soroban flat on the table, beam running left to right. Clear it: tilt the top edge up so every bead slides away from the beam, then lay it flat and run your index finger along the top of the beam to push the heaven beads up.</p>
+        teach: `<p>Put the abacus flat on the table, beam running left to right. Clear it: tilt the top edge up so every bead slides away from the beam, then lay it flat and run your index finger along the top of the beam to push the heaven beads up.</p>
           <p><b>Fingers.</b> Your thumb pushes earth beads <em>up</em> to the beam. Your index finger pushes earth beads <em>down</em> and moves the heaven bead both ways. Only these two fingers ever touch the beads.</p>
           <p>Try it on the screen: show 1, 2, 3, 4. Then 5 is the heaven bead alone. 6 is heaven plus one earth bead. Clear it, and show 9.</p>
           ${free(3)}
@@ -55,7 +55,7 @@ export const STAGES = [
       },
       {
         key: 'direct-add', title: 'Add when the beads are free', minutes: 12,
-        teach: `<p>To add on a soroban you simply push more beads to the beam. If the beads you need are sitting there free, move them. That is a <b>direct</b> add.</p>
+        teach: `<p>To add on an abacus you simply push more beads to the beam. If the beads you need are sitting there free, move them. That is a <b>direct</b> add.</p>
           ${demo(3, '1', '3 + 1: one earth bead is free, push it up')}
           ${demo(1, '5', '1 + 5: the heaven bead is free, bring it down')}
           ${demo(6, '3', '6 + 3: three earth beads are free')}
@@ -75,7 +75,7 @@ export const STAGES = [
         teach: `<p>Bigger numbers are just several columns. Add the tens first, then the ones. Always left to right. This feels backwards if you learned column addition at school, but it is what makes mental math possible later: you say the number the same way you add it.</p>
           ${demo(32, '51', '32 + 51: tens first (3 + 5), then ones (2 + 1)')}
           ${demo(68, '-13', '68 − 13: tens first (6 − 1), then ones (8 − 3)')}
-          <p>Use your real soroban for the drill. Set the first number, then add or subtract each line. Type the final answer.</p>`,
+          <p>Use your real abacus for the drill. Set the first number, then add or subtract each line. Type the final answer.</p>`,
         drill: { kind: 'addsub', spec: { terms: 3, digits: 2, ops: 'mix', allow: ['direct'] }, count: 8, target: { acc: 0.85 } },
       },
       {
@@ -91,7 +91,7 @@ export const STAGES = [
       parts: [
         { title: 'Read hundreds', desc: '6 numbers, under a minute.', kind: 'read', spec: { digits: 3 }, count: 6, timeLimit: 60, target: { acc: 0.83 } },
         { title: 'Set hundreds', desc: '5 numbers on the screen abacus.', kind: 'set', spec: { digits: 3 }, count: 5, timeLimit: 90, target: { acc: 0.8 } },
-        { title: 'Direct add and take away', desc: '6 problems, 3 lines each, two digits. Use your soroban.', kind: 'addsub', spec: { terms: 3, digits: 2, ops: 'mix', allow: ['direct'] }, count: 6, timeLimit: 240, target: { acc: 0.83 } },
+        { title: 'Direct add and take away', desc: '6 problems, 3 lines each, two digits. Use your abacus.', kind: 'addsub', spec: { terms: 3, digits: 2, ops: 'mix', allow: ['direct'] }, count: 6, timeLimit: 240, target: { acc: 0.83 } },
       ],
     },
     daily: [
@@ -106,7 +106,7 @@ export const STAGES = [
     goal: 'Use all eight small-friend (5) formulas without thinking, in 2-digit problems.',
     time: '3–4 weeks',
     unlocks: ['direct', 'small+', 'small-'],
-    why: 'The soroban has only four earth beads. Whenever you need a fifth, you trade: add the heaven bead and give back the difference. These eight moves are the first real technique.',
+    why: 'The abacus has only four earth beads. Whenever you need a fifth, you trade: add the heaven bead and give back the difference. These eight moves are the first real technique.',
     intro: `<p>Two numbers that make 5 are <b>small friends</b>: 1 and 4, 2 and 3. When you cannot add a number directly, add 5 and take away its friend. When you cannot subtract directly, take away 5 and give back its friend.</p>
       <div class="formula-grid">
         <div class="formula small">+1 = +5 −4<small>friend of 1 is 4</small></div>
@@ -142,7 +142,7 @@ export const STAGES = [
         teach: `<p>Now the formulas show up inside real problems. Work left to right. On each column ask: free beads, or friend?</p>
           ${demo(13, '12', '13 + 12: tens 1 + 1 direct. Ones 3 + 2 needs a friend')}
           ${demo(42, '11', '42 + 11: tens 4 + 1 needs a friend. Ones 2 + 1 direct')}
-          <p>Use your real soroban. Say each formula as you go.</p>`,
+          <p>Use your real abacus. Say each formula as you go.</p>`,
         drill: { kind: 'addsub', spec: { terms: 4, digits: 2, ops: 'add', allow: ['direct', 'small+'], require: ['small+'] }, count: 8, target: { acc: 0.85 } },
       },
       {
@@ -174,7 +174,7 @@ export const STAGES = [
       },
       {
         key: 'mental-1', title: 'Mental: three small numbers', minutes: 8,
-        teach: `<p>Put the soroban away. Picture an empty rod. Add the numbers on your imaginary beads. Only free-bead moves for now, so nothing tricky, just the picture.</p>
+        teach: `<p>Put the abacus away. Picture an empty rod. Add the numbers on your imaginary beads. Only free-bead moves for now, so nothing tricky, just the picture.</p>
           <p>If the picture fades, tap the numbers on the table with your thumb and index finger as if the beads were there. Moving the fingers keeps the picture alive. Studies of mental-abacus learners show this: stop the hands and the calculation slows.</p>`,
         drill: { kind: 'addsub', spec: { terms: 3, digits: 1, ops: 'add', allow: ['direct'] }, count: 8, mode: 'mental', target: { acc: 0.85 } },
       },
@@ -183,8 +183,8 @@ export const STAGES = [
       title: 'Explorer Boss', desc: 'Small friends under pressure.',
       parts: [
         { title: 'Friend or free?', desc: '10 single-column moves on the screen abacus.', kind: 'single', spec: { allow: SMALL, sign: 'mix' }, count: 10, timeLimit: 120, target: { acc: 0.9 }, hint: false },
-        { title: '2-digit, 4 lines', desc: '6 problems on your soroban.', kind: 'addsub', spec: { terms: 4, digits: 2, ops: 'mix', allow: SMALL }, count: 6, timeLimit: 240, target: { acc: 0.83 } },
-        { title: 'Mental', desc: '5 problems, three small numbers each, no soroban.', kind: 'addsub', spec: { terms: 3, digits: 1, ops: 'add', allow: ['direct'] }, count: 5, mode: 'mental', timeLimit: 120, target: { acc: 0.8 } },
+        { title: '2-digit, 4 lines', desc: '6 problems on your abacus.', kind: 'addsub', spec: { terms: 4, digits: 2, ops: 'mix', allow: SMALL }, count: 6, timeLimit: 240, target: { acc: 0.83 } },
+        { title: 'Mental', desc: '5 problems, three small numbers each, no abacus.', kind: 'addsub', spec: { terms: 3, digits: 1, ops: 'add', allow: ['direct'] }, count: 5, mode: 'mental', timeLimit: 120, target: { acc: 0.8 } },
       ],
     },
     daily: [
@@ -200,13 +200,13 @@ export const STAGES = [
     goal: 'Carry and borrow between columns with the eighteen big-friend (10) formulas, in 5-line problems.',
     time: '5–6 weeks',
     unlocks: NOCOMBO,
-    why: 'A column holds at most 9. Going past it means carrying 1 to the next rod and giving back the difference from 10. This is where the soroban starts beating fingers and paper.',
+    why: 'A column holds at most 9. Going past it means carrying 1 to the next rod and giving back the difference from 10. This is where the abacus starts beating fingers and paper.',
     intro: `<p>Two numbers that make 10 are <b>big friends</b>: 1 and 9, 2 and 8, 3 and 7, 4 and 6, 5 and 5. To add a number that will not fit, take away its big friend and carry 1 to the column on the left. To subtract a number that is not there, add its big friend, then borrow 1 from the left.</p>
       <div class="formula-grid">
         <div class="formula big">+9 = −1 +10</div><div class="formula big">+8 = −2 +10</div><div class="formula big">+7 = −3 +10</div><div class="formula big">+6 = −4 +10</div><div class="formula big">+5 = −5 +10</div><div class="formula big">+4 = −6 +10</div><div class="formula big">+3 = −7 +10</div><div class="formula big">+2 = −8 +10</div><div class="formula big">+1 = −9 +10</div>
         <div class="formula big">−9 = +1 −10</div><div class="formula big">−8 = +2 −10</div><div class="formula big">−7 = +3 −10</div><div class="formula big">−6 = +4 −10</div><div class="formula big">−5 = +5 −10</div><div class="formula big">−4 = +6 −10</div><div class="formula big">−3 = +7 −10</div><div class="formula big">−2 = +8 −10</div><div class="formula big">−1 = +9 −10</div>
       </div>
-      <p>The order of the two moves matters on a real soroban. Work the rod you are on first, then the rod to its left. For adding: take away the friend, then carry. For taking away: add the friend, then borrow. One rule for both.</p>`,
+      <p>The order of the two moves matters on a real abacus. Work the rod you are on first, then the rod to its left. For adding: take away the friend, then carry. For taking away: add the friend, then borrow. One rule for both.</p>`,
     lessons: [
       {
         key: 'bf-9-8-7', title: '+9, +8, +7', minutes: 15,
@@ -238,7 +238,7 @@ export const STAGES = [
         teach: `<p>Sometimes the carry itself will not fit. 99 + 1: ones say take away 9, carry 1 to the tens. The tens hold 9 too, so take away 9 and carry again. 99 + 1 = 100. Each carry is just another +1, with the same rules.</p>
           ${demo(99, '1', '99 + 1: carry, then carry again')}
           ${demo(199, '4', '199 + 4: ones −6, carry 1. Tens −9, carry 1')}
-          <p>Now real problems: 5 lines, 2 digits, with small and big friends mixed. Use your soroban.</p>`,
+          <p>Now real problems: 5 lines, 2 digits, with small and big friends mixed. Use your abacus.</p>`,
         drill: { kind: 'addsub', spec: { terms: 5, digits: 2, ops: 'add', allow: ['direct', 'small+', 'big+'], require: ['big+'] }, count: 8, target: { acc: 0.85 } },
       },
       {
@@ -267,7 +267,7 @@ export const STAGES = [
       },
       {
         key: 'mental-2', title: 'Mental: small friends in the head', minutes: 8,
-        teach: `<p>Soroban away. Three one-digit numbers that need small friends. See the heaven bead come down in your mind. Move your fingers if it helps.</p>`,
+        teach: `<p>Abacus away. Three one-digit numbers that need small friends. See the heaven bead come down in your mind. Move your fingers if it helps.</p>`,
         drill: { kind: 'addsub', spec: { terms: 3, digits: 1, ops: 'mix', allow: SMALL }, count: 8, mode: 'mental', target: { acc: 0.85 } },
       },
       {
@@ -280,7 +280,7 @@ export const STAGES = [
       title: 'Apprentice Boss', desc: 'Carries and borrows, then your first mental crossing of ten.',
       parts: [
         { title: 'Carry or borrow', desc: '10 moves on the screen abacus.', kind: 'twocol', spec: { allow: NOCOMBO, require: ['big+', 'big-'], sign: 'mix', min: 1, max: 99 }, count: 10, timeLimit: 150, target: { acc: 0.9 }, hint: false },
-        { title: '2-digit, 5 lines', desc: '6 problems on your soroban.', kind: 'addsub', spec: { terms: 5, digits: 2, ops: 'mix', allow: NOCOMBO }, count: 6, timeLimit: 300, target: { acc: 0.83 } },
+        { title: '2-digit, 5 lines', desc: '6 problems on your abacus.', kind: 'addsub', spec: { terms: 5, digits: 2, ops: 'mix', allow: NOCOMBO }, count: 6, timeLimit: 300, target: { acc: 0.83 } },
         { title: 'Mental', desc: '5 problems, four 1-digit numbers each.', kind: 'addsub', spec: { terms: 4, digits: 1, ops: 'mix', allow: NOCOMBO }, count: 5, mode: 'mental', timeLimit: 150, target: { acc: 0.8 } },
       ],
     },
@@ -337,19 +337,19 @@ export const STAGES = [
       },
       {
         key: 'ten-rows', title: 'Ten rows', minutes: 15,
-        teach: `<p>Long columns of numbers are the classic soroban test. Ten lines of two digits. Keep your eyes one line ahead of your hand. Do not check the answer until the end.</p>
+        teach: `<p>Long columns of numbers are the classic abacus test. Ten lines of two digits. Keep your eyes one line ahead of your hand. Do not check the answer until the end.</p>
           <div class="callout parent"><b class="lbl">Parent tip</b>Time this one with a stopwatch every day for a week and write the times on the fridge. Kids love watching the number fall.</div>`,
         drill: { kind: 'addsub', spec: { terms: 10, digits: 2, ops: 'mix', allow: ALL }, count: 5, target: { acc: 0.8, maxSec: 300 } },
       },
       {
         key: 'mental-4', title: 'Mental: five single digits, all formulas', minutes: 8,
-        teach: `<p>Soroban away. Five one-digit numbers, plus and minus, every formula allowed. Picture the rod and the carry rod beside it.</p>`,
+        teach: `<p>Abacus away. Five one-digit numbers, plus and minus, every formula allowed. Picture the rod and the carry rod beside it.</p>`,
         drill: { kind: 'addsub', spec: { terms: 5, digits: 1, ops: 'mix', allow: ALL }, count: 8, mode: 'mental', target: { acc: 0.8 } },
       },
       {
         key: 'mental-5', title: 'Mental: two 2-digit numbers', minutes: 10,
         teach: `<p>Now two rods in the picture. 34 + 28: tens first, 3 + 2 is 5. Ones: 4 + 8, carry, take away 2. Say the answer: 62.</p>
-          <p>If it falls apart, go back to the real soroban for 34 + 28, watch it, close your eyes, replay it. Then try the next one in the head.</p>
+          <p>If it falls apart, go back to the real abacus for 34 + 28, watch it, close your eyes, replay it. Then try the next one in the head.</p>
           <div class="callout science"><b class="lbl">Science</b>Research on mental-abacus users finds the picture holds about three or four rods at once, the same limit as the number of objects anyone can track visually. That is why two digits feels like a jump: you are now holding two objects, each with its own beads.</div>`,
         drill: { kind: 'addsub', spec: { terms: 2, digits: 2, ops: 'add', allow: ALL }, count: 8, mode: 'mental', target: { acc: 0.8 } },
       },
@@ -363,7 +363,7 @@ export const STAGES = [
       title: 'Adept Boss', desc: 'Every formula, three digits, and your first 2-digit mental sums.',
       parts: [
         { title: 'Combo moves', desc: '10 moves on the screen abacus.', kind: 'twocol', spec: { allow: ALL, require: ['combo+', 'combo-'], sign: 'mix', min: 1, max: 99 }, count: 10, timeLimit: 150, target: { acc: 0.9 }, hint: false },
-        { title: '3-digit, 5 lines', desc: '6 problems on your soroban.', kind: 'addsub', spec: { terms: 5, digits: 3, ops: 'mix', allow: ALL }, count: 6, timeLimit: 360, target: { acc: 0.83 } },
+        { title: '3-digit, 5 lines', desc: '6 problems on your abacus.', kind: 'addsub', spec: { terms: 5, digits: 3, ops: 'mix', allow: ALL }, count: 6, timeLimit: 360, target: { acc: 0.83 } },
         { title: 'Mental', desc: '5 problems, three 2-digit numbers each.', kind: 'addsub', spec: { terms: 3, digits: 2, ops: 'add', allow: ALL }, count: 5, mode: 'mental', timeLimit: 180, target: { acc: 0.8 } },
       ],
     },
@@ -377,11 +377,11 @@ export const STAGES = [
   // ───────────────────────── 5 · ACE ─────────────────────────
   {
     n: 5, key: 'ace', name: 'Ace', color: 'orange', tagline: 'Speed and flash',
-    goal: 'Ten 3-digit lines on the soroban in under a minute, five 2-digit numbers in the head, and your first flash anzan.',
+    goal: 'Ten 3-digit lines on the abacus in under a minute, five 2-digit numbers in the head, and your first flash anzan.',
     time: '6–8 weeks',
     unlocks: ALL,
     why: 'Speed is not a bonus. It is what moves the skill from the hand to the mind. When the fingers are automatic, attention is free to hold the picture.',
-    intro: `<p>Three things happen in this stage. Your hands get fast on the real soroban. Your mental abacus grows to two rods and five lines. And you meet <b>flash anzan</b>: numbers flash on the screen one after another and vanish, and you keep the running total on your mental beads.</p>
+    intro: `<p>Three things happen in this stage. Your hands get fast on the real abacus. Your mental abacus grows to two rods and five lines. And you meet <b>flash anzan</b>: numbers flash on the screen one after another and vanish, and you keep the running total on your mental beads.</p>
       <p>At the end you take your first <a href="#/test">Bead Score</a> test. Write the number down. You will beat it.</p>`,
     lessons: [
       {
@@ -397,7 +397,7 @@ export const STAGES = [
       },
       {
         key: 'four-digit', title: 'Four digits', minutes: 12,
-        teach: `<p>Four rods. Thousands first. The soroban does not care how long a number is. Only your eyes do.</p>`,
+        teach: `<p>Four rods. Thousands first. The abacus does not care how long a number is. Only your eyes do.</p>`,
         drill: { kind: 'addsub', spec: { terms: 5, digits: 4, ops: 'mix', allow: ALL }, count: 5, target: { acc: 0.8 } },
       },
       {
@@ -430,7 +430,7 @@ export const STAGES = [
       },
       {
         key: 'first-test', title: 'Your first Bead Score', minutes: 10,
-        teach: `<p>Take the <a href="#/test" class="btn sm primary">Bead Score test</a>. It is a ladder: easy rungs first, harder each step, until one fails. Your score is the top rung you cleared. No soroban, no paper, no help.</p>
+        teach: `<p>Take the <a href="#/test" class="btn sm primary">Bead Score test</a>. It is a ladder: easy rungs first, harder each step, until one fails. Your score is the top rung you cleared. No abacus, no paper, no help.</p>
           <p>Then come back and mark this lesson done. Retake the test every two to four weeks and watch the line on your chart climb.</p>`,
         drill: { kind: 'addsub', spec: { terms: 3, digits: 2, ops: 'mix', allow: ALL }, count: 3, mode: 'mental', target: { acc: 0.34 } },
       },
@@ -438,7 +438,7 @@ export const STAGES = [
     boss: {
       title: 'Ace Boss', desc: 'Speed on the beads, five lines in the head, and flash.',
       parts: [
-        { title: '3-digit, 10 lines', desc: '4 problems on your soroban, 5 minutes total.', kind: 'addsub', spec: { terms: 10, digits: 3, ops: 'mix', allow: ALL }, count: 4, timeLimit: 300, target: { acc: 0.75 } },
+        { title: '3-digit, 10 lines', desc: '4 problems on your abacus, 5 minutes total.', kind: 'addsub', spec: { terms: 10, digits: 3, ops: 'mix', allow: ALL }, count: 4, timeLimit: 300, target: { acc: 0.75 } },
         { title: 'Mental 2-digit', desc: '5 problems, five lines each.', kind: 'addsub', spec: { terms: 5, digits: 2, ops: 'mix', allow: ALL }, count: 5, mode: 'mental', timeLimit: 240, target: { acc: 0.8 } },
         { title: 'Flash', desc: '5 rounds, eight 1-digit numbers at 1 second.', kind: 'flash', spec: { count: 8, digits: 1, ms: 1000, ops: 'add' }, count: 5, timeLimit: 180, target: { acc: 0.8 } },
       ],
@@ -453,11 +453,11 @@ export const STAGES = [
   // ───────────────────────── 6 · WIZARD ─────────────────────────
   {
     n: 6, key: 'wizard', name: 'Wizard', color: 'purple', tagline: 'Multiplication',
-    goal: 'Multiply 2- and 3-digit numbers by 1- and 2-digit numbers on the soroban, and 2-digit by 1-digit in the head.',
+    goal: 'Multiply 2- and 3-digit numbers by 1- and 2-digit numbers on the abacus, and 2-digit by 1-digit in the head.',
     time: '6–8 weeks',
     unlocks: ALL,
-    why: 'Multiplication on the soroban is times tables plus adding. You already add fast, so the only new skill is knowing where each small product lands.',
-    intro: `<p>Every multiplication breaks into small facts. 34 × 7 is 30 × 7 and 4 × 7. On the soroban you add each small product in the right place, left to right, and the answer builds itself.</p>
+    why: 'Multiplication on the abacus is times tables plus adding. You already add fast, so the only new skill is knowing where each small product lands.',
+    intro: `<p>Every multiplication breaks into small facts. 34 × 7 is 30 × 7 and 4 × 7. On the abacus you add each small product in the right place, left to right, and the answer builds itself.</p>
       <p>Write every small product as <b>two digits</b>: 3 × 7 is 21, 2 × 4 is 08. The right-hand digit of each product lands in the column of its place value. That is the whole rule.</p>
       <div class="callout warn"><b class="lbl">Before you start</b>Times tables up to 9 × 9 must be instant. The first lesson tests them. If they are not instant, spend a week on that lesson alone.</div>`,
     lessons: [
@@ -471,7 +471,7 @@ export const STAGES = [
         teach: `<p>34 × 7. Start with the left digit: 3 × 7 = 21. The 3 is in the tens, so this product is 21 tens: add 2 in the hundreds and 1 in the tens. Next, 4 × 7 = 28: add 2 in the tens and 8 in the ones. Read the answer: 238.</p>
           ${demo(0, '210,28', '34 × 7', '["3 × 7 = 21 → add 21 in hundreds-tens","4 × 7 = 28 → add 28 in tens-ones"]')}
           ${demo(0, '560,42', '86 × 7', '["8 × 7 = 56 → add 56 in hundreds-tens","6 × 7 = 42 → add 42 in tens-ones"]')}
-          <p>On your real soroban, keep the problem on paper and only the answer on the beads. Japanese teachers call this the "both-off" method. It is what experts use, and it is exactly how mental multiplication works later.</p>`,
+          <p>On your real abacus, keep the problem on paper and only the answer on the beads. Japanese teachers call this the "both-off" method. It is what experts use, and it is exactly how mental multiplication works later.</p>`,
         drill: { kind: 'mul', spec: { aDigits: 2, bDigits: 1 }, count: 8, target: { acc: 0.85 } },
       },
       {
@@ -509,14 +509,14 @@ export const STAGES = [
       title: 'Wizard Boss', desc: 'Facts, then four kinds of multiplication.',
       parts: [
         { title: 'Times tables', desc: '20 facts in a minute.', kind: 'facts', spec: { maxTable: 9 }, count: 20, timeLimit: 60, target: { acc: 0.9 } },
-        { title: '3-digit × 1-digit', desc: '6 problems on your soroban.', kind: 'mul', spec: { aDigits: 3, bDigits: 1 }, count: 6, timeLimit: 240, target: { acc: 0.83 } },
-        { title: '2-digit × 2-digit', desc: '5 problems on your soroban.', kind: 'mul', spec: { aDigits: 2, bDigits: 2 }, count: 5, timeLimit: 300, target: { acc: 0.8 } },
-        { title: 'Mental 2 × 1', desc: '5 problems, no soroban.', kind: 'mul', spec: { aDigits: 2, bDigits: 1 }, count: 5, mode: 'mental', timeLimit: 150, target: { acc: 0.8 } },
+        { title: '3-digit × 1-digit', desc: '6 problems on your abacus.', kind: 'mul', spec: { aDigits: 3, bDigits: 1 }, count: 6, timeLimit: 240, target: { acc: 0.83 } },
+        { title: '2-digit × 2-digit', desc: '5 problems on your abacus.', kind: 'mul', spec: { aDigits: 2, bDigits: 2 }, count: 5, timeLimit: 300, target: { acc: 0.8 } },
+        { title: 'Mental 2 × 1', desc: '5 problems, no abacus.', kind: 'mul', spec: { aDigits: 2, bDigits: 1 }, count: 5, mode: 'mental', timeLimit: 150, target: { acc: 0.8 } },
       ],
     },
     daily: [
       { label: 'Times tables', kind: 'facts', spec: { maxTable: 9 }, count: 15 },
-      { label: '2 × 2 on the soroban', kind: 'mul', spec: { aDigits: 2, bDigits: 2 }, count: 4 },
+      { label: '2 × 2 on the abacus', kind: 'mul', spec: { aDigits: 2, bDigits: 2 }, count: 4 },
       { label: 'Mental 2-digit lines', kind: 'addsub', spec: { terms: 5, digits: 2, ops: 'mix', allow: ALL }, count: 5, mode: 'mental' },
     ],
   },
@@ -524,12 +524,12 @@ export const STAGES = [
   // ───────────────────────── 7 · CHAMPION ─────────────────────────
   {
     n: 7, key: 'champion', name: 'Champion', color: 'red', tagline: 'Division',
-    goal: 'Divide by 1- and 2-digit numbers on the soroban, divide by 1-digit numbers in the head, and start 3-digit mental sums.',
+    goal: 'Divide by 1- and 2-digit numbers on the abacus, divide by 1-digit numbers in the head, and start 3-digit mental sums.',
     time: '6–8 weeks',
     unlocks: ALL,
     why: 'Division is multiplication run backwards: guess a digit, multiply, subtract, repeat. Everything you need is already in your hands.',
     intro: `<p>952 ÷ 7. Look at the left: how many 7s fit in 9? One. Write 1 in the quotient, take 7 × 1 = 7 from the 9. Two left. With the next digit that makes 25. How many 7s in 25? Three: write 3, take away 21. Four left. With the next digit, 42. Six 7s. Answer 136.</p>
-      <p>On the soroban, set the dividend on the right. Build the quotient on rods to the left, leaving a gap. Each step: guess, multiply, subtract. If a guess is too big, take one off the quotient and add the divisor back.</p>`,
+      <p>On the abacus, set the dividend on the right. Build the quotient on rods to the left, leaving a gap. Each step: guess, multiply, subtract. If a guess is too big, take one off the quotient and add the divisor back.</p>`,
     lessons: [
       {
         key: 'div-2x1', title: 'Divide 2-digit by 1-digit', minutes: 15,
@@ -575,14 +575,14 @@ export const STAGES = [
     boss: {
       title: 'Champion Boss', desc: 'Division on the beads and in the head, plus 2-digit flash.',
       parts: [
-        { title: '3-digit ÷ 1-digit', desc: '6 problems on your soroban.', kind: 'div', spec: { qDigits: 2, dDigits: 1, remainder: true }, count: 6, timeLimit: 240, target: { acc: 0.83 } },
-        { title: '4-digit ÷ 2-digit', desc: '5 problems on your soroban.', kind: 'div', spec: { qDigits: 2, dDigits: 2 }, count: 5, timeLimit: 300, target: { acc: 0.8 } },
-        { title: 'Mental division', desc: '5 problems, no soroban.', kind: 'div', spec: { qDigits: 2, dDigits: 1 }, count: 5, mode: 'mental', timeLimit: 150, target: { acc: 0.8 } },
+        { title: '3-digit ÷ 1-digit', desc: '6 problems on your abacus.', kind: 'div', spec: { qDigits: 2, dDigits: 1, remainder: true }, count: 6, timeLimit: 240, target: { acc: 0.83 } },
+        { title: '4-digit ÷ 2-digit', desc: '5 problems on your abacus.', kind: 'div', spec: { qDigits: 2, dDigits: 2 }, count: 5, timeLimit: 300, target: { acc: 0.8 } },
+        { title: 'Mental division', desc: '5 problems, no abacus.', kind: 'div', spec: { qDigits: 2, dDigits: 1 }, count: 5, mode: 'mental', timeLimit: 150, target: { acc: 0.8 } },
         { title: 'Flash 2-digit', desc: '5 rounds of eight numbers at 0.7 s.', kind: 'flash', spec: { count: 8, digits: 2, ms: 700, ops: 'add' }, count: 5, timeLimit: 200, target: { acc: 0.8 } },
       ],
     },
     daily: [
-      { label: 'Division on the soroban', kind: 'div', spec: { qDigits: 2, dDigits: 2 }, count: 4 },
+      { label: 'Division on the abacus', kind: 'div', spec: { qDigits: 2, dDigits: 2 }, count: 4 },
       { label: 'Mental 3-digit', kind: 'addsub', spec: { terms: 3, digits: 3, ops: 'add', allow: ALL }, count: 4, mode: 'mental' },
       { label: 'Flash 2-digit', kind: 'flash', spec: { count: 8, digits: 2, ms: 700, ops: 'add' }, count: 5 },
     ],
@@ -594,14 +594,14 @@ export const STAGES = [
     goal: 'Ten 3-digit lines in the head, 3-digit flash, and mental 2 × 2 multiplication. This is expert-level mental arithmetic.',
     time: '3–4 months',
     unlocks: ALL,
-    why: 'At this stage the physical soroban becomes a warm-up tool. Every drill is mental. Ten mixed 3-digit lines in the head is the format of the Japanese 1st-kyu mental calculation exam, the top grade below dan.',
+    why: 'At this stage the physical abacus becomes a warm-up tool. Every drill is mental. Ten mixed 3-digit lines in the head is the format of the Japanese 1st-kyu mental calculation exam, the top grade below dan.',
     intro: `<p>Nothing new to learn. Everything to make faster and bigger. Expect plateaus that last two weeks and then break overnight. Keep the sessions short and daily.</p>`,
     lessons: [
       { key: 'p-3d-5', title: 'Mental: five 3-digit lines, mixed', minutes: 10, teach: `<p>Five lines, three digits, plus and minus. Three rods, carries running between them, all in the picture.</p>`, drill: { kind: 'addsub', spec: { terms: 5, digits: 3, ops: 'mix', allow: ALL }, count: 5, mode: 'mental', target: { acc: 0.8 } } },
       { key: 'p-3d-10', title: 'Mental: ten 3-digit lines', minutes: 12, teach: `<p>The classic exam format: the Japanese 1st-kyu mental test is twenty of these in twelve minutes. Under two minutes a problem is the goal here. Under forty seconds is exam speed.</p>`, drill: { kind: 'addsub', spec: { terms: 10, digits: 3, ops: 'mix', allow: ALL }, count: 4, mode: 'mental', target: { acc: 0.75 } } },
       { key: 'p-flash-3', title: 'Flash: 3-digit numbers', minutes: 8, teach: `<p>Five 3-digit numbers at one second each. Then eight. Then faster.</p>`, drill: { kind: 'flash', spec: { count: 5, digits: 3, ms: 1000, ops: 'add' }, count: 6, target: { acc: 0.75 } } },
       { key: 'p-flash-3b', title: 'Flash: ten 3-digit numbers', minutes: 8, teach: `<p>Ten numbers at 0.8 seconds. Breathe. Let each number land.</p>`, drill: { kind: 'flash', spec: { count: 10, digits: 3, ms: 800, ops: 'add' }, count: 6, target: { acc: 0.75 } } },
-      { key: 'p-mul-2x2', title: 'Mental: 2-digit × 2-digit', minutes: 12, teach: `<p>Four small products added on the mental beads, left to right, exactly as on the soroban. 34 × 27: 06, 21, 08, 28 landing one column right each step. 918.</p>`, drill: { kind: 'mul', spec: { aDigits: 2, bDigits: 2 }, count: 6, mode: 'mental', target: { acc: 0.75 } } },
+      { key: 'p-mul-2x2', title: 'Mental: 2-digit × 2-digit', minutes: 12, teach: `<p>Four small products added on the mental beads, left to right, exactly as on the abacus. 34 × 27: 06, 21, 08, 28 landing one column right each step. 918.</p>`, drill: { kind: 'mul', spec: { aDigits: 2, bDigits: 2 }, count: 6, mode: 'mental', target: { acc: 0.75 } } },
       { key: 'p-mul-3x1', title: 'Mental: 3-digit × 1-digit', minutes: 10, teach: `<p>Three small products. 386 × 7 = 2,702 on the beads in your head.</p>`, drill: { kind: 'mul', spec: { aDigits: 3, bDigits: 1 }, count: 6, mode: 'mental', target: { acc: 0.8 } } },
       { key: 'p-div', title: 'Mental: 3-digit ÷ 1-digit', minutes: 10, teach: `<p>Guess, multiply, subtract, on the picture. 952 ÷ 7 = 136.</p>`, drill: { kind: 'div', spec: { qDigits: 2, dDigits: 1 }, count: 6, mode: 'mental', target: { acc: 0.8 } } },
       {
@@ -612,7 +612,7 @@ export const STAGES = [
       },
       {
         key: 'p-negative', title: 'Below zero', minutes: 10,
-        teach: `<p>Soroban users handle a total that drops below zero by borrowing from an imaginary rod on the far left. 20 − 35: borrow 100, giving 120 − 35 = 85. The beads show 85, and because you borrowed 100 the true answer is 85 − 100 = −15. Read it as "100 minus 85, negative".</p>
+        teach: `<p>Abacus users handle a total that drops below zero by borrowing from an imaginary rod on the far left. 20 − 35: borrow 100, giving 120 − 35 = 85. The beads show 85, and because you borrowed 100 the true answer is 85 − 100 = −15. Read it as "100 minus 85, negative".</p>
           <p>Try a few on paper first, then in the head. This is rare in exams and useful in life.</p>`,
         drill: { kind: 'addsub', spec: { terms: 6, digits: 2, ops: 'mix', allow: ALL }, count: 5, mode: 'mental', target: { acc: 0.8 } },
       },

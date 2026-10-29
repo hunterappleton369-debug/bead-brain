@@ -12,7 +12,7 @@ const INK = '#121826';
 
 // ───────── the badge ─────────
 // Drawn from the art direction in docs/products/certification-course/instructor-certificate.md: a round seal,
-// one soroban rod in the formula colors, ring text, a yellow ribbon with the year. A stand-in until the
+// one abacus rod in the formula colors, ring text, a yellow ribbon with the year. A stand-in until the
 // commissioned badge art exists. small = rod and ribbon only, for list rows.
 let uid = 0;
 export function instructorBadge({ year = '', small = false, cls = 'ibadge' } = {}) {

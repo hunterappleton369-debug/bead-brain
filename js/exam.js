@@ -170,7 +170,7 @@ function questionHTML(q, v) {
   else body = `<div class="x-row">${box(String(n), `Question ${n}, your answer`)}</div>`;
   const mentalNote = q.mental && /mental/i.test(q.note || ''); // the note already says it: show it once, as the chip
   return `<li class="xq" id="xq-${n}" data-q="${n}">
-      <div class="xq-head"><span class="xq-n">${n}</span><div class="xq-text">${rich(q.text)}${q.ask ? `<div class="xq-ask">${rich(q.ask)}</div>` : ''}${q.mental ? `<div><span class="chip ink xq-mental">${mentalNote ? rich(q.note) : 'Mental: no soroban, no paper'}</span></div>` : ''}${q.note && !mentalNote ? `<div class="xq-note">${rich(q.note)}</div>` : ''}</div></div>
+      <div class="xq-head"><span class="xq-n">${n}</span><div class="xq-text">${rich(q.text)}${q.ask ? `<div class="xq-ask">${rich(q.ask)}</div>` : ''}${q.mental ? `<div><span class="chip ink xq-mental">${mentalNote ? rich(q.note) : 'Mental: no abacus, no paper'}</span></div>` : ''}${q.note && !mentalNote ? `<div class="xq-note">${rich(q.note)}</div>` : ''}</div></div>
       ${body}
     </li>`;
 }

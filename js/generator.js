@@ -9,7 +9,7 @@ function randomWithDigits(digits) {
   return rnd(10 ** (digits - 1), 10 ** digits - 1);
 }
 
-// Classify one signed term applied to a soroban state WITHOUT mutating it.
+// Classify one signed term applied to an abacus state WITHOUT mutating it.
 function trialApply(sor, term) {
   const copy = new Soroban(sor.rods);
   copy.columns = sor.columns.slice();

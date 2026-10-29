@@ -402,3 +402,37 @@ body { padding-bottom: 92px; }
 .small.faint { color: #4b5567; }
 /* the Complete control is a real button now: no native button look in Safari */
 button.btn { -webkit-appearance: none; appearance: none; }
+
+/* ---- 2026-10-29: hero CTA + $97 sticker, address on step 1, the card form preloaded on step 2, sliding panes ---- */
+.fn-hero .urgent { margin: 8px 0 12px; }
+.fn-hero .art { margin: 16px -6px 10px; max-width: none; }
+@media (min-width: 720px) { .fn-hero .art { margin: 18px auto 12px; max-width: 560px; } }
+/* the value sticker rides the lid's upper-right corner, clear of the printed wordmark */
+.fn-hero .art .burst.value { width: 112px; right: -8px; top: -30px; transform: rotate(7deg); }
+.fn-hero .hero-cta { margin: 0 0 4px; }
+.btn.cta.cf small { font-size: 13.5px; margin-top: 3px; }
+.sticky-cta .btn.cta.cf small { font-size: 11.5px; margin-top: 1px; }
+/* the two tabs: a shorter label, and a tiny line under step 2 */
+.tabs > span { padding: 10px 10px; gap: 9px; font-size: 14px; line-height: 1.15; }
+.tabs > span > i { width: 34px; height: 34px; font-size: 16px; }
+.tabs .tl { display: flex; flex-direction: column; gap: 2px; font-weight: 700; }
+.tabs .tl small { font-size: 10.5px; font-weight: 600; line-height: 1.2; color: var(--ink-3); }
+.tabs > span.on .tl small { color: rgba(255,255,255,.78); }
+.tabs > span.done .tl small { color: var(--green-ink); }
+/* step 1: the address rows */
+.order.red .fgroup .fld-row.three { grid-template-columns: 1.5fr 0.9fr 1fr; }
+.order.red .fgroup .fld-row .fld:not(:last-child) input, .order.red .fgroup .fld-row .fld:not(:last-child) select { border-right: 1px solid #c9ced8; }
+.order.red .fgroup select { font-family: inherit; padding-right: 30px; background-position: right 8px center; background-size: 16px; }
+.order.red .fgroup select:invalid { color: var(--ink-3); }
+.order.red .fgroup .fld.bad select { color: var(--ink); }
+/* the panes: both in the box, the hidden one kept in layout (the card form mounts in it before step 2 opens), the
+   active one slides in */
+.order .order-body.panes { position: relative; }
+.order .pane { display: block; }
+.order .pane:not(.on) { position: absolute; top: 0; left: 0; right: 0; visibility: hidden; opacity: 0; pointer-events: none; }
+.order.red .pane:not(.on) { left: 14px; right: 14px; }
+.order .pane.on.slide { animation: cp-slide .32s cubic-bezier(.2,.7,.2,1) both; }
+.order .pane.on.slide.rev { animation-name: cp-slide-rev; }
+@keyframes cp-slide { from { opacity: 0; transform: translateX(44px); } to { opacity: 1; transform: none; } }
+@keyframes cp-slide-rev { from { opacity: 0; transform: translateX(-44px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .order .pane.on.slide { animation: none; } }

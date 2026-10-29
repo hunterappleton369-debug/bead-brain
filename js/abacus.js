@@ -1,4 +1,4 @@
-// abacus.js — interactive SVG soroban with hand-drawn (colored pencil) styling.
+// abacus.js — interactive SVG abacus with hand-drawn (colored pencil) styling.
 import { Soroban } from './soroban.js';
 
 const NS = 'http://www.w3.org/2000/svg';
@@ -30,7 +30,7 @@ export class AbacusView {
   render() {
     this.container.innerHTML = '';
     this.container.classList.add('abacus-wrap');
-    const svg = el('svg', { viewBox: `0 0 ${this.width} ${this.height}`, class: 'abacus', role: 'img', 'aria-label': 'soroban abacus' });
+    const svg = el('svg', { viewBox: `0 0 ${this.width} ${this.height}`, class: 'abacus', role: 'img', 'aria-label': 'abacus' });
     this.svg = svg;
     // pencil texture filter (shared)
     const defs = el('defs', {}, svg);
@@ -55,7 +55,7 @@ export class AbacusView {
     for (let c = 0; c < this.rods; c++) {
       const x = this.colX(c);
       el('line', { x1: x, y1: 16, x2: x, y2: this.height - 16 - (this.showPlaceLabels ? 16 : 0), stroke: '#aab2c2', 'stroke-width': 3, 'stroke-linecap': 'round' }, this.rodsG);
-      // unit dot every 3rd column (ones, thousands, ...) like a real soroban
+      // unit dot every 3rd column (ones, thousands, ...) like a real abacus
       const colIndex = this.rods - 1 - c;
       if (colIndex % 3 === 0) el('circle', { cx: x, cy: this.beamY + 5, r: 3, fill: '#fff' }, this.rodsG);
       const col = { heaven: null, earth: [] };
@@ -84,7 +84,7 @@ export class AbacusView {
 
   makeBead(x, color, c, kind, k) {
     const g = el('g', { class: `bead ${kind}`, 'data-col': c, 'data-kind': kind, 'data-k': k }, this.beadsG);
-    // bead shape: rounded diamond (like a real soroban bead) drawn with a pencil edge
+    // bead shape: rounded diamond (like a real abacus bead) drawn with a pencil edge
     const w = this.beadW / 2, h = this.beadH / 2 - 1;
     const path = `M ${-w} 0 Q ${-w * 0.6} ${-h} 0 ${-h} Q ${w * 0.6} ${-h} ${w} 0 Q ${w * 0.6} ${h} 0 ${h} Q ${-w * 0.6} ${h} ${-w} 0 Z`;
     el('path', { d: path, fill: color, stroke: '#121826', 'stroke-width': 2, 'stroke-linejoin': 'round' }, g);
