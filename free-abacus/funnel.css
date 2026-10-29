@@ -409,6 +409,7 @@ button.btn { -webkit-appearance: none; appearance: none; }
 @media (min-width: 720px) { .fn-hero .art { margin: 18px auto 12px; max-width: 560px; } }
 /* the value sticker rides the lid's upper-right corner, clear of the printed wordmark */
 .fn-hero .art .burst.value { width: 122px; right: -12px; top: -42px; transform: rotate(7deg); }
+.fn-hero .art + .lede { margin: 2px auto 14px; }
 .fn-hero .hero-cta { margin: 0 0 4px; }
 .btn.cta.cf small { font-size: 13.5px; margin-top: 3px; }
 .sticky-cta .btn.cta.cf small { font-size: 11.5px; margin-top: 1px; }
