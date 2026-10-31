@@ -105,6 +105,8 @@ function posthog() {
     });
     phOn = true;
     window.posthog.capture('$pageview', {}, { send_instantly: true, transport: 'sendBeacon' });
+    // events sent before PostHog loaded (markPaid's purchase runs at page start) go out now, after the page view
+    phQueue.splice(0).forEach(([n, p]) => { try { window.posthog.capture(n, p, { send_instantly: true, transport: 'sendBeacon' }); } catch {} });
   } catch {}
 }
 // Meta's link crawler (desktop Chrome in a 1050 by 1893 window, referred by www.facebook.com, two hits a second
@@ -117,12 +119,16 @@ function posthogWhenShown() {
   if (document.visibilityState === 'hidden') { addEventListener('visibilitychange', () => { if (document.visibilityState !== 'hidden') posthog(); }, { once: true }); return; }
   posthog();
 }
-// beforeNav: the page changes right after this, so send the event now instead of with the next batch
+// beforeNav: the page changes right after this, so send the event now instead of with the next batch.
+// Before PostHog has loaded (it waits for the load event), an event waits in phQueue; it used to be dropped, which is
+// why the upsell page's purchase never reached the dashboard (2026-10-31).
+const phQueue = [];
+const phWillLoad = () => !!CONFIG.posthogKey && !gpc() && !crawler();
 function ph(name, props, beforeNav) {
-  if (!phOn || !window.posthog) return;
+  if (!phOn || !window.posthog) { if (phWillLoad() && phQueue.length < 40) phQueue.push([name, props || {}]); return; }
   try { window.posthog.capture(name, props || {}, beforeNav ? { send_instantly: true, transport: 'sendBeacon' } : undefined); } catch {}
 }
-function phOnce(key, name, props) { if (phOn) once('ph:' + key, () => ph(name, props)); }
+function phOnce(key, name, props) { if (phOn || phWillLoad()) once('ph:' + key, () => ph(name, props)); }
 function phIdentify(email) { if (!phOn || !window.posthog || !email) return; try { window.posthog.identify(email, { email }); } catch {} }
 
 // ---------- ad attribution: the first touch, sent with the order so Stripe shows which ad sold each kit ----------
@@ -184,10 +190,15 @@ export function scrollLinks() {
   $$('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
     const h = a.getAttribute('href'); if (h.length < 2) return;
     const el = $(h); if (!el) return;
-    e.preventDefault(); el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    // CTAs aimed at the order form put the cursor in its first field; the logo (#top) does not
-    const first = el.matches('.order') ? el.querySelector('.pane.on input') : null;
-    if (first) setTimeout(() => first.focus({ preventScroll: true }), 500);
+    e.preventDefault();
+    // CTAs aimed at the order form put the cursor in its first empty field; the logo (#top) does not. The focus runs
+    // inside the tap: iOS opens the keyboard only for a focus made during the tap (the old 500 ms timer was ignored,
+    // and a parent tapped Next on an empty form, 2026-10-29). The smooth scroll then brings the form up.
+    const fields = el.matches('.order') ? $$('.pane.on input:not([type=hidden]):not([type=checkbox]), .pane.on select', el) : [];
+    const first = fields.find(f => !f.value) || fields[0];
+    if (first) { try { first.focus({ preventScroll: true }); } catch {} }
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (first) ph('cta_to_form', { from: a.closest('.sticky-cta') ? 'sticky' : a.classList.contains('hero-cta') ? 'hero' : 'section', field: first.name || first.id || '' });
   }));
 }
 
@@ -291,6 +302,7 @@ export function orderForm() {
   // fields (a phone shows the button about a screen below them, so a message left there was never seen).
   const failed = (msg, toFields) => {
     showErr(msg); toast(msg, 4200);
+    ph('checkout_failed', { message: String(msg || '').slice(0, 90), fields: !!toFields });
     const target = toFields ? payBlock : payErr;
     if (target) setTimeout(() => window.scrollTo({ top: target.getBoundingClientRect().top + scrollY - (toFields ? 84 : innerHeight / 2), behavior: 'smooth' }), 50);
   };
@@ -336,6 +348,10 @@ export function orderForm() {
         terms: { card: 'auto', applePay: 'auto', googlePay: 'auto', link: 'auto' },
       });
       const el = $('#pay-el', form); if (el) el.innerHTML = '';
+      // once per page view: the parent put the cursor in the card fields, then finished them
+      let cardStarted = false, cardDone = false;
+      pay.on('focus', () => { if (!cardStarted) { cardStarted = true; ph('card_started'); } });
+      pay.on('change', e => { if (e && e.complete && !cardDone) { cardDone = true; ph('card_complete', { type: (e.value && e.value.type) || '' }); } });
       await new Promise((res, rej) => {
         pay.on('ready', res);
         pay.on('loaderror', e => rej(Object.assign(new Error(''), { code: 'loaderror: ' + String((e && e.error && e.error.message) || '').slice(0, 120) })));
@@ -454,7 +470,11 @@ export function orderForm() {
   };
   $('[data-next]', form).addEventListener('click', e => {
     e.preventDefault();
-    if (!valid(pane1)) { toast('Check the highlighted fields'); return; }
+    if (!valid(pane1)) {
+      toast('Check the highlighted fields');
+      ph('step1_invalid', { fields: $$('.fld.bad input, .fld.bad select', pane1).map(f => f.name || f.id).join(',') });
+      return;
+    }
     const data = p1();
     data.at = new Date().toISOString(); save(LEAD_KEY, data);
     const email = data.email.toLowerCase();
@@ -464,6 +484,8 @@ export function orderForm() {
     ind[0].classList.replace('on', 'done'); ind[1].classList.add('on');
     const ttl = $('[data-pane="2"] h3', form); if (ttl) ttl.textContent = 'Almost done, ' + (data.first || 'friend') + '.';
     go(pane2);
+    // the card step opened: card_ready says whether the card form was already on screen (it preloads at page start)
+    ph('checkout_step2_shown', { card_ready: !!co, hosted: !!hosted });
     if (!onPage()) return;
     if (co) { try { co.pay.update({ defaultValues: { billingDetails: { name: fullName(data), email: data.email, phone: data.phone || '' } } }); } catch {} }
     // the intent opens (or is already open) in the background; a start that fails sends Complete to the hosted link
