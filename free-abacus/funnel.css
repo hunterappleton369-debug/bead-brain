@@ -458,3 +458,6 @@ button.btn { -webkit-appearance: none; appearance: none; }
 .stack-total { display: flex; justify-content: space-between; gap: 12px; padding: 14px 0 0; font-family: var(--font-display); font-weight: 800; font-size: 18px; border-top: 2px solid var(--ink); }
 .stack-total b { font-weight: 800; }
 .fn-hero #open-account { margin-top: 6px; }
+/* the decline under every yes on the University page: a red outlined button that reads as the negative choice (2026-11-03) */
+.btn.no-btn.red { color: #c0392b; border-color: #c0392b; font-weight: 600; }
+.btn.no-btn.red:hover, .btn.no-btn.red:active { color: #9b2418; border-color: #9b2418; background: #fff5f4; }
