@@ -546,3 +546,40 @@ code { font-size: .9em; background: var(--paper-2); border: 1px solid var(--hair
   body.printing-cert .cert-wrap { margin: 0; }
   body.printing-cert .cert-sheet { width: 11in; height: 8.5in; max-width: none; aspect-ratio: auto; border: 0; border-radius: 0; box-shadow: none; margin: 0; break-inside: avoid; }
 }
+
+/* ───────── resources (#/resources): every book, kit, course and guide on one shelf ───────── */
+.res-head .lib-status { margin-top: 2px; }
+.res-next { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center; padding: 32px 36px; margin-top: 8px; }
+.res-next h2 { margin-bottom: 8px; }
+.res-next .lede { margin: 0; max-width: 560px; }
+.res-next-go .btn { white-space: normal; text-align: center; }
+@media (max-width: 720px) { .res-next { grid-template-columns: 1fr; gap: 16px; padding: 24px 20px; } .res-next-go .btn { width: 100%; } }
+.res-shelf { margin-top: 56px; }
+.res-shelf-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px 28px; flex-wrap: wrap; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid var(--hair); }
+.res-shelf-head h2 { margin-bottom: 6px; }
+.res-shelf-head p { margin: 0; color: var(--ink-2); max-width: 600px; }
+.res-shelf-cta { display: flex; align-items: center; gap: 14px; flex: none; padding-bottom: 4px; }
+.res-count { font-size: 13px; font-weight: 600; color: var(--ink-3); white-space: nowrap; }
+.res-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(196px, 1fr)); gap: 26px 22px; }
+.res-tile { display: flex; flex-direction: column; align-items: flex-start; color: var(--ink); text-decoration: none !important; min-width: 0; }
+.res-tile .pic { position: relative; width: 100%; aspect-ratio: 4 / 3; background: #fff; border: 1.5px solid var(--hair); border-radius: 20px; display: grid; place-items: center; padding: 14px; overflow: hidden; transition: transform 120ms, box-shadow 120ms, border-color 120ms; }
+.res-tile .pic img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; filter: drop-shadow(0 12px 18px rgba(18, 24, 38, .16)); transition: transform 160ms; }
+.res-tile.portrait .pic img { max-height: 94%; }
+.res-tile:hover .pic { transform: translate(-2px, -2px); box-shadow: var(--shadow-hard); border-color: var(--ink); }
+.res-tile:hover .pic img { transform: scale(1.03); }
+.res-tile .badge { position: absolute; top: 10px; right: 10px; width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--ink); display: grid; place-items: center; font-weight: 800; font-size: 14px; background: var(--green); color: var(--ink); }
+.res-tile .badge.lock { background: var(--yellow); }
+.res-tile .badge.lock svg { width: 18px; height: 18px; display: block; }
+.res-tile.locked .pic { background: var(--paper-2); }
+.res-tile.locked .pic img { filter: grayscale(1) opacity(.42); }
+.res-tile.checking .pic img { filter: opacity(.6); }
+.res-tile .t { font-family: var(--font-display); font-weight: 600; font-size: 15px; letter-spacing: -.01em; line-height: 1.25; margin: 13px 0 4px; }
+.res-tile .m { font-size: 13.5px; color: var(--ink-2); line-height: 1.4; }
+.res-tile.locked .t { color: var(--ink-2); }
+.res-tile.locked .m { color: var(--ink-3); }
+.res-tile .tag { display: inline-flex; align-items: center; margin-top: 8px; font-size: 12px; font-weight: 700; line-height: 1; padding: 6px 10px; border-radius: var(--r-pill); border: 1.5px solid var(--ink); background: #fff; color: var(--ink); white-space: nowrap; }
+.res-tile .tag.green { background: var(--green); } .res-tile .tag.blue { background: var(--blue); color: #fff; } .res-tile .tag.yellow { background: var(--yellow); } .res-tile .tag.red { background: var(--red); color: #fff; } .res-tile .tag.purple { background: var(--purple); color: #fff; }
+.res-tile .tag[hidden] { display: none; }
+.res-help { margin: 8px 0 0; max-width: 620px; }
+@media (max-width: 560px) { .res-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 14px; } .res-tile .pic { border-radius: 16px; padding: 10px; } .res-tile .t { font-size: 14px; margin-top: 10px; } .res-tile .m { font-size: 13px; } .res-shelf { margin-top: 44px; } }
+@media print { .res-next, .res-shelf-cta { display: none !important; } }

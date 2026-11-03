@@ -3,9 +3,9 @@
 // (a Stripe Payment Link, or the matching ClickFunnels order page). Leave empty to preview the funnel
 // end to end without charging anyone.
 export const CONFIG = {
-  shipping: 9.95,                 // what the parent pays on the free kit
+  shipping: 6.95,                 // what the parent pays on the free kit (was 9.95 until 2026-11-02)
   bumpPrice: 27,                  // Child Prodigy Secrets Playbook (printed) + audiobook + digital copy
-  checkoutUrl: 'https://buy.stripe.com/cNicMY0ISck62iLdo9eZ200',                // Stripe Payment Link A: kit ($9.95 shipping and handling), US shipping address; after payment redirect to university.html?paid=kit
+  checkoutUrl: 'https://buy.stripe.com/cNicMY0ISck62iLdo9eZ200',                // Stripe Payment Link A: kit (hosted link still priced $9.95 in Stripe until Hunter changes it; the on-page checkout charges $6.95), US shipping address; after payment redirect to university.html?paid=kit
   checkoutUrlWithBump: 'https://buy.stripe.com/bJe5kw63cck60aD0BneZ201',        // Stripe Payment Link B: kit + $27 Playbook, same redirect (both links required; a Shopify /cart/ link also works and gets name/email/phone prefilled)
   universityTrialUrl: 'https://buy.stripe.com/aFa5kw4Z83NAbTl97TeZ202',         // Stripe Payment Link: $67/mo with a 14-day trial; after payment redirect to certify.html?paid=university
   certifyUrl: 'https://buy.stripe.com/4gM28kajsck63mPfwheZ203',                 // Stripe Payment Link: $297 once; after payment redirect to thanks.html?paid=certify

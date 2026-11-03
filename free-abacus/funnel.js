@@ -681,13 +681,20 @@ export function thanks() {
   // the trial's first charge: 14 days after the University was added (today, when this browser did not record it)
   const t0 = Date.parse(o.universityAt) || Date.now();
   $$('[data-trial-date]').forEach(el => el.textContent = day(new Date(t0 + 14 * 864e5)));
+  // the stack: every piece of the order with its picture, then what was paid today
   const rows = $('[data-order-rows]');
   if (rows) {
-    const items = [['Child Prodigy Starter Kit', 'FREE (shipping ' + money(CONFIG.shipping) + ')']];
-    if (o.bump) items.push(['Child Prodigy Secrets Playbook + Audiobook', '$' + CONFIG.bumpPrice]);
-    if (uni) items.push(['Child Phenom University — 14-day test drive', cert ? 'FREE for a year with your certification' : 'FREE, then $67/mo']);
-    if (cert) items.push(['Certified Phenom Instructor', '$297']);
-    rows.innerHTML = items.map(([n, p]) => `<div><span>${n}</span><b>${p}</b></div>`).join('');
+    const img = f => '../img/funnel/' + f;
+    const items = [
+      [img('abacus-800.webp'), 'The Child Prodigy Starter Kit', 'The abacus, shipped to your door with tracking.', 'FREE', true],
+      [img('kitbox-v6-800.webp'), 'The 3-Night Quick-Start', 'Your first three nights, open tonight in your account.', 'Included', true],
+    ];
+    if (o.bump) items.push([img('playbook.webp'), 'Child Prodigy Secrets Playbook + Audiobook', 'Read it and listen to it in your account, under Resources.', '$' + CONFIG.bumpPrice, false]);
+    if (uni) items.push([img('university.webp'), 'Child Phenom University', cert ? 'Stages 2 to 10, the library, the handouts and two guides. Free for a year with your certification.' : 'Stages 2 to 10, the library, the handouts and two guides. 14 days free, then $67 a month.', cert ? 'FREE' : 'FREE today', true]);
+    if (cert) items.push([img('certificate.webp'), 'Certified Phenom Instructor', 'The course, the Launch Kit and your certificate, under Resources.', '$297', false]);
+    rows.innerHTML = items.map(([src, n, d, v, free]) => `<li><img src="${src}" alt=""><div><div class="n">${n}</div><div class="d">${d}</div></div><span class="v${free ? ' free' : ''}">${v}</span></li>`).join('');
+    const paid = CONFIG.shipping + (o.bump ? CONFIG.bumpPrice : 0) + (cert ? 297 : 0);
+    $$('[data-paid-total]').forEach(el => el.textContent = money(paid) + (o.bump || cert ? '' : ' shipping'));
   }
   $$('[data-ship-days]').forEach(el => el.textContent = CONFIG.shipDays);
   // the rows are drawn and the upsells are behind us: the order (intent id, client secret, contact details) leaves

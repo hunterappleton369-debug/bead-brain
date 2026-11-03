@@ -20,6 +20,7 @@ import { exam } from './exam.js';
 import { kit } from './kit.js';
 import { certificate } from './certificate.js';
 import { ownedItems, linksHTML, revealAudio } from './owned.js';
+import { resources } from './resources.js';
 import { UNIVERSITY_URL, MEMBER_PRICE, SUPPORT_EMAIL } from './config.js';
 
 injectDefs();
@@ -104,9 +105,10 @@ function activateDemos(root) {
 }
 function setNav(path) {
   const first = path.split('/')[0];
-  const tab = { exam: 'course', kit: 'course', certificate: 'course', bonus: 'library' }[first] || first; // pages that live under a nav tab
+  // Five tabs (Home, Resources, Practice, Bead Score, Parent guide); every other page lights the tab it lives under.
+  const tab = { library: 'resources', print: 'resources', playbook: 'resources', bonus: 'resources', course: 'resources', exam: 'resources', kit: 'resources', certificate: 'resources', quickstart: 'resources', flash: 'practice', plan: 'guide' }[first] || first;
   document.querySelectorAll('#nav a').forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#/' + tab));
-  document.querySelectorAll('#nav [data-needs]').forEach(a => { a.hidden = !membership.can(a.dataset.needs); }); // Course: instructors only
+  document.querySelectorAll('#nav [data-needs]').forEach(a => { a.hidden = !membership.can(a.dataset.needs); });
   const p = store.profile;
   const u = auth.user;
   const dot = u ? `<span class="sync-dot ${auth.lastError ? 'off' : ''}" aria-hidden="true"></span>` : '';
@@ -333,7 +335,7 @@ const RESEND_WAIT = 30; // seconds before "Resend link" works (Supabase also lim
 // Where to go after the magic link signs them in, when it is not #/family. Kept per tab (sessionStorage), and
 // also on the device for an hour, because a link tapped in Gmail or Outlook usually opens in a new tab.
 const NEXT_KEY = 'cp.after-signin';
-const NEXT_OK = /^#\/(playbook(\/(\d+|listen))?|stage\/\d+(\/(lesson\/[\w-]+|boss))?|bonus(\/(valedictorian|future)(\/\d+)?)?|course(\/\d+)?|exam(\/take)?|certificate(\/listing)?|kit(\/[a-z0-9-]+(\/\d+)?)?|library|account|quickstart)$/; // only these may be sent back to
+const NEXT_OK = /^#\/(resources|playbook(\/(\d+|listen))?|stage\/\d+(\/(lesson\/[\w-]+|boss))?|bonus(\/(valedictorian|future)(\/\d+)?)?|course(\/\d+)?|exam(\/take)?|certificate(\/listing)?|kit(\/[a-z0-9-]+(\/\d+)?)?|library|account|quickstart)$/; // only these may be sent back to
 function rememberNext(hash) {
   try { if (NEXT_OK.test(hash)) { sessionStorage.setItem(NEXT_KEY, hash); localStorage.setItem(NEXT_KEY, JSON.stringify({ hash, at: Date.now() })); } else { sessionStorage.removeItem(NEXT_KEY); localStorage.removeItem(NEXT_KEY); } } catch {}
 }
@@ -517,7 +519,7 @@ function welcomeHTML() {
     <ul class="welcome-own">${items.map(it => `<li><span class="tick" aria-hidden="true">✓</span><div><b>${it.title}</b>${it.chip ? ` <span class="status-chip ${it.chip[0]}">${it.chip[1]}</span>` : ''}${it.links.length ? `<div class="welcome-links">${linksHTML(it, 'link-arrow')}</div>` : ''}</div></li>`).join('')}</ul>
     <h3>Tonight</h3>
     <ol class="welcome-steps">${steps.map(([t, href]) => `<li><a href="${href}">${t}</a></li>`).join('')}</ol>
-    <p class="welcome-help">Questions? <a href="mailto:${SUPPORT_EMAIL}">${SUPPORT_EMAIL}</a></p>
+    <p class="welcome-help">Every picture of what you own is on <a href="#/resources">your resources page</a>. Questions? <a href="mailto:${SUPPORT_EMAIL}">${SUPPORT_EMAIL}</a></p>
     <div class="btn-row"><button class="btn" type="button" id="welcome-ok">Got it</button></div>
   </section>`;
 }
@@ -529,8 +531,8 @@ function family() {
     ${welcomeHTML()}
     <h1>Family</h1>
     <p class="lede">Switch between children, fix a name or an age, or move progress to another device.</p>
+    <p><a class="link-arrow" href="#/resources">Everything you own, in one place</a></p>
     <p><a class="link-arrow" href="#/account">Membership and billing</a></p>
-    <p><a class="link-arrow" href="#/quickstart">Your 3-Night Quick-Start</a></p>
     ${accountHTML()}
     <ul class="lesson-list">${store.profiles().map(x => `<li class="${p && x.id === p.id ? 'next' : ''}"><span class="ix">${esc(x.name[0] || '?')}</span><div><a href="#" data-sel="${esc(x.id)}">${esc(x.name)}</a><div class="meta">age ${esc(x.age)} · level ${levelFromXP(x.xp).level} · ${Object.values(x.lessons).filter(l => l.done).length} lessons done${x.parentEmail && !auth.user ? ' · ' + esc(x.parentEmail) : ''}</div></div><span class="go"><button class="btn sm ghost" data-edit="${esc(x.id)}">Edit</button><button class="btn sm ghost" data-del="${esc(x.id)}">Remove</button></span></li>`).join('')}</ul>
     <div class="btn-row"><a class="btn blue" href="#/start">+ Add a child</a><button class="btn secondary" id="export">Download progress</button><label class="btn secondary" for="import">Load progress<input id="import" type="file" accept="application/json" style="display:none"></label></div>
@@ -605,7 +607,7 @@ function plan() {
 }
 
 function guide() {
-  const el = h(`<div>${GUIDE_HTML}
+  const el = h(`<div><div class="btn-row" style="margin:18px 0 -8px"><a class="btn sm secondary" href="#/plan">The ten-stage plan →</a><a class="btn sm ghost" href="#/resources">Your resources</a></div>${GUIDE_HTML}
     <section class="section"><div class="block yellow center"><h2>Questions mid-lesson?</h2><p class="lede" style="margin:0 auto 20px">Every lesson has a coach tip and a "Stuck?" panel with the exact move. You will rarely need this page twice.</p><div class="btn-row" style="justify-content:center"><a class="btn" href="#/stage/1">Go to stage 1</a></div></div></section>
   </div>`);
   app.appendChild(el);
@@ -783,7 +785,7 @@ function test(which = 'main') {
 // ───────────── practice & flash ─────────────
 function practice() {
   const el = h(`<div>
-    <div class="page-head" style="padding-top:28px"><div><span class="eyebrow blue">Practice</span><h1>Build any drill</h1><p class="lede">Extra reps on one move, harder numbers for an older kid, or a worksheet to print.</p></div></div>
+    <div class="page-head" style="padding-top:28px"><div><span class="eyebrow blue">Practice</span><h1>Build any drill</h1><p class="lede">Extra reps on one move, harder numbers for an older kid, or a worksheet to print.</p><div class="btn-row" style="margin-bottom:0"><a class="btn sm secondary" href="#/flash">Flash anzan →</a><a class="btn sm ghost" href="#/test">Bead Score test</a></div></div></div>
     <div class="try-box">
       <div class="profile-row">
         <label>Kind <select id="kind"><option value="addsub">Add &amp; subtract</option><option value="single">Single column (screen abacus)</option><option value="twocol">Carry / borrow (screen abacus)</option><option value="flash">Flash</option><option value="mul">Multiply</option><option value="div">Divide</option><option value="facts">Times tables</option><option value="read">Read the beads</option></select></label>
@@ -906,6 +908,7 @@ function render() {
     if (['stage', 'quest', 'worksheet'].includes(a) && !stageGate(b)) return; // stages 2 to 10: University only
     if (a === 'quest') return quest(b, c);
     if (a === 'worksheet') return worksheet(b);
+    if (a === 'resources') return resources(app);
     if (a === 'account') return account(app);
     if (a === 'library') return b ? libraryBook(app, b) : library(app);
     if (a === 'playbook') return playbook(app, b);
@@ -928,7 +931,7 @@ window.addEventListener('hashchange', e => { try { prevHash = new URL(e.oldURL).
 auth.on((ev, extra) => {
   const path = location.hash.replace(/^#\/?/, '');
   const first = path.split('/')[0];
-  if (ev === 'link') { toast(auth.user ? `Signed in as ${auth.user.email}` : 'That link did not work'); const to = auth.user ? takeNext() || '#/family' : '#/start/signin'; if (location.hash === to) render(); else location.hash = to; return; }
+  if (ev === 'link') { toast(auth.user ? `Signed in as ${auth.user.email}` : 'That link did not work'); const to = auth.user ? takeNext() || '#/resources' : '#/start/signin'; if (location.hash === to) render(); else location.hash = to; return; }
   setNav(path);
   const quiet = ['', 'family', 'start', 'account'].includes(first) && !isAuthHash(path);
   if (ev === 'auth' || (ev === 'sync' && extra?.changed)) { if (quiet) render(); return; }
@@ -936,7 +939,7 @@ auth.on((ev, extra) => {
 });
 // Membership: the pages that open or lock on it redraw when it is known or changes. Elsewhere (a lesson
 // mid-drill, say) only the member-only buttons marked data-needs switch on or off.
-const REDRAW = ['account', 'library', 'print', 'playbook', 'family', 'bonus', 'course', 'exam', 'kit', 'certificate'];
+const REDRAW = ['resources', 'account', 'library', 'print', 'playbook', 'family', 'bonus', 'course', 'exam', 'kit', 'certificate'];
 membership.on(() => {
   const [first, second] = location.hash.replace(/^#\/?/, '').split('/');
   const formPage = (first === 'exam' && second === 'take') || (first === 'certificate' && second === 'listing');

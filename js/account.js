@@ -110,7 +110,7 @@ function planHTML(s) {
 
 // "What you own": one line per thing (js/owned.js), from the purchases, memberships and cert_certificates rows.
 function ownedHTML(s) {
-  const head = `<div class="section-head"><span class="eyebrow">Yours</span><h2>What you own</h2></div>`;
+  const head = `<div class="section-head"><span class="eyebrow">Yours</span><h2>What you own</h2><p>Every one of these, with its picture, is on <a href="#/resources">your resources page</a>.</p></div>`;
   if (!membership.loaded) return `<section class="section acct-own">${head}<p class="muted">Checking…</p></section>`;
   const items = ownedItems(s).map(it => `<li><span class="ix">✓</span><div><b>${it.title}</b>${it.chip ? ` <span class="status-chip ${it.chip[0]}">${it.chip[1]}</span>` : ''}<div class="meta">${it.meta}</div>${it.links.length ? `<div class="own-links">${linksHTML(it)}</div>` : ''}</div></li>`);
   if (items.length) return `<section class="section acct-own">${head}<ul class="lesson-list own-list">${items.join('')}</ul></section>`;
