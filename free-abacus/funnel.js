@@ -346,20 +346,20 @@ export function orderForm() {
       const S = await loadStripe();
       if (my !== seq) return;
       const stripe = S(CONFIG.stripePublishableKey);
-      const elements = stripe.elements({ mode: 'payment', amount: cents(total()), currency: 'usd', setupFutureUsage: 'off_session', paymentMethodTypes: ['card'], appearance: APPEARANCE, fonts: FONTS, loader: 'auto' });
+      const elements = stripe.elements({ mode: 'payment', amount: cents(total()), currency: 'usd', setupFutureUsage: 'off_session', paymentMethodTypes: ['card', 'link'], appearance: APPEARANCE, fonts: FONTS, loader: 'auto' });
       const d = p1();
       // The card fields, and Link (2026-11-03). Before this the element ran 900 to 1,100 px tall on a phone: a lone
       // "Card" radio row, Link's expanded save-my-info Email and Mobile fields, Country and ZIP the parent had just
       // typed on step 1, and Stripe's "charge your card for future payments" sentence. Eight lost leads in a row met
       // that wall with no total and no button on their screen. Link stays: 3 of the first 5 kit buyers paid with it.
       // Its sign-up fields come prefilled from step 1 (defaultValues), and they stay collapsed once "accelerated
-      // sign-up" is off in the Stripe Dashboard (Settings → Payment methods → Link), which also hides Link's "Bank"
-      // option; the kit intents take cards only. The address goes with the confirm instead of being typed again, and
+      // sign-up" is off in the Stripe Dashboard (Settings → Payment methods → Link). The address goes with the confirm instead of being typed again, and
       // the saved-card sentence is ours, under the fields (.pay-note). A Link log-in left half done at Complete
       // ("No account connected", 2026-11-03) remounts the element without Link: see cardOnly below.
       const pay = elements.create('payment', {
         // accordion, no radios: the card fields open on top; Link's "Bank" row (Instant Bank Payments, which Stripe adds
-        // to Link on its own) sits collapsed under them instead of as a second tab. The kit intents take cards only.
+        // to Link on its own) sits collapsed under them instead of as a second tab. The server's intents take card and
+        // link, so a bank picked there pays (2026-11-03).
         layout: { type: 'accordion', defaultCollapsed: false, radios: 'never', spacedAccordionItems: false },
         business: { name: 'Child Phenoms' },
         fields: { billingDetails: { name: 'never', email: 'never', phone: 'never', address: 'never' } },
