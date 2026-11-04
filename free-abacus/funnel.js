@@ -197,9 +197,61 @@ export function scrollLinks() {
     const fields = el.matches('.order') ? $$('.pane.on input:not([type=hidden]):not([type=checkbox]), .pane.on select', el) : [];
     const first = fields.find(f => !f.value) || fields[0];
     if (first) { try { first.focus({ preventScroll: true }); } catch {} }
-    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // on a phone the field with the cursor is placed under the top bar, clear of the keyboard (keyboardAware below);
+    // elsewhere the form's top comes up as before
+    if (first && TOUCH) reveal(first, true, $('.tabs', el)); else el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     if (first) ph('cta_to_form', { from: a.closest('.sticky-cta') ? 'sticky' : a.classList.contains('hero-cta') ? 'hero' : 'section', field: first.name || first.id || '' });
   }));
+}
+
+// ---------- the keyboard and the form: the field with the cursor stays in view ----------
+// A phone keyboard takes the lower half of the screen: an iPhone in the Facebook browser keeps about 360 of its 745 px.
+// The CTA tap used to scroll the red form header to the top, so a parent whose name, email and phone the browser had
+// filled in got the cursor in Street Address, 420 px down and behind the keyboard (Hunter, 2026-11-03). Now the field
+// with the cursor sits just under the page's top bar with the next rows under it, goes back there when the keyboard
+// changes the visible area, Return moves to the next field instead of submitting a half-filled form, and the sticky
+// bar and toasts keep out of the way while typing. Positions use the visual viewport (the part of the page the
+// keyboard leaves), which Safari, the in-app browsers and Chrome all report.
+const TOUCH = (window.matchMedia && matchMedia('(pointer: coarse)').matches) || 'ontouchstart' in window;
+const vvTop = () => (window.visualViewport ? visualViewport.offsetTop : 0);
+const vvHeight = () => (window.visualViewport ? visualViewport.height : innerHeight);
+// where a focused field is placed: under the top bar when that is on screen, else at the top of what is visible
+const restingTop = () => { const h = $('.fn-top'); const r = h ? h.getBoundingClientRect() : null; const vt = vvTop(); return (r && r.height && r.bottom > vt ? r.bottom : vt) + 12; };
+// the bottom of what the parent can see: the keyboard takes about half the screen, counted even before it has opened
+const visBottom = () => vvTop() + Math.min(vvHeight(), innerHeight * 0.48);
+const setTyping = on => document.body.classList.toggle('cp-typing', !!on);
+// Scroll so `el` sits at the resting spot. Without `always`, a field whose bottom is in the upper part of the visible
+// area is left alone, so tapping the next row down does not jolt the page. `floor` (the form's step tabs) stays in
+// view above `el` when there is room, so the first rows keep their heading.
+export function reveal(el, always, floor) {
+  if (!el || !TOUCH) return;
+  const r = el.getBoundingClientRect(), top = restingTop(), zone = top + (visBottom() - top) * 0.6;
+  if (!always && r.top >= top - 8 && r.bottom <= zone) return;
+  let y = scrollY + r.top - top;
+  if (floor) { const f = floor.getBoundingClientRect(), cap = scrollY + f.top - (top - 6); if (cap < y && r.bottom - (cap - scrollY) <= zone) y = cap; }
+  window.scrollTo({ top: Math.max(0, y), behavior: 'auto' });
+}
+function keyboardAware(form) {
+  if (!TOUCH) return;
+  let t = 0, since = 0;
+  const fieldOf = el => (el && el.matches && form.contains(el) && el.matches('input:not([type=hidden]):not([type=checkbox]), select')) ? el : null;
+  const tabs = $('.tabs', form);
+  const place = f => { if (document.activeElement === f) reveal(f, false, tabs); };
+  form.addEventListener('focusin', e => {
+    const f = fieldOf(e.target); if (!f) return;
+    clearTimeout(t); setTyping(true); since = Date.now();
+    setTimeout(() => place(f), 60); setTimeout(() => place(f), 450); // once now, once after the browser's own keyboard scroll
+  });
+  form.addEventListener('focusout', () => { clearTimeout(t); t = setTimeout(() => { if (!fieldOf(document.activeElement)) setTyping(false); }, 150); });
+  // the keyboard opening (or the browser shrinking for it) changes the visible area within a second of the focus
+  if (window.visualViewport) visualViewport.addEventListener('resize', () => { const f = fieldOf(document.activeElement); if (f && Date.now() - since < 1500) reveal(f, false, tabs); });
+  // Return (the keyboard's Next) goes to the next field; on the last one (ZIP, "Go") the form submits as before
+  form.addEventListener('keydown', e => {
+    if (e.key !== 'Enter' || e.isComposing) return; const f = fieldOf(e.target); if (!f || f.tagName === 'SELECT') return;
+    const list = $$('.pane.on input:not([type=hidden]):not([type=checkbox])', form), i = list.indexOf(f);
+    if (i < 0 || i === list.length - 1) return;
+    e.preventDefault(); const next = list[i + 1]; since = Date.now(); try { next.focus({ preventScroll: true }); } catch {} reveal(next, false, tabs);
+  });
 }
 
 // ---------- on-page checkout: Stripe Elements in step 2, the card saved for one-click upsells ----------
@@ -246,6 +298,7 @@ const MOUNT_TRIES = 3;  // mounts of the card form before the hosted checkout ta
 export function orderForm() {
   const form = $('#order'); if (!form) return;
   const pane1 = $('[data-pane="1"]', form), pane2 = $('[data-pane="2"]', form);
+  keyboardAware(form);
   const ind = $$('.step-ind > span, .tabs > span', form);
   const bump = $('#bump', form);
   const lead = load(LEAD_KEY) || {};
@@ -370,7 +423,9 @@ export function orderForm() {
       const el = $('#pay-el', form); if (el) el.innerHTML = '';
       // once per page view: the parent put the cursor in the card fields, then finished them
       let cardStarted = false, cardDone = false;
-      pay.on('focus', () => { if (!cardStarted) { cardStarted = true; ph('card_started'); } });
+      // the card fields with the cursor go under the top bar, clear of the keyboard, like the step-1 fields
+      pay.on('focus', () => { if (!cardStarted) { cardStarted = true; ph('card_started'); } setTyping(true); reveal(payBlock || $('#pay-el'), true); });
+      pay.on('blur', () => setTyping(false));
       pay.on('change', e => {
         if (e && e.complete && !cardDone) { cardDone = true; ph('card_complete', { type: (e.value && e.value.type) || '' }); }
         if (payErr && !payErr.hidden && e && !e.empty) showErr(''); // the parent is fixing the card: the old message goes

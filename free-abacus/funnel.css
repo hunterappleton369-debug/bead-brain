@@ -476,3 +476,13 @@ body.cp-step2 .order.red { margin-top: 12px; }
 .pay-note b { color: var(--ink); }
 /* step 1: the reason under a red field */
 .order.red .fgroup .fld.bad::after { content: attr(data-err); display: block; font-size: 12.5px; font-weight: 600; color: var(--red); padding: 4px 14px 7px; background: #fff; }
+
+/* Typing on a phone (2026-11-03): the keyboard takes the lower half of the screen, so while a field has the cursor the
+   sticky bar stays down (in the Facebook browser it would sit right over the field) and toasts show at the top. */
+body.cp-typing .sticky-cta { transform: translateY(110%) !important; }
+body.cp-typing .toast-fn { bottom: auto; top: calc(env(safe-area-inset-top, 0px) + 68px); }
+/* A filled row says what it holds: the placeholder is the only label and it is gone once something is typed (Baymard:
+   inline labels vanish when they are needed most), so a small one floats in at the top of a filled row. */
+.order.red .fgroup .fld { position: relative; }
+.order.red .fgroup .fld:has(> input:not(:placeholder-shown)) > label.sr, .order.red .fgroup .fld:has(> select:valid) > label.sr { position: absolute; left: 14px; top: 7px; width: auto; height: auto; overflow: visible; clip: auto; font-size: 10px; letter-spacing: .05em; text-transform: uppercase; font-weight: 700; color: var(--ink-3); line-height: 1; pointer-events: none; z-index: 1; white-space: nowrap; }
+.order.red .fgroup .fld:has(> input:not(:placeholder-shown)) > input, .order.red .fgroup .fld:has(> select:valid) > select { padding-top: 15px; }
