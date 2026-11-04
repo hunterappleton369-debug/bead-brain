@@ -236,6 +236,7 @@ const reasonOf = e => { const c = (e && e.code) || 'error'; return c === 'networ
 const APPEARANCE = { theme: 'stripe', variables: { colorPrimary: '#2457f5', colorText: '#121826', colorDanger: '#f03e3e', borderRadius: '10px', fontFamily: 'Inter, system-ui, sans-serif', fontSizeBase: '16px', spacingUnit: '4px' } };
 const FONTS = [{ cssSrc: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap' }];
 const MOUNT_MS = 12000; // no card form 12 seconds after step 2 opens (it is mounted at page load, so this is rare): the hosted checkout takes over
+const MOUNT_TRIES = 3;  // mounts of the card form before the hosted checkout takes over (2.5 s, then 5 s between them)
 
 // ---------- the two-step order form ----------
 // Step 1 takes the contact details and the shipping address in plain fields (the phone's autofill handles them in one
@@ -257,15 +258,18 @@ export function orderForm() {
   }
 
   const ZIP = /^\d{5}(-\d{4})?$/;
+  // what a red field is missing, printed under it (a red outline alone cost one parent three tries and four minutes)
+  const ERR = { first: 'Enter your first name', last: 'Enter your last name', email: 'Enter a valid email address (name@example.com)', phone: 'Enter a 10-digit phone number', address: 'Enter your street address', city: 'Enter your city', state: 'Pick your state', zip: 'Enter your 5-digit ZIP code' };
   const valid = pane => {
     let ok = true;
     $$('input[required], select[required]', pane).forEach(i => {
       const fld = i.closest('.fld'); const v = i.value.trim();
       const bad = !v || (i.type === 'email' && !EMAIL.test(v)) || (i.name === 'phone' && v.replace(/\D/g, '').length < 10) || (i.name === 'zip' && !ZIP.test(v));
-      fld.classList.toggle('bad', bad); if (bad) { if (ok) i.focus({ preventScroll: false }); ok = false; }
+      fld.classList.toggle('bad', bad); if (bad) { fld.dataset.err = ERR[i.name] || 'Required'; if (ok) i.focus({ preventScroll: false }); ok = false; }
     });
     return ok;
   };
+  $$('input, select', pane1).forEach(i => { const clear = () => { const f = i.closest('.fld'); if (f && f.classList.contains('bad') && i.value.trim()) f.classList.remove('bad'); }; i.addEventListener('input', clear); i.addEventListener('change', clear); });
   const withBump = () => !!(bump && bump.checked);
   const total = () => CONFIG.shipping + (withBump() ? CONFIG.bumpPrice : 0);
   const cents = n => Math.round(n * 100);
@@ -285,13 +289,14 @@ export function orderForm() {
   let intent = null;      // { intentId, clientSecret, amount, bump, email } the kit intent the server opened for this email
   let pre = null;         // { email, p, sent } a start call on its way
   let hosted = !onPage(); // true = the Complete button sends the parent to the hosted checkout links
-  let seq = 0, mounting = null, timer = 0, syncing = null;
+  let seq = 0, mounting = null, timer = 0, syncing = null, mountTries = 0, retryTimer = 0;
   const showErr = msg => { if (!payErr) return; payErr.textContent = msg || ''; payErr.hidden = !msg; };
   const setState = (mode, reason) => { window.cpCheckoutState = { mode, reason: reason || '' }; };
   const setBusy = on => { complete.classList.toggle('busy', on); if (on) complete.setAttribute('aria-disabled', 'true'); else complete.removeAttribute('aria-disabled'); };
   const fullName = d => [d.first, d.last].filter(Boolean).join(' ');
   const p1 = () => { const d = {}; $$('input, select', pane1).forEach(i => d[i.name] = i.value.trim()); return d; };
-  const billing = d => ({ name: fullName(d) || undefined, email: d.email || undefined, phone: d.phone || undefined });
+  const billing = d => ({ name: fullName(d) || undefined, email: d.email || undefined, phone: d.phone || undefined,
+    address: { line1: d.address || undefined, line2: d.address2 || undefined, city: d.city || undefined, state: d.state || undefined, postal_code: d.zip || undefined, country: 'US' } });
   // the shipping address as typed on step 1, attached to the intent at confirm (the webhook and Shopify read it there)
   const shippingOf = d => ({ name: fullName(d), phone: d.phone || undefined, address: { line1: d.address, line2: d.address2 || undefined, city: d.city, state: d.state, postal_code: d.zip, country: 'US' } });
   // In hosted mode the button opens Stripe's page, where the card is typed: its label says so
@@ -305,6 +310,9 @@ export function orderForm() {
     ph('checkout_failed', { message: String(msg || '').slice(0, 90), fields: !!toFields });
     const target = toFields ? payBlock : payErr;
     if (target) setTimeout(() => window.scrollTo({ top: target.getBoundingClientRect().top + scrollY - (toFields ? 84 : innerHeight / 2), behavior: 'smooth' }), 50);
+    // a card the bank refused (wrong number, expiry, code): the cursor goes back into the card fields, so the next
+    // thing typed fixes it (one parent tapped the page's other buttons for a minute after this message, 2026-11-03)
+    if (co && !toFields && /card|expir|security code|cvc|cvv/i.test(String(msg || ''))) setTimeout(() => { try { co.pay.focus(); } catch {} }, 400);
   };
   // After a confirm that ended in an error: whether Stripe shows the kit as paid anyway (the answer was lost on the way
   // back, which a dropped in-app connection does). Never a guess: a lookup that fails answers null.
@@ -316,7 +324,7 @@ export function orderForm() {
   // The card form could not start or is too slow: a calm line in its place, and the bump, the summary and the
   // button stay. Complete then opens the hosted Payment Link.
   const useHosted = reason => {
-    hosted = true; mounting = null; seq++; clearTimeout(timer); // a mount still on its way is dropped: the next Next starts fresh
+    hosted = true; mounting = null; seq++; clearTimeout(timer); clearTimeout(retryTimer); // a mount still on its way is dropped: the next Next starts fresh
     if (co) { try { co.pay.destroy(); } catch {} co = null; }
     if (payBlock) payBlock.classList.add('hosted');
     setLabel(true);
@@ -332,26 +340,35 @@ export function orderForm() {
   // amount follows the bump box; the intent's client secret is handed over at confirm.
   function mountPay() {
     if (!onPage() || co || mounting) return mounting || Promise.resolve();
-    const my = ++seq;
+    const my = ++seq; mountTries++; clearTimeout(retryTimer);
     mounting = (async () => {
       const S = await loadStripe();
       if (my !== seq) return;
       const stripe = S(CONFIG.stripePublishableKey);
       const elements = stripe.elements({ mode: 'payment', amount: cents(total()), currency: 'usd', setupFutureUsage: 'off_session', paymentMethodTypes: ['card'], appearance: APPEARANCE, fonts: FONTS, loader: 'auto' });
       const d = p1();
+      // Just the card fields (2026-11-03). Before this the element ran 900 to 1,100 px tall on a phone: a lone "Card"
+      // radio row, Link's row plus its save-my-info Email and Mobile fields and a "Bank" option, Country and ZIP the
+      // parent had just typed on step 1, and Stripe's "charge your card for future payments" sentence. Eight lost leads
+      // in a row met that wall with no total and no button on their screen. Link also pre-selected itself for a
+      // recognized email and answered "No account connected" at Complete. The address goes with the confirm instead,
+      // and the saved-card sentence is ours, under the fields (.pay-note).
       const pay = elements.create('payment', {
-        layout: { type: 'accordion', defaultCollapsed: false, radios: true, spacedAccordionItems: false },
+        layout: { type: 'tabs' }, // one payment type: Stripe draws no tab bar, only the fields
         business: { name: 'Child Phenoms' },
-        fields: { billingDetails: { name: 'never', email: 'never', phone: 'never' } },
+        fields: { billingDetails: { name: 'never', email: 'never', phone: 'never', address: 'never' } },
         defaultValues: { billingDetails: { name: fullName(d), email: d.email || '', phone: d.phone || '' } },
-        // 'auto': Stripe prints its sentence that the card is saved for the one-click offers on the next pages
-        terms: { card: 'auto', applePay: 'auto', googlePay: 'auto', link: 'auto' },
+        wallets: { applePay: 'auto', googlePay: 'auto', link: 'never' },
+        terms: { card: 'never', applePay: 'never', googlePay: 'never' },
       });
       const el = $('#pay-el', form); if (el) el.innerHTML = '';
       // once per page view: the parent put the cursor in the card fields, then finished them
       let cardStarted = false, cardDone = false;
       pay.on('focus', () => { if (!cardStarted) { cardStarted = true; ph('card_started'); } });
-      pay.on('change', e => { if (e && e.complete && !cardDone) { cardDone = true; ph('card_complete', { type: (e.value && e.value.type) || '' }); } });
+      pay.on('change', e => {
+        if (e && e.complete && !cardDone) { cardDone = true; ph('card_complete', { type: (e.value && e.value.type) || '' }); }
+        if (payErr && !payErr.hidden && e && !e.empty) showErr(''); // the parent is fixing the card: the old message goes
+      });
       await new Promise((res, rej) => {
         pay.on('ready', res);
         pay.on('loaderror', e => rej(Object.assign(new Error(''), { code: 'loaderror: ' + String((e && e.error && e.error.message) || '').slice(0, 120) })));
@@ -363,10 +380,20 @@ export function orderForm() {
       if (payBlock) payBlock.classList.remove('hosted');
       setLabel(false);
       if (payLoading) payLoading.classList.add('hide'); pane2.classList.remove('loading');
-      setState('onpage', ''); ph('checkout_mounted');
-    })().catch(e => { if (my === seq) { mounting = null; useHosted(reasonOf(e)); } });
+      setState('onpage', ''); ph('checkout_mounted', { attempt: mountTries, apple_pay: applePayHere() });
+    })().catch(e => {
+      if (my !== seq) return;
+      mounting = null;
+      // Stripe.js or the element did not come up (the Facebook browser drops a connection now and then: one parent's
+      // card form failed at load on 2026-11-03 and she reloaded the page herself). Up to MOUNT_TRIES mounts, a few
+      // seconds apart, before the hosted checkout takes over; Next starts the count again.
+      if (mountTries < MOUNT_TRIES) { ph('checkout_mount_retry', { attempt: mountTries, reason: reasonOf(e) }); retryTimer = setTimeout(() => { if (!co && !mounting && my === seq) mountPay(); }, 2500 * mountTries); }
+      else useHosted(reasonOf(e));
+    });
     return mounting;
   }
+  // Apple Pay can only show where the browser offers it (Safari and WebKit views with a card in Wallet)
+  function applePayHere() { try { return !!(window.ApplePaySession && window.ApplePaySession.canMakePayments()); } catch { return false; } }
   // Mount once the page's own images and fonts are in, or as soon as the parent touches the form, whichever comes
   // first, so Stripe.js (250 KB) never competes with the hero image for a slow connection's first seconds.
   if (onPage()) {
@@ -403,6 +430,12 @@ export function orderForm() {
     const s0 = st.sent || null;
     if (s0 && s0.first === d.first && s0.last === d.last && s0.phone === d.phone) return; // the start already carried these
     api({ action: 'update', intentId: st.intentId, clientSecret: st.clientSecret, first: d.first, last: d.last, phone: d.phone }).catch(() => { if (contactSent === key) contactSent = ''; });
+  };
+  let step2Marked = '';
+  const markStep2 = st => {
+    if (!st || !st.intentId || !st.clientSecret || step2Marked === st.intentId) return;
+    step2Marked = st.intentId;
+    api({ action: 'update', intentId: st.intentId, clientSecret: st.clientSecret, step2: true }).catch(() => { if (step2Marked === st.intentId) step2Marked = ''; });
   };
   // the kit intent for this email: the one already open, the start on its way, or a new start
   async function ensureIntent(d) {
@@ -483,22 +516,28 @@ export function orderForm() {
     if (CONFIG.leadWebhook) fetch(CONFIG.leadWebhook, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ event: 'lead', ...data }) }).catch(() => {});
     ind[0].classList.replace('on', 'done'); ind[1].classList.add('on');
     const ttl = $('[data-pane="2"] h3', form); if (ttl) ttl.textContent = 'Almost done, ' + (data.first || 'friend') + '.';
+    // Step 2 is the whole page: the landing page's sections and its sticky bar go away until the parent taps Back
+    // (2026-11-03: parents flung past the form, stared at a card form with no total or button on screen, or tapped
+    // the sticky "YES" bar as if it were the Complete button; now there is nothing to scroll off to)
+    document.body.classList.add('cp-step2');
     go(pane2);
     // the card step opened: card_ready says whether the card form was already on screen (it preloads at page start)
     ph('checkout_step2_shown', { card_ready: !!co, hosted: !!hosted });
     if (!onPage()) return;
     if (co) { try { co.pay.update({ defaultValues: { billingDetails: { name: fullName(data), email: data.email, phone: data.phone || '' } } }); } catch {} }
-    // the intent opens (or is already open) in the background; a start that fails sends Complete to the hosted link
-    ensureIntent(data).catch(e => { if (!hosted) useHosted(reasonOf(e)); });
+    // the intent opens (or is already open) in the background; a start that fails sends Complete to the hosted link.
+    // Once it is open, the server stamps the lead row as a step-2 lead (the start alone goes out on the email's blur,
+    // and a parent who never tapped Next was counted and emailed as a lead on 2026-11-03).
+    ensureIntent(data).then(st => markStep2(st)).catch(e => { if (!hosted) useHosted(reasonOf(e)); });
     // every Next tries the card form again, so one failed mount does not leave the parent on the hosted link
     if (!co) {
       hosted = false; if (payBlock) payBlock.classList.remove('hosted'); setLabel(false);
       pane2.classList.add('loading'); if (payLoading) payLoading.classList.remove('hide');
       clearTimeout(timer); timer = setTimeout(() => { if (!co) useHosted('timeout'); }, MOUNT_MS);
-      mountPay();
+      mountTries = 0; mountPay();
     }
   });
-  $('[data-back]', form) && $('[data-back]', form).addEventListener('click', e => { e.preventDefault(); ind[1].classList.remove('on'); ind[0].classList.replace('done', 'on'); go(pane1, true); });
+  $('[data-back]', form) && $('[data-back]', form).addEventListener('click', e => { e.preventDefault(); ind[1].classList.remove('on'); ind[0].classList.replace('done', 'on'); document.body.classList.remove('cp-step2'); go(pane1, true); });
 
   complete.addEventListener('click', async e => {
     e.preventDefault();

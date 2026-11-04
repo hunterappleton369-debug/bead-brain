@@ -461,3 +461,18 @@ button.btn { -webkit-appearance: none; appearance: none; }
 /* the decline under every yes on the University page: a red outlined button that reads as the negative choice (2026-11-03) */
 .btn.no-btn.red { color: #c0392b; border-color: #c0392b; font-weight: 600; }
 .btn.no-btn.red:hover, .btn.no-btn.red:active { color: #9b2418; border-color: #9b2418; background: #fff5f4; }
+
+/* Step 2 on its own (2026-11-03): while the card step is open the landing page's sections and sticky bar are gone,
+   so there is nothing to scroll off to. The top bar stays; Back (← Edit my info) brings the page back. */
+body.cp-step2 .fn-hero > :not(.order), body.cp-step2 main > :not(.fn-hero), body.cp-step2 .sticky-cta { display: none !important; }
+body.cp-step2 { padding-bottom: 24px !important; }
+body.cp-step2 .order.red { margin-top: 12px; }
+/* the total, on the first screen of step 2, above the card fields */
+.pay-strip { display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: baseline; margin: 8px 0 2px; padding: 9px 12px; border-radius: 10px; background: var(--paper-2); border: 1.5px solid var(--hair); font-size: 13.5px; color: var(--ink-2); }
+.pay-strip s { color: var(--ink-3); } .pay-strip .free { color: var(--green-ink); font-weight: 800; }
+.pay-strip .tot { margin-left: auto; font-family: var(--font-display); font-weight: 700; font-size: 15px; color: var(--ink); }
+.pay-strip .tot b { font-weight: 800; }
+.pay-note { font-size: 12.5px; line-height: 1.4; color: var(--ink-3); margin: 8px 0 0; }
+.pay-note b { color: var(--ink); }
+/* step 1: the reason under a red field */
+.order.red .fgroup .fld.bad::after { content: attr(data-err); display: block; font-size: 12.5px; font-weight: 600; color: var(--red); padding: 4px 14px 7px; background: #fff; }
