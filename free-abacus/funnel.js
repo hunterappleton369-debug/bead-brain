@@ -162,10 +162,11 @@ function attribution() {
 }
 // ---------- creator partners: the code in childphenoms.com/go/CODE, kept 30 days, apart from the ad attribution ----------
 // The latest creator link wins (a parent who taps two creators' links credits the second), and it never displaces the
-// ad first-touch above. The order form's "Creator code" field is prefilled with it; the server credits the typed code
-// first and the link's code second (docs/PARTNERS.md).
+// ad first-touch above. It rides with the attribution as `ref`, and stripe-webhook credits the partner behind it when
+// the kit is paid (docs/PARTNERS.md). Links only: nothing on the form shows it and the parent never types a code (the
+// "Creator code" box lived on step 1 for a few hours on 2026-11-04 and was taken out at Hunter's call).
 const REF_KEY = 'cp.funnel.ref', REF_DAYS = 30;
-export const normCode = v => String(v || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 24);
+const normCode = v => String(v || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 24);
 function captureRef() {
   const code = normCode(new URLSearchParams(location.search).get('ref'));
   if (code.length >= 3) save(REF_KEY, { code, at: new Date().toISOString() });
@@ -499,7 +500,7 @@ export function orderForm() {
   const startCall = d => {
     const b = withBump();
     // the server saves the lead first, so even a page whose Stripe.js never loads keeps the parent's contact details
-    return api({ action: 'start', email: d.email, first: d.first, last: d.last, phone: d.phone, code: normCode(d.code), bump: b, attribution: attribution(), lead_event_id: gpc() ? undefined : leadEventId(d.email), gpc: gpc() })
+    return api({ action: 'start', email: d.email, first: d.first, last: d.last, phone: d.phone, bump: b, attribution: attribution(), lead_event_id: gpc() ? undefined : leadEventId(d.email), gpc: gpc() })
       .then(st => ({ ...st, bump: b, email: d.email, sent: d })); // sent: the fields this start carried
   };
   function prefetch(d) {
@@ -516,13 +517,12 @@ export function orderForm() {
   let contactSent = '';
   const syncContact = (st, d) => {
     if (!st || !st.intentId || !st.clientSecret) return;
-    const code = normCode(d.code);
-    const key = [st.intentId, d.first, d.last, d.phone, code].join('|');
+    const key = [st.intentId, d.first, d.last, d.phone].join('|');
     if (contactSent === key) return;
     contactSent = key;
     const s0 = st.sent || null;
-    if (s0 && s0.first === d.first && s0.last === d.last && s0.phone === d.phone && normCode(s0.code) === code) return; // the start already carried these
-    api({ action: 'update', intentId: st.intentId, clientSecret: st.clientSecret, first: d.first, last: d.last, phone: d.phone, code }).catch(() => { if (contactSent === key) contactSent = ''; });
+    if (s0 && s0.first === d.first && s0.last === d.last && s0.phone === d.phone) return; // the start already carried these
+    api({ action: 'update', intentId: st.intentId, clientSecret: st.clientSecret, first: d.first, last: d.last, phone: d.phone }).catch(() => { if (contactSent === key) contactSent = ''; });
   };
   let step2Marked = '';
   const markStep2 = st => {
@@ -569,12 +569,6 @@ export function orderForm() {
 
   // Start the payment while the parent is still on step 1, so the charge is ready when Complete is tapped.
   const emailEl = $('#email', pane1), phoneEl = $('#phone', pane1);
-  // the creator code: upper case as typed, prefilled from a creator's /go/ link so the parent sees whose code is on
-  const codeEl = $('#code', pane1);
-  if (codeEl) {
-    if (!codeEl.value && refCode()) codeEl.value = refCode();
-    codeEl.addEventListener('input', () => { const v = normCode(codeEl.value); if (v !== codeEl.value) codeEl.value = v; });
-  }
   // The start goes out on the email's blur or once the phone has 10 digits (the in-app browsers' autofill fills every
   // field at once, and some parents type the phone first).
   const phoneReady = () => !!phoneEl && phoneEl.value.replace(/\D/g, '').length >= 10;

@@ -73,10 +73,6 @@ body { padding-bottom: 92px; }
 .fld .err { display: none; font-size: 12.5px; color: var(--red); font-weight: 600; }
 .fld.bad input { border-color: var(--red); }
 .fld.bad .err { display: block; }
-/* the creator partner's code (docs/PARTNERS.md): optional, so it sits lighter than the required fields */
-.fld-code input { border-style: dashed; border-color: var(--hair-2); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
-.fld-code input::placeholder { font-weight: 400; letter-spacing: 0; text-transform: none; }
-.fld-code input:focus { border-style: solid; border-color: var(--ink); }
 .fld-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .fld-row.three { grid-template-columns: 2fr 1fr 1fr; }
 .order .pane { display: none; }
@@ -497,3 +493,26 @@ body.cp-typing .toast-fn { bottom: auto; top: calc(env(safe-area-inset-top, 0px)
 /* A/B copy test (index.html): the head script sets html[data-ab]; each variant's words sit in the markup inside
    [data-ab="a"] / [data-ab="b"] and the other variant's are hidden. With no data-ab on <html> (script blocked) the page shows A. */
 html[data-ab="b"] [data-ab="a"], html:not([data-ab="b"]) [data-ab="b"] { display: none !important; }
+
+/* ---- 2026-11-04: variant B value tags, tiny red declines, page 2 offer card ---- */
+/* variant B's kit photo: a price tag on the abacus and one on the guide ($39 + $40), the burst says $79 */
+.fn-hero .art .vtag { position: absolute; z-index: 1; bottom: 9%; font-family: Poppins, Inter, sans-serif; font-weight: 700; font-size: 11px; line-height: 1; letter-spacing: .04em; text-transform: uppercase; color: var(--ink); background: var(--yellow); border: 2px solid var(--ink); border-radius: 7px; padding: 4px 7px 4px; box-shadow: 2px 2px 0 var(--ink); white-space: nowrap; }
+.fn-hero .art .vtag b { font-weight: 800; font-size: 14px; letter-spacing: 0; }
+.fn-hero .art .vt-abacus { left: 22%; transform: rotate(-4deg); }
+.fn-hero .art .vt-guide { left: 60%; transform: rotate(3deg); }
+/* the decline under every yes on pages 2 and 3: a tiny red button, plainly the negative choice */
+.btn.no-btn.red { display: flex; width: auto; max-width: 340px; margin: 10px auto 0; padding: 7px 14px; background: #c0392b; color: #fff; border: 1.5px solid #8e2318; border-radius: 9px; font-size: 12px; font-weight: 600; line-height: 1.3; }
+.btn.no-btn.red:hover, .btn.no-btn.red:active { color: #fff; border-color: #6f1a11; background: #a5301f; }
+/* page 2: the whole stack on one framed card under the lede, the offer written on it */
+.offer-card { position: relative; margin: 14px auto 12px; max-width: 420px; border: 3px solid var(--ink); border-radius: 16px; overflow: hidden; background: #fff; box-shadow: var(--shadow-hard); text-align: center; }
+.offer-card .oc-top { background: linear-gradient(#f0503f, #d33a2a); color: #fff; padding: 9px 10px 10px; border-bottom: 3px solid var(--ink); }
+.offer-card .oc-flag { display: inline-block; font-family: Poppins, Inter, sans-serif; font-weight: 800; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink); background: var(--yellow); border: 2px solid var(--ink); border-radius: 99px; padding: 3px 10px; }
+.offer-card .oc-title { display: block; font-family: Poppins, Inter, sans-serif; font-weight: 800; font-size: 19px; line-height: 1.15; margin: 6px 0 2px; }
+.offer-card .oc-gift { display: block; font-family: Poppins, Inter, sans-serif; font-weight: 600; font-size: 14px; line-height: 1.25; }
+.offer-card .oc-gift em { font-style: normal; font-weight: 800; color: var(--yellow); }
+.offer-card img { width: 88%; margin: 6px auto 4px; }
+.offer-card .oc-bottom { background: var(--yellow); border-top: 3px solid var(--ink); padding: 7px 10px 9px; }
+.offer-card .oc-was { display: block; font-family: Poppins, Inter, sans-serif; font-weight: 600; font-size: 14px; line-height: 1.2; color: var(--ink-2); }
+.offer-card .oc-was s { text-decoration-color: #d33a2a; text-decoration-thickness: 2px; }
+.offer-card .oc-now { display: block; font-family: Poppins, Inter, sans-serif; font-weight: 800; font-size: 28px; line-height: 1.05; letter-spacing: -.01em; color: var(--ink); text-transform: uppercase; }
+.offer-card .oc-now em { font-style: normal; color: #d33a2a; }
