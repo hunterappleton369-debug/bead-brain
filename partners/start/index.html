@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Partner Hub | Child Phenoms</title>
+<meta name="description" content="Everything a Child Phenoms Creator Partner needs: the start video, hook-value-CTA, how the abacus works in 20 seconds, what you can say, clips, and your live numbers.">
+<meta name="robots" content="noindex">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#2457f5">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../../css/style.css">
+<link rel="stylesheet" href="../partners.css">
+<link rel="icon" href="../../img/favicon.svg" type="image/svg+xml">
+<!--
+  The Creator Partner hub (docs/PARTNERS.md). The welcome email links here with #k=<hub token>; the token stays in the
+  hash (never sent to a server log) and fetches the partner's own numbers from the partners function. Without a token
+  the page still shows all the training; only "Your numbers" asks for the link from the welcome email.
+  [HUNTER] Paste the start video's link into VIDEO_URL in the script at the bottom (YouTube, Vimeo or Loom; unlisted is fine).
+-->
+<style>
+  .hub-nav { display: flex; gap: 8px; overflow-x: auto; padding: 14px 0 6px; margin: 0 -16px; padding-left: 16px; padding-right: 16px; scrollbar-width: none; }
+  .hub-nav::-webkit-scrollbar { display: none; }
+  .hub-nav a { flex: none; font-size: 13.5px; font-weight: 700; color: var(--ink); text-decoration: none; padding: 8px 12px; border: 2px solid var(--hair-2); border-radius: 999px; background: #fff; white-space: nowrap; }
+  .hub-nav a:hover { border-color: var(--ink); }
+  .hub-sec { margin: 48px 0 0; scroll-margin-top: 72px; }
+  .hub-sec h2 { font-family: var(--font-display); font-size: clamp(22px, 5vw, 28px); line-height: 1.15; letter-spacing: -.02em; margin: 0 0 14px; }
+  .hub-sec h3 { font-family: var(--font-display); font-size: 17px; font-weight: 700; letter-spacing: -.01em; margin: 26px 0 8px; }
+  .hub-sec p, .hub-sec li { color: var(--ink); }
+  .hub-sec .muted { color: var(--ink-2); }
+  .num { border: 2px solid var(--ink); border-radius: 22px; padding: 20px 18px; background: #fff; box-shadow: 6px 6px 0 var(--blue-soft); }
+  .num .hello { font-family: var(--font-display); font-size: 22px; font-weight: 700; margin: 0 0 14px; }
+  .codebox { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; padding: 12px 14px; border: 2px dashed var(--ink); border-radius: 14px; background: var(--yellow-soft); margin: 0 0 10px; }
+  .codebox .lbl { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
+  .codebox .val { font-weight: 800; font-size: 22px; letter-spacing: .04em; word-break: break-all; }
+  .codebox .val.link { font-size: 16px; letter-spacing: 0; }
+  .copy { font-size: 13px; padding: 9px 14px; }
+  .tiers-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 16px 0 6px; }
+  .tiers-row .t { padding: 10px 8px; border: 2px solid var(--hair-2); border-radius: 12px; text-align: center; font-size: 12.5px; font-weight: 600; color: var(--ink-2); }
+  .tiers-row .t b { display: block; font-family: var(--font-display); font-size: 20px; color: var(--ink); margin-bottom: 2px; }
+  .tiers-row .t.now { border-color: var(--ink); background: var(--yellow-soft); color: var(--ink); }
+  .next { font-size: 14.5px; color: var(--ink-2); margin: 0 0 16px; }
+  .grid4 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .stat { padding: 12px 12px; border: 2px solid var(--hair-2); border-radius: 12px; }
+  .stat .k { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); }
+  .stat .v { font-family: var(--font-display); font-size: 22px; font-weight: 700; margin: 2px 0 0; }
+  .stat .s { font-size: 13px; color: var(--ink-2); }
+  .orders { width: 100%; border-collapse: collapse; font-size: 14px; margin: 14px 0 0; }
+  .orders th { text-align: left; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); border-bottom: 2px solid var(--ink); padding: 6px 6px 6px 0; }
+  .orders td { padding: 8px 6px 8px 0; border-bottom: 1px solid var(--hair); }
+  .pill { display: inline-block; font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: var(--paper-2); }
+  .pill.cleared { background: var(--green-soft); } .pill.paid { background: var(--blue-soft); } .pill.reversed { background: var(--red-soft); }
+  .locked { border: 2px dashed var(--hair-2); border-radius: 22px; padding: 20px 18px; color: var(--ink-2); background: var(--paper-2); }
+  .video { position: relative; aspect-ratio: 16 / 9; border: 2px solid var(--ink); border-radius: 18px; overflow: hidden; background: var(--ink); }
+  .video iframe, .video video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .video .soon { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; color: #fff; padding: 24px; font-weight: 600; }
+  .video .soon small { display: block; font-weight: 400; opacity: .8; margin-top: 6px; }
+  .card { border: 2px solid var(--ink); border-radius: 18px; padding: 16px 18px; background: #fff; margin: 0 0 12px; }
+  .card.yellow { background: var(--yellow-soft); }
+  .card.blue { background: var(--blue-soft); }
+  .card h3 { margin-top: 0; }
+  .hvc { display: grid; gap: 12px; }
+  .hvc .card .step { display: inline-block; font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--blue); margin: 0 0 4px; }
+  .hooks { padding-left: 1.2em; margin: 8px 0 0; }
+  .hooks li { margin: 6px 0; }
+  .say { width: 100%; border-collapse: collapse; font-size: 15px; }
+  .say th { text-align: left; border-bottom: 2px solid var(--ink); padding: 8px 10px 8px 0; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); }
+  .say td { border-bottom: 1px solid var(--hair); padding: 10px 10px 10px 0; vertical-align: top; }
+  .clips { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .clips th { text-align: left; border-bottom: 2px solid var(--ink); padding: 8px 8px 8px 0; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); }
+  .clips td { border-bottom: 1px solid var(--hair); padding: 9px 8px 9px 0; vertical-align: top; }
+  .clips a { font-weight: 700; }
+  .tbl { overflow-x: auto; }
+  .script { border-left: 4px solid var(--yellow); padding: 4px 0 4px 16px; margin: 10px 0; }
+  .script p { margin: 0 0 8px; }
+  .script .t { font-size: 12px; font-weight: 800; letter-spacing: .08em; color: var(--ink-3); text-transform: uppercase; }
+  .quote { font-size: 18px; line-height: 1.5; padding: 14px 18px; border-radius: 14px; background: var(--paper-2); margin: 10px 0; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 560px) { .two { grid-template-columns: 1fr; } .grid4 { grid-template-columns: 1fr 1fr; } }
+  .tip { font-size: 14.5px; color: var(--ink-2); background: var(--paper-2); border-radius: 12px; padding: 10px 14px; margin: 10px 0 0; }
+  .list { padding-left: 1.2em; margin: 6px 0; }
+  .list li { margin: 6px 0; }
+  .toplink { display: inline-block; margin: 24px 0 0; font-size: 14px; color: var(--ink-3); }
+</style>
+</head>
+<body>
+<header class="pt-top"><div class="pt-top-in">
+  <a class="logo" href="/"><svg width="30" height="30" viewBox="0 0 64 64" aria-hidden="true"><rect x="3" y="3" width="58" height="58" rx="16" fill="#2457f5" stroke="#121826" stroke-width="3"></rect><path d="M 36 8 L 20 36 L 31 36 L 26 56 L 46 26 L 35 26 L 41 8 Z" fill="#ffd23f" stroke="#121826" stroke-width="3" stroke-linejoin="round"></path></svg><span class="word">Child <b>Phenoms</b></span></a>
+  <span class="crumb">Partner Hub</span>
+</div></header>
+
+<main class="pt-wrap" id="top">
+  <section class="pt-hero" style="margin-bottom:0">
+    <span class="eyebrow">Creator Partner Hub</span>
+    <h1 style="font-size:clamp(28px,6vw,40px)">Everything you need, on one page.</h1>
+    <p class="lede">Your numbers, the start video, the three things every video needs, how the abacus works in 20 seconds, what you can say, and clips you can use. Bookmark this.</p>
+    <nav class="hub-nav" aria-label="Sections">
+      <a href="#numbers">Your numbers</a><a href="#start">Start video</a><a href="#offer">The offer</a><a href="#hvc">Hook · Value · CTA</a><a href="#how">How the abacus works</a><a href="#say">What you can say</a><a href="#clips">Clips</a><a href="#where">Where to post</a><a href="#paid">Getting paid</a>
+    </nav>
+  </section>
+
+  <!-- ───────── your numbers ───────── -->
+  <section class="hub-sec" id="numbers">
+    <h2>Your numbers</h2>
+    <div class="locked" id="num-locked">
+      <b>Open this page from the link in your welcome email</b> to see your code, your link and your live numbers. The link is private to you. Lost it? Email <a href="mailto:hello@childphenoms.com">hello@childphenoms.com</a> from the address you applied with.
+    </div>
+    <div class="locked" id="num-loading" hidden>Loading your numbers…</div>
+    <div class="num" id="num" hidden>
+      <p class="hello">Hi <span id="n-first"></span>. Here is where you stand.</p>
+      <div class="codebox"><div><div class="lbl">Your code</div><div class="val" id="n-code"></div></div><button class="btn sm copy" type="button" data-copy="n-code">Copy</button></div>
+      <div class="codebox"><div><div class="lbl">Your link</div><div class="val link" id="n-link"></div></div><button class="btn sm copy" type="button" data-copy="n-link">Copy</button></div>
+      <div class="tiers-row">
+        <div class="t" id="t1"><b>$10</b>your 1st kit</div>
+        <div class="t" id="t2"><b>$20</b>kits 2 to 10</div>
+        <div class="t" id="t3"><b>$30</b>kit 11 and on</div>
+      </div>
+      <p class="next" id="n-next"></p>
+      <div class="grid4">
+        <div class="stat"><div class="k">Clicks</div><div class="v" id="n-clicks30">0</div><div class="s">last 30 days · <span id="n-clicks">0</span> all time</div></div>
+        <div class="stat"><div class="k">Kits so far</div><div class="v" id="n-kits">0</div><div class="s">credited to you</div></div>
+        <div class="stat"><div class="k">Pending</div><div class="v" id="n-pending">$0</div><div class="s"><span id="n-pending-n">0</span> kits in the 30-day hold</div></div>
+        <div class="stat"><div class="k">Cleared</div><div class="v" id="n-cleared">$0</div><div class="s"><span id="n-cleared-n">0</span> kits, paid in the next run</div></div>
+        <div class="stat"><div class="k">Paid out</div><div class="v" id="n-paid">$0</div><div class="s">so far</div></div>
+        <div class="stat"><div class="k">Next payout</div><div class="v" style="font-size:17px" id="n-payday"></div><div class="s">around the 15th, by PayPal</div></div>
+      </div>
+      <p class="tip" id="n-paypal"></p>
+      <div class="tbl" id="n-orders-wrap" hidden>
+        <table class="orders"><thead><tr><th>Order</th><th>Via</th><th>Status</th><th>Clears</th><th>Amount</th></tr></thead><tbody id="n-orders"></tbody></table>
+      </div>
+    </div>
+    <div class="locked" id="num-error" hidden></div>
+  </section>
+
+  <!-- ───────── start video ───────── -->
+  <section class="hub-sec" id="start">
+    <h2>Start here. Watch this first.</h2>
+    <div class="video" id="video"><div class="soon">Hunter's start video lands here this week.<small>Everything it covers is written out below, so you can start today.</small></div></div>
+    <p class="muted" style="margin-top:12px">Six minutes from the founder: what the kit is, why parents say yes, the one mistake new partners make, and how to make your first video tonight.</p>
+  </section>
+
+  <!-- ───────── the offer ───────── -->
+  <section class="hub-sec" id="offer">
+    <h2>The offer in 20 seconds</h2>
+    <div class="card yellow">
+      <p style="margin:0 0 10px"><b>What parents get:</b> the Child Prodigy Starter Kit. A real abacus (the Japanese soroban, the kind the record-setting kids train on) plus the Math Prodigy Quickstart E-Guide, which walks a parent through the first three nights step by step. A $97 kit, free. They pay <b>$6.95 shipping</b>. US addresses only. Ships in about a week.</p>
+      <p style="margin:0 0 10px"><b>The promise:</b> try it for 30 days. If the child does not light up on the beads, shipping is refunded and they keep the abacus.</p>
+      <p style="margin:0"><b>Where they order:</b> one page, <a href="/free-abacus/">childphenoms.com/free-abacus/</a>. Two steps: address, then card. Your link lands them there with your code already filled in. A parent who heard your code can also type it in the "Creator code" box on that page.</p>
+    </div>
+    <p class="muted"><b>How you get credit.</b> Your code typed on the order form, or your link (it remembers you for 30 days on that parent's phone). A typed code always wins. Your own orders do not count.</p>
+  </section>
+
+  <!-- ───────── hook value cta ───────── -->
+  <section class="hub-sec" id="hvc">
+    <h2>The only three things a video needs</h2>
+    <p>Every video that sells does three things, in this order. Get these right and the lighting, the edit and the music stop mattering.</p>
+    <div class="hvc">
+      <div class="card">
+        <span class="step">1 · Hook (the first 2 seconds)</span>
+        <h3>Stop the thumb.</h3>
+        <p>You have about a second and a half before a parent scrolls. The hook's only job is to buy you the next five seconds. Say it out loud <i>and</i> put it on screen as text. No "hey guys," no intro, no logo. Start mid-thought.</p>
+        <p><b>Four hooks that work for this offer:</b></p>
+        <ul class="list">
+          <li><b>Proof.</b> Show a record kid first, talk second. "Watch this six-year-old. Each number flashes for a quarter of a second."</li>
+          <li><b>Contrast.</b> "A math tutor near me is $200 a month. This is free."</li>
+          <li><b>Curiosity.</b> "There's a reason every abacus-kid video gets millions of views."</li>
+          <li><b>Confession.</b> "I was the parent who said 'we're not a math family.'" (only if it is true for you)</li>
+        </ul>
+        <p><b>Twelve hooks ready to use</b> (change the words to sound like you):</p>
+        <ol class="hooks">
+          <li>"There's a reason every abacus kid video gets millions of views."</li>
+          <li>"This six-year-old sees fifteen numbers for a quarter second each and adds them. Watch her hands."</li>
+          <li>"A 14-year-old set six world records in one day. He started on this at age six."</li>
+          <li>"A tutoring center quoted me a few hundred a month. I tried this first."</li>
+          <li>"Private-school parents are quietly doing this at home."</li>
+          <li>"If your kid is bored in math class, this is the opposite of a worksheet."</li>
+          <li>"Kids in Japan still learn math on beads. Here's why that matters for yours."</li>
+          <li>"Watch this kid race a calculator. Then I'll show you where it starts."</li>
+          <li>"Stop telling your kid math is hard. Hand them this."</li>
+          <li>"The one screen-free thing my kid asks to do after dinner." (true for you)</li>
+          <li>"Nobody told me math could be a hands game."</li>
+          <li>"The free thing I'd pick over a math tutor if I had to choose."</li>
+        </ol>
+      </div>
+      <div class="card">
+        <span class="step">2 · Value (the middle 15 to 25 seconds)</span>
+        <h3>One idea, shown.</h3>
+        <p>Give the parent one thing they did not know. One. A video with three points sells nothing. Three value plays, pick one per video:</p>
+        <ul class="list">
+          <li><b>React to a proof clip.</b> Play two or three seconds of a record kid (clips below), react like a person, then explain in one breath: "She's not guessing. She's moving an abacus she can see in her head. That's what this trains."</li>
+          <li><b>Explain how it works.</b> The 20-second explainer in the next section. Hands moving beads on camera while you talk is the best version of this.</li>
+          <li><b>Your story.</b> Your kid's first night on the beads. The price you were quoted for tutoring. What you wish you had at eight. True stories only; they sound different and parents can tell.</li>
+        </ul>
+        <p class="tip">Kids on the beads are the best footage there is. Hands, clicks, a face that is concentrating. Your child can be in every video; you do the talking about the offer and the code.</p>
+      </div>
+      <div class="card">
+        <span class="step">3 · CTA (the last 5 to 8 seconds)</span>
+        <h3>Tell them exactly what to do.</h3>
+        <p>Say your code twice. Put it on screen. Say the link slowly. Then pin a comment with both.</p>
+        <div class="quote">"The kit is free, you just pay the $6.95 shipping. Go to childphenoms dot com slash go slash <span data-code>YOURCODE</span>, or type <span data-code>YOURCODE</span> at checkout. That's <span data-code>YOURCODE</span>. Link's in my bio."</div>
+        <ul class="list">
+          <li>On screen for the last five seconds: <code>childphenoms.com/go/<span data-code>YOURCODE</span></code> and <code>Code <span data-code>YOURCODE</span></code>.</li>
+          <li>Pinned comment: "Free kit, $6.95 shipping → childphenoms.com/go/<span data-code>YOURCODE</span> (or type <span data-code>YOURCODE</span> at checkout)". Comments on most apps do not make links tappable, so the code matters as much as the link.</li>
+          <li>Link in bio: your link. Change your bio line to "Free abacus kit for kids ↓".</li>
+        </ul>
+      </div>
+    </div>
+    <h3>A 30-second skeleton</h3>
+    <div class="script">
+      <p><span class="t">0 to 2 s</span><br>Hook, spoken and on screen. ("Watch this six-year-old…")</p>
+      <p><span class="t">2 to 8 s</span><br>The proof clip or your kid's hands on the beads. Source line on screen if it is a clip.</p>
+      <p><span class="t">8 to 22 s</span><br>Your one idea. Why it works, or what happened at your house, or what it cost you elsewhere.</p>
+      <p><span class="t">22 to 30 s</span><br>The offer and the code, twice. Code on screen. "Link in bio."</p>
+    </div>
+    <h3>How often</h3>
+    <p>Once a week keeps your code active. Three to five a week is where partners start seeing orders. The same idea with a new hook counts as a new video; the record-kid reaction alone can carry ten of them. Make your first video within seven days of getting your code, while this is fresh.</p>
+  </section>
+
+  <!-- ───────── how the abacus works ───────── -->
+  <section class="hub-sec" id="how">
+    <h2>How the abacus works (so you can explain it in 20 seconds)</h2>
+    <p>Most kids meet numbers as squiggles. Seven is a shape you memorize. On an abacus, seven is something you can <i>hold</i>: one bead worth five pushed down to the bar, two beads worth one pushed up. The number has a weight, a position, a feel under your finger.</p>
+    <p>The kit's abacus is the Japanese soroban. Every rod has one bead on top worth five and four below worth one each. Ones on the right, then tens, then hundreds, marching left. Adding is moving beads. Carrying is a flick to the next rod. There are no times tables to memorize at the start. The fingers do the thinking, and the hands teach the head.</p>
+    <p><b>Here is the part that looks like magic.</b> After enough practice, the child stops needing the beads. Ask for 348 plus 276 and they go quiet, their fingers twitch in the air, and the answer comes out. They are moving an abacus they can see in their head. The Japanese call it <i>anzan</i>, mental calculation. The kids in the clips who add fifteen flashing numbers in under two seconds are doing exactly this, at speed, after years of practice.</p>
+    <p><b>Why it sticks.</b> The brain stores the picture, not the words. Brain scans of trained abacus kids show number work lighting up the visual and spatial parts of the brain, the same circuits you use to catch a ball or picture your kitchen with your eyes closed, instead of the language circuits most of us grind through math with. That is what people mean by "whole-brain" math: both hands, both eyes, the picture side of the brain working with the word side.</p>
+    <p><b>Why kids like it.</b> It is a game with a score. Beads click. You see the answer. Fifteen minutes a night, and the first time your kid beats you to an answer, you will both be hooked.</p>
+    <h3>Say it in one breath</h3>
+    <div class="quote">"An abacus turns numbers into something your kid can touch. Add with your fingers long enough and your brain starts doing it with a picture instead of words. That's how those kids add faster than a calculator."</div>
+    <div class="quote">"It's the Japanese soroban. Beads worth one and five on every rod. Kids learn to move them with their fingers, then with their eyes closed. The beads end up in their head."</div>
+    <div class="quote">"Every one of those record-breaking math kids you've seen online started on this exact tool. Not an app. Beads."</div>
+  </section>
+
+  <!-- ───────── what you can say ───────── -->
+  <section class="hub-sec" id="say">
+    <h2>What you can say</h2>
+    <p>Go big on the benefits abacus training is known for, show the record kids as what is possible, and stay honest about timelines and results. That is the whole rule.</p>
+    <h3>Big benefits you can claim</h3>
+    <ul class="list">
+      <li>Sharper <b>focus and concentration</b> (sitting still for 15 minutes of beads is itself the training).</li>
+      <li>Stronger <b>memory and visualization</b>: the child learns to picture and move the beads in their head.</li>
+      <li><b>Speed and accuracy</b> with numbers, mental math without a calculator.</li>
+      <li><b>Confidence</b>: the kid who answers first stops being scared of math.</li>
+      <li><b>Whole-brain development</b>: hands, eyes and the picture side of the brain working together, not just rote memory.</li>
+      <li>The skills IQ tests measure, like working memory, visualization and pattern recognition. Other abacus programs say "improves IQ"; you can say abacus training builds those skills. Do not put a number on it ("15 IQ points").</li>
+      <li>"The training behind the world's fastest human calculators and the record-setting kids."</li>
+    </ul>
+    <h3>Proof you can show and cite (in plain words)</h3>
+    <ul class="list">
+      <li>The Guinness record for adding 15 three-digit numbers flashed on a screen is <b>1.61 seconds</b>, set in 2024 by a Japanese abacus competitor.</li>
+      <li>A <b>14-year-old set six Guinness records in one day</b> in 2025. He started on the abacus at six and practices for hours a day.</li>
+      <li>In a <b>three-year study of 204 kids</b> aged 5 to 7, the children trained on the mental abacus pulled ahead of their classmates in arithmetic, and the classmates were getting extra math time too.</li>
+      <li>Brain scans show trained abacus kids use the <b>visual and spatial parts of the brain</b> for numbers.</li>
+      <li>About a <b>million children in Japan</b> learn the abacus (a Guardian estimate), and it is still taught in Japanese schools.</li>
+      <li>The clips below: a teen racing a calculator on live TV and winning, six-year-olds adding flashed numbers on Little Big Shots, a girl adding 100 three-digit numbers read aloud in 45 seconds.</li>
+    </ul>
+    <h3>Keep it honest (short list)</h3>
+    <ul class="list">
+      <li>Do not promise a specific result by a specific date ("two grade levels by Christmas," "results in a week").</li>
+      <li>Do not invent a Child Phenoms customer story, and do not call the kids in the clips "Child Phenoms students." They trained elsewhere, for years.</li>
+      <li>No medical claims: nothing about ADHD, dyslexia, autism or "curing" anything.</li>
+      <li>The only price facts: the kit is free, shipping is $6.95, no subscription. No "only 50 left" or "ends tonight."</li>
+      <li>When you show the record kids, add a line like "those kids trained for years; results vary." On screen or spoken.</li>
+      <li>Your own experience is the strongest thing you have. Tell it straight.</li>
+    </ul>
+    <h3>Disclosure</h3>
+    <p>By law (the FTC) you have to make clear you earn a commission. The easy way: "#ad" at the start of your caption, or say "I earn a commission if you use my code." On TikTok, switch on the commercial content toggle when you post. We are not going to police your captions; this protects you and your account.</p>
+  </section>
+
+  <!-- ───────── clips ───────── -->
+  <section class="hub-sec" id="clips">
+    <h2>Clips you can use</h2>
+    <p>Seven short cuts of public footage of abacus kids, the two example reels we built from them, the end card and the logo. These clips are not ours; they are widely reposted public TV and YouTube footage. Use them as reaction material with your own voice over them, keep each cut short, and put the source line on screen while it plays. If a platform ever flags one, take the video down and tell us.</p>
+    <div class="tbl">
+    <table class="clips">
+      <thead><tr><th>Clip</th><th>What you see</th><th>Fact to put on screen</th><th>Source line</th></tr></thead>
+      <tbody>
+        <tr><td><a href="../clips/s1.mp4" download>s1</a> · 2.4 s</td><td>Teen on a TV stage racing a calculator</td><td>15-year-old races a calculator live on TV</td><td>Clip: Asia's Got Talent, YouTube</td></tr>
+        <tr><td><a href="../clips/s2.mp4" download>s2</a> · 1.0 s</td><td>The judge stops the race</td><td>He wins. The judge calls it off.</td><td>Clip: Asia's Got Talent, YouTube</td></tr>
+        <tr><td><a href="../clips/s3.mp4" download>s3</a> · 2.4 s</td><td>Aaryan Shukla's Guinness attempt, Dubai</td><td>Adds 100 four-digit numbers in 30.9 seconds</td><td>Clip: Guinness World Records Kids, YouTube</td></tr>
+        <tr><td><a href="../clips/s4.mp4" download>s4</a> · 1.8 s</td><td>Two six-year-olds, numbers flashing</td><td>Age 6. Each number flashes for 0.28 seconds</td><td>Clip: Little Big Shots, YouTube</td></tr>
+        <tr><td><a href="../clips/s5.mp4" download>s5</a> · 2.0 s</td><td>He answers "76," Steve Harvey reacts</td><td>Still gets it right</td><td>Clip: Little Big Shots, YouTube</td></tr>
+        <tr><td><a href="../clips/s6.mp4" download>s6</a> · 1.8 s</td><td>A girl calculating on stage</td><td>100 three-digit numbers read in 45 seconds</td><td>Clip: CGTN "Impossible Challenge," YouTube</td></tr>
+        <tr><td><a href="../clips/s7.mp4" download>s7</a> · 1.4 s</td><td>Her written answer, 66948</td><td>Her answer: correct</td><td>Clip: CGTN "Impossible Challenge," YouTube</td></tr>
+        <tr><td><a href="../clips/example-reel-A.mp4" download>Example reel A</a> · 17 s</td><td>All seven clips cut into a "breaking news" reel with an end card</td><td colspan="2">See how a finished one flows. Post as is, or re-cut with your own hook and voice. Hook: "Parents discover secret weapon that turned these kids into math geniuses."</td></tr>
+        <tr><td><a href="../clips/example-reel-B.mp4" download>Example reel B</a> · 17 s</td><td>Same cut, second hook</td><td colspan="2">Hook: "Scientists baffled as kids trained on this wooden toy out-calculate grown adults."</td></tr>
+        <tr><td><a href="../clips/end-card.jpg" download>End card</a></td><td>Kit box, FREE, $6.95 S&amp;H, childphenoms.com/free-abacus</td><td colspan="2">Put your code on top of it in your editor, or just say it over the card.</td></tr>
+        <tr><td><a href="../clips/logo.png" download>Logo</a></td><td>Child Phenoms lockup, transparent</td><td colspan="2">Do not alter it. Do not use the name in your handle or display name.</td></tr>
+        <tr><td><a href="/img/funnel/kitbox-v6-1200.webp" download>Kit photo</a></td><td>The kit box, open</td><td colspan="2">A render of the real kit. Show your own kit when it arrives; it is the better shot.</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="tip">Tap a clip name to download it to your phone. On iPhone, hold the link and choose "Download Linked File," then find it in Files. Sources, if you want to link the originals in your caption: Asia's Got Talent (YouTube id kvymoFdjuHw), Guinness World Records Kids (fgYnUUQDod8), Little Big Shots (2I8Nuq722vA), CGTN Impossible Challenge (F-THPY14fzc).</p>
+  </section>
+
+  <!-- ───────── where to post ───────── -->
+  <section class="hub-sec" id="where">
+    <h2>Where to post, and how to link</h2>
+    <p>Anywhere parents watch you. Parents order in one place, childphenoms.com, and your link just takes them there with your code filled in.</p>
+    <div class="two">
+      <div class="card"><h3>TikTok</h3><p>Your link in the bio (TikTok turns it on at 1,000 followers; under that, say the code and "childphenoms dot com" and type it in your pinned comment). Say the code in the video, show it on screen, pin a comment with the code and link spelled out. Switch on the commercial content toggle when you post.</p></div>
+      <div class="card"><h3>Instagram</h3><p>Link in bio. Reels with the code on screen. Stories with the link sticker pointing at your link, which converts well because the tap is one step. Add "Paid partnership" if the label is available to you, or #ad in the caption.</p></div>
+      <div class="card"><h3>YouTube Shorts</h3><p>The same vertical video. Your link in the description and in a pinned comment (links are tappable there). Say the code anyway.</p></div>
+      <div class="card"><h3>Facebook</h3><p>Your page or profile, and parent, homeschool or private-school groups where the admins allow it. Post as a person with a story, not an ad. Never paste the link into a group that bans promotion.</p></div>
+      <div class="card"><h3>Pinterest, newsletters, blogs</h3><p>A pin or a paragraph with your link works for months. Pinterest parents search "math for kids" every day.</p></div>
+      <div class="card"><h3>Not allowed</h3><p>Coupon or deal sites, paid ads that use the Child Phenoms name, bulk messages, buying engagement, posting your code in other people's comments.</p></div>
+    </div>
+  </section>
+
+  <!-- ───────── getting paid ───────── -->
+  <section class="hub-sec" id="paid">
+    <h2>Getting paid, and the rules</h2>
+    <div class="tiers-row">
+      <div class="t"><b>$10</b>your 1st kit</div>
+      <div class="t"><b>$20</b>kits 2 to 10</div>
+      <div class="t"><b>$30</b>kit 11 and on</div>
+    </div>
+    <ul class="list">
+      <li><b>A kit counts</b> when a parent orders with your code or link and the kit is paid for. It <b>clears 30 days later</b> if it was not refunded (parents can return within 30 days under the keep-the-kit promise). Your rate climbs with your lifetime count, and never goes back down.</li>
+      <li><b>Payout:</b> once a month by PayPal, around the 15th, for everything that cleared. No minimum. Send us your PayPal email by replying to your welcome email if you did not give it on the application.</li>
+      <li><b>Your own orders</b>, and your household's, do not count.</li>
+      <li><b>Stay active:</b> at least one post a week with your code. Thirty quiet days and we pause your code until you post again.</li>
+      <li><b>Kids can appear.</b> Adults do the talking about the offer and the code.</li>
+      <li><b>Say what is on this page</b>, not more. Follow the FTC and your platform's rules on commission content.</li>
+      <li>Either of us can end this anytime by email. Whatever you have earned still pays out. The full <a href="../../legal/creator-partner-terms.html">Creator Partner Terms</a> are short and worth two minutes.</li>
+    </ul>
+    <h3>Questions</h3>
+    <p>Reply to any email from us, or write <a href="mailto:hello@childphenoms.com">hello@childphenoms.com</a>. A person answers.</p>
+    <a class="toplink" href="#top">↑ Back to top</a>
+  </section>
+</main>
+
+<footer class="pt-foot">
+  <p>Child Phenoms · Sheridan, WY · <a href="mailto:hello@childphenoms.com">hello@childphenoms.com</a> · <a href="../../legal/creator-partner-terms.html">Partner terms</a></p>
+</footer>
+
+<script>
+(function () {
+  // [HUNTER] the start video: a YouTube, Vimeo or Loom link (unlisted is fine), or a direct .mp4 link. Empty = the "lands here this week" card.
+  var VIDEO_URL = '';
+  var API = 'https://fndemnipqtpmuvcidcxo.supabase.co/functions/v1/partners';
+  var $ = function (s) { return document.querySelector(s); };
+  var $$ = function (s) { return Array.prototype.slice.call(document.querySelectorAll(s)); };
+  var money = function (c) { return '$' + Math.round((c || 0) / 100).toLocaleString('en-US'); };
+
+  // the video
+  (function () {
+    var box = $('#video'); if (!VIDEO_URL) return;
+    var u = VIDEO_URL, src = '';
+    var yt = u.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|shorts\/|embed\/))([A-Za-z0-9_-]{6,})/);
+    var vm = u.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+    var lo = u.match(/loom\.com\/(?:share|embed)\/([A-Za-z0-9]+)/);
+    if (yt) src = 'https://www.youtube-nocookie.com/embed/' + yt[1] + '?rel=0';
+    else if (vm) src = 'https://player.vimeo.com/video/' + vm[1];
+    else if (lo) src = 'https://www.loom.com/embed/' + lo[1];
+    if (src) { box.innerHTML = '<iframe src="' + src + '" title="Start video" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>'; }
+    else if (/\.mp4(\?|$)/i.test(u)) { box.innerHTML = '<video controls playsinline preload="metadata" src="' + u.replace(/"/g, '') + '"></video>'; }
+  })();
+
+  // the token sits in the hash: it never reaches a server log and leaves the address bar at once
+  var k = '';
+  try { var m = /(?:^|[#&])k=([A-Za-z0-9_-]{20,80})/.exec(location.hash); if (m) k = m[1]; } catch (e) {}
+  if (k) {
+    try { sessionStorage.setItem('cp.partner.k', k); history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+  } else {
+    try { k = sessionStorage.getItem('cp.partner.k') || ''; } catch (e) {}
+  }
+  if (!k) return;
+  $('#num-locked').hidden = true; $('#num-loading').hidden = false;
+  fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'stats', k: k }), cache: 'no-store', credentials: 'omit' })
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      $('#num-loading').hidden = true;
+      if (!d || !d.ok) { var e = $('#num-error'); e.hidden = false; e.textContent = (d && d.error) || 'We could not load your numbers. Reload, or open the link from your welcome email again.'; return; }
+      $('#num').hidden = false;
+      $('#n-first').textContent = d.first || 'there';
+      $('#n-code').textContent = d.code; $('#n-link').textContent = (d.link || '').replace(/^https?:\/\//, '');
+      $$('[data-code]').forEach(function (el) { el.textContent = d.code; });
+      $('#t' + (d.tier || 1)).classList.add('now');
+      var kits = d.kits || 0, toNext = d.tier === 1 ? 1 : d.tier === 2 ? 10 - kits : 0;
+      $('#n-next').textContent = d.tier === 3 ? 'You are at the top rate: $30 for every kit from here on.' : 'Your next kit pays ' + money(d.next_amount_cents) + '. ' + (toNext === 1 ? 'One more kit' : toNext + ' more kits') + ' to the ' + (d.tier === 1 ? '$20' : '$30') + ' rate.';
+      $('#n-clicks30').textContent = (d.clicks_30d || 0).toLocaleString('en-US'); $('#n-clicks').textContent = (d.clicks || 0).toLocaleString('en-US');
+      $('#n-kits').textContent = kits.toLocaleString('en-US');
+      $('#n-pending').textContent = money(d.pending.cents); $('#n-pending-n').textContent = d.pending.n;
+      $('#n-cleared').textContent = money(d.cleared.cents); $('#n-cleared-n').textContent = d.cleared.n;
+      $('#n-paid').textContent = money(d.paid.cents);
+      var now = new Date(), pay = new Date(now.getFullYear(), now.getMonth() + (now.getDate() >= 15 ? 1 : 0), 15);
+      $('#n-payday').textContent = pay.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
+      $('#n-paypal').textContent = d.paypal ? 'Payouts go to the PayPal address you gave us. Changed it? Email hello@childphenoms.com from your partner email.' : 'We do not have your PayPal email yet. Reply to your welcome email with it before your first kit clears, so your payout is not held.';
+      if (d.orders && d.orders.length) {
+        $('#n-orders-wrap').hidden = false;
+        $('#n-orders').innerHTML = d.orders.map(function (o) {
+          var st = o.status === 'pending' ? 'in hold' : o.status;
+          return '<tr><td>' + o.day + '</td><td>' + (o.source === 'code' ? 'typed code' : 'your link') + '</td><td><span class="pill ' + o.status + '">' + st + '</span></td><td>' + (o.status === 'reversed' ? '—' : o.hold_until) + '</td><td>' + (o.status === 'reversed' ? '<s>' + money(o.amount_cents) + '</s>' : money(o.amount_cents)) + '</td></tr>';
+        }).join('');
+      }
+    })
+    .catch(function () { $('#num-loading').hidden = true; var e = $('#num-error'); e.hidden = false; e.textContent = 'We could not load your numbers right now. Reload in a minute.'; });
+
+  $$('[data-copy]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var t = $('#' + b.getAttribute('data-copy')).textContent.trim();
+      if (b.getAttribute('data-copy') === 'n-link') t = 'https://' + t;
+      var done = function () { b.textContent = 'Copied'; setTimeout(function () { b.textContent = 'Copy'; }, 1600); };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(done, done); else { try { var ta = document.createElement('textarea'); ta.value = t; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); done(); } catch (e) {} }
+    });
+  });
+})();
+</script>
+</body>
+</html>

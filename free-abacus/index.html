@@ -18,6 +18,21 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://childphenoms.com/img/funnel/og-kit-v6.jpg">
 <meta name="theme-color" content="#2457f5">
+<script>/* A/B copy test. A = the control, B = the edited copy. One coin flip per browser, kept in localStorage so a visitor always
+sees the same page; ?ab=a or ?ab=b in the address forces one (previews, your own checks: those are tagged ab_source=url and left
+out of the results). funnel.css hides the other variant's [data-ab] elements; funnel.js tags every PostHog event with the variant. */
+(function () {
+  var v = null, src = 'random';
+  try {
+    var m = /[?&]ab=([ab])(?:&|$)/.exec(location.search);
+    if (m) { v = m[1]; src = 'url'; }
+    else { v = localStorage.getItem('cp_ab'); if (v === 'a' || v === 'b') src = localStorage.getItem('cp_ab_src') || 'random'; else v = null; }
+    if (!v) v = Math.random() < 0.5 ? 'a' : 'b';
+    localStorage.setItem('cp_ab', v); localStorage.setItem('cp_ab_src', src);
+  } catch (e) { if (v !== 'a' && v !== 'b') v = 'a'; }
+  document.documentElement.setAttribute('data-ab', v);
+})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="font" type="font/woff2" crossorigin href="https://fonts.gstatic.com/s/poppins/v24/pxiByp8kv8JHgFVrLDD4Z1xlFd2JQEk.woff2">
@@ -73,8 +88,9 @@
             <div class="fld-row three">
               <div class="fld"><label class="sr" for="city">City</label><input id="city" name="city" autocorrect="off" autocapitalize="words" required type="text" placeholder="City" autocomplete="shipping address-level2" enterkeyhint="next" data-ph-mask></div>
               <div class="fld"><label class="sr" for="state">State</label><select id="state" name="state" required autocomplete="shipping address-level1" data-ph-mask><option value="" disabled selected>State</option><option value="AL">AL</option><option value="AK">AK</option><option value="AZ">AZ</option><option value="AR">AR</option><option value="CA">CA</option><option value="CO">CO</option><option value="CT">CT</option><option value="DE">DE</option><option value="DC">DC</option><option value="FL">FL</option><option value="GA">GA</option><option value="HI">HI</option><option value="ID">ID</option><option value="IL">IL</option><option value="IN">IN</option><option value="IA">IA</option><option value="KS">KS</option><option value="KY">KY</option><option value="LA">LA</option><option value="ME">ME</option><option value="MD">MD</option><option value="MA">MA</option><option value="MI">MI</option><option value="MN">MN</option><option value="MS">MS</option><option value="MO">MO</option><option value="MT">MT</option><option value="NE">NE</option><option value="NV">NV</option><option value="NH">NH</option><option value="NJ">NJ</option><option value="NM">NM</option><option value="NY">NY</option><option value="NC">NC</option><option value="ND">ND</option><option value="OH">OH</option><option value="OK">OK</option><option value="OR">OR</option><option value="PA">PA</option><option value="RI">RI</option><option value="SC">SC</option><option value="SD">SD</option><option value="TN">TN</option><option value="TX">TX</option><option value="UT">UT</option><option value="VT">VT</option><option value="VA">VA</option><option value="WA">WA</option><option value="WV">WV</option><option value="WI">WI</option><option value="WY">WY</option></select></div>
-              <div class="fld"><label class="sr" for="zip">ZIP code</label><input id="zip" name="zip" required type="text" placeholder="ZIP" inputmode="numeric" autocomplete="shipping postal-code" maxlength="10" enterkeyhint="go" data-ph-mask></div>
+              <div class="fld"><label class="sr" for="zip">ZIP code</label><input id="zip" name="zip" required type="text" placeholder="ZIP" inputmode="numeric" autocomplete="shipping postal-code" maxlength="10" enterkeyhint="next" data-ph-mask></div>
             </div>
+            <div class="fld fld-code"><label class="sr" for="code">Creator code (optional)</label><input id="code" name="code" type="text" placeholder="Creator code (optional)" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false" maxlength="24" enterkeyhint="go"></div>
           </div>
           <button class="btn cta cf" type="submit" data-next>Go To Step #2 →</button>
           <div class="lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg>US shipping only · we never sell your info.</div>

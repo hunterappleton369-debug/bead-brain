@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Apply: Creator Partner Program | Child Phenoms</title>
+<meta name="description" content="Apply to the Child Phenoms Creator Partner Program. US creators with parents in the audience. About five minutes; a person answers within 48 hours.">
+<meta name="theme-color" content="#2457f5">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../../css/style.css">
+<link rel="stylesheet" href="../partners.css">
+<link rel="icon" href="../../img/favicon.svg" type="image/svg+xml">
+<!--
+  The Creator Partner application (docs/PARTNERS.md). Posts JSON to the partners function, which saves a pending row,
+  emails the creator and emails Hunter the approve / decline buttons. ?ref=CODE prefills "a partner sent me".
+  No analytics on this page.
+-->
+</head>
+<body>
+<header class="pt-top"><div class="pt-top-in">
+  <a class="logo" href="../"><svg width="30" height="30" viewBox="0 0 64 64" aria-hidden="true"><rect x="3" y="3" width="58" height="58" rx="16" fill="#2457f5" stroke="#121826" stroke-width="3"></rect><path d="M 36 8 L 20 36 L 31 36 L 26 56 L 46 26 L 35 26 L 41 8 Z" fill="#ffd23f" stroke="#121826" stroke-width="3" stroke-linejoin="round"></path></svg><span class="word">Child <b>Phenoms</b></span></a>
+  <span class="crumb">Creator Partners</span>
+</div></header>
+
+<main class="pt-wrap">
+  <section class="pt-hero" id="top">
+    <span class="eyebrow">Application</span>
+    <h1>Apply to be a Creator Partner.</h1>
+    <p class="lede">US creators only. About five minutes. A real person reads every application and replies within 48 hours.</p>
+  </section>
+
+  <form class="frm" id="apply" novalidate>
+    <p class="sec-head">About you</p>
+    <div class="row">
+      <div class="fld"><label for="first">First name</label><input id="first" name="first" type="text" required autocomplete="given-name" maxlength="40"><span class="err">Enter your first name.</span></div>
+      <div class="fld"><label for="last">Last name</label><input id="last" name="last" type="text" required autocomplete="family-name" maxlength="40"><span class="err">Enter your last name.</span></div>
+    </div>
+    <div class="fld"><label for="email">Email <small>(where your code will arrive)</small></label><input id="email" name="email" type="email" required autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false"><span class="err">Enter a valid email address.</span></div>
+    <div class="row">
+      <div class="fld"><label for="phone">Mobile <small>(optional, only for payout or code problems)</small></label><input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel"></div>
+      <div class="fld"><label for="state">State</label><select id="state" name="state" required><option value="" disabled selected>Pick your state</option></select><span class="err">Pick your state. The program is US-only for now.</span></div>
+    </div>
+
+    <p class="sec-head">Where you post</p>
+    <div class="fld"><label for="platform">Where do you post most?</label><select id="platform" name="platform" required><option value="" disabled selected>Pick one</option><option value="tiktok">TikTok</option><option value="instagram">Instagram</option><option value="both">TikTok and Instagram</option><option value="other">Somewhere else (YouTube, Facebook, a newsletter)</option></select><span class="err">Pick where you post.</span></div>
+    <div class="row">
+      <div class="fld" data-for="tiktok both"><label for="tiktok">TikTok handle</label><input id="tiktok" name="tiktok" type="text" placeholder="@yourname" autocapitalize="none" autocorrect="off" spellcheck="false"></div>
+      <div class="fld" data-for="instagram both"><label for="instagram">Instagram handle</label><input id="instagram" name="instagram" type="text" placeholder="@yourname" autocapitalize="none" autocorrect="off" spellcheck="false"></div>
+    </div>
+    <div class="fld" data-for="other"><label for="other_channel">Your channel <small>(a link is best)</small></label><input id="other_channel" name="other_channel" type="text" placeholder="https://…"></div>
+    <p class="hint" id="handle-err" style="display:none;color:var(--red);font-weight:600">Give us at least one handle or channel link.</p>
+    <div class="fld"><label for="followers">Followers on that account <small>(a round number is fine)</small></label><input id="followers" name="followers" type="text" inputmode="numeric" placeholder="e.g. 4,200" required><span class="err">How many follow you there?</span></div>
+    <div class="fld"><label for="video1">A recent video of yours <small>(paste the link)</small></label><input id="video1" name="video1" type="url" placeholder="https://www.tiktok.com/@…/video/…" required inputmode="url" autocapitalize="none" spellcheck="false"><span class="err">Paste a link to one recent video.</span></div>
+    <div class="row">
+      <div class="fld"><label for="video2">Another <small>(optional)</small></label><input id="video2" name="video2" type="url" placeholder="https://…" inputmode="url" autocapitalize="none" spellcheck="false"></div>
+      <div class="fld"><label for="video3">One more <small>(optional)</small></label><input id="video3" name="video3" type="url" placeholder="https://…" inputmode="url" autocapitalize="none" spellcheck="false"></div>
+    </div>
+
+    <p class="sec-head">Your audience</p>
+    <fieldset class="fld" id="aud">
+      <legend>Who watches you? <small>(pick all that fit)</small></legend>
+      <div class="opts">
+        <label class="opt"><input type="checkbox" name="audience" value="parents"> Parents of kids 5 to 12</label>
+        <label class="opt"><input type="checkbox" name="audience" value="homeschool"> Homeschool families</label>
+        <label class="opt"><input type="checkbox" name="audience" value="teachers"> Teachers</label>
+        <label class="opt"><input type="checkbox" name="audience" value="grandparents"> Grandparents</label>
+        <label class="opt"><input type="checkbox" name="audience" value="other"> Other</label>
+      </div>
+      <span class="err">Tell us who watches you.</span>
+    </fieldset>
+    <div class="fld"><label for="why">Why do you want to share this with the people who watch you? <small>(a sentence or two)</small></label><textarea id="why" name="why" required minlength="20" maxlength="1500" placeholder="Half my comments are moms asking how I got my son to stop fighting math homework…"></textarea><span class="err">A sentence or two is all we need.</span></div>
+    <div class="row">
+      <div class="fld"><label for="heard">How did you hear about us? <small>(optional)</small></label><select id="heard" name="heard"><option value="">Pick one</option><option>A Child Phenoms video</option><option>A message from Hunter</option><option>Another Creator Partner</option><option>Afluencer</option><option>Collabstr</option><option>JoinBrands</option><option>Search</option><option>Other</option></select></div>
+      <div class="fld"><label for="referred_by">Did a partner send you? <small>(their code)</small></label><input id="referred_by" name="referred_by" type="text" placeholder="e.g. SARAH27" autocapitalize="characters" autocorrect="off" spellcheck="false" maxlength="24"></div>
+    </div>
+    <div class="fld"><label for="paypal">PayPal email for payouts <small>(optional now; needed before your first payout)</small></label><input id="paypal" name="paypal" type="email" autocomplete="off" inputmode="email" autocapitalize="none" spellcheck="false"></div>
+
+    <p class="sec-head">Three boxes</p>
+    <label class="chk"><input type="checkbox" id="age18"> I am 18 or older.</label>
+    <label class="chk"><input type="checkbox" id="us"> I live in the United States and most of my audience does too.</label>
+    <label class="chk"><input type="checkbox" id="terms"> I have read and agree to the <a href="../../legal/creator-partner-terms.html" target="_blank" rel="noopener">Creator Partner Terms</a>.</label>
+    <p class="hint" id="chk-err" style="display:none;color:var(--red);font-weight:600">Please tick all three boxes.</p>
+
+    <div class="hp" aria-hidden="true"><label>Leave this empty <input type="text" name="hp" tabindex="-1" autocomplete="off"></label></div>
+
+    <div class="msg bad" id="msg" role="alert"></div>
+    <button class="btn blue submit" type="submit" id="go">Send my application →</button>
+    <p class="hint">You will get an email the moment it lands, and a yes or no within 48 hours.</p>
+  </form>
+
+  <section class="done" id="done" aria-live="polite">
+    <h2>Thanks, <span id="done-name">friend</span>. Your application is in.</h2>
+    <p>A real person reads every one. You will hear from us at <b id="done-email"></b> within 48 hours, yes or no.</p>
+    <p>While you wait: hold off on posting about Child Phenoms. You do not have a code yet, and only orders with your code count for you. If you want to see what parents see, the offer is at <a href="/free-abacus/">childphenoms.com/free-abacus/</a>.</p>
+    <p>Hunter<br><small>Founder, Child Phenoms</small></p>
+  </section>
+  <section class="done" id="dup">
+    <h2>We already have your application.</h2>
+    <p>An application with this email is already in. Check your inbox (and the Promotions tab) for our reply, or email <a href="mailto:hello@childphenoms.com">hello@childphenoms.com</a>.</p>
+  </section>
+</main>
+
+<footer class="pt-foot">
+  <p>Creator Partners are independent contractors paid a commission on qualifying kit orders. Earnings depend on your audience and your posts, and many partners will earn little or nothing.</p>
+  <p>Child Phenoms · Sheridan, WY · <a href="mailto:hello@childphenoms.com">hello@childphenoms.com</a> · <a href="../../legal/creator-partner-terms.html">Partner terms</a> · <a href="../../legal/privacy-policy.html">Privacy</a></p>
+</footer>
+
+<script>
+(function () {
+  var API = 'https://fndemnipqtpmuvcidcxo.supabase.co/functions/v1/partners';
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var form = $('#apply');
+
+  // states
+  var STATES = 'AL Alabama,AK Alaska,AZ Arizona,AR Arkansas,CA California,CO Colorado,CT Connecticut,DE Delaware,DC Washington DC,FL Florida,GA Georgia,HI Hawaii,ID Idaho,IL Illinois,IN Indiana,IA Iowa,KS Kansas,KY Kentucky,LA Louisiana,ME Maine,MD Maryland,MA Massachusetts,MI Michigan,MN Minnesota,MS Mississippi,MO Missouri,MT Montana,NE Nebraska,NV Nevada,NH New Hampshire,NJ New Jersey,NM New Mexico,NY New York,NC North Carolina,ND North Dakota,OH Ohio,OK Oklahoma,OR Oregon,PA Pennsylvania,RI Rhode Island,SC South Carolina,SD South Dakota,TN Tennessee,TX Texas,UT Utah,VT Vermont,VA Virginia,WA Washington,WV West Virginia,WI Wisconsin,WY Wyoming'.split(',');
+  var sel = $('#state');
+  STATES.forEach(function (s) { var o = document.createElement('option'); o.value = s.slice(0, 2); o.textContent = s.slice(3); sel.appendChild(o); });
+
+  // the handle fields that fit the platform
+  var plat = $('#platform');
+  function showHandles() {
+    var v = plat.value;
+    $$('[data-for]').forEach(function (el) { var on = !v || el.getAttribute('data-for').split(' ').indexOf(v) >= 0; el.style.display = on ? '' : 'none'; });
+  }
+  plat.addEventListener('change', showHandles); showHandles();
+
+  // a partner's code from ?ref=, and where this visit came from (kept with the application)
+  var q = new URLSearchParams(location.search);
+  if (q.get('ref')) $('#referred_by').value = String(q.get('ref')).toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 24);
+  var source = {};
+  ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(function (k) { if (q.get(k)) source[k] = String(q.get(k)).slice(0, 200); });
+  source.landing = location.pathname;
+  try { if (document.referrer && new URL(document.referrer).origin !== location.origin) source.referrer = new URL(document.referrer).origin; } catch (e) {}
+
+  // clear a field's error as it is fixed
+  $$('input, select, textarea', form).forEach(function (i) { var clear = function () { var f = i.closest('.fld'); if (f) f.classList.remove('bad'); $('#handle-err').style.display = 'none'; $('#chk-err').style.display = 'none'; }; i.addEventListener('input', clear); i.addEventListener('change', clear); });
+
+  var EMAIL = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+  function bad(id) { var el = $('#' + id); var f = el.closest('.fld'); if (f) f.classList.add('bad'); return el; }
+  function validate() {
+    var first = null;
+    function fail(id) { var el = bad(id); if (!first) first = el; }
+    if (!$('#first').value.trim()) fail('first');
+    if (!$('#last').value.trim()) fail('last');
+    if (!EMAIL.test($('#email').value.trim())) fail('email');
+    if (!$('#state').value) fail('state');
+    if (!plat.value) fail('platform');
+    var v = plat.value;
+    var hasHandle = (v === 'tiktok' || v === 'both') && $('#tiktok').value.trim() || (v === 'instagram' || v === 'both') && $('#instagram').value.trim() || v === 'other' && $('#other_channel').value.trim();
+    if (v && !hasHandle) { $('#handle-err').style.display = ''; if (!first) first = $(v === 'instagram' ? '#instagram' : v === 'other' ? '#other_channel' : '#tiktok'); }
+    if (!$('#followers').value.replace(/\D/g, '')) fail('followers');
+    if (!/^https?:\/\/\S+$/i.test($('#video1').value.trim())) fail('video1');
+    if (!$$('input[name=audience]:checked').length) { $('#aud').classList.add('bad'); if (!first) first = $('input[name=audience]'); }
+    if ($('#why').value.trim().length < 20) fail('why');
+    if (!($('#age18').checked && $('#us').checked && $('#terms').checked)) { $('#chk-err').style.display = ''; if (!first) first = $('#age18'); }
+    if (first) { first.focus(); first.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+    return !first;
+  }
+  $$('input[name=audience]').forEach(function (c) { c.addEventListener('change', function () { $('#aud').classList.remove('bad'); }); });
+
+  function payload() {
+    var val = function (id) { return $('#' + id).value.trim(); };
+    return {
+      action: 'apply', first: val('first'), last: val('last'), email: val('email'), phone: val('phone'), state: val('state'),
+      platform: plat.value, tiktok: val('tiktok'), instagram: val('instagram'), other_channel: val('other_channel'),
+      followers: val('followers'), video1: val('video1'), video2: val('video2'), video3: val('video3'),
+      audience: $$('input[name=audience]:checked').map(function (c) { return c.value; }),
+      why: val('why'), heard: val('heard'), referred_by: val('referred_by'), paypal: val('paypal'),
+      age18: $('#age18').checked, us: $('#us').checked, terms: $('#terms').checked,
+      hp: form.querySelector('[name=hp]').value, source: source
+    };
+  }
+  var msg = $('#msg'), go = $('#go');
+  function say(t) { msg.textContent = t; msg.classList.toggle('show', !!t); }
+  form.addEventListener('submit', function (e) {
+    e.preventDefault(); say('');
+    if (!validate()) return;
+    go.classList.add('busy'); go.textContent = 'Sending…';
+    var ctrl = typeof AbortController === 'function' ? new AbortController() : null;
+    var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, 20000);
+    fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload()), signal: ctrl ? ctrl.signal : undefined })
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+      .then(function (x) {
+        clearTimeout(timer);
+        if (x.d && x.d.ok && x.d.duplicate) { form.style.display = 'none'; $('#dup').classList.add('show'); window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
+        if (!x.ok || !x.d || !x.d.ok) throw new Error((x.d && x.d.error) || 'Something went wrong. Try again in a minute.');
+        $('#done-name').textContent = $('#first').value.trim(); $('#done-email').textContent = $('#email').value.trim();
+        form.style.display = 'none'; $('#done').classList.add('show'); document.title = 'Application sent · Child Phenoms';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      })
+      .catch(function (err) {
+        clearTimeout(timer);
+        say(err && err.name === 'AbortError' ? 'That took too long. Check your connection and try again.' : (err && err.message) || 'Something went wrong. Try again in a minute.');
+        go.classList.remove('busy'); go.textContent = 'Send my application →';
+      });
+  });
+})();
+</script>
+</body>
+</html>

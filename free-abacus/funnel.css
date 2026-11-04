@@ -73,6 +73,10 @@ body { padding-bottom: 92px; }
 .fld .err { display: none; font-size: 12.5px; color: var(--red); font-weight: 600; }
 .fld.bad input { border-color: var(--red); }
 .fld.bad .err { display: block; }
+/* the creator partner's code (docs/PARTNERS.md): optional, so it sits lighter than the required fields */
+.fld-code input { border-style: dashed; border-color: var(--hair-2); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.fld-code input::placeholder { font-weight: 400; letter-spacing: 0; text-transform: none; }
+.fld-code input:focus { border-style: solid; border-color: var(--ink); }
 .fld-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .fld-row.three { grid-template-columns: 2fr 1fr 1fr; }
 .order .pane { display: none; }
@@ -489,3 +493,7 @@ body.cp-typing .toast-fn { bottom: auto; top: calc(env(safe-area-inset-top, 0px)
 /* the receipt at the top of step 2 (2026-11-03, Hunter: the $6.95 must read as shipping & handling; one place, not three) */
 .summary.receipt { margin: 8px 0 4px; }
 .summary.receipt div.total { font-size: 16px; }
+
+/* A/B copy test (index.html): the head script sets html[data-ab]; each variant's words sit in the markup inside
+   [data-ab="a"] / [data-ab="b"] and the other variant's are hidden. With no data-ab on <html> (script blocked) the page shows A. */
+html[data-ab="b"] [data-ab="a"], html:not([data-ab="b"]) [data-ab="b"] { display: none !important; }

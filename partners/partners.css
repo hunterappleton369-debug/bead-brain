@@ -1,0 +1,80 @@
+/* Creator Partner Program pages: /partners/, /partners/apply/, /partners/start/ (docs/PARTNERS.md). Sits on css/style.css. */
+:root { --pt-wrap: 680px; }
+body { background: var(--paper); }
+.pt-top { position: sticky; top: 0; z-index: 20; background: rgba(255,255,255,.94); backdrop-filter: blur(8px); border-bottom: 1px solid var(--hair); }
+.pt-top-in { max-width: var(--pt-wrap); margin: 0 auto; padding: 0 16px; height: 58px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.pt-top .logo { display: inline-flex; align-items: center; gap: 8px; color: var(--ink); text-decoration: none; }
+.pt-top .logo .word { font-family: var(--font-display); font-weight: 600; font-size: 16px; letter-spacing: -.02em; }
+.pt-top .logo .word b { font-weight: 800; color: var(--blue); }
+.pt-top .crumb { font-size: 13px; font-weight: 700; color: var(--ink-3); letter-spacing: .06em; text-transform: uppercase; }
+.pt-wrap { max-width: var(--pt-wrap); margin: 0 auto; padding: 36px 16px 48px; }
+.eyebrow { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); margin: 0 0 12px; }
+.pt-hero h1 { font-family: var(--font-display); font-size: clamp(30px, 7vw, 46px); line-height: 1.06; letter-spacing: -.025em; margin: 0 0 16px; }
+.pt-hero h1 u { text-decoration: none; background: linear-gradient(transparent 58%, var(--yellow) 58%); }
+.lede { font-size: 19px; line-height: 1.5; color: var(--ink-2); margin: 0 0 22px; }
+.lede b { color: var(--ink); }
+.pt-hero .btn.big, .pt-cta .btn.big { width: 100%; max-width: 440px; font-size: 18px; padding: 17px 24px; white-space: normal; text-align: center; }
+.under { font-size: 14px; color: var(--ink-3); margin: 12px 0 0; }
+.kit { position: relative; margin: 30px 0 0; border: 2px solid var(--ink); border-radius: 22px; overflow: hidden; box-shadow: 8px 8px 0 var(--blue-soft); background: var(--paper-2); }
+.kit img { display: block; width: 100%; height: auto; }
+.kit .tag { position: absolute; left: 12px; bottom: 12px; right: 12px; background: #fff; border: 2px solid var(--ink); border-radius: 12px; padding: 8px 12px; font-size: 13.5px; font-weight: 600; }
+.pt-sec { margin: 56px 0 0; }
+.pt-sec h2, .pt-cta h2 { font-family: var(--font-display); font-size: clamp(22px, 5vw, 28px); line-height: 1.15; letter-spacing: -.02em; margin: 0 0 16px; }
+.steps { list-style: none; counter-reset: s; padding: 0; margin: 0; display: grid; gap: 12px; }
+.steps li { counter-increment: s; position: relative; padding: 16px 16px 16px 60px; border: 2px solid var(--ink); border-radius: 16px; background: #fff; }
+.steps li::before { content: counter(s); position: absolute; left: 14px; top: 14px; width: 32px; height: 32px; border-radius: 50%; background: var(--yellow); border: 2px solid var(--ink); display: grid; place-items: center; font-family: var(--font-display); font-weight: 700; font-size: 15px; }
+code { font-family: var(--font-body); font-weight: 800; letter-spacing: .05em; background: var(--yellow-soft); border: 1px solid var(--hair-2); padding: 1px 7px; border-radius: 8px; }
+.tiers { display: grid; gap: 10px; margin: 18px 0; }
+.tier { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 18px; border: 2px solid var(--ink); border-radius: 16px; background: #fff; }
+.tier .n { font-weight: 600; }
+.tier .amt { font-family: var(--font-display); font-weight: 800; font-size: 26px; letter-spacing: -.02em; white-space: nowrap; }
+.tier .amt small { font-family: var(--font-body); font-weight: 600; font-size: 13px; color: var(--ink-3); letter-spacing: 0; }
+.tier.top { background: var(--yellow-soft); box-shadow: 5px 5px 0 var(--ink); }
+.ex { font-size: 18px; margin: 0 0 12px; }
+.fine { font-size: 15px; color: var(--ink-2); background: var(--paper-2); border-radius: 14px; padding: 14px 16px; margin: 0; }
+.checks, .gets { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.checks li { padding-left: 32px; position: relative; }
+.checks li::before { content: '✓'; position: absolute; left: 0; top: 0; width: 22px; height: 22px; border-radius: 50%; background: var(--green); border: 2px solid var(--ink); display: grid; place-items: center; font-size: 13px; font-weight: 900; }
+.gets li { padding: 14px 16px; border: 2px solid var(--hair-2); border-radius: 14px; background: #fff; }
+.not { margin: 16px 0 0; font-size: 15px; color: var(--ink-2); }
+.rules p { background: var(--blue-soft); border-radius: 16px; padding: 16px 18px; margin: 0; font-size: 16.5px; }
+.faq details { border-bottom: 1px solid var(--hair); padding: 4px 0; }
+.faq summary { cursor: pointer; font-weight: 700; padding: 12px 0; list-style: none; position: relative; padding-right: 28px; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: '+'; position: absolute; right: 2px; top: 8px; font-size: 22px; font-weight: 400; color: var(--ink-3); }
+.faq details[open] summary::after { content: '–'; }
+.faq p { margin: 0 0 14px; color: var(--ink-2); }
+.pt-cta { margin: 56px 0 0; text-align: center; padding: 32px 18px; border: 2px solid var(--ink); border-radius: 22px; background: var(--yellow-soft); }
+.pt-foot { max-width: var(--pt-wrap); margin: 0 auto; padding: 0 16px 48px; font-size: 13px; line-height: 1.5; color: var(--ink-3); }
+.pt-foot a { color: var(--ink-2); }
+/* forms (apply) */
+.frm { display: grid; gap: 14px; }
+.frm .fld { display: flex; flex-direction: column; gap: 6px; }
+.frm label, .frm legend { font-size: 13px; font-weight: 700; color: var(--ink-2); letter-spacing: .02em; }
+.frm label small, .frm legend small { font-weight: 500; color: var(--ink-3); }
+.frm input[type=text], .frm input[type=email], .frm input[type=tel], .frm input[type=url], .frm input[type=number], .frm select, .frm textarea { width: 100%; font-family: var(--font-body); font-size: 16px; padding: 12px 14px; min-height: 48px; border: 2px solid var(--ink); border-radius: 12px; background: #fff; color: var(--ink); outline: none; }
+.frm textarea { min-height: 110px; resize: vertical; line-height: 1.45; }
+.frm input:focus, .frm select:focus, .frm textarea:focus { box-shadow: 0 0 0 3px rgba(36,87,245,.35); }
+.frm .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+@media (max-width: 480px) { .frm .row { grid-template-columns: 1fr; } }
+.frm fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: 8px; }
+.frm .opts { display: flex; flex-wrap: wrap; gap: 8px; }
+.frm .opt { display: inline-flex; align-items: center; gap: 8px; padding: 9px 12px; border: 2px solid var(--hair-2); border-radius: 999px; font-size: 14.5px; font-weight: 600; cursor: pointer; background: #fff; }
+.frm .opt:has(input:checked) { border-color: var(--ink); background: var(--yellow-soft); }
+.frm .opt input { margin: 0; width: 16px; height: 16px; accent-color: var(--blue); }
+.frm .chk { display: grid; grid-template-columns: 24px 1fr; gap: 10px; align-items: start; font-size: 15px; font-weight: 500; color: var(--ink); }
+.frm .chk input { width: 22px; height: 22px; margin: 1px 0 0; accent-color: var(--blue); }
+.frm .err { display: none; font-size: 13px; color: var(--red); font-weight: 600; }
+.frm .fld.bad input, .frm .fld.bad select, .frm .fld.bad textarea { border-color: var(--red); }
+.frm .fld.bad .err { display: block; }
+.frm .msg { display: none; padding: 12px 14px; border-radius: 12px; font-weight: 600; font-size: 15px; }
+.frm .msg.show { display: block; }
+.frm .msg.bad { background: var(--red-soft); color: #9f1d1d; }
+.frm .submit { width: 100%; font-size: 18px; padding: 17px 24px; white-space: normal; }
+.frm .submit.busy { opacity: .6; pointer-events: none; }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.done { display: none; border: 2px solid var(--ink); border-radius: 22px; padding: 28px 22px; background: var(--yellow-soft); box-shadow: 6px 6px 0 var(--ink); }
+.done.show { display: block; }
+.done h2 { margin-top: 0; }
+.sec-head { margin: 28px 0 4px; font-family: var(--font-display); font-size: 17px; font-weight: 700; letter-spacing: -.01em; }
+.hint { font-size: 14px; color: var(--ink-3); margin: 0; }

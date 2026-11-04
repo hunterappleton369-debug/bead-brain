@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#2457f5">
+<title>Child Phenoms</title>
+<link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+<!--
+  A creator partner's link: childphenoms.com/go/SARAH27 (vercel.json rewrites /go/:code here; docs/PARTNERS.md).
+  The page keeps the code in this browser for 30 days (the same key free-abacus/funnel.js reads: cp.funnel.ref), logs
+  the click to the partners function without waiting for the answer, and goes on to the kit page with ?ref=CODE, so
+  the order form's "Creator code" field shows it. No code in the address: straight to the kit page.
+  No analytics, no pixel, nothing loaded from anywhere else; the kit page has those.
+-->
+<style>
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #f7f8fb; color: #121826; font: 17px/1.5 Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+  .box { text-align: center; padding: 24px; }
+  .word { font-weight: 800; font-size: 20px; letter-spacing: -.02em; margin-bottom: 12px; }
+  .word b { color: #2457f5; }
+  p { margin: 0; color: #4b5567; }
+  a { color: #2457f5; }
+</style>
+</head>
+<body>
+<div class="box">
+  <div class="word">Child <b>Phenoms</b></div>
+  <p>Opening the free kit page… <a href="/free-abacus/">Tap here if it does not open.</a></p>
+</div>
+<script>
+(function () {
+  var API = 'https://fndemnipqtpmuvcidcxo.supabase.co/functions/v1/partners';
+  var code = '';
+  try {
+    var parts = location.pathname.split('/').filter(Boolean); // ["go", "SARAH27"]
+    code = (parts[1] || new URLSearchParams(location.search).get('c') || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 24);
+  } catch (e) { code = ''; }
+  if (code.length < 3) { location.replace('/free-abacus/'); return; }
+  try { localStorage.setItem('cp.funnel.ref', JSON.stringify({ code: code, at: new Date().toISOString() })); } catch (e) { /* the ?ref= on the next page carries it too */ }
+  var ref = '';
+  try { ref = document.referrer ? new URL(document.referrer).origin : ''; } catch (e) { ref = ''; }
+  var body = JSON.stringify({ action: 'click', code: code, landing: location.pathname, referrer: ref });
+  try {
+    if (!(navigator.sendBeacon && navigator.sendBeacon(API, body))) {
+      fetch(API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=UTF-8' }, body: body, keepalive: true, credentials: 'omit' }).catch(function () {});
+    }
+  } catch (e) { /* the click is not logged; the order still credits through the stored code */ }
+  location.replace('/free-abacus/?ref=' + encodeURIComponent(code));
+})();
+</script>
+</body>
+</html>
