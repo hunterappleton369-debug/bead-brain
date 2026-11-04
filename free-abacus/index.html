@@ -18,18 +18,23 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://childphenoms.com/img/funnel/og-kit-v6.jpg">
 <meta name="theme-color" content="#2457f5">
-<script>/* A/B copy test. A = the control, B = the edited copy. One coin flip per browser, kept in localStorage so a visitor always
-sees the same page; ?ab=a or ?ab=b in the address forces one (previews, your own checks: those are tagged ab_source=url and left
-out of the results). funnel.css hides the other variant's [data-ab] elements; funnel.js tags every PostHog event with the variant. */
+<script>/* A/B copy test. A = the control, B = the edited copy. One coin flip per browser, kept in a cookie AND localStorage so a
+visitor always sees the same page (Facebook's in-app browser dropped localStorage between two loads on 2026-11-04 while its cookies
+survived: the cookie is read first); ?ab=a or ?ab=b in the address forces one (previews, your own checks: those are tagged
+ab_source=url and left out of the results). funnel.css hides the other variant's [data-ab] elements; funnel.js tags every PostHog
+event with the variant. */
 (function () {
   var v = null, src = 'random';
-  try {
-    var m = /[?&]ab=([ab])(?:&|$)/.exec(location.search);
-    if (m) { v = m[1]; src = 'url'; }
-    else { v = localStorage.getItem('cp_ab'); if (v === 'a' || v === 'b') src = localStorage.getItem('cp_ab_src') || 'random'; else v = null; }
-    if (!v) v = Math.random() < 0.5 ? 'a' : 'b';
-    localStorage.setItem('cp_ab', v); localStorage.setItem('cp_ab_src', src);
-  } catch (e) { if (v !== 'a' && v !== 'b') v = 'a'; }
+  function get(n) { try { var m = document.cookie.match(new RegExp('(?:^|; )' + n + '=([^;]*)')); return (m && m[1]) || localStorage.getItem(n); } catch (e) { return null; } }
+  function keep(n, val) {
+    try { document.cookie = n + '=' + val + '; max-age=31536000; path=/; SameSite=Lax' + (location.protocol === 'https:' ? '; Secure' : ''); } catch (e) {}
+    try { localStorage.setItem(n, val); } catch (e) {}
+  }
+  var m = /[?&]ab=([ab])(?:&|$)/.exec(location.search);
+  if (m) { v = m[1]; src = 'url'; }
+  else { v = get('cp_ab'); if (v === 'a' || v === 'b') src = get('cp_ab_src') || 'random'; else v = null; }
+  if (!v) v = Math.random() < 0.5 ? 'a' : 'b';
+  keep('cp_ab', v); keep('cp_ab_src', src);
   document.documentElement.setAttribute('data-ab', v);
 })();
 </script>

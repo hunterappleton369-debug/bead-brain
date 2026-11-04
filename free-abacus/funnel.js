@@ -134,7 +134,10 @@ function ph(name, props, beforeNav) {
 }
 function phOnce(key, name, props) { if (phOn || phWillLoad()) once('ph:' + key, () => ph(name, props)); }
 function phIdentify(email) { if (!phOn || !window.posthog || !email) return; try { window.posthog.identify(email, { email, ...(abVariant() || {}) }); } catch {} }
-function abVariant() { try { const v = localStorage.getItem('cp_ab'); return v === 'a' || v === 'b' ? { ab_variant: v, ab_source: localStorage.getItem('cp_ab_src') || 'random' } : null; } catch { return null; } }
+function abVariant() { // the coin lives in a cookie AND localStorage (index.html's head script writes both; the cookie is read first because Facebook's in-app browser dropped localStorage mid-session on 2026-11-04 while its cookies survived)
+  const get = n => { try { const m = document.cookie.match(new RegExp('(?:^|; )' + n + '=([^;]*)')); return (m && m[1]) || localStorage.getItem(n); } catch { return null; } };
+  const v = get('cp_ab'); return v === 'a' || v === 'b' ? { ab_variant: v, ab_source: get('cp_ab_src') || 'random' } : null;
+}
 
 // ---------- ad attribution: the first touch, sent with the order so Stripe shows which ad sold each kit ----------
 const TAGS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid'];
