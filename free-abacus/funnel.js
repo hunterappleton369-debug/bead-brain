@@ -290,6 +290,7 @@ export function orderForm() {
   let pre = null;         // { email, p, sent } a start call on its way
   let hosted = !onPage(); // true = the Complete button sends the parent to the hosted checkout links
   let seq = 0, mounting = null, timer = 0, syncing = null, mountTries = 0, retryTimer = 0;
+  let linkOff = false;    // true after a Link log-in was left half done at Complete: the card form comes back without Link
   const showErr = msg => { if (!payErr) return; payErr.textContent = msg || ''; payErr.hidden = !msg; };
   const setState = (mode, reason) => { window.cpCheckoutState = { mode, reason: reason || '' }; };
   const setBusy = on => { complete.classList.toggle('busy', on); if (on) complete.setAttribute('aria-disabled', 'true'); else complete.removeAttribute('aria-disabled'); };
@@ -347,18 +348,23 @@ export function orderForm() {
       const stripe = S(CONFIG.stripePublishableKey);
       const elements = stripe.elements({ mode: 'payment', amount: cents(total()), currency: 'usd', setupFutureUsage: 'off_session', paymentMethodTypes: ['card'], appearance: APPEARANCE, fonts: FONTS, loader: 'auto' });
       const d = p1();
-      // Just the card fields (2026-11-03). Before this the element ran 900 to 1,100 px tall on a phone: a lone "Card"
-      // radio row, Link's row plus its save-my-info Email and Mobile fields and a "Bank" option, Country and ZIP the
-      // parent had just typed on step 1, and Stripe's "charge your card for future payments" sentence. Eight lost leads
-      // in a row met that wall with no total and no button on their screen. Link also pre-selected itself for a
-      // recognized email and answered "No account connected" at Complete. The address goes with the confirm instead,
-      // and the saved-card sentence is ours, under the fields (.pay-note).
+      // The card fields, and Link (2026-11-03). Before this the element ran 900 to 1,100 px tall on a phone: a lone
+      // "Card" radio row, Link's expanded save-my-info Email and Mobile fields, Country and ZIP the parent had just
+      // typed on step 1, and Stripe's "charge your card for future payments" sentence. Eight lost leads in a row met
+      // that wall with no total and no button on their screen. Link stays: 3 of the first 5 kit buyers paid with it.
+      // Its sign-up fields come prefilled from step 1 (defaultValues), and they stay collapsed once "accelerated
+      // sign-up" is off in the Stripe Dashboard (Settings → Payment methods → Link), which also hides Link's "Bank"
+      // option; the kit intents take cards only. The address goes with the confirm instead of being typed again, and
+      // the saved-card sentence is ours, under the fields (.pay-note). A Link log-in left half done at Complete
+      // ("No account connected", 2026-11-03) remounts the element without Link: see cardOnly below.
       const pay = elements.create('payment', {
-        layout: { type: 'tabs' }, // one payment type: Stripe draws no tab bar, only the fields
+        // accordion, no radios: the card fields open on top; Link's "Bank" row (Instant Bank Payments, which Stripe adds
+        // to Link on its own) sits collapsed under them instead of as a second tab. The kit intents take cards only.
+        layout: { type: 'accordion', defaultCollapsed: false, radios: 'never', spacedAccordionItems: false },
         business: { name: 'Child Phenoms' },
         fields: { billingDetails: { name: 'never', email: 'never', phone: 'never', address: 'never' } },
         defaultValues: { billingDetails: { name: fullName(d), email: d.email || '', phone: d.phone || '' } },
-        wallets: { applePay: 'auto', googlePay: 'auto', link: 'never' },
+        wallets: { applePay: 'auto', googlePay: 'auto', link: linkOff ? 'never' : 'auto' },
         terms: { card: 'never', applePay: 'never', googlePay: 'never' },
       });
       const el = $('#pay-el', form); if (el) el.innerHTML = '';
@@ -380,7 +386,7 @@ export function orderForm() {
       if (payBlock) payBlock.classList.remove('hosted');
       setLabel(false);
       if (payLoading) payLoading.classList.add('hide'); pane2.classList.remove('loading');
-      setState('onpage', ''); ph('checkout_mounted', { attempt: mountTries, apple_pay: applePayHere() });
+      setState('onpage', ''); ph('checkout_mounted', { attempt: mountTries, apple_pay: applePayHere(), link: !linkOff });
     })().catch(e => {
       if (my !== seq) return;
       mounting = null;
@@ -394,6 +400,16 @@ export function orderForm() {
   }
   // Apple Pay can only show where the browser offers it (Safari and WebKit views with a card in Wallet)
   function applePayHere() { try { return !!(window.ApplePaySession && window.ApplePaySession.canMakePayments()); } catch { return false; } }
+  // Link recognized the email and opened its log-in, the parent skipped the code and tapped Complete: Stripe answers
+  // "No account connected" and nothing can be charged. The card form comes back without Link, so the card can be typed.
+  async function cardOnly() {
+    linkOff = true; ph('checkout_link_off');
+    const old = co; co = null; seq++; mountTries = 0; clearTimeout(retryTimer);
+    if (old) { try { old.pay.destroy(); } catch {} }
+    pane2.classList.add('loading'); if (payLoading) payLoading.classList.remove('hide');
+    await mountPay();
+    if (co) { try { co.pay.update({ defaultValues: { billingDetails: { name: fullName(p1()), email: p1().email, phone: p1().phone || '' } } }); } catch {} }
+  }
   // Mount once the page's own images and fonts are in, or as soon as the parent touches the form, whichever comes
   // first, so Stripe.js (250 KB) never competes with the hero image for a slow connection's first seconds.
   if (onPage()) {
@@ -559,7 +575,10 @@ export function orderForm() {
       try {
         // the card fields first (Stripe checks them before anything is charged), then the intent, then the charge
         const sub = await co.elements.submit();
-        if (sub && sub.error) { failed(sub.error.message || 'Please fill in the highlighted fields above.', true); undo(); return; }
+        if (sub && sub.error) {
+          if (!linkOff && /account connected|link/i.test(sub.error.message || '')) { await cardOnly(); failed('The Link log-in did not finish. Type your card below instead.', true); undo(); return; }
+          failed(sub.error.message || 'Please fill in the highlighted fields above.', true); undo(); return;
+        }
         await ensureIntent(data);
         // never charge a total the parent did not see: a bump update that failed gets one more try first
         if (intent.bump !== wb) { await syncBump(); setBusy(true); if (!intent || intent.bump !== wb) { undo(); return; } }
