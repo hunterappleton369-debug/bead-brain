@@ -504,15 +504,30 @@ html[data-ab="b"] [data-ab="a"], html:not([data-ab="b"]) [data-ab="b"] { display
 .btn.no-btn.red { display: flex; width: auto; max-width: 340px; margin: 10px auto 0; padding: 7px 14px; background: #c0392b; color: #fff; border: 1.5px solid #8e2318; border-radius: 9px; font-size: 12px; font-weight: 600; line-height: 1.3; }
 .btn.no-btn.red:hover, .btn.no-btn.red:active { color: #fff; border-color: #6f1a11; background: #a5301f; }
 /* page 2: the whole stack on one framed card under the lede, the offer written on it */
-.offer-card { position: relative; margin: 14px auto 12px; max-width: 420px; border: 3px solid var(--ink); border-radius: 16px; overflow: hidden; background: #fff; box-shadow: var(--shadow-hard); text-align: center; }
-.offer-card .oc-top { background: linear-gradient(#f0503f, #d33a2a); color: #fff; padding: 9px 10px 10px; border-bottom: 3px solid var(--ink); }
+.offer-card { position: relative; margin: 4px auto 14px; max-width: 420px; border: 3px solid var(--ink); border-radius: 16px; overflow: hidden; background: #fff; box-shadow: var(--shadow-hard); text-align: center; }
+.offer-card .oc-top { background: linear-gradient(#f0503f, #d33a2a); color: #fff; padding: 7px 10px 8px; border-bottom: 3px solid var(--ink); }
 .offer-card .oc-flag { display: inline-block; font-family: Poppins, Inter, sans-serif; font-weight: 800; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink); background: var(--yellow); border: 2px solid var(--ink); border-radius: 99px; padding: 3px 10px; }
-.offer-card .oc-title { display: block; font-family: Poppins, Inter, sans-serif; font-weight: 800; font-size: 19px; line-height: 1.15; margin: 6px 0 2px; }
+.offer-card .oc-title { display: block; font-family: Poppins, Inter, sans-serif; font-weight: 800; font-size: 17px; line-height: 1.15; margin: 5px 0 1px; }
+.offer-card .oc-title span { display: block; color: var(--yellow); }
 .offer-card .oc-gift { display: block; font-family: Poppins, Inter, sans-serif; font-weight: 600; font-size: 14px; line-height: 1.25; }
 .offer-card .oc-gift em { font-style: normal; font-weight: 800; color: var(--yellow); }
-.offer-card img { width: 88%; margin: 6px auto 4px; }
-.offer-card .oc-bottom { background: var(--yellow); border-top: 3px solid var(--ink); padding: 7px 10px 9px; }
+.offer-card img { width: 66%; margin: 4px auto 2px; }
+.offer-card .oc-bottom { background: var(--yellow); border-top: 3px solid var(--ink); padding: 5px 10px 7px; }
 .offer-card .oc-was { display: block; font-family: Poppins, Inter, sans-serif; font-weight: 600; font-size: 14px; line-height: 1.2; color: var(--ink-2); }
 .offer-card .oc-was s { text-decoration-color: #d33a2a; text-decoration-thickness: 2px; }
-.offer-card .oc-now { display: block; font-family: Poppins, Inter, sans-serif; font-weight: 800; font-size: 28px; line-height: 1.05; letter-spacing: -.01em; color: var(--ink); text-transform: uppercase; }
+.offer-card .oc-now { display: block; font-family: Poppins, Inter, sans-serif; font-weight: 800; font-size: 26px; line-height: 1.05; letter-spacing: -.01em; color: var(--ink); text-transform: uppercase; }
 .offer-card .oc-now em { font-style: normal; color: #d33a2a; }
+/* page 2's top (2026-11-04 PM): one 10 px beat between everything, the first yes/no right under the lede, the
+   how-it-works list plain on the page instead of in the black box */
+.u-wait { margin: 10px 0 0; padding: 9px 12px; font-size: 13px; line-height: 1.35; }
+.fn-hero.u-hero { padding: 10px 0 4px; }
+.u-hero .badge-offer { margin: 0 0 10px; }
+.u-hero h1 { font-size: 20px; line-height: 1.2; margin: 0 0 10px; }
+.u-hero .lede { color: #000; font-size: 16px; line-height: 1.45; margin: 0 auto 10px; }
+.u-hero .offer-card { margin: 0 auto 10px; }
+.u-hero .btn.cta.cf { margin: 2px 0 0; }
+.u-hero .btn.no-btn.red { margin: 8px auto 0; }
+.u-hero .howto { text-align: left; margin: 18px 0 2px; }
+.u-hero .howto h3 { font-size: 18px; line-height: 1.25; margin: 0 0 8px; }
+.u-hero .howto ol { margin: 0; padding-left: 1.3em; font-size: 15.5px; line-height: 1.5; }
+.u-hero .howto li { margin: 0 0 4px; }
