@@ -364,6 +364,7 @@ export function orderForm() {
   const payBlock = $('[data-pay-block]', form), payErr = $('[data-pay-error]', form), payLoading = $('[data-pay-loading]', form);
   const complete = $('[data-complete]', form);
   let co = null;          // { stripe, elements, pay } once the Payment Element is on the page
+  let cardEmpty = true;   // the Payment Element has nothing in it yet: Complete sends the parent to the card fields first
   let intent = null;      // { intentId, clientSecret, amount, bump, email } the kit intent the server opened for this email
   let pre = null;         // { email, p, sent } a start call on its way
   let hosted = !onPage(); // true = the Complete button sends the parent to the hosted checkout links
@@ -448,10 +449,12 @@ export function orderForm() {
       const el = $('#pay-el', form); if (el) el.innerHTML = '';
       // once per page view: the parent put the cursor in the card fields, then finished them
       let cardStarted = false, cardDone = false;
+      cardEmpty = true;
       // the card fields with the cursor go under the top bar, clear of the keyboard, like the step-1 fields
       pay.on('focus', () => { if (!cardStarted) { cardStarted = true; ph('card_started'); } setTyping(true); reveal(payBlock || $('#pay-el'), true); });
       pay.on('blur', () => setTyping(false));
       pay.on('change', e => {
+        cardEmpty = !!(e && e.empty);
         if (e && e.complete && !cardDone) { cardDone = true; ph('card_complete', { type: (e.value && e.value.type) || '' }); }
         if (payErr && !payErr.hidden && e && !e.empty) showErr(''); // the parent is fixing the card: the old message goes
       });
@@ -641,6 +644,9 @@ export function orderForm() {
     const data = p1();
     const wb = withBump();
     const payHere = !hosted && !!co;
+    // Nothing in the card fields yet (one parent tapped Complete 30 s after reaching step 2 and got Stripe's "Please
+    // select a payment method", 2026-11-04): say so, scroll the fields up and put the cursor in them, charge nothing.
+    if (payHere && cardEmpty) { ph('checkout_card_missing'); failed('Enter your card details first, then tap Complete.', true); setTimeout(() => { try { co.pay.focus(); } catch {} }, 450); return; }
     const order = { ...(load(LEAD_KEY) || {}), ...data, bump: wb, total: total(), at: new Date().toISOString(), mode: payHere ? 'onpage' : 'hosted', eventId: rid() };
     saveOrder(order);
     track('InitiateCheckout', { content_name: wb ? 'kit+playbook' : 'kit', value: order.total, currency: 'USD', num_items: wb ? 2 : 1 }, payHere && intent ? intent.intentId : order.eventId);
