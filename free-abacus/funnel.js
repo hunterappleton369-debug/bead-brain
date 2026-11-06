@@ -368,7 +368,9 @@ export function orderForm() {
   const payBlock = $('[data-pay-block]', form), payErr = $('[data-pay-error]', form), payLoading = $('[data-pay-loading]', form);
   const complete = $('[data-complete]', form);
   let co = null;          // { stripe, elements, pay } once the Payment Element is on the page
-  let cardEmpty = true;   // the Payment Element has nothing in it yet: Complete sends the parent to the card fields first
+  let cardEmpty = true;   // the Payment Element's inputs are all empty (Stripe's change.empty)
+  let cardComplete = false; // its inputs are well-formed and complete (change.complete); a wallet (Apple Pay, Google Pay) has no inputs, so it reads empty AND complete
+  let payType = '';       // the payment method picked in the element (card, link, apple_pay, google_pay), from change.value.type
   let intent = null;      // { intentId, clientSecret, amount, bump, email } the kit intent the server opened for this email
   let pre = null;         // { email, p, sent } a start call on its way
   let hosted = !onPage(); // true = the Complete button sends the parent to the hosted checkout links
@@ -391,7 +393,7 @@ export function orderForm() {
   // fields (a phone shows the button about a screen below them, so a message left there was never seen).
   const failed = (msg, toFields) => {
     showErr(msg); toast(msg, 4200);
-    ph('checkout_failed', { message: String(msg || '').slice(0, 90), fields: !!toFields });
+    ph('checkout_failed', { message: String(msg || '').slice(0, 90), fields: !!toFields, type: payType });
     const target = toFields ? payBlock : payErr;
     if (target) setTimeout(() => window.scrollTo({ top: target.getBoundingClientRect().top + scrollY - (toFields ? 84 : innerHeight / 2), behavior: 'smooth' }), 50);
     // a card the bank refused (wrong number, expiry, code): the cursor goes back into the card fields, so the next
@@ -453,12 +455,12 @@ export function orderForm() {
       const el = $('#pay-el', form); if (el) el.innerHTML = '';
       // once per page view: the parent put the cursor in the card fields, then finished them
       let cardStarted = false, cardDone = false;
-      cardEmpty = true;
+      cardEmpty = true; cardComplete = false; payType = '';
       // the card fields with the cursor go under the top bar, clear of the keyboard, like the step-1 fields
       pay.on('focus', () => { if (!cardStarted) { cardStarted = true; ph('card_started'); } setTyping(true); reveal(payBlock || $('#pay-el'), true); });
       pay.on('blur', () => setTyping(false));
       pay.on('change', e => {
-        cardEmpty = !!(e && e.empty);
+        cardEmpty = !!(e && e.empty); cardComplete = !!(e && e.complete); payType = (e && e.value && e.value.type) || '';
         if (e && e.complete && !cardDone) { cardDone = true; ph('card_complete', { type: (e.value && e.value.type) || '' }); }
         if (payErr && !payErr.hidden && e && !e.empty) showErr(''); // the parent is fixing the card: the old message goes
       });
@@ -666,11 +668,14 @@ export function orderForm() {
     const payHere = !hosted && !!co;
     // Nothing in the card fields yet (one parent tapped Complete 30 s after reaching step 2 and got Stripe's "Please
     // select a payment method", 2026-11-04): say so, scroll the fields up and put the cursor in them, charge nothing.
-    if (payHere && cardEmpty) { ph('checkout_card_missing'); failed('Enter your card details first, then tap Complete.', true); setTimeout(() => { try { co.pay.focus(); } catch {} }, 450); return; }
+    // Empty alone is not enough: Apple Pay and Google Pay have no inputs, so Stripe reports them empty: true and
+    // complete: true, and this gate sent Hunter's own Apple Pay order in the Instagram browser back to "enter your
+    // card details" three times (2026-11-06). A wallet or a finished Link log-in passes through to Stripe's sheet.
+    if (payHere && cardEmpty && !cardComplete) { ph('checkout_card_missing'); failed('Enter your card details first, then tap Complete.', true); setTimeout(() => { try { co.pay.focus(); } catch {} }, 450); return; }
     const order = { ...(load(LEAD_KEY) || {}), ...data, bump: wb, total: total(), at: new Date().toISOString(), mode: payHere ? 'onpage' : 'hosted', eventId: rid() };
     saveOrder(order);
     track('InitiateCheckout', { content_name: wb ? 'kit+playbook' : 'kit', value: order.total, currency: 'USD', num_items: wb ? 2 : 1 }, payHere && intent ? intent.intentId : order.eventId);
-    ph('checkout_submitted', { total: order.total, bump: wb }, !payHere);
+    ph('checkout_submitted', { total: order.total, bump: wb, type: payType }, !payHere);
 
     if (payHere) {
       // pay here: the card form on the page; the saved card makes the next two pages one click
