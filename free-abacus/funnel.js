@@ -282,14 +282,18 @@ function keyboardAware(form) {
 // ---------- on-page checkout: Stripe Elements in step 2, the card saved for one-click upsells ----------
 const onPage = () => !!(CONFIG.checkoutApi && CONFIG.stripePublishableKey);
 // A call that hangs on a flaky in-app connection would freeze the button it belongs to, so each one gives up: start
-// and update after 15 seconds (the hosted checkout then takes over), an upsell after 40 (the server itself stops
-// waiting on Stripe at 25, and the page treats a timeout like a dropped answer: wait, ask once more).
-const API_MS = { start: 15000, update: 15000, upsell: 40000 };
+// after 25 seconds (it runs while the parent types the card, so waiting costs nothing on screen; a slow one is sent
+// again, see startFailed), update after 15, an upsell after 40 (the server itself stops waiting on Stripe at 25, and
+// the page treats a timeout like a dropped answer: wait, ask once more).
+const API_MS = { start: 25000, update: 15000, upsell: 40000 };
 async function api(payload) {
   let r;
   const ctl = typeof AbortController === 'function' ? new AbortController() : null;
   const t = ctl ? setTimeout(() => ctl.abort(), API_MS[payload.action] || 15000) : 0;
-  try { r = await fetch(CONFIG.checkoutApi, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload), signal: ctl ? ctl.signal : undefined }); }
+  // text/plain keeps the call a "simple" cross-origin request: no OPTIONS preflight goes first, so a call is one trip to
+  // the server instead of two (the server reads the body as JSON either way). On a weak phone connection each trip
+  // took 6 to 9 seconds (2026-11-05).
+  try { r = await fetch(CONFIG.checkoutApi, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=UTF-8' }, body: JSON.stringify(payload), signal: ctl ? ctl.signal : undefined }); }
   catch (e) { throw Object.assign(new Error('Something went wrong. Try again in a moment.'), { code: e && e.name === 'AbortError' ? 'timeout' : 'network', status: 0 }); }
   finally { clearTimeout(t); }
   let data = {}; try { data = await r.json(); } catch {}
@@ -627,7 +631,23 @@ export function orderForm() {
     // the intent opens (or is already open) in the background; a start that fails sends Complete to the hosted link.
     // Once it is open, the server stamps the lead row as a step-2 lead (the start alone goes out on the email's blur,
     // and a parent who never tapped Next was counted and emailed as a lead on 2026-11-03).
-    ensureIntent(data).then(st => markStep2(st)).catch(e => { if (!hosted) useHosted(reasonOf(e)); });
+    // A start that is slow or lost on the way (a weak connection) is not a broken checkout: the card form stays, the
+    // start goes out once more in the background, and Complete asks again if it has to. Only a start the server
+    // refused, or one with no card form to fall back on, sends Complete to the hosted link. 2026-11-05: a parent's
+    // start needed 15 s to cross her connection (the server's own work took 1 s), the page gave up 0.6 s before her
+    // intent was ready, swapped her working card form for the hosted link, and her lead never got the step-2 stamp
+    // that the abandon emails go by.
+    let startTries = 0;
+    const startFailed = e => {
+      if (hosted) return;
+      if (e && (e.code === 'timeout' || e.code === 'network') && (co || mounting)) {
+        ph('checkout_start_retry', { attempt: ++startTries, reason: reasonOf(e), card_ready: !!co });
+        if (startTries < 2) ensureIntent(p1()).then(st => markStep2(st)).catch(startFailed);
+        return;
+      }
+      useHosted('start_' + reasonOf(e));
+    };
+    ensureIntent(data).then(st => markStep2(st)).catch(startFailed);
     // every Next tries the card form again, so one failed mount does not leave the parent on the hosted link
     if (!co) {
       hosted = false; if (payBlock) payBlock.classList.remove('hosted'); setLabel(false);
